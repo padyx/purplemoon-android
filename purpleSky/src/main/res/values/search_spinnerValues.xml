@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="target_friendship">Friendship</string>		
+    <string name="target_relationship">Relationship</string>
+    		
+    <string name="targetperson_any">Any</string>
+    <string name="targetperson_man">Man</string>
+    <string name="targetperson_bisexualman">Bisexual man</string>
+    <string name="targetperson_gayman">Gay man</string>
+    <string name="targetperson_heteroman">Hetero man</string>
+    <string name="targetperson_woman">Woman</string>
+    <string name="targetperson_bisexualwoman">Bisexual woman</string>
+    <string name="targetperson_lesbianwoman">Lesbian woman</string>
+    <string name="targetperson_heterowoman">Hetero woman</string>
+    
+</resources>

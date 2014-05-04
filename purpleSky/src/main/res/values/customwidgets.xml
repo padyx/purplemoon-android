@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IntegerSpinner">
+        <attr name="lowerBound" format="integer" />
+        <attr name="upperBound" format="integer" />
+    </declare-styleable>
+</resources>

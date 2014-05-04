@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/abs__background_holo_light">
+
+    <LinearLayout
+        android:id="@+id/uploadphoto_dialog_buttonContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center_horizontal" >
+
+        <Button
+            android:id="@+id/uploadphoto_dialog_fragment_cancelBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_button_shape"
+            android:padding="8dp"
+            android:text="@string/alert_dialog_cancel" />
+        <Button
+            android:id="@+id/uploadphoto_dialog_fragment_uploadBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_button_shape"
+            android:padding="8dp"
+            android:text="@string/Upload" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/uploadphoto_dialog_buttonContainer"
+        android:layout_alignParentTop="true"
+        android:padding="8dp" >
+
+        <EditText
+            android:id="@+id/uploadphoto_dialog_fragment_descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:ems="10"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:paddingTop="8dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/uploadphoto_dialog_fragment_descriptionLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/uploadphoto_dialog_fragment_descriptionEditText"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:paddingTop="8dp"
+            android:text="@string/Description"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/uploadphoto_dialog_fragment_folderSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/uploadphoto_dialog_fragment_descriptionLbl"
+            android:layout_alignParentRight="true" />
+
+        <ImageView
+            android:id="@+id/uploadphoto:dialog_fragment_imgView"
+            android:contentDescription="@string/Accessibility_PictureForUpload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/icon" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/uploadphoto_dialog_fragment_folderSpinner"
+            android:layout_alignParentLeft="true"
+            android:paddingTop="8dp"
+            android:text="@string/Folder"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
+
+</RelativeLayout>

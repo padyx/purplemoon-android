@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp" >
+
+    <ImageView
+        android:id="@+id/usersearch_result_userImgV"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/Accessibility_UserProfilePicture"
+        android:src="@drawable/icon" />
+
+
+        <TextView
+            android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/usersearch_result_userImgV"
+        android:layout_marginLeft="8dp" 
+            android:id="@+id/usersearch_result_usernameLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/usersearch_result_item_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/usersearch_result_usernameLbl"
+        android:layout_toRightOf="@+id/usersearch_result_userImgV"
+        android:ellipsize="end"
+        android:minLines="1"
+        android:paddingLeft="8dp"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <TextView
+        android:id="@+id/usersearch_result_item_onlinestatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/usersearch_result_item_description"
+        android:layout_toRightOf="@+id/usersearch_result_userImgV"
+        android:ellipsize="end"
+        android:minLines="1"
+        android:paddingLeft="8dp"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/usersearch_distanceLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/usersearch_result_item_description"
+        android:visibility="gone"
+        android:textStyle="bold" />
+
+</RelativeLayout>

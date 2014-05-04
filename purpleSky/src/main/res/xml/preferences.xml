@@ -1,0 +1,73 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:purplesky="http://schemas.android.com/apk/res/ch.defiant.purplesky" >
+
+    <PreferenceCategory android:title="@string/preferences_header_eventNotifications" >
+        <CheckBoxPreference
+            android:defaultValue="@bool/ch.defiant.purplesky.preferences.updateEnabled_default"
+            android:disableDependentsState="false"
+            android:key="ch.defiant.purplesky.preferences.updateEnabled"
+            android:title="@string/CheckForNewEvents" />
+
+        <ch.defiant.purplesky.customwidgets.IntegerListPreference
+            android:defaultValue="@integer/ch.defiant.purplesky.preferences.updateIntervalMillis_default"
+            android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+            android:key="ch.defiant.purplesky.preferences.updateIntervalMillis"
+            android:summary="@string/PreferenceUpdateInterval_Summary"
+            android:title="@string/CheckEvery_"
+            purplesky:entryList="@array/checkEventsUpdateInterval_Strings"
+            purplesky:valueList="@array/checkEventsUpdateInterval_Value" />
+
+        <PreferenceScreen
+            android:summary="@string/PreferencesNotificationChooseEvents_Expl"
+            android:title="@string/PreferencesNotificationChooseEvents" 
+            android:dependency="ch.defiant.purplesky.preferences.updateEnabled">
+            <CheckBoxPreference
+                android:defaultValue="@bool/ch.defiant.purplesky.preferences.notification.notifyForMessages_default"
+                android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+                android:key="ch.defiant.purplesky.preferences.notification.notifyForMessages"
+                android:title="@string/PreferenceNotifyNewMessages" />
+            <CheckBoxPreference
+                android:defaultValue="@bool/ch.defiant.purplesky.preferences.notification.notifyForPostits_default"
+                android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+                android:key="ch.defiant.purplesky.preferences.notification.notifyForPostits"
+                android:title="@string/PreferenceNotifyPostits" />
+            <CheckBoxPreference
+                android:defaultValue="@bool/ch.defiant.purplesky.preferences.notification.notifyForVisits_default"
+                android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+                android:key="ch.defiant.purplesky.preferences.notification.notifyForVisits"
+                android:title="@string/PreferenceNotifyNewVisits" />
+            <CheckBoxPreference
+                android:defaultValue="@bool/ch.defiant.purplesky.preferences.notification.notifyForVotes_default"
+                android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+                android:key="ch.defiant.purplesky.preferences.notification.notifyForVotes"
+                android:title="@string/PreferencesNotifyNewVotes" />
+        </PreferenceScreen>
+
+        <!-- Default value is set as "NONE", will result in using default as unknown -->
+        <RingtonePreference
+            android:key="ch.defiant.purplesky.preferences.notification.sound"
+            android:ringtoneType="notification"
+            android:showDefault="true"
+            android:showSilent="true"
+            android:defaultValue="NONE"
+            android:title="@string/PreferenceNotificationSound"
+            android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+             />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/ch.defiant.purplesky.preferences.notification.vibrate_default"
+            android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
+            android:key="ch.defiant.purplesky.notification.vibrate"
+            android:title="@string/PreferenceVibration" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferences_header_account" >
+        <Preference
+            android:key="ch.defiant.purplesky.preferences.poweruserStatus"
+            android:title="@string/preference_poweruserStatus" />
+        <Preference
+            android:key="ch.defiant.purplesky.preferences.clearCredentials"
+            android:summary="@string/CredentialsClearExplanation"
+            android:title="@string/CredentialsClear" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

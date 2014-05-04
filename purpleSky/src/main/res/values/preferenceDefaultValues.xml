@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="ch.defiant.purplesky.preferences.updateEnabled_default">true</bool>
+    <integer name="ch.defiant.purplesky.preferences.updateIntervalMillis_default">120000</integer>
+    <bool name="ch.defiant.purplesky.preferences.notification.notifyForMessages_default">true</bool>
+    <bool name="ch.defiant.purplesky.preferences.notification.notifyForPostits_default">true</bool>
+    <bool name="ch.defiant.purplesky.preferences.notification.notifyForVisits_default">false</bool>
+    <bool name="ch.defiant.purplesky.preferences.notification.notifyForVotes_default">false</bool>
+    <bool name="ch.defiant.purplesky.preferences.notification.vibrate_default">true</bool>
+</resources>

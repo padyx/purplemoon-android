@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/displayphotovotes_item_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/Accessibility_UserProfilePicture"
+        android:src="@drawable/icon" >
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/displayphotovotes_item_titleLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/displayphotovotes_item_picture"
+        android:text="@string/Unknown"
+        android:textStyle="bold" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/displayphotovotes_item_byStaticLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/displayphotovotes_item_usernameLbl"
+        android:layout_alignBottom="@+id/displayphotovotes_item_usernameLbl"
+        android:layout_alignLeft="@+id/displayphotovotes_item_titleLbl"
+        android:text="@string/by" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/displayphotovotes_item_usernameLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/displayphotovotes_item_titleLbl"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/displayphotovotes_item_byStaticLbl"
+        android:text="@string/Unknown" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/displayphotovotes_item_timeLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/displayphotovotes_item_usernameLbl"
+        android:layout_alignParentRight="true"
+        android:text="@string/Unknown" >
+    </TextView>
+
+</RelativeLayout>

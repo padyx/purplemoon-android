@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/displaypostit_item_padding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp" >
+
+    <!-- 	Ignore Useless Parent: Android seems to ignore Margin when set on this relativ layout and used in a listview... 
+    		So a container with padding it is. -->
+    <RelativeLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/postit_rectangle"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        tools:ignore="UselessParent" >
+
+        <ImageView
+            android:id="@+id/displaypostit_item_userImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/imageDescription_UserPicture"
+            android:src="@drawable/social_person" />
+
+        <TextView
+            android:id="@+id/displaypostit_item_titleLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/displaypostit_item_userImageView"
+            android:paddingLeft="8dp"
+            android:text="@string/Unknown"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/displaypostit_item_toFromLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/displaypostit_item_titleLbl"
+            android:layout_toRightOf="@+id/displaypostit_item_userImageView"
+            android:paddingLeft="8dp"
+            android:text="@string/by" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/displaypostit_item_usernameLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/displaypostit_item_toFromLbl"
+            android:layout_alignBottom="@+id/displaypostit_item_toFromLbl"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/displaypostit_item_toFromLbl"
+            android:text="@string/Unknown" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/displaypostit_item_dateLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/displaypostit_item_usernameLbl"
+            android:layout_toRightOf="@+id/displaypostit_item_userImageView"
+            android:paddingLeft="8dp"
+            android:text="@string/Unknown"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/displaypostit_item_newLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/displaypostit_item_dateLbl"
+            android:layout_alignBottom="@+id/displaypostit_item_dateLbl"
+            android:layout_alignParentRight="true"
+            android:paddingRight="8dp"
+            android:text="@string/New"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>

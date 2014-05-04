@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/postit_menu"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/GivePostit"
+        android:icon="@drawable/postit_bw"
+        android:titleCondensed="@string/GivePostit">
+</item>
+    
+
+</menu>

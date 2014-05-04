@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#F00</color>
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="purple_light">#F0E0FF</color>
+    <color name="purple_faint">#F5EBFF</color>
+    <color name="black_transparent50perc">#80000000</color>
+    <color name="hint_foreground_light_holo">#808080</color>
+    <color name="onlinestatus_online">#009900</color>
+    <color name="onlinestatus_away">#FF6600</color>
+    <color name="onlinestatus_busy">#CC0000</color>
+    <color name="onlinestatus_invisible">#000000</color>
+    <color name="onlinestatus_other">#000000</color>
+</resources>

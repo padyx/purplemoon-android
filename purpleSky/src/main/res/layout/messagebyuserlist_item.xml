@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp" >
+
+    <ImageView
+        android:id="@+id/messagebyuserlist_item_userImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/Accessibility_UserProfilePicture"
+        android:src="@drawable/picture_placeholder" />
+
+    <TextView
+        android:id="@+id/messagebyuserlist_item_usernameLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/messagebyuserlist_item_userImageView"
+        android:layout_toLeftOf="@+id/messagebyuserlist_item_lastContectDateLbl"
+        android:layout_toRightOf="@+id/messagebyuserlist_item_userImageView"
+        android:paddingLeft="8dp"
+        android:text="@string/Unknown"
+        android:textAppearance="@style/TextAppearance.MediumLarge"
+        android:textStyle="bold" >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/messagebyuserlist_item_lastContectDateLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="8dp"
+        android:text="@string/Unknown"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:id="@+id/messagebyuserlist_item_unopenedMessageCountLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/messagebyuserlist_item_userImageView"
+        android:layout_alignRight="@+id/messagebyuserlist_item_lastContectDateLbl"
+        android:background="@drawable/badge_rectangle"
+        android:text="@string/_0"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/messagebyuserlist_item_excerpt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/messagebyuserlist_item_unopenedMessageCountLbl"
+        android:layout_alignBottom="@+id/messagebyuserlist_item_unopenedMessageCountLbl"
+        android:layout_alignLeft="@+id/messagebyuserlist_item_usernameLbl"
+        android:layout_toLeftOf="@+id/messagebyuserlist_item_unopenedMessageCountLbl"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="@string/Unknown" />
+
+</RelativeLayout>
