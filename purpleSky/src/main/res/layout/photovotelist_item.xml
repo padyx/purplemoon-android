@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    >
+
+    <ImageView
+        android:id="@+id/photovotelist_item_imgV"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/picture_placeholder" 
+        />
+
+    <TextView
+        android:id="@+id/photovotelist_item_usernameLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/photovotelist_item_imgV"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/photovotelist_item_imgV"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.MediumLarge"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/photovotelist_item_voteLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/photovotelist_item_usernameLbl"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/photovotelist_item_usernameLbl"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/photovotelist_item_dateLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/photovotelist_item_voteLbl"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/photovotelist_item_voteLbl"
+        android:gravity="right"
+        android:text="TextView" />
+
+</RelativeLayout>

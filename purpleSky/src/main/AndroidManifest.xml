@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ch.defiant.purplesky"
+    android:installLocation="internalOnly"
+    android:versionCode="29"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- External cache directory -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 
+    ### BEGIN GCM ### 
+    -->
+    
+    <!-- Drop this when minSdkVersion >= 16 -->
+    <permission
+        android:name="ch.defiant.purplesky.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="ch.defiant.purplesky.permission.C2D_MESSAGE" />
+    <!-- App receives GCM messages. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- 
+    ### END GCM ### 
+    -->
+
+    <application
+        android:name=".core.PurpleSkyApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Purplesky" >
+        <activity
+            android:name=".activities.LoginActivity"
+            android:configChanges="orientation" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".core.UpdateService"
+            android:exported="false" >
+        </service>
+
+        <activity android:name=".activities.SettingActivity" />
+        <activity android:name="ch.defiant.purplesky.activities.main.MainActivity" />
+
+        <service
+            android:name=".services.UploadService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".broadcast.StartupBroadcastReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- ### GCM - Google Cloud Messaging Related -->
+        <receiver
+            android:name=".gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="ch.defiant.purplesky" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".gcm.GCMIntentService"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
+
+</manifest>

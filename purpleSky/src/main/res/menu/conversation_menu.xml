@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/conversation_menu_showprofile"
+        android:title="@string/ShowProfile"
+        android:titleCondensed="@string/ShowProfile"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/person">
+    </item>
+    <item
+        android:id="@+id/conversation_menu_refresh"
+        android:icon="@drawable/action_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/Refresh"
+        android:titleCondensed="@string/Refresh">
+    </item>
+
+</menu>

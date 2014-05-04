@@ -1,0 +1,1 @@
+Android application for the Purplemoon.ch & Purplestar.ch social websites.

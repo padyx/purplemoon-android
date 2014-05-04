@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Stylable for IntegerListPreference -->
+<resources>
+    
+     <declare-styleable name="IntegerListPreference">
+        <attr name="entryList" format="reference" />
+        <attr name="valueList" format="reference" />
+    </declare-styleable>    
+   
+</resources>

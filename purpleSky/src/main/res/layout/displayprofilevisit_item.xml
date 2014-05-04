@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/displayprofilevisit_item_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/Accessibility_UserProfilePicture"
+        android:src="@drawable/icon" >
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/displayprofilevisit_item_timeLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/displayprofilevisit_item_picture"
+        android:layout_toRightOf="@+id/displayprofilevisit_item_picture"
+        android:text="@string/Unknown" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/displayprofilevisit_item_usernameLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/displayprofilevisit_item_picture"
+        android:layout_toRightOf="@+id/displayprofilevisit_item_picture"
+        android:text="@string/Unknown" >
+    </TextView>
+
+</RelativeLayout>

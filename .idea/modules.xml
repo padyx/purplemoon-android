@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/endlessAdapter/endlessAdapter.iml" filepath="$PROJECT_DIR$/endlessAdapter/endlessAdapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/purpleSky/purpleSky.iml" filepath="$PROJECT_DIR$/purpleSky/purpleSky.iml" />
+      <module fileurl="file://$PROJECT_DIR$/purplesky-gradle.iml" filepath="$PROJECT_DIR$/purplesky-gradle.iml" />
+    </modules>
+  </component>
+</project>
+

@@ -1,0 +1,51 @@
+package ch.defiant.purplesky.constants;
+
+public class PreferenceConstants {
+    private static final String BASE = "ch.defiant.purplesky.preferences.";
+
+    public static final String gcmToken = BASE + "gcmToken";
+
+    public static final String oAuthToken = BASE + "oauthToken";
+    public static final String userprofileId = BASE + "userprofileId";
+    
+    public static final String lastVersionInt = BASE + "lastVersionInt";
+
+    public static final String updateInterval = BASE + "updateIntervalMillis";
+    public static final String updateEnabled = BASE + "updateEnabled";
+    public static final String lastUpdateServiceRun = BASE + "updateServiceRun";
+
+    private static final String searchBase = BASE + "searchsimple.";
+
+    public static final String searchTarget = searchBase + "target";
+    public static final String searchTargetPerson = searchBase + "targetPerson";
+    public static final String searchAgeMin = searchBase + "ageMin";
+    public static final String searchAgeMax = searchBase + "ageMax";
+    public static final String searchUseDistance = searchBase + "orderDistance";
+    public static final String searchOnlineOnly = searchBase + "onlineOnly";
+    public static final String searchCountry = searchBase + "country";
+
+    public static final String powerUserExpiry = searchBase + "powerUserExpiry";
+
+    public static final String cachedOwnUserProfilePictureUrl = BASE + "cachedOwnUserProfilePictureUrl";
+    public static final String cachedOwnUserProfilePictureUrlExpiry = BASE + "cachedOwnUserProfilePictureUrlExpiry";
+
+    private static final String lastSeenBase = BASE + "lastSeen.";
+    public static final String lastSeenMessageTimestamp = lastSeenBase + "message";
+    public static final String lastSeenVisitTimestamp = lastSeenBase + "visit";
+    public static final String lastSeenMessagePostit = lastSeenBase + "postit";
+    public static final String lastSeenPhotovotesTimestamp = lastSeenBase + "votes";
+
+    private static final String notificationBase = BASE + "notification.";
+    public static final String notificationVibrateEnabled = notificationBase + "vibrate";
+    public static final String notificationCustomSound = notificationBase + "sound";
+
+    /**
+     * Time of last user notification for events except chats.
+     */
+    public static final String lastEventNotification = notificationBase + "lastEventNotification";
+
+    public static final String notifyForMessages = notificationBase + "notifyForMessages";
+    public static final String notifyForVisits = notificationBase + "notifyForVisits";
+    public static final String notifyForPostit = notificationBase + "notifyForPostits";
+    public static final String notifyForVotes = notificationBase + "notifyForVotes";
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="loader_message_initial" />
+    <item type="id" name="loader_message_empty" />
+    <item type="id" name="loader_message_refresh" />
+    <item type="id" name="loader_message_moreoldDB" />
+    <item type="id" name="loader_message_moreoldOnline" />
+    <item type="id" name="loader_message_send" />
+    <item type="id" name="loader_drawermenu_profileimage" />
+    <item type="id" name="loader_drawermenu_notificationCounters" />
+    <item type="id" name="loader_drawermenu_status" />
+    <item type="id" name="loader_main_upgradePush" />
+    <item type="id" name="loader_chatlist_offline" />
+    <item type="id" name="loader_chatlist_online" />
+    <item type="id" name="loader_chooselocation_loadgeocoder" />
+    <item type="id" name="loader_createpostit_loadpostits" />
+    <item type="id" name="loader_profile_main" />
+    <item type="id" name="loader_favorites_main" />
+    <item type="id" name="loader_photovotes_main" />
+    <item type="id" name="loader_picturefolders_main" />
+    <item type="id" name="loader_pictures_main" />
+    <item type="id" name="loader_uploadpicture_getfolders" />
+    <item type="id" name="loader_usernamesearch_main" />
+    <item type="id" name="loader_radar_main" />
+    <item type="id" name="loader_main_logout" />
+	<item type="id" name="loader_message_profileImage" />  
+	<item type="id" name="loader_username" /> 
+	<item type="id" name="loader_conversationstatus" />
+</resources>

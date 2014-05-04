@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/ch.defiant.purplesky"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".activities.DisplayUserProfileActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/IAmLookingFor"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/usersearch_simple_targetpersonSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/search_composite_forA"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/usersearch_simple_targetSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/search_composite_withinAgesOf"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RelativeLayout
+            android:id="@+id/cont2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingTop="8dp" >
+
+            <ch.defiant.purplesky.customwidgets.IntegerSpinner
+                android:id="@+id/usersearch_simple_ageFromSpinner"
+                android:layout_width="100dp"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                app:lowerBound="12"
+                app:upperBound="99" />
+
+            <TextView
+                android:id="@+id/usersearch_simple_ageMiddleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/usersearch_simple_ageFromSpinner"
+                android:layout_alignBottom="@+id/usersearch_simple_ageFromSpinner"
+                android:layout_toRightOf="@+id/usersearch_simple_ageFromSpinner"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/and"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ch.defiant.purplesky.customwidgets.IntegerSpinner
+                android:id="@+id/usersearch_simple_ageToSpinner"
+                android:layout_width="100dp"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:layout_toRightOf="@+id/usersearch_simple_ageMiddleTextView"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical"
+                app:lowerBound="12"
+                app:upperBound="99" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/usersearch_simple_countryBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:paddingTop="8dp" >
+
+            <Spinner
+                android:id="@+id/usersearch_simple_countrySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/usersearch_simple_countryLbl"
+                android:entries="@array/countryNames"
+                android:minHeight="48dp"
+                android:paddingLeft="8dp" />
+
+            <TextView
+                android:id="@+id/usersearch_simple_countryLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/Country"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/usersearch_simple_onlineOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/ShowOnlyOnline" />
+
+        <RelativeLayout
+            android:id="@+id/usersearch_simple_bylocation_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp" >
+
+            <CheckBox
+                android:id="@+id/usersearch_simple_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/AroundLocation" />
+
+            <ImageView
+                android:id="@+id/usersearch_location_imgV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/usersearch_simple_distance"
+                android:contentDescription="@string/description_needsLocation"
+                android:paddingLeft="8dp"
+                android:src="@android:drawable/ic_menu_mylocation" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/usersearch_location_imgV"
+                android:contentDescription="@string/AccessibilityPoweruserFeature"
+                android:src="@drawable/poweruser_feature" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

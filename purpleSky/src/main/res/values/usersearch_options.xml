@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="usersearch_opts_str_online">
+        <item>Now</item>
+        <item>Last hour</item>
+        <item>Last 24 hours</item>
+        <item>Last 7 days</item>
+        <item>Last 30 days</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_vegetarian">
+        <item>Yes</item>
+        <item>No</item>
+        <item>Vegan</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_kids_have">
+        <item>No</item>
+        <item>Yes, one</item>
+        <item>Yes, several</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_kids_want">
+        <item>No</item>
+        <item>Unsure</item>
+        <item>Yes</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_gendersexuality">
+        <item>Gay men</item>
+        <item>Bisexual men</item>
+        <item>Straight men</item>
+        <item>Lesbian women</item>
+        <item>Bisexual women</item>
+        <item>Straight women</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_partnerstatus">
+        <item>Single</item>
+        <item>Long-term relationship</item>
+        <item>Engaged</item>
+        <item>Married</item>
+        <item>Open Relationship</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_smoker">
+        <item>Only joints</item>
+        <item>Really a lot</item>
+        <item>A lot</item>
+        <item>Moderately</item>
+        <item>On weekends</item>
+        <item>Almost never</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_physique">
+        <item>Slim</item>
+        <item>Normal</item>
+        <item>Athletic</item>
+        <item>Bodybuilder</item>
+        <item>Sturdy</item>
+        <item>Little tummy</item>
+        <item>Chubby</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_hair_color">
+        <item>Light-brown</item>
+        <item>Dark-brown</item>
+        <item>Brown</item>
+        <item>Light-blonde</item>
+        <item>Dark-blonde</item>
+        <item>Blonde</item>
+        <item>Black</item>
+        <item>Red</item>
+        <item>Light-red</item>
+        <item>Dark-grey</item>
+        <item>Dyed-red</item>
+        <item>Dyed-black</item>
+        <item>Dyed-blue</item>
+        <item>Dyed-green</item>
+        <item>Dyed-blonde</item>
+        <item>Dyed-purple</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_hair_length">
+        <item>Bald</item>
+        <item>Short</item>
+        <item>Medium</item>
+        <item>Long</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_facial_hair">
+        <item>None</item>
+        <item>Shaved</item>
+        <item>Three day</item>
+        <item>Moustache</item>
+        <item>Small goatee</item>
+        <item>Goatee</item>
+        <item>Mutton Chops</item>
+        <item>Full beard</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_religion">
+        <item>Agnostic</item>
+        <item>Atheist</item>
+        <item>Roman-Catholic</item>
+        <item>Old-Catholic</item>
+        <item>Evangelical-Reformed</item>
+        <item>Protestant</item>
+        <item>Russian-Orthodox</item>
+        <item>Greek-Orthodox</item>
+        <item>Jewish-Orthodox</item>
+        <item>Orthodox</item>
+        <item>Christian</item>
+        <item>Free church</item>
+        <item>Folk-Religion</item>
+        <item>Hindu</item>
+        <item>Sunnite</item>
+        <item>Shiite</item>
+        <item>Jewish</item>
+        <item>Buddhist</item>
+        <item>Shinto</item>
+        <item>Spiritual</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_politics">
+        <item>No interest</item>
+        <item>Right wing</item>
+        <item>Centre-right wing</item>
+        <item>Centre</item>
+        <item>Centre-left wing</item>
+        <item>Left wing</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_eye_color">
+        <item>Light-brown</item>
+        <item>Dark-brown</item>
+        <item>Brown</item>
+        <item>Light-blue</item>
+        <item>Dark-blue</item>
+        <item>Blue</item>
+        <item>Black</item>
+        <item>Green</item>
+        <item>Blue-grey</item>
+        <item>Blue-green</item>
+        <item>Green-brown</item>
+        <item>Green-grey</item>
+        <item>Grey</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_drinker">
+        <item>Never</item>
+        <item>Seldom</item>
+        <item>Sometimes</item>
+        <item>Regularly</item>
+        <item>A lot</item>
+        <item>Wine only</item>
+    </string-array>
+
+</resources>
