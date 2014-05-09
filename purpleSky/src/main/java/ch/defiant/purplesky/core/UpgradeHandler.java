@@ -12,7 +12,7 @@ import ch.defiant.purplesky.util.SystemUtility;
 
 /**
  * Handles the application upgrade process
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  *
  */
 public final class UpgradeHandler {

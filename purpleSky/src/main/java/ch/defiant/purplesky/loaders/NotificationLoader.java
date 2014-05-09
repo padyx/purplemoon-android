@@ -6,25 +6,27 @@ import java.util.Date;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.util.Pair;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 
 public class NotificationLoader extends SimpleAsyncLoader<Object> {
 
-    public NotificationLoader(Context c) {
+    private IPurplemoonAPIAdapter adapter;
+
+    public NotificationLoader(Context c, IPurplemoonAPIAdapter adapter) {
         super(c, R.id.loader_drawermenu_notificationCounters);
     }
 
     @Override
     public Object loadInBackground() {
-        PurplemoonAPIAdapter adapter = PurplemoonAPIAdapter.getInstance();
         UpdateBean updateBean = new UpdateBean();
         try {
             AlertBean alertBean = adapter.getAlertBean();

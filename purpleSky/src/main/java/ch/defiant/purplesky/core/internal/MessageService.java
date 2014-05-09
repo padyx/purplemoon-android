@@ -1,4 +1,9 @@
-package ch.defiant.purplesky.services;
+package ch.defiant.purplesky.core.internal;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,10 +12,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import javax.inject.Inject;
+
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
@@ -21,9 +25,9 @@ import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.DBHelper;
+import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.CollectionUtil;
@@ -32,24 +36,31 @@ import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.NVLUtility;
 
 // TODO Rename
-public class MessageService {
+public class MessageService implements IMessageService {
 
-    public static final int BATCH = 50;
-    private static final int BATCH_MOREMESSAGES = 100;
+    private final IPurplemoonAPIAdapter apiAdapter;
 
-    private static final long THREE_MONTHS = 3*30*24*60*60*1000L; // The "L" here is important, otherwise hello integer overflow!
-    private static final long YEAR = 12*30*24*60*60*1000L;
+    public final int BATCH = 50;
+    private final int BATCH_MOREMESSAGES = 100;
 
-    private static final String TAG = MessageService.class.getSimpleName();
+    private final long THREE_MONTHS = 3*30*24*60*60*1000L; // The "L" here is important, otherwise hello integer overflow!
+    private final long YEAR = 12*30*24*60*60*1000L;
 
-    private static final String FROM_TO_STRING = "( " + DatabaseConstants.MESSAGES_FROMUSERID
+    private final String TAG = MessageService.class.getSimpleName();
+
+    private final String FROM_TO_STRING = "( " + DatabaseConstants.MESSAGES_FROMUSERID
             + " = ? OR " + DatabaseConstants.MESSAGES_TOUSERID + " = ? )";
 
-    private static final String UPDATE_LAST_CONTACT = 
+    private final String UPDATE_LAST_CONTACT = 
             " ? = " + DatabaseConstants.CONVERSATIONS_OTHERUSERID + 
             " AND " + DatabaseConstants.CONVERSATIONS_LASTCONTACT + " <= ?";
 
-    private static final int MAX_CACHED_CONVERSATIONS = 100;
+    private final int MAX_CACHED_CONVERSATIONS = 100;
+
+    @Inject
+    public MessageService(IPurplemoonAPIAdapter apiAdapter){
+        this.apiAdapter = apiAdapter;
+    }
 
     public interface OnMessageLoadCompleteHandler {
         /**
@@ -77,13 +88,13 @@ public class MessageService {
      *            Message id being the upper bound of the messages to fetch.
      * @return
      */
-    public static Holder<List<PrivateMessage>> getPreviousMessagesOnline(String profileId, long messageId) {
+    public Holder<List<PrivateMessage>> getPreviousMessagesOnline(String profileId, long messageId) {
         AdapterOptions opts = new AdapterOptions();
         opts.setNumber(BATCH_MOREMESSAGES);
         opts.setOrder(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_ORDER_NEWESTFIRST);
         opts.setUptoId(messageId);
         try {
-            List<PrivateMessage> list = PurplemoonAPIAdapter.getInstance().getRecentMessagesByUser(profileId, opts);
+            List<PrivateMessage> list = apiAdapter.getRecentMessagesByUser(profileId, opts);
             if (list != null && !list.isEmpty()) {
                 insertMessages(list);
             }
@@ -99,7 +110,7 @@ public class MessageService {
      * @param profileId
      * @return messages
      */
-    public static List<PrivateMessage> getNewestCachedMessagesWithUser(String profileId){
+    public List<PrivateMessage> getNewestCachedMessagesWithUser(String profileId){
         return getCachedMessagesWithUser(profileId, null);
     }
 
@@ -112,7 +123,7 @@ public class MessageService {
      * @param messageId
      *            Message id being the upper bound of the messages to fetch.
      */
-    public static List<PrivateMessage> getPreviousCachedMessagesWithUser(String profileId, long messageId) {
+    public List<PrivateMessage> getPreviousCachedMessagesWithUser(String profileId, long messageId) {
         return getCachedMessagesWithUser(profileId, messageId);
     }
 
@@ -126,7 +137,7 @@ public class MessageService {
      * @param lastMessageId
      *            Message id being the lower bound of the messages to fetch.
      */
-    public static Holder<List<PrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId) {
+    public Holder<List<PrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId) {
         final ArrayList<PrivateMessage> res = new ArrayList<PrivateMessage>();
 
         boolean hasPossiblyMore = lastMessageId != null;
@@ -144,7 +155,7 @@ public class MessageService {
             }
 
             try {
-                List<PrivateMessage> list = PurplemoonAPIAdapter.getInstance().getRecentMessagesByUser(profileId, opts);
+                List<PrivateMessage> list = apiAdapter.getRecentMessagesByUser(profileId, opts);
                 res.addAll(list);
                 if (list.isEmpty()) {
                     hasPossiblyMore = false;
@@ -173,7 +184,7 @@ public class MessageService {
 
     }
 
-    public static void insertMessage(PrivateMessage m) {
+    public void insertMessage(PrivateMessage m) {
         insertMessages(Collections.singletonList(m));
     }
 
@@ -182,11 +193,11 @@ public class MessageService {
      * 
      * @param list
      */
-    public static void insertMessages(Collection<PrivateMessage> list) {
+    public void insertMessages(Collection<PrivateMessage> list) {
         if (list.isEmpty()) {
             return;
         }
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getWritableDatabase();
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
         try {
             db.beginTransaction();
             for (PrivateMessage m : list) {
@@ -213,8 +224,8 @@ public class MessageService {
      *            Profile Id of sending user.
      * @return Timestamp, or <tt>null</tt> if the specified user send no message.
      */
-    public static Long getLatestReceivedMessageTimestamp(String profileId) {
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+    public Long getLatestReceivedMessageTimestamp(String profileId) {
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
 
         try {
             db.beginTransaction();
@@ -254,11 +265,11 @@ public class MessageService {
      *            Profile Id of sending user.
      * @return Id, or <tt>null</tt> if the specified user send no message.
      */
-    public static Long getLatestMessageId(String profileId) {
+    public Long getLatestMessageId(String profileId) {
         if(profileId == null){
             return null;
         }
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
 
         try {
             Cursor query = db.query(false,
@@ -292,8 +303,8 @@ public class MessageService {
      * Updates the last contact date for all conversation to the maximum of the stored value and the beans' last contact dates.
      * @param conversations List of conversations to update
      */
-    public static void updateLastContact(Collection<UserMessageHistoryBean> conversations){
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getWritableDatabase();
+    public void updateLastContact(Collection<UserMessageHistoryBean> conversations){
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
 
         try{
             for (UserMessageHistoryBean bean : conversations) {
@@ -340,15 +351,14 @@ public class MessageService {
 
     /**
      * Updates the mapping from userId to the username
-     * @param userId
-     * @param username
+     * @param user
      */
-    public static void updateUserNameMapping(MinimalUser user){
+    public void updateUserNameMapping(MinimalUser user){
         updateUserNameMapping(Collections.singletonList(user));
     }
     
-    public static void updateUserNameMapping(Collection<MinimalUser> users){
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getWritableDatabase();
+    public void updateUserNameMapping(Collection<MinimalUser> users){
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
         try{
             db.beginTransaction();
             for (MinimalUser e : users) {
@@ -368,8 +378,8 @@ public class MessageService {
         }
     }
     
-    public static String getUserNameForId(String userId){
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+    public String getUserNameForId(String userId){
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor cursor = null;
         try{
             cursor = db.query(DatabaseConstants.TABLE_USERMAPPING, new String[] { DatabaseConstants.USERMAPPING_USERNAME },
@@ -393,8 +403,8 @@ public class MessageService {
      * @param userId
      * @return
      */
-    public static String getProfilePictureUrlForId(String userId){
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+    public String getProfilePictureUrlForId(String userId){
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor cursor = null;
         try{
             cursor = db.query(DatabaseConstants.TABLE_USERMAPPING, new String[] { DatabaseConstants.USERMAPPING_PROFILEPICTURE_URL },
@@ -415,15 +425,15 @@ public class MessageService {
     
     /**
      * Retrieve the profile picture URL prefix.
-     * @param userId
+     * @param users
      * @return
      */
-    public static void injectProfilePictureUrlForId(Collection<UserMessageHistoryBean> users){
+    public void injectProfilePictureUrlForId(Collection<UserMessageHistoryBean> users){
         if(users == null || users.isEmpty()) {
             return;
         }
         
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor cursor = null;
         try{
             for (UserMessageHistoryBean b : users) {
@@ -453,8 +463,8 @@ public class MessageService {
     /**
      * Will delete old records from the cache tables in the DB.
      */
-    public static void cleanupDB(){
-        final SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getWritableDatabase();
+    public void cleanupDB(){
+        final SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
         final long timeMillis = new Date().getTime();
         try{
             db.beginTransaction();
@@ -501,8 +511,8 @@ public class MessageService {
     /**
      * @return List of cached conversations, in descending time order of last contact. 
      */
-    public static List<UserMessageHistoryBean> getCachedConversations(){
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+    public List<UserMessageHistoryBean> getCachedConversations(){
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         List<UserMessageHistoryBean> list = new ArrayList<UserMessageHistoryBean>();
         try{
             Cursor cursor = db.rawQuery(
@@ -535,8 +545,8 @@ public class MessageService {
         return list;
     }
 
-    public static Date getNewestConversationTimestamp(){
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+    public Date getNewestConversationTimestamp(){
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         try{
             Cursor cursor = db.query(DatabaseConstants.TABLE_CONVERSATIONS, 
                     new String[]{DatabaseConstants.CONVERSATIONS_LASTCONTACT},
@@ -564,18 +574,17 @@ public class MessageService {
      * @throws PurpleSkyException 
      * @throws IOException 
      */
-    public static List<UserMessageHistoryBean> getOnlineConversations() throws IOException, PurpleSkyException{
+    public List<UserMessageHistoryBean> getOnlineConversations() throws IOException, PurpleSkyException{
         final Date newestCached = getNewestConversationTimestamp();
         List<UserMessageHistoryBean> conversations = new ArrayList<UserMessageHistoryBean>();
 
-        final PurplemoonAPIAdapter adapter = PurplemoonAPIAdapter.getInstance();
         boolean loadmore = true;
         int currentIdx = 0;
         while(loadmore){
             loadmore = false;
 
             List<UserMessageHistoryBean> lastcontacts = new ArrayList<UserMessageHistoryBean>( 
-                        adapter.getRecentContacts(BATCH, currentIdx, MessageRetrievalRestrictionType.UNREAD_FIRST));
+                        apiAdapter.getRecentContacts(BATCH, currentIdx, MessageRetrievalRestrictionType.UNREAD_FIRST));
             Collections.sort(lastcontacts, new UserMessageHistoryBeanLastContactComparator());
             
             UserMessageHistoryBean last = CollectionUtil.lastElement(lastcontacts);
@@ -613,7 +622,7 @@ public class MessageService {
      * @param upToMessageId Restrict to messages with a smaller id than this parameter
      * @return List of messages
      */
-    private static List<PrivateMessage> getCachedMessagesWithUser(String profileId, Long upToMessageId) {
+    private List<PrivateMessage> getCachedMessagesWithUser(String profileId, Long upToMessageId) {
         StringBuilder where = new StringBuilder();
         where.append(FROM_TO_STRING);
         where.append(" AND ");
@@ -625,7 +634,7 @@ public class MessageService {
         selectArgs.add(profileId);
         selectArgs.add(String.valueOf(upToMessageId));
 
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.getContext()).getReadableDatabase();
+        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor curs = db.query(false,
                 DatabaseConstants.TABLE_MESSAGES,
                 new String[] {
@@ -658,7 +667,7 @@ public class MessageService {
         }
     }
 
-    private static List<PrivateMessage> translateCursorToMessages(Cursor curs) {
+    private List<PrivateMessage> translateCursorToMessages(Cursor curs) {
         if (curs == null) {
             return Collections.emptyList();
         }
