@@ -47,7 +47,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-public class LoginActivity extends SherlockFragmentActivity {
+public class LoginActivity extends BaseFragmentActivity {
 
     private class LoginTask extends AsyncTask<Pair<String, String>, Object, Holder<Boolean>> {
     
@@ -195,7 +195,7 @@ public class LoginActivity extends SherlockFragmentActivity {
         }
 
         // Load the default values
-        PreferenceManager.setDefaultValues(PurpleSkyApplication.getContext(), R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(PurpleSkyApplication.get(), R.xml.preferences, false);
     }
 
     @Override
