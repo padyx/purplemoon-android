@@ -10,6 +10,7 @@ import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
+import dagger.ObjectGraph;
 
 public class PurpleSkyApplication extends android.app.Application {
 
@@ -20,16 +21,18 @@ public class PurpleSkyApplication extends android.app.Application {
     private HashMap<NavigationDrawerEventType, Integer> m_notificationCounts;
     private WeakReference<UpdateListener> m_listener = new WeakReference<PurpleSkyApplication.UpdateListener>(null);
     private PersistantModel m_model;
-    
+    ObjectGraph objectGraph;
+
     public PurpleSkyApplication() {
         instance = this;
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new ThreadPolicy.Builder().detectAll().build());
             StrictMode.setVmPolicy(new VmPolicy.Builder().detectAll().build());
         }
+        initObjectGraph();
     }
 
-    public static PurpleSkyApplication getContext() {
+    public static PurpleSkyApplication get() {
         return instance;
     }
 
@@ -98,6 +101,15 @@ public class PurpleSkyApplication extends android.app.Application {
 
     public FragmentTransfer getFragmentTransferInstance() {
         return fragment_transfer_instance;
+    }
+
+    public void inject(Object o) {
+        objectGraph.inject(o);
+    }
+
+    private void initObjectGraph() {
+        objectGraph = ObjectGraph.create(new PurpleSkyModule(this));
+        objectGraph.inject(this);
     }
 
 }

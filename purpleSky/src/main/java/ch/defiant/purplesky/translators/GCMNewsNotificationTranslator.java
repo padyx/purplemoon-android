@@ -37,7 +37,7 @@ public class GCMNewsNotificationTranslator {
         int unseenVotes = StringUtility.permissiveInt(extras.getString(PurplemoonAPIConstantsV1.GCM_EXTRA_VOTESUNSEEN), 0);
 
         {
-            PurpleSkyApplication appContext = PurpleSkyApplication.getContext();
+            PurpleSkyApplication appContext = PurpleSkyApplication.get();
             appContext.setEventCount(NavigationDrawerEventType.POSTIT, unseenPostits);
             appContext.setEventCount(NavigationDrawerEventType.VISIT, unseenVisits);
         }

@@ -5,9 +5,9 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 public enum Gender {
 
-    MALE("male", PurpleSkyApplication.getContext().getString(R.string.GenderMale)),
-    FEMALE("female", PurpleSkyApplication.getContext().getString(R.string.GenderFemale)),
-    UNKNOWN(null, PurpleSkyApplication.getContext().getString(R.string.Unknown));
+    MALE("male", PurpleSkyApplication.get().getString(R.string.GenderMale)),
+    FEMALE("female", PurpleSkyApplication.get().getString(R.string.GenderFemale)),
+    UNKNOWN(null, PurpleSkyApplication.get().getString(R.string.Unknown)); // TODO pbn remove unknown
 
     Gender(String APIValue, String l10n) {
         m_APIValue = APIValue;

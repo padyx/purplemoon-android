@@ -14,7 +14,11 @@ import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
+
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.BuildConfig;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PreviewUser;
@@ -27,7 +31,8 @@ import ch.defiant.purplesky.util.StringUtility;
 public class UserService {
     private static final String TAG = UserService.class.getSimpleName();
 
-    private PurplemoonAPIAdapter m_adapter;
+    @Inject
+    protected IPurplemoonAPIAdapter apiAdapter;
 
     // Caches: ProfileId -> <User, RetrievalDate>
     private LruCache<String, MinimalUser> m_cache;
@@ -39,7 +44,7 @@ public class UserService {
     protected UserService() {
         // Private constructor
         m_cache = new LruCache<String, MinimalUser>(500);
-        m_adapter = PurplemoonAPIAdapter.getInstance();
+        PurpleSkyApplication.get().inject(this);
     }
 
     public Map<String, MinimalUser> getMinimalUsers(List<String> profileIds, boolean withOnlineStatus)
@@ -66,7 +71,7 @@ public class UserService {
 
         if (withOnlineStatus) {
             // Add online status to all of them
-            Map<String, Pair<OnlineStatus, String>> stati = m_adapter.getOnlineStatus(new ArrayList<String>(map.keySet()));
+            Map<String, Pair<OnlineStatus, String>> stati = apiAdapter.getOnlineStatus(new ArrayList<String>(map.keySet()));
             for (String id : stati.keySet()) {
                 Pair<OnlineStatus, String> stats = stati.get(id);
                 if (stats == null) {
@@ -127,7 +132,7 @@ public class UserService {
 
         if (withOnlineStatus) {
             // Add online status to all of them
-            Map<String, Pair<OnlineStatus, String>> stati = m_adapter.getOnlineStatus(new ArrayList<String>(map.keySet()));
+            Map<String, Pair<OnlineStatus, String>> stati = apiAdapter.getOnlineStatus(new ArrayList<String>(map.keySet()));
             for (String id : stati.keySet()) {
                 Pair<OnlineStatus, String> stats = stati.get(id);
                 if (stats == null) {
@@ -187,7 +192,7 @@ public class UserService {
 
     private Map<String, MinimalUser> getMinimalUserForceUpdate(List<String> profileIds, boolean withOnlineStatus) throws IOException,
             PurpleSkyException {
-        Map<String, MinimalUser> map = m_adapter.getMinimalUserData(profileIds, withOnlineStatus);
+        Map<String, MinimalUser> map = apiAdapter.getMinimalUserData(profileIds, withOnlineStatus);
         for (String id : map.keySet()) {
             m_cache.put(id, map.get(id));
         }
@@ -196,7 +201,7 @@ public class UserService {
 
     private MinimalUser getMinimalUserForceUpdate(String profileId, boolean withOnlineStatus)
             throws IOException, PurpleSkyException {
-        MinimalUser minimalUserData = m_adapter.getMinimalUserData(profileId, withOnlineStatus);
+        MinimalUser minimalUserData = apiAdapter.getMinimalUserData(profileId, withOnlineStatus);
         // Store in caches
         m_cache.put(profileId, minimalUserData);
         return minimalUserData;
@@ -204,7 +209,7 @@ public class UserService {
 
     private Map<String, PreviewUser> getPreviewUserForceUpdate(List<String> profileIds, boolean withOnlineStatus)
             throws IOException, PurpleSkyException {
-        Map<String, PreviewUser> map = m_adapter.getPreviewUserData(profileIds, withOnlineStatus);
+        Map<String, PreviewUser> map = apiAdapter.getPreviewUserData(profileIds, withOnlineStatus);
         for (String id : map.keySet()) {
             m_cache.put(id, map.get(id));
         }
@@ -213,7 +218,7 @@ public class UserService {
 
     private PreviewUser getPreviewUserForceUpdate(String profileId, boolean withOnlineStatus)
             throws IOException, PurpleSkyException {
-        PreviewUser fullUserData = m_adapter.getPreviewUserData(profileId, withOnlineStatus);
+        PreviewUser fullUserData = apiAdapter.getPreviewUserData(profileId, withOnlineStatus);
         m_cache.put(profileId, fullUserData);
 
         return fullUserData;
@@ -221,7 +226,7 @@ public class UserService {
 
     private DetailedUser getDetailedUserForceUpdate(String profileId)
             throws IOException, PurpleSkyException {
-        DetailedUser fullUserData = m_adapter.getDetailedUserData(profileId);
+        DetailedUser fullUserData = apiAdapter.getDetailedUserData(profileId);
         m_cache.put(profileId, fullUserData);
 
         return fullUserData;
@@ -234,7 +239,7 @@ public class UserService {
             }
         }
         // Load again
-        DetailedUser fullUserData = m_adapter.getMyDetailedUserData();
+        DetailedUser fullUserData = apiAdapter.getMyDetailedUserData();
         m_ownUserData = fullUserData;
 
         return fullUserData;

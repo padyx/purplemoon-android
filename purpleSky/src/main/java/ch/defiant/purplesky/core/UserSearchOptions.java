@@ -11,6 +11,8 @@ import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.UserSearchOrder;
+import ch.defiant.purplesky.enums.Gender;
+import ch.defiant.purplesky.enums.Sexuality;
 
 public class UserSearchOptions implements Serializable {
 
@@ -29,11 +31,14 @@ public class UserSearchOptions implements Serializable {
         public String getAPIValue() {
             return m_apiValue;
         }
-    }
 
+    }
     private SearchType m_searchType;
+
     private String m_userName;
+    @Deprecated
     private List<String> m_genderSexualities;
+    private List<android.util.Pair<Gender, Sexuality>> attractions;
     private Integer m_minAge;
     private Integer m_maxAge;
     private String m_countryId;
@@ -44,7 +49,6 @@ public class UserSearchOptions implements Serializable {
     private Class<? extends MinimalUser> m_userClass;
     private boolean m_needsOnlineStatus;
     private Integer m_maxDistance;
-
     public String getUserName() {
         return m_userName;
     }
@@ -95,10 +99,11 @@ public class UserSearchOptions implements Serializable {
 
     /**
      * Creates a search object from the parameters set.
-     * 
+     *
      * @return JSON Object
      * @throws JSONException
      */
+    // TODO pbn This should not be implemented here, but in the concrete adapter
     public JSONObject createSearchObject() throws JSONException {
         JSONObject object = new JSONObject();
 
@@ -111,6 +116,10 @@ public class UserSearchOptions implements Serializable {
                 arr.put(pair);
             }
             object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY, arr);
+        }
+
+        if(getAttractions() != null) {
+            object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY, createGenderSexualityOptions());
         }
 
         if (getMinAge() != null) {
@@ -132,10 +141,16 @@ public class UserSearchOptions implements Serializable {
         return object;
     }
 
+    private JSONArray createGenderSexualityOptions() { // DUmmy method
+        return null;
+    }
+
+    @Deprecated
     public List<String> getGenderSexualities() {
         return m_genderSexualities;
     }
 
+    @Deprecated
     public void setGenderSexualities(List<String> sexualities) {
         m_genderSexualities = sexualities;
     }
@@ -157,7 +172,7 @@ public class UserSearchOptions implements Serializable {
 
     /**
      * Set the location as a pair (Latitude, Longitude)
-     * 
+     *
      * @param location
      */
     public void setLocation(Pair<Double, Double> location) {
@@ -170,7 +185,7 @@ public class UserSearchOptions implements Serializable {
 
     /**
      * Set the maximum number of results that shall be returned.
-     * 
+     *
      * @param number
      */
     public void setNumber(Integer number) {
@@ -199,6 +214,14 @@ public class UserSearchOptions implements Serializable {
 
     public void setMaxDistance(Integer maxDistance) {
         m_maxDistance = maxDistance;
+    }
+
+    public List<android.util.Pair<Gender, Sexuality>> getAttractions() {
+        return attractions;
+    }
+
+    public void setAttractions(List<android.util.Pair<Gender, Sexuality>> attractions) {
+        this.attractions = attractions;
     }
 
 }

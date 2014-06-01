@@ -12,8 +12,8 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 public class DateUtility {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd", Locale.US);;
-    private static java.text.DateFormat DATEFORMAT_SHORT = DateFormat.getDateFormat(PurpleSkyApplication.getContext());
-    private static java.text.DateFormat TIMEFORMAT = DateFormat.getTimeFormat(PurpleSkyApplication.getContext());
+    private static java.text.DateFormat DATEFORMAT_SHORT = DateFormat.getDateFormat(PurpleSkyApplication.get());
+    private static java.text.DateFormat TIMEFORMAT = DateFormat.getTimeFormat(PurpleSkyApplication.get());
 
     /**
      * Returns the time string, if the day is today. Otherwise will return the time only.
@@ -48,7 +48,7 @@ public class DateUtility {
         if (d == null)
             return StringUtility.EMPTY_STRING;
 
-        java.text.DateFormat mediumDateFormat = DateFormat.getMediumDateFormat(PurpleSkyApplication.getContext());
+        java.text.DateFormat mediumDateFormat = DateFormat.getMediumDateFormat(PurpleSkyApplication.get());
         return mediumDateFormat.format(d);
     }
 
@@ -56,8 +56,8 @@ public class DateUtility {
         if (d == null)
             return StringUtility.EMPTY_STRING;
 
-        java.text.DateFormat mediumDateFormat = DateFormat.getMediumDateFormat(PurpleSkyApplication.getContext());
-        java.text.DateFormat timeFormat = DateFormat.getTimeFormat(PurpleSkyApplication.getContext());
+        java.text.DateFormat mediumDateFormat = DateFormat.getMediumDateFormat(PurpleSkyApplication.get());
+        java.text.DateFormat timeFormat = DateFormat.getTimeFormat(PurpleSkyApplication.get());
         return mediumDateFormat.format(d) + " " + timeFormat.format(d);
     }
 

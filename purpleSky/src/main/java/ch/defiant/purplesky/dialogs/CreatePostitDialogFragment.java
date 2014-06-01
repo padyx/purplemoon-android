@@ -28,11 +28,11 @@ import android.widget.Toast;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.PersistantModel;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.exceptions.PoweruserException;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
+import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
@@ -41,7 +41,7 @@ import ch.defiant.purplesky.util.StringUtility;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class CreatePostitDialogFragment extends SherlockDialogFragment implements LoaderCallbacks<Holder<List<Pair<Integer, String>>>> {
+public class CreatePostitDialogFragment extends BaseDialogFragment implements LoaderCallbacks<Holder<List<Pair<Integer, String>>>> {
 
     public static final String TAG = CreatePostitDialogFragment.class.getSimpleName();
     public static final String ARGUMENT_RECIPIENT_PROFILEID_URI = "profileId";
@@ -234,7 +234,7 @@ public class CreatePostitDialogFragment extends SherlockDialogFragment implement
         @Override
         protected Holder<Boolean> doInBackground(Object... params) {
             try {
-                boolean success = PurplemoonAPIAdapter.getInstance().createPostit(m_id, m_value, m_customText);
+                boolean success = apiAdapter.createPostit(m_id, m_value, m_customText);
                 return new Holder<Boolean>(success);
             } catch (Exception e) {
                 return new Holder<Boolean>(e);
@@ -286,7 +286,7 @@ public class CreatePostitDialogFragment extends SherlockDialogFragment implement
             @Override
             public Holder<List<Pair<Integer, String>>> loadInBackground() {
                 try {
-                    List<Pair<Integer, String>> list = PurplemoonAPIAdapter.getInstance().getPostitOptions(m_profileId);
+                    List<Pair<Integer, String>> list = apiAdapter.getPostitOptions(m_profileId);
                     return new Holder<List<Pair<Integer, String>>>(list);
                 } catch (IOException e) {
                     return new Holder<List<Pair<Integer, String>>>(e);

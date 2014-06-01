@@ -9,6 +9,6 @@
     <color name="onlinestatus_online">#009900</color>
     <color name="onlinestatus_away">#FF6600</color>
     <color name="onlinestatus_busy">#CC0000</color>
-    <color name="onlinestatus_invisible">#000000</color>
-    <color name="onlinestatus_other">#000000</color>
+    <color name="onlinestatus_invisible">#CCCCCC</color>
+    <color name="onlinestatus_offline">#00000000</color>
 </resources>

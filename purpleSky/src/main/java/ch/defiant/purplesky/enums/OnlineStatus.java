@@ -6,14 +6,14 @@ import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 
 public enum OnlineStatus {
 
-	UNKNOWN("", R.string.Unknown,  R.color.onlinestatus_other), 
+	UNKNOWN("", R.string.Unknown,  R.color.onlinestatus_offline),
 	INVISIBLE(PurplemoonAPIConstantsV1.ONLINESTATUS_INVISIBLE, R.string.Invisible, R.color.onlinestatus_invisible), 
 	AWAY(PurplemoonAPIConstantsV1.ONLINESTATUS_AWAY,R.string.Away, R.color.onlinestatus_away), 
 	BUSY(PurplemoonAPIConstantsV1.ONLINESTATUS_BUSY,R.string.Busy, R.color.onlinestatus_busy), 
 	ONLINE(PurplemoonAPIConstantsV1.ONLINESTATUS_ONLINE,R.string.Online, R.color.onlinestatus_online),
 
 	// This is a non-choosable state
-	OFFLINE(null, R.string.Offline, R.color.onlinestatus_other);
+	OFFLINE(null, R.string.Offline, R.color.onlinestatus_offline);
 
 	OnlineStatus(String APIValue, int l10n, int color) {
 		m_APIValue = APIValue;

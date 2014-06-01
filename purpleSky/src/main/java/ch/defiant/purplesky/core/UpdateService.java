@@ -19,6 +19,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -33,10 +34,16 @@ import ch.defiant.purplesky.util.CompareUtility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import javax.inject.Inject;
+
 public class UpdateService extends IntentService {
+
+    @Inject
+    protected IPurplemoonAPIAdapter apiAdapter;
 
     public UpdateService() {
         super("UpdateService");
+        PurpleSkyApplication.get().inject(this);
     }
 
     private final static int UPDATE_INTERVAL_DEFAULT = 1 * 60 * 1000;
@@ -55,7 +62,7 @@ public class UpdateService extends IntentService {
 
             boolean hasMessages = false;
             boolean hasNewGeneralNews = false;
-            NotificationBean notifBean = PurplemoonAPIAdapter.getInstance().getNotificationBean();
+            NotificationBean notifBean = apiAdapter.getNotificationBean();
             if (notifBean != null) {
                 if (notifBean.getLastMessageReceived() != null && CompareUtility.compare(notifBean.getLastMessageReceived().getTime(), lastRun) == 1) {
                     // Last received time > last check
@@ -77,7 +84,7 @@ public class UpdateService extends IntentService {
 
             int totalUnopenedMessages = 0;
             if (hasMessages) {
-                List<UserMessageHistoryBean> recentContactsList = PurplemoonAPIAdapter.getInstance().getRecentContacts(null, null,
+                List<UserMessageHistoryBean> recentContactsList = apiAdapter.getRecentContacts(null, null,
                         MessageRetrievalRestrictionType.UNOPENED_ONLY);
 
                 if (recentContactsList != null) {
@@ -93,7 +100,7 @@ public class UpdateService extends IntentService {
                 }
             }
             // Notify
-            PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.MESSAGE, totalUnopenedMessages);
+            PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.MESSAGE, totalUnopenedMessages);
 
             if (!newMessages.isEmpty()) {
                 notifyMessages(newMessages, totalUnopenedMessages);
@@ -123,7 +130,7 @@ public class UpdateService extends IntentService {
         // Unregister any update service from the alarm manager
         unregisterUpdateService();
         // Register a new one, only if the play services are not available
-        int playAvailableResult = GooglePlayServicesUtil.isGooglePlayServicesAvailable(PurpleSkyApplication.getContext());
+        int playAvailableResult = GooglePlayServicesUtil.isGooglePlayServicesAvailable(PurpleSkyApplication.get());
         if (updateEnabled && (playAvailableResult != ConnectionResult.SUCCESS)) {
             PendingIntent pi = createPendingIntentUpdateService();
 
@@ -131,7 +138,7 @@ public class UpdateService extends IntentService {
             final long currTimeMillis = System.currentTimeMillis();
             long delay = currTimeMillis % intervalMillis;
 
-            AlarmManager manager = (AlarmManager) PurpleSkyApplication.getContext().getSystemService(ALARM_SERVICE);
+            AlarmManager manager = (AlarmManager) PurpleSkyApplication.get().getSystemService(ALARM_SERVICE);
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, currTimeMillis + delay, intervalMillis, pi);
         }
     }
@@ -140,18 +147,18 @@ public class UpdateService extends IntentService {
      * Unregisters the UpdateService.
      */
     public static void unregisterUpdateService() {
-        AlarmManager manager = (AlarmManager) PurpleSkyApplication.getContext().getSystemService(ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager) PurpleSkyApplication.get().getSystemService(ALARM_SERVICE);
         manager.cancel(createPendingIntentUpdateService());
     }
 
     private static PendingIntent createPendingIntentUpdateService() {
-        Intent intent = new Intent(PurpleSkyApplication.getContext(), UpdateService.class);
-        PendingIntent pi = PendingIntent.getService(PurpleSkyApplication.getContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent intent = new Intent(PurpleSkyApplication.get(), UpdateService.class);
+        PendingIntent pi = PendingIntent.getService(PurpleSkyApplication.get(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         return pi;
     }
 
     private void notifyMessages(List<UserMessageHistoryBean> newMessages, int totalUnopenedMessages) {
-        Context appContext = PurpleSkyApplication.getContext();
+        Context appContext = PurpleSkyApplication.get();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(appContext);
 
         Intent intent = new Intent(appContext, MainActivity.class);

@@ -1,11 +1,11 @@
 package ch.defiant.purplesky.loaders;
 
-import java.io.IOException;
-import java.util.Date;
-
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.util.Pair;
+
+import java.io.IOException;
+import java.util.Date;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
@@ -19,10 +19,11 @@ import ch.defiant.purplesky.exceptions.PurpleSkyException;
 
 public class NotificationLoader extends SimpleAsyncLoader<Object> {
 
-    private IPurplemoonAPIAdapter adapter;
+    private final IPurplemoonAPIAdapter adapter;
 
     public NotificationLoader(Context c, IPurplemoonAPIAdapter adapter) {
         super(c, R.id.loader_drawermenu_notificationCounters);
+        this.adapter = adapter;
     }
 
     @Override

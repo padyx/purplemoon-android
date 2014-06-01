@@ -1,17 +1,9 @@
 package ch.defiant.purplesky.fragments;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicReference;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,6 +21,18 @@ import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.app.SherlockFragment;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicReference;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.adapters.UserSearchResultListAdapter;
@@ -37,7 +41,6 @@ import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.UserSearchOrder;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
@@ -48,8 +51,6 @@ import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.translators.SearchCriteriaTranslator;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LocationUtility;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 public class RadarFragment extends SherlockFragment implements LoaderCallbacks<Holder<List<MinimalUser>>> {
 
@@ -206,9 +207,9 @@ public class RadarFragment extends SherlockFragment implements LoaderCallbacks<H
      * @return Whether there were filter values processed
      */
     private boolean acceptAdditionalFilters() {
-        final Map<SearchCriteria, Object> filterVals = PurpleSkyApplication.getContext().getFragmentTransferInstance().m_searchFilterValues;
+        final Map<SearchCriteria, Object> filterVals = PurpleSkyApplication.get().getFragmentTransferInstance().m_searchFilterValues;
         // Reset it
-        PurpleSkyApplication.getContext().getFragmentTransferInstance().m_searchFilterValues = null;
+        PurpleSkyApplication.get().getFragmentTransferInstance().m_searchFilterValues = null;
 
         if (filterVals != null && !filterVals.isEmpty()) {
             for (Entry<SearchCriteria, Object> p : filterVals.entrySet()) {
@@ -244,7 +245,7 @@ public class RadarFragment extends SherlockFragment implements LoaderCallbacks<H
                 opts.setSearchOrder(UserSearchOrder.DISTANCE);
 
                 try {
-                    List<MinimalUser> result = PurplemoonAPIAdapter.getInstance().searchUser(opts);
+                    List<MinimalUser> result = null; //PurplemoonAPIAdapter.getInstance().searchUser(opts);
                     return new Holder<List<MinimalUser>>(result);
                 } catch (Exception e) {
                     return new Holder<List<MinimalUser>>(e);
@@ -388,5 +389,6 @@ public class RadarFragment extends SherlockFragment implements LoaderCallbacks<H
 
         getSherlockActivity().getSupportLoaderManager().restartLoader(R.id.loader_radar_main, null, this);
     }
+
 
 }

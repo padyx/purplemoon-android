@@ -1,10 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +16,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
@@ -28,7 +31,6 @@ import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.UIConstants;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -38,10 +40,7 @@ import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.UserUtility;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.squareup.picasso.Picasso;
-
-public class FavoritesFragment extends SherlockFragment implements LoaderCallbacks<Holder<List<OnlineBean>>> {
+public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<Holder<List<OnlineBean>>> {
 
     public static final String TAG = FavoritesFragment.class.getSimpleName();
 
@@ -174,7 +173,7 @@ public class FavoritesFragment extends SherlockFragment implements LoaderCallbac
             public Holder<List<OnlineBean>> loadInBackground() {
                 Holder<List<OnlineBean>> favorites = null;
                 try {
-                    favorites = new Holder<List<OnlineBean>>(PurplemoonAPIAdapter.getInstance().getOnlineFavorites());
+                    favorites = new Holder<List<OnlineBean>>(apiAdapter.getOnlineFavorites());
                 } catch (IOException e) {
                     return new Holder<List<OnlineBean>>(e);
                 } catch (PurpleSkyException e) {
@@ -200,7 +199,7 @@ public class FavoritesFragment extends SherlockFragment implements LoaderCallbac
                 }
             }
             int size = result.getContainedObject().size();
-            PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.FAVORITES, size);
+            PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.FAVORITES, size);
         } else {
             if (result.getException() instanceof IOException) {
                 m_adapter = new ErrorAdapter(getSherlockActivity());

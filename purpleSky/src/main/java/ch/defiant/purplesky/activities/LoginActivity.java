@@ -1,7 +1,5 @@
 package ch.defiant.purplesky.activities;
 
-import java.io.IOException;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -26,28 +24,34 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.DBHelper;
+import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UpdateService;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
-import ch.defiant.purplesky.services.MessageService;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.SystemUtility;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
 public class LoginActivity extends BaseFragmentActivity {
+
+    @Inject
+    protected IMessageService messageService;
 
     private class LoginTask extends AsyncTask<Pair<String, String>, Object, Holder<Boolean>> {
     
@@ -65,7 +69,7 @@ public class LoginActivity extends BaseFragmentActivity {
     
             boolean success = false;
             try {
-                success = m_adapter.doLogin(params[0].first, params[0].second);
+                success = apiAdapter.doLogin(params[0].first, params[0].second);
                 return new Holder<Boolean>(success);
             } catch (Exception e) {
                 return new Holder<Boolean>(e);
@@ -127,14 +131,12 @@ public class LoginActivity extends BaseFragmentActivity {
     private static final int DIALOG_LOGINFAILED_NONETWORK = 2;
     private static final int DIALOG_LOGINFAILED_UNKNOWNERROR = 3;
 
-    private PurplemoonAPIAdapter m_adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loginview);
+        PurpleSkyApplication.get().inject(this);
 
-        m_adapter = PurplemoonAPIAdapter.getInstance();
+        setContentView(R.layout.loginview);
 
         View loginButton = findViewById(R.id.loginview_loginButton);
         loginButton.setOnClickListener(new OnLoginClickListener());
@@ -175,7 +177,7 @@ public class LoginActivity extends BaseFragmentActivity {
     }
 
     private void runPruning() {
-        MessageService.cleanupDB();
+        messageService.cleanupDB();
     }
 
     private void checkPostUpgrade() {
@@ -201,7 +203,7 @@ public class LoginActivity extends BaseFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (m_adapter.isLoggedIn()) {
+        if (apiAdapter.isLoggedIn()) {
             // OK, no need to login - go directly to HomeActivity
             doLoginSuccess();
         }

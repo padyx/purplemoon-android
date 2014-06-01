@@ -14,4 +14,11 @@
     <string name="targetperson_lesbianwoman">Lesbian woman</string>
     <string name="targetperson_heterowoman">Hetero woman</string>
     
+    <string-array name="radar_sex_attraction">
+        <item>Men &amp; Women</item>
+        <item>Men only</item>
+        <item>Women only</item>
+    </string-array>
+
+
 </resources>

@@ -17,8 +17,8 @@ public class LocationUtility {
             return null;
         }
 
-        String[] ids = PurpleSkyApplication.getContext().getResources().getStringArray(R.array.countryIds);
-        String[] names = PurpleSkyApplication.getContext().getResources().getStringArray(R.array.countryNames);
+        String[] ids = PurpleSkyApplication.get().getResources().getStringArray(R.array.countryIds);
+        String[] names = PurpleSkyApplication.get().getResources().getStringArray(R.array.countryNames);
         if (BuildConfig.DEBUG) {
             assert ids.length == names.length : "Country ids must have same length as country names";
         }
@@ -39,7 +39,7 @@ public class LocationUtility {
         float[] res = new float[1]; // Result is in meters
         Location.distanceBetween(one.getLatitude(), one.getLongitude(), two.getLatitude(), two.getLongitude(), res);
 
-        final Resources resrc = PurpleSkyApplication.getContext().getResources();
+        final Resources resrc = PurpleSkyApplication.get().getResources();
 
         float dist = res[0];
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:gravity="center_horizontal">
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_radar_options_genderspinner"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="48dp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="who are attracted to"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_radar_options_attraction"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="48dp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="aged between"
+        android:id="@+id/textView2"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="8dp">
+
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            class="ch.defiant.purplesky.customwidgets.IntegerSpinner"
+            app:lowerBound="12"
+            app:upperBound="99"
+            android:id="@+id/dialog_radar_options_ageFromSpinner"
+            android:minHeight="48dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/and"
+            android:id="@+id/textView3"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            class="ch.defiant.purplesky.customwidgets.IntegerSpinner"
+            android:minHeight="48dp"
+            app:lowerBound="12"
+            app:upperBound="99"
+            android:id="@+id/dialog_radar_options_ageToSpinner" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ShowOnlyOnline"
+        android:id="@+id/dialog_radar_options_showOnlyOnlineChkBox"
+        android:checked="false" />
+
+
+</LinearLayout>

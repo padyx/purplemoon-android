@@ -1,9 +1,5 @@
 package ch.defiant.purplesky.fragments.photovote;
 
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -17,23 +13,27 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.commonsware.cwac.endless.EndlessAdapter;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.ProfileStatus;
+import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.commonsware.cwac.endless.EndlessAdapter;
-import com.squareup.picasso.Picasso;
-
-public class PhotoVoteListFragment extends SherlockListFragment {
+public class PhotoVoteListFragment extends BaseListFragment {
 
     public static final String EXTRA_BOOL_SHOWGIVEN = "given";
     private boolean m_showGiven;
@@ -111,9 +111,9 @@ public class PhotoVoteListFragment extends SherlockListFragment {
 
             List<PhotoVoteBean> votes;
             if (m_showGiven) {
-                votes = PurplemoonAPIAdapter.getInstance().getGivenVotes(opts);
+                votes = apiAdapter.getGivenVotes(opts);
             } else {
-                votes = PurplemoonAPIAdapter.getInstance().getReceivedVotes(opts);
+                votes = apiAdapter.getReceivedVotes(opts);
             }
 
             boolean hasMore = votes != null && !votes.isEmpty();

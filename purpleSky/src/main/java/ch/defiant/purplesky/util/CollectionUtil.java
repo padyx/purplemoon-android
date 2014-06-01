@@ -1,20 +1,34 @@
 package ch.defiant.purplesky.util;
 
+import java.util.Collection;
 import java.util.List;
 
 public class CollectionUtil {
 
     /**
      * Returns the last element of a list.
-     * @param collection
+     *
+     * @param list
      * @return Last element or <tt>null</tt>
      */
-    public static <T> T lastElement(List<T> collection ){
-        if(collection.isEmpty()){
+    public static <T> T lastElement(List<T> list) {
+        if (list.isEmpty()) {
             return null;
         } else {
-            return collection.get(collection.size()-1);
+            return list.get(list.size() - 1);
         }
     }
-    
+
+    /* Returns the first element of a collection.
+    * @param collection
+    * @return Last element or <tt>null</tt>
+    */
+    public static <T> T firstElement(Collection<T> collection) {
+        if (collection.isEmpty()) {
+            return null;
+        } else {
+            return collection.iterator().next();
+        }
+    }
+
 }

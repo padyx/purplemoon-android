@@ -71,7 +71,7 @@ public class PersistantModel {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             c.startActivity(intent);
-            Toast.makeText(PurpleSkyApplication.getContext(), PurpleSkyApplication.getContext().getString(R.string.CredentialsInvalid_Toast),
+            Toast.makeText(PurpleSkyApplication.get(), PurpleSkyApplication.get().getString(R.string.CredentialsInvalid_Toast),
                     Toast.LENGTH_LONG).show();
 
             if (c instanceof Activity) {
@@ -79,7 +79,7 @@ public class PersistantModel {
             }
 
         } else {
-            Toast.makeText(PurpleSkyApplication.getContext(), PurpleSkyApplication.getContext().getString(R.string.CredentialsInvalid_Toast),
+            Toast.makeText(PurpleSkyApplication.get(), PurpleSkyApplication.get().getString(R.string.CredentialsInvalid_Toast),
                     Toast.LENGTH_LONG).show();
         }
     }

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.BaseFragmentActivity;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
@@ -36,26 +37,24 @@ import ch.defiant.purplesky.loaders.StatusLoader;
 import ch.defiant.purplesky.loaders.UpgradeAndPushLoader;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Window;
 
 /**
  * The main activity hosting all fragments once the user is logged in.
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  *
  */
-public class MainActivity extends SherlockFragmentActivity implements LoaderCallbacks<Object> {
+public class MainActivity extends BaseFragmentActivity implements LoaderCallbacks<Object> {
 
     private static final String LOGOUT_FRAGMENT_TAG = "LOGOUT";
 
-  
     // TODO Move
     /**
      * Available Entries in the navigation drawer.
      */
     public enum NavigationDrawerEntries {
         LAUNCH_CHATLIST,
-        // LAUNCH_RADAR,
+        LAUNCH_RADAR,
         LAUNCH_POSTIT,
         LAUNCH_VISITORS,
         LAUNCH_FAVORITES,
@@ -91,6 +90,7 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PurpleSkyApplication.get().inject(this);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.fragment_container_layout);
@@ -128,7 +128,7 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
         // Upgrade actions that don't require blocking stuff
         getSupportLoaderManager().initLoader(R.id.loader_main_upgradePush, null, this);
 
-        PurpleSkyApplication.getContext().setListener(m_listener);
+        PurpleSkyApplication.get().setListener(m_listener);
         triggerUpdate();
         registerLogoutReceiver();
     }
@@ -239,13 +239,13 @@ public class MainActivity extends SherlockFragmentActivity implements LoaderCall
             case R.id.loader_drawermenu_profileimage:
                 return new ProfileImageLoader(this);
             case R.id.loader_drawermenu_notificationCounters:
-                return new NotificationLoader(this);
+                return new NotificationLoader(this, apiAdapter);
             case R.id.loader_drawermenu_status:
-                return new StatusLoader(this);
+                return new StatusLoader(this, apiAdapter);
             case R.id.loader_main_upgradePush:
-                return new UpgradeAndPushLoader(this);
+                return new UpgradeAndPushLoader(this, apiAdapter);
             case R.id.loader_main_logout:
-                return new LogoutLoader(this);
+                return new LogoutLoader(this, apiAdapter);
             default:
                 throw new IllegalArgumentException("Loader type not found: " + type);
         }

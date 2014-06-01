@@ -21,7 +21,7 @@ public class ProfileTranslator {
      * {@code String name = PREFIXVALUE + apiKey + '_' + apiValue}
      */
     private static final String PREFIXVALUE = "string/profileValueText_";
-    private static final String PACKAGE = PurpleSkyApplication.getContext().getPackageName();
+    private static final String PACKAGE = PurpleSkyApplication.get().getPackageName();
     private static final String TAG = ProfileTranslator.class.getSimpleName();
 
     /**
@@ -37,7 +37,7 @@ public class ProfileTranslator {
         // Remove all non A-Za-z0-9 or underscore characters
         apiKey = apiKey.replaceAll(REPLACEMENT_STRING, "");
 
-        Resources resources = PurpleSkyApplication.getContext().getResources();
+        Resources resources = PurpleSkyApplication.get().getResources();
 
         // Try to find
         int keyIdentifier = resources.getIdentifier(PREFIXKEY + apiKey, null, PACKAGE);
@@ -67,7 +67,7 @@ public class ProfileTranslator {
         apiKey = apiKey.replaceAll(REPLACEMENT_STRING, "");
         String cleanedValue = apiValue.replaceAll(REPLACEMENT_STRING, "");
 
-        Resources resources = PurpleSkyApplication.getContext().getResources();
+        Resources resources = PurpleSkyApplication.get().getResources();
         // TODO Maybe speed up this(getIdentifier)? No lookup if length exceeds certain value?
         int valueIdentifier = resources.getIdentifier(PREFIXVALUE + apiKey + '_' + cleanedValue, null, PACKAGE);
         if (valueIdentifier == 0) { // This may just be a userdefined value. So don't worry. Return untranslated

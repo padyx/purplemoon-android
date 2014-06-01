@@ -1,8 +1,5 @@
 package ch.defiant.purplesky.fragments.usersearch;
 
-import java.io.IOException;
-import java.util.List;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +25,10 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.List;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
@@ -38,18 +39,16 @@ import ch.defiant.purplesky.beans.NullUser;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PersistantModel;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
+import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class UsernameSearchFragment extends SherlockFragment
+public class UsernameSearchFragment extends BaseFragment
         implements LoaderCallbacks<Holder<List<MinimalUser>>>, IBroadcastReceiver, Callback {
 
     public static final String TAG = UsernameSearchFragment.class.getSimpleName();
@@ -93,7 +92,7 @@ public class UsernameSearchFragment extends SherlockFragment
                 options.setNeedsOnlineStatus(true);
 
                 try {
-                    List<MinimalUser> list = PurplemoonAPIAdapter.getInstance().searchUserByName(username, options);
+                    List<MinimalUser> list = apiAdapter.searchUserByName(username, options);
                     return new Holder<List<MinimalUser>>(list);
                 } catch (IOException e) {
                     return new Holder<List<MinimalUser>>(e);

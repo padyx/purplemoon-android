@@ -30,6 +30,7 @@ import ch.defiant.purplesky.beans.util.MessageHistoryDisplaySorter;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.UIConstants;
+import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UserService;
@@ -50,7 +51,12 @@ import ch.defiant.purplesky.util.StringUtility;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.squareup.picasso.Picasso;
 
-public class ChatListFragment extends SherlockFragment implements LoaderCallbacks<Holder<List<UserMessageHistoryBean>>> {
+import javax.inject.Inject;
+
+public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Holder<List<UserMessageHistoryBean>>> {
+
+    @Inject
+    protected IMessageService messageService;
 
     private class MessageListItemClickListener implements OnItemClickListener {
         @Override
@@ -253,9 +259,9 @@ public class ChatListFragment extends SherlockFragment implements LoaderCallback
         getSherlockActivity().setProgressBarIndeterminateVisibility(true);
         switch(type){
             case R.id.loader_chatlist_offline:
-                return new OfflineConversationLoader(getSherlockActivity());
+                return new OfflineConversationLoader(getSherlockActivity(), messageService);
             case R.id.loader_chatlist_online:
-                return new OnlineConversationLoader(getSherlockActivity());
+                return new OnlineConversationLoader(getSherlockActivity(), messageService);
                 default:
                     throw new IllegalArgumentException("Unknown conversation loader "+type);
         }
@@ -352,7 +358,7 @@ public class ChatListFragment extends SherlockFragment implements LoaderCallback
             c += b.getUnopenedMessageCount();
         }
     
-        PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.MESSAGE, c);
+        PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.MESSAGE, c);
     }
 
     private void loaderFinished() {

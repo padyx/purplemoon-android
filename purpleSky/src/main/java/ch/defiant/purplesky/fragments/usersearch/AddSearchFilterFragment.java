@@ -61,7 +61,7 @@ public class AddSearchFilterFragment extends SherlockFragment {
 
     private void handleSelect(SearchCriteria crit) {
         // Pass selection along
-        PurpleSkyApplication.getContext().getFragmentTransferInstance().m_chosenCriterium = crit;
+        PurpleSkyApplication.get().getFragmentTransferInstance().m_chosenCriterium = crit;
 
         // Go back, let the previous fragment handle the dialog
         getFragmentManager().popBackStack();

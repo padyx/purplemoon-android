@@ -11,7 +11,7 @@ import ch.defiant.purplesky.core.INullObject;
 
 /**
  * Adapter which contains an {@link INullObject} and displays a single view which is not enabled.
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  *
  * @param <T> Null object
  */

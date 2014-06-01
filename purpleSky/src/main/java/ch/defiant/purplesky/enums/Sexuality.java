@@ -6,29 +6,31 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
+// TODO pbn Remove the API Constants use here
+// TODO pbn Merge hetero/homo values
 public enum Sexuality {
 
     /**
      * Sexuality 'heterosexual' for a male. Is indistinguishable by its API value from the female counterpart.
      */
-    HETEROSEXUAL_MALE(JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE, PurpleSkyApplication.getContext().getString(R.string.SexualityHetero)),
+    HETEROSEXUAL_MALE(JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE, PurpleSkyApplication.get().getString(R.string.SexualityHetero)),
     /**
      * Sexuality 'heterosexual' for a female. Is indistinguishable by its API value from the male counterpart.
      */
-    HETEROSEXUAL_FEMALE(JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE, PurpleSkyApplication.getContext().getString(R.string.SexualityHetero)),
+    HETEROSEXUAL_FEMALE(JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE, PurpleSkyApplication.get().getString(R.string.SexualityHetero)),
     /**
      * Sexuality 'homosexual' for a male. Is indistinguishable by its API value from the female counterpart.
      */
-    GAY(JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE, PurpleSkyApplication.getContext().getString(R.string.SexualityGay)),
+    GAY(JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE, PurpleSkyApplication.get().getString(R.string.SexualityGay)),
     /**
      * Sexuality 'homosexual' for a female. Is indistinguishable by its API value from the male counterpart.
      */
-    LESBIAN(JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE, PurpleSkyApplication.getContext().getString(R.string.SexualityLesbian)),
+    LESBIAN(JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE, PurpleSkyApplication.get().getString(R.string.SexualityLesbian)),
     /**
      * Sexuality 'bisexual'
      */
-    BISEXUAL("bi", PurpleSkyApplication.getContext().getString(R.string.SexualityBisexual)),
-    UNKNOWN(null, PurpleSkyApplication.getContext().getString(R.string.Unknown));
+    BISEXUAL("bi", PurpleSkyApplication.get().getString(R.string.SexualityBisexual)),
+    UNKNOWN(null, PurpleSkyApplication.get().getString(R.string.Unknown));
 
     Sexuality(String APIValue, String l10n) {
         m_APIValue = APIValue;

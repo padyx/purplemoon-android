@@ -9,7 +9,7 @@ import ch.defiant.purplesky.util.CompareUtility;
  * Sorts the beans for display to the user. Sort order: First all unread conversations, descending by last contact. Then
  * the remaining conversations descending by last contact.
  * 
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  * 
  */
 public class MessageHistoryDisplaySorter implements Comparator<UserMessageHistoryBean> {

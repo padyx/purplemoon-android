@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="Hint_EMail">Email address</string>
     <string name="Hint_Password">Password</string>
     <string name="app_name">Purplemoon</string>
@@ -147,30 +148,30 @@
     <string name="UploadStatusError">Error</string>
     <string name="UploadStatusUploading">Uploading</string>
     <string name="UploadStatusWaiting">Waiting</string>
-	<string name="ErrorNoNetworkGenericShort">No internet connection.</string>
-	<string name="CreatingPostit">Creating post-it</string>
-	<string name="Error_NoPowerUserGeneric">Purplemoon/Purplestar needs you to be a poweruser to perform this action. You can subscribe to be a poweruser on the Purplemoon/Purplestar website.</string>
-	<string name="Error_NoPowerUserTitle">You are not a poweruser.</string>
-	<string name="ErrorActionYouAreBlocking">This action cannot be performed because you blocked the other user. You unblock the user on the Purplemoon/Purplestar website.</string>
-	<string name="ErrorActionBeingBlocked">This action cannot be performed because are being blocked by the other user.</string>
-	<string name="ErrorGeneric">An unknown error occurred. We apologize for the inconvenience.</string>
-	<string name="ErrorGenericNoText">An error occurred: You have entered no text in the relevant field(s).</string>
-	<string name="ErrorGenericTextTooLong">An error occurred: The entered text is too long!</string>
-	<string name="ErrorPostitsTooManyGeneral">You have given too many post-its in a short amount of time. Please wait a while and try later.</string>
-	<string name="ErrorPostitsTooManyWithUser">You have given too many post-its to this user in a short amount of time. Please wait a while and try later.</string>
-	<string name="ErrorGenericUserNotFound">An error occurred: The user was not found.</string>
-	<string name="ErrorPoweruserCustomPostits">Only powerusers can give custom post-its. Please see the Purplemoon/Purplestar website on how to acquire that status.</string>
-	<string name="SearchUser_ShortHome">User search</string>
-	<string name="PushNotifications">Push notifications</string>
-	<string name="ErrorPushNotificationsUnavailableExpl">Your device does not support push notifications.\nYou are either missing the Google Play Services, Google Play Store or do not have a Google Account connected. You can enable periodic checks for updates in the Settings.</string>
-	<string name="PhotoVote_Xmore">%1$d more</string>
-	<string name="preference_poweruserStatus">Poweruser status</string>
-	<string name="preference_poweruserNotActivated">You are not a poweruser.</string>
-	<string name="preference_poweruserExpiresOnX">You are a poweruser until %1$s.</string>
-	<string name="LoadOlderMessages">Load older messages</string>
-	<string name="NoMorePhotovotes">Whoa. You rated all photos!\nCheck back later.</string>
-	<string name="Results">Results</string>
-	<string name="CreateAccountUnderlined"><u>No account yet? Create one here</u></string>
+    <string name="ErrorNoNetworkGenericShort">No internet connection.</string>
+    <string name="CreatingPostit">Creating post-it</string>
+    <string name="Error_NoPowerUserGeneric">Purplemoon/Purplestar needs you to be a poweruser to perform this action. You can subscribe to be a poweruser on the Purplemoon/Purplestar website.</string>
+    <string name="Error_NoPowerUserTitle">You are not a poweruser.</string>
+    <string name="ErrorActionYouAreBlocking">This action cannot be performed because you blocked the other user. You unblock the user on the Purplemoon/Purplestar website.</string>
+    <string name="ErrorActionBeingBlocked">This action cannot be performed because are being blocked by the other user.</string>
+    <string name="ErrorGeneric">An unknown error occurred. We apologize for the inconvenience.</string>
+    <string name="ErrorGenericNoText">An error occurred: You have entered no text in the relevant field(s).</string>
+    <string name="ErrorGenericTextTooLong">An error occurred: The entered text is too long!</string>
+    <string name="ErrorPostitsTooManyGeneral">You have given too many post-its in a short amount of time. Please wait a while and try later.</string>
+    <string name="ErrorPostitsTooManyWithUser">You have given too many post-its to this user in a short amount of time. Please wait a while and try later.</string>
+    <string name="ErrorGenericUserNotFound">An error occurred: The user was not found.</string>
+    <string name="ErrorPoweruserCustomPostits">Only powerusers can give custom post-its. Please see the Purplemoon/Purplestar website on how to acquire that status.</string>
+    <string name="SearchUser_ShortHome">User search</string>
+    <string name="PushNotifications">Push notifications</string>
+    <string name="ErrorPushNotificationsUnavailableExpl">Your device does not support push notifications.\nYou are either missing the Google Play Services, Google Play Store or do not have a Google Account connected. You can enable periodic checks for updates in the Settings.</string>
+    <string name="PhotoVote_Xmore">%1$d more</string>
+    <string name="preference_poweruserStatus">Poweruser status</string>
+    <string name="preference_poweruserNotActivated">You are not a poweruser.</string>
+    <string name="preference_poweruserExpiresOnX">You are a poweruser until %1$s.</string>
+    <string name="LoadOlderMessages">Load older messages</string>
+    <string name="NoMorePhotovotes">Whoa. You rated all photos!\nCheck back later.</string>
+    <string name="Results">Results</string>
+    <string name="CreateAccountUnderlined"><u>No account yet? Create one here</u></string>
     <string name="GivePostit">Give a post-it</string>
     <string name="Custom">Custom</string>
     <string name="NoMessagesYet">You haven\'t sent or received any messages yet. Why don\'t you strike up a conversation with someone?</string>
@@ -182,7 +183,7 @@
     <string name="AroundLocation">Around location</string>
     <string name="LocationNotFound">Location not found</string>
     <string name="NewEvents">New events</string>
-    
+
     <plurals name="XNewVisits">
         <item quantity="one">1 new profile visit</item>
         <item quantity="other">%1$d new profile visits</item>
@@ -190,7 +191,7 @@
     <plurals name="XNewPostits">
         <item quantity="one">1 new post-it</item>
         <item quantity="other">%1$d new post-its</item>
-    </plurals> 
+    </plurals>
     <plurals name="XNewPhotovotes">
         <item quantity="one">1 new photo vote</item>
         <item quantity="other">%1$d new photo votes</item>
@@ -203,6 +204,7 @@
         <item quantity="one">1 unread conversation</item>
         <item quantity="other">%1$d unread conversations</item>
     </plurals>
+
     <string name="PreferenceNotifyPostits">New post-its</string>
     <string name="PreferenceNotifyNewMessages">New messages</string>
     <string name="PreferenceNotifyNewVisits">New vists</string>
@@ -224,15 +226,20 @@
     <string name="HasPictures">Has pictures</string>
     <string name="HasPublicPictures">Has public pictures</string>
     <string name="ExcludeFriendsAndKnown">Exclude friends, people you know</string>
-    <string name="IncludeNonMatching">......</string><!--TODO Need to find short way to describe -->
+    <string name="IncludeNonMatching">......</string>
+ <!-- TODO Need to find short way to describe -->
     <string name="AddFilter">Add filter</string>
+
     <plurals name="XElementsSelected">
         <item quantity="one">%1$d element selected</item>
         <item quantity="other">%1$d elements selected</item>
     </plurals>
+
     <string name="XtoY_Integer">%1$d to %2$d</string>
     <string name="ReadOn">Read</string>
     <string name="NoDataFound">No data found</string>
     <string name="NoResultsFound">No results found</string>
     <string name="Age">Age</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -1,14 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +11,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.commonsware.cwac.endless.EndlessAdapter;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.AbstractVisitBean;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -28,16 +32,11 @@ import ch.defiant.purplesky.beans.VisitsReceivedBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.UserUtility;
-
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.commonsware.cwac.endless.EndlessAdapter;
-import com.squareup.picasso.Picasso;
 
 /**
  * List fragment showing visits. Can show either visitors or visits of the application user to other profiles.
@@ -45,7 +44,7 @@ import com.squareup.picasso.Picasso;
  * @see #ARGUMENT_BOOLEAN_SHOWMYVISITS
  * 
  */
-public class VisitorFragment extends SherlockListFragment {
+public class VisitorFragment extends BaseListFragment {
 
     private static final String DATA = "data";
     private static final int MAXVISITS = 3;
@@ -75,7 +74,7 @@ public class VisitorFragment extends SherlockListFragment {
                 }
             }
         }
-        // Make sure to wrap normal adapter in the endlessadapter AFTER restoring state
+        // Make sure to wrap normal apiAdapter in the endlessadapter AFTER restoring state
         m_endlessAdapter = new EndlessVisitorAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
     }
 
@@ -130,18 +129,18 @@ public class VisitorFragment extends SherlockListFragment {
             boolean hasMore = false;
             final ArrayList<AbstractVisitBean> list = new ArrayList<AbstractVisitBean>();
             if (isShowOwnVisits) {
-                List<VisitsMadeBean> own = PurplemoonAPIAdapter.getInstance().getOwnVists(options);
+                List<VisitsMadeBean> own = apiAdapter.getOwnVists(options);
                 if (own != null) {
                     list.addAll(own);
                 }
             } else {
-                List<VisitsReceivedBean> received = PurplemoonAPIAdapter.getInstance().getReceivedVists(options, m_lastCheckDate);
+                List<VisitsReceivedBean> received = apiAdapter.getReceivedVists(options, m_lastCheckDate);
                 if (received != null) {
                     list.addAll(received);
                 }
                 if(m_currentCount.get() == 0){
                     // If we looked at most recent, clear number from menu
-                    PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.VISIT, 0);
+                    PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.VISIT, 0);
                 }
             }
             hasMore = !list.isEmpty();
@@ -159,7 +158,7 @@ public class VisitorFragment extends SherlockListFragment {
                 m_currentCount.set(m_adapter.getCount());
 
                 // Reset menu counter
-                PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.VISIT, 0);
+                PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.VISIT, 0);
             }
         }
     }

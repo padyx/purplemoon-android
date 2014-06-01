@@ -1,8 +1,5 @@
 package ch.defiant.purplesky.fragments.usersearch;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,20 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.commonsware.cwac.endless.EndlessAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.UserSearchResultListAdapter;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.util.Pair;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserSearchOptions;
+import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.commonsware.cwac.endless.EndlessAdapter;
-
-public class UserSearchResultsFragment extends SherlockFragment {
+public class UserSearchResultsFragment extends BaseFragment {
 
     public static final String EXTRA_SEARCHOBJ = "searchobj";
     public static final String EXTRA_SEARCHNAME = "searchname";
@@ -125,9 +125,9 @@ public class UserSearchResultsFragment extends SherlockFragment {
             
             List<MinimalUser> result;
             if(isSearchByName()){
-                result = PurplemoonAPIAdapter.getInstance().searchUserByName(m_usernameSearch, m_options);
+                result = apiAdapter.searchUserByName(m_usernameSearch, m_options);
             } else {
-                result = PurplemoonAPIAdapter.getInstance().searchUser(m_options);
+                result = apiAdapter.searchUser(m_options);
             }
             m_data = result;
             

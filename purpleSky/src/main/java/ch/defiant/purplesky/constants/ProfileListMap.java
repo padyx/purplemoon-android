@@ -132,7 +132,7 @@ public final class ProfileListMap {
         } else {
             // All others are dual (so far) - either a string or a date
             if (ProfileDetails.PROFILE_DATE_LAST24h.equals(value)) {
-                return PurpleSkyApplication.getContext().getString(R.string.profile_date_last24h);
+                return PurpleSkyApplication.get().getString(R.string.profile_date_last24h);
             } else {
                 return handleDate(value);
             }

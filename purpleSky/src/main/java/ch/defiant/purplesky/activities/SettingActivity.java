@@ -12,9 +12,11 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v4.content.LocalBroadcastManager;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
+import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UpdateService;
 import ch.defiant.purplesky.gcm.GcmRegisterTask;
 import ch.defiant.purplesky.util.DateUtility;
@@ -36,9 +38,12 @@ public class SettingActivity extends SherlockPreferenceActivity {
     private PreferenceUpdateListener m_listener;
     private boolean m_playServicesAvailable;
 
+    protected IPurplemoonAPIAdapter apiAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PurpleSkyApplication.get().inject(this);
 
         getSupportActionBar().setTitle(R.string.Settings);
         addPreferencesFromResource(R.xml.preferences);
@@ -110,7 +115,7 @@ public class SettingActivity extends SherlockPreferenceActivity {
                     if (m_asyncTask != null && !m_asyncTask.isCancelled()) {
                         m_asyncTask.cancel(true);
                     }
-                    m_asyncTask = new GcmRegisterTask();
+                    m_asyncTask = new GcmRegisterTask(apiAdapter);
                     m_asyncTask.execute(enabled);
                 } else {
                     if (enabled) {
