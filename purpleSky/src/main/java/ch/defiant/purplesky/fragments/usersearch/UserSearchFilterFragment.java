@@ -42,6 +42,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+// FIXME pbn This is unused. Remove class if possible
 public class UserSearchFilterFragment extends SherlockFragment {
 
     /**
@@ -110,7 +111,7 @@ public class UserSearchFilterFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
 
-        final FragmentTransfer transfInst = PurpleSkyApplication.getContext().getFragmentTransferInstance();
+        final FragmentTransfer transfInst = PurpleSkyApplication.get().getFragmentTransferInstance();
 
         if (transfInst.m_chosenCriterium != null) {
             // This criterium was chosen in "Add filter".
@@ -130,7 +131,7 @@ public class UserSearchFilterFragment extends SherlockFragment {
 
         // Save all our filters in the transfer fragment, just in case
         // If this fragment goes away, it is going to need it!
-        PurpleSkyApplication.getContext().getFragmentTransferInstance().m_searchFilterValues = m_configuredFilterValues;
+        PurpleSkyApplication.get().getFragmentTransferInstance().m_searchFilterValues = m_configuredFilterValues;
     }
 
     @Override
@@ -257,7 +258,7 @@ public class UserSearchFilterFragment extends SherlockFragment {
     }
 
     /**
-     * Sets the value for the criteria in the internal data structures. Notifies the adapter to refresh
+     * Sets the value for the criteria in the internal data structures. Notifies the apiAdapter to refresh
      * 
      * @param crit
      * @param value

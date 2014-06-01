@@ -84,9 +84,9 @@ public class MultiUploadFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
 
-        Intent intent = new Intent(PurpleSkyApplication.getContext(), UploadService.class);
-        PurpleSkyApplication.getContext().startService(intent);
-        boolean bindService = PurpleSkyApplication.getContext().bindService(intent, m_connection, Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(PurpleSkyApplication.get(), UploadService.class);
+        PurpleSkyApplication.get().startService(intent);
+        boolean bindService = PurpleSkyApplication.get().bindService(intent, m_connection, Context.BIND_AUTO_CREATE);
 
         if (!bindService) {
             throw new IllegalStateException("Cannot bind service!");
@@ -108,7 +108,7 @@ public class MultiUploadFragment extends SherlockFragment {
             }
         }
         m_executor = null;
-        PurpleSkyApplication.getContext().unbindService(m_connection);
+        PurpleSkyApplication.get().unbindService(m_connection);
     }
 
     @Override

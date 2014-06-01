@@ -11,7 +11,7 @@ import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 /**
  * Utility to reconcile online and cached version of message list.
  * The cached version always loses against an online version of the same bean.
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  *
  */
 public class ConversationReconciler {

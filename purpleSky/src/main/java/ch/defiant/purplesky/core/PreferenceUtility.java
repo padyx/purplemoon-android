@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 public class PreferenceUtility {
 
     public static SharedPreferences getPreferences() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(PurpleSkyApplication.getContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(PurpleSkyApplication.get());
         return sharedPref;
     }
 }

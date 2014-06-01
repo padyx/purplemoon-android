@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    >
+
+    <ImageView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/imageView"
+        android:layout_gravity="left|top"
+        android:src="@drawable/picture_placeholder" />
+
+    <View android:layout_height="100dp" android:layout_width="5dp"
+        android:background="@color/onlinestatus_online"
+        android:id="@+id/user_avatar_onlineStatus" />
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+        >
+        <TextView
+            android:id="@+id/username"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/age"
+            android:text="Username"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:paddingLeft="4dp"
+            android:layout_marginRight="4dp"
+            style="@style/TextAppearanceShadowedOverlay"
+            android:ellipsize="end" />
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XX"
+            android:layout_alignParentRight="true"
+            style="@style/TextAppearanceShadowedOverlay"
+            android:id="@+id/age" />
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,41 +1,44 @@
 package ch.defiant.purplesky.loaders;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import ch.defiant.purplesky.BuildConfig;
-import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.constants.SecureConstants;
-import ch.defiant.purplesky.core.PreferenceUtility;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
-import ch.defiant.purplesky.core.UpgradeHandler;
-import ch.defiant.purplesky.exceptions.PurpleSkyException;
-import ch.defiant.purplesky.util.StringUtility;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import java.io.IOException;
+
+import ch.defiant.purplesky.BuildConfig;
+import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.constants.PreferenceConstants;
+import ch.defiant.purplesky.constants.SecureConstants;
+import ch.defiant.purplesky.core.PreferenceUtility;
+import ch.defiant.purplesky.core.UpgradeHandler;
+import ch.defiant.purplesky.exceptions.PurpleSkyException;
+import ch.defiant.purplesky.util.StringUtility;
+
 /**
  * This loader is called regardless of whether an update is required or not!
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  *
  */
 public class UpgradeAndPushLoader extends SimpleAsyncLoader<Object> {
 
     private static final String TAG = UpgradeAndPushLoader.class.getSimpleName();
+    private final IPurplemoonAPIAdapter apiAdapter;
 
-    public UpgradeAndPushLoader(Context context) {
+    public UpgradeAndPushLoader(Context context, IPurplemoonAPIAdapter apiAdapter) {
         super(context, R.id.loader_main_upgradePush);
+        this.apiAdapter = apiAdapter;
     }
 
     @Override
     public Void loadInBackground() {
         // Perform upgrade actions
-        UpgradeHandler.performUpgradeActions(getContext());
+        new UpgradeHandler(apiAdapter).performUpgradeActions(getContext());
 
         checkEventNotificationConfiguration();
 
@@ -76,7 +79,7 @@ public class UpgradeAndPushLoader extends SimpleAsyncLoader<Object> {
                 return;
             }
 
-            boolean registered = PurplemoonAPIAdapter.getInstance().registerPush(regId);
+            boolean registered = apiAdapter.registerPush(regId);
             if(registered){
                 prefs.edit().putString(PreferenceConstants.gcmToken, regId).commit();
                 Log.i(TAG, "Register for push with server: Success");

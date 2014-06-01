@@ -1,20 +1,27 @@
 package ch.defiant.purplesky.gcm;
 
-import java.io.IOException;
-
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.IOException;
+
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.constants.SecureConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
     private static final String TAG = GcmRegisterTask.class.getSimpleName();
+
+    private final IPurplemoonAPIAdapter adapter;
+
+    public GcmRegisterTask(IPurplemoonAPIAdapter apiAdapter) {
+        this.adapter = apiAdapter;
+    }
 
     @Override
     protected Void doInBackground(Boolean... params) {
@@ -30,8 +37,6 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
     }
 
     private Void unregister() {
-        PurplemoonAPIAdapter adapter = PurplemoonAPIAdapter.getInstance();
-
         int tries = 3;
         while (tries > 0) {
             tries--;
@@ -61,7 +66,7 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
         while (tries > 0) {
             tries--;
             try {
-                regId = GoogleCloudMessaging.getInstance(PurpleSkyApplication.getContext()).register(SecureConstants.GCM_SENDER_ID);
+                regId = GoogleCloudMessaging.getInstance(PurpleSkyApplication.get()).register(SecureConstants.GCM_SENDER_ID);
 
                 if (regId != null && !regId.isEmpty()) {
                     break;
@@ -75,8 +80,6 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
             Log.i(TAG, "Could not register for push messages!");
             return null;
         }
-
-        PurplemoonAPIAdapter adapter = PurplemoonAPIAdapter.getInstance();
 
         tries = 3;
         String oldRegId = PreferenceUtility.getPreferences().getString(PreferenceConstants.gcmToken, null);

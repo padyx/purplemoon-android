@@ -83,7 +83,7 @@ public class PictureFolder implements Serializable {
     @Override
     public String toString() {
         if (StringUtility.isNullOrEmpty(getName())) {
-            return PurpleSkyApplication.getContext().getString(R.string.UnknownFolder);
+            return PurpleSkyApplication.get().getString(R.string.UnknownFolder);
         } else {
             return getName();
         }

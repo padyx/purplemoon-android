@@ -4,18 +4,18 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 public enum ProfileStatus {
-    OK("ok", PurpleSkyApplication.getContext().getString(android.R.string.ok)),
-    TMP_OFFLINE_ADMIN("temp_offline_by_admin", PurpleSkyApplication.getContext().getString(R.string.ProfileTmpOfflineByAdmin_Short)),
-    TMP_OFFLINE_USER("temp_offline_by_user", PurpleSkyApplication.getContext().getString(R.string.ProfileTmpOfflineByUser_Short)),
-    TMP_OFFLINE_TIMEOUT("temp_offline_by_timeout", PurpleSkyApplication.getContext().getString(R.string.ProfileTmpOfflineByTimeout_Short)),
-    DELETED("deleted", PurpleSkyApplication.getContext().getString(R.string.ProfileDeleted_Short)),
-    BLOCKED("blocked", PurpleSkyApplication.getContext().getString(R.string.ProfileOfBlockedUser_Short)),
-    BLOCKING("blocking", PurpleSkyApplication.getContext().getString(R.string.ProfileOfBlockingUser_Short)),
+    OK("ok", PurpleSkyApplication.get().getString(android.R.string.ok)),
+    TMP_OFFLINE_ADMIN("temp_offline_by_admin", PurpleSkyApplication.get().getString(R.string.ProfileTmpOfflineByAdmin_Short)),
+    TMP_OFFLINE_USER("temp_offline_by_user", PurpleSkyApplication.get().getString(R.string.ProfileTmpOfflineByUser_Short)),
+    TMP_OFFLINE_TIMEOUT("temp_offline_by_timeout", PurpleSkyApplication.get().getString(R.string.ProfileTmpOfflineByTimeout_Short)),
+    DELETED("deleted", PurpleSkyApplication.get().getString(R.string.ProfileDeleted_Short)),
+    BLOCKED("blocked", PurpleSkyApplication.get().getString(R.string.ProfileOfBlockedUser_Short)),
+    BLOCKING("blocking", PurpleSkyApplication.get().getString(R.string.ProfileOfBlockingUser_Short)),
 
     NOTFOUND("notfound", null),
 
     // No state from API
-    UNKNOWN(null, PurpleSkyApplication.getContext().getString(R.string.Unknown));
+    UNKNOWN(null, PurpleSkyApplication.get().getString(R.string.Unknown));
 
     private ProfileStatus(String APIValue, String l10n) {
         m_APIValue = APIValue;

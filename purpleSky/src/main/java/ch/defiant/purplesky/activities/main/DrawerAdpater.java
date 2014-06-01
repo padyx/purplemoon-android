@@ -61,7 +61,7 @@ class DrawerAdapter extends ArrayAdapter<DrawerItem> {
 
         holder.notifLbl.setVisibility(View.GONE);
         if (item.eventType != null) {
-            Integer c = PurpleSkyApplication.getContext().getEventCount(item.eventType);
+            Integer c = PurpleSkyApplication.get().getEventCount(item.eventType);
             if (c != null && c > 0) {
                 holder.notifLbl.setText(String.valueOf(c));
                 holder.notifLbl.setVisibility(View.VISIBLE);

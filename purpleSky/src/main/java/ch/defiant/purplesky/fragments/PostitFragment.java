@@ -1,10 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -17,13 +12,21 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.commonsware.cwac.endless.EndlessAdapter;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PostIt;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.util.CompareUtility;
@@ -31,11 +34,7 @@ import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.commonsware.cwac.endless.EndlessAdapter;
-import com.squareup.picasso.Picasso;
-
-public class PostitFragment extends SherlockListFragment {
+public class PostitFragment extends BaseListFragment {
 
     public static final String ARGUMENT_BOOLEAN_SHOW_GIVEN = "given";
     private static final String DATA = "data";
@@ -59,7 +58,7 @@ public class PostitFragment extends SherlockListFragment {
                 }
             }
         }
-        // Make sure to wrap normal adapter in the endlessadapter AFTER restoring state
+        // Make sure to wrap normal apiAdapter in the endlessadapter AFTER restoring state
         m_endlessAdapter = new PostitEndlessAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
     }
 
@@ -108,11 +107,11 @@ public class PostitFragment extends SherlockListFragment {
 
             List<PostIt> postIts = new ArrayList<PostIt>();
             if (isShowGiven) {
-                postIts = PurplemoonAPIAdapter.getInstance().getGivenPostIts(options);
+                postIts = apiAdapter.getGivenPostIts(options);
             } else {
-                postIts = PurplemoonAPIAdapter.getInstance().getReceivedPostIts(options);
+                postIts = apiAdapter.getReceivedPostIts(options);
                 // If this does not throw an exception, mark as read
-                PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.POSTIT, 0);
+                PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.POSTIT, 0);
             }
 
             m_data = postIts;
@@ -132,7 +131,7 @@ public class PostitFragment extends SherlockListFragment {
                 m_currentCount.set(m_adapter.getCount());
 
                 // Reset menu counter
-                PurpleSkyApplication.getContext().setEventCount(NavigationDrawerEventType.POSTIT, 0);
+                PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.POSTIT, 0);
             }
         }
 

@@ -128,7 +128,7 @@ public class SearchCriteriaOptions {
             throw new IllegalStateException("List resource(s) invalid for requested criterium " + crit);
         }
 
-        final Resources resrc = PurpleSkyApplication.getContext().getResources();
+        final Resources resrc = PurpleSkyApplication.get().getResources();
         String[] strings = resrc.getStringArray(resourceStrings);
         String[] values = resrc.getStringArray(resourceValues);
 

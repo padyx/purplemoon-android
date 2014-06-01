@@ -1,11 +1,5 @@
 package ch.defiant.purplesky.fragments.gallery;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -20,21 +14,27 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
+import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.squareup.picasso.Picasso;
-
-public class PictureFolderGridViewFragment extends SherlockFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
+public class PictureFolderGridViewFragment extends BaseFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
 
     private ImageAdapter m_adapter;
 
@@ -180,7 +180,7 @@ public class PictureFolderGridViewFragment extends SherlockFragment implements L
             @Override
             public Holder<List<PictureFolder>> loadInBackground() {
                 try {
-                    Map<String, PictureFolder> foldersWithPictures = PurplemoonAPIAdapter.getInstance().getFoldersWithPictures(userid, null);
+                    Map<String, PictureFolder> foldersWithPictures = apiAdapter.getFoldersWithPictures(userid, null);
                     return new Holder<List<PictureFolder>>(new ArrayList<PictureFolder>(foldersWithPictures.values()));
                 } catch (IOException e) {
                     return new Holder<List<PictureFolder>>(e);

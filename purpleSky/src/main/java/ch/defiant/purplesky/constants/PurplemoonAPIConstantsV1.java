@@ -2,7 +2,6 @@ package ch.defiant.purplesky.constants;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 
 public class PurplemoonAPIConstantsV1 {
 
@@ -40,7 +39,8 @@ public class PurplemoonAPIConstantsV1 {
     public static final String USEROBJ_NUMBER_PARAM = "user_obj_num";
 
     /**
-     * Results number. Special case for {@link PurplemoonAPIAdapter#searchUserByName(String, ch.defiant.purplesky.core.UserSearchOptions)}
+     * Results number. Special case for {@link IPurplemoonAPIAdapter#searchUserByName(String, UserSearchOptions)}
+     * and {@link }IPurplemoonAPIAdapter#searchUser(UserSearchOptions}
      */
     public static final String RESULTSNUMBER_PARAM = "results_number";
 
@@ -201,7 +201,7 @@ public class PurplemoonAPIConstantsV1 {
     /**
      * Restriction enum for restricting or reordering the retrieved chats.
      * 
-     * @see PurplemoonAPIAdapter#getRecentContacts(Integer, Integer, MessageRetrievalRestrictionType)
+     * @see IPurplemoonAPIAdapter#getRecentContacts(Integer, Integer, MessageRetrievalRestrictionType)
      */
     public enum MessageRetrievalRestrictionType {
         /**
@@ -342,10 +342,10 @@ public class PurplemoonAPIConstantsV1 {
     public static final int USERSEARCH_MAXDIST_NONPOWERUSER = 29;
 
     public static enum UserSearchOrder {
-        LAST_UPDATED("last_updated", PurpleSkyApplication.getContext().getString(R.string.LastUpdated)),
-        LAST_ONLINE("last_online", PurpleSkyApplication.getContext().getString(R.string.LastOnline)),
-        CREATED("created", PurpleSkyApplication.getContext().getString(R.string.Created)),
-        DISTANCE("distance", PurpleSkyApplication.getContext().getString(R.string.Distance));
+        LAST_UPDATED("last_updated", PurpleSkyApplication.get().getString(R.string.LastUpdated)),
+        LAST_ONLINE("last_online", PurpleSkyApplication.get().getString(R.string.LastOnline)),
+        CREATED("created", PurpleSkyApplication.get().getString(R.string.Created)),
+        DISTANCE("distance", PurpleSkyApplication.get().getString(R.string.Distance));
 
         private String m_apiValue;
         private String m_localizedString;

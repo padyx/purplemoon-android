@@ -1,10 +1,5 @@
 package ch.defiant.purplesky.fragments.photovote;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -18,24 +13,29 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.NoMorePhotoVoteBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.PhotoVoteVerdict;
 import ch.defiant.purplesky.core.PersistantModel;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
+import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.squareup.picasso.Picasso;
-
-public class PhotoVoteFragment extends SherlockFragment implements LoaderCallbacks<Holder<PhotoVoteBean>> {
+public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<Holder<PhotoVoteBean>> {
 
     public static final String TAG = PhotoVoteFragment.class.getSimpleName();
 
@@ -120,13 +120,13 @@ public class PhotoVoteFragment extends SherlockFragment implements LoaderCallbac
                 try {
                     int remaining = 0;
                     if (needsCount) {
-                        remaining = PurplemoonAPIAdapter.getInstance().getRemainingPhotoVotes();
+                        remaining = apiAdapter.getRemainingPhotoVotes();
                         if (remaining == 0) {
                             return new Holder<PhotoVoteBean>(new NoMorePhotoVoteBean());
                         }
                     }
 
-                    PhotoVoteBean vote = PurplemoonAPIAdapter.getInstance().getNextPhotoVoteAndVote(m_currentBean);
+                    PhotoVoteBean vote = apiAdapter.getNextPhotoVoteAndVote(m_currentBean);
                     if (needsCount) {
                         vote.setVotesRemaining(remaining - 1);
                     } else {

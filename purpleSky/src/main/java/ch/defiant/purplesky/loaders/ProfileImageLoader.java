@@ -19,7 +19,7 @@ public class ProfileImageLoader extends SimpleAsyncLoader<Object> {
     public Object loadInBackground() {
         MinimalUser user;
         try {
-            user = PurpleSkyApplication.getContext().getUserService().getMinimalUser(PersistantModel.getInstance().getUserProfileId(), true);
+            user = PurpleSkyApplication.get().getUserService().getMinimalUser(PersistantModel.getInstance().getUserProfileId(), true);
             if (user != null) {
                 if (user.getProfilePictureURLDirectory() == null) {
                     return null;

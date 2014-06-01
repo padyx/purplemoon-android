@@ -1,7 +1,5 @@
 package ch.defiant.purplesky.dialogs;
 
-import java.io.IOException;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -15,17 +13,19 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import java.io.IOException;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
 import ch.defiant.purplesky.enums.OnlineStatus;
+import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-public class OnlineStatusDialogFragment extends SherlockDialogFragment {
+public class OnlineStatusDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = OnlineStatusDialogFragment.class.getSimpleName();
 
@@ -115,7 +115,7 @@ public class OnlineStatusDialogFragment extends SherlockDialogFragment {
                 return new Holder<Boolean>(false);
             }
             try {
-                boolean setOnlineStatus = PurplemoonAPIAdapter.getInstance().setOnlineStatus(params[0].first, params[0].second);
+                boolean setOnlineStatus = apiAdapter.setOnlineStatus(params[0].first, params[0].second);
                 return new Holder<Boolean>(setOnlineStatus);
             } catch (Exception e) {
                 return new Holder<Boolean>(e);

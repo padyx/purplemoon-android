@@ -7,10 +7,10 @@ import ch.defiant.purplesky.util.CompareUtility;
 
 public enum MessageType {
 
-    ALL(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE_ALL, PurpleSkyApplication.getContext().getString(R.string.All)),
-    RECEIVED(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE_RECEIVED, PurpleSkyApplication.getContext().getString(R.string.ReceivedMessage)),
-    SENT(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE_SENT, PurpleSkyApplication.getContext().getString(R.string.Sent)),
-    UNKNOWN(null, PurpleSkyApplication.getContext().getString(R.string.Unknown));
+    ALL(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE_ALL, PurpleSkyApplication.get().getString(R.string.All)),
+    RECEIVED(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE_RECEIVED, PurpleSkyApplication.get().getString(R.string.ReceivedMessage)),
+    SENT(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE_SENT, PurpleSkyApplication.get().getString(R.string.Sent)),
+    UNKNOWN(null, PurpleSkyApplication.get().getString(R.string.Unknown));
 
     MessageType(String APIValue, String l10n) {
         m_APIValue = APIValue;

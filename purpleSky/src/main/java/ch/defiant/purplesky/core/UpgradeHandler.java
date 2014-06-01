@@ -5,6 +5,8 @@ import java.io.IOException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.StringUtility;
@@ -19,9 +21,13 @@ public final class UpgradeHandler {
 
     public static final String TAG = UpgradeHandler.class.getSimpleName();
 
-    private UpgradeHandler() { }
+    private final IPurplemoonAPIAdapter apiAdapter;
 
-    public static boolean needsUpgrade(Context c){
+    public UpgradeHandler(IPurplemoonAPIAdapter adapter) {
+        this.apiAdapter = adapter;
+    }
+
+    public boolean needsUpgrade(Context c){
         return SystemUtility.isApplicationUpdatedOrInstalled(c);
     }
 
@@ -31,7 +37,7 @@ public final class UpgradeHandler {
      * @param c
      * @return If the application tried to perform upgrade actions
      */
-    public static boolean performUpgradeActions(Context c){
+    public boolean performUpgradeActions(Context c){
         boolean needsUpgrade = needsUpgrade(c);
         if(needsUpgrade){
             boolean success = upgrade(c);
@@ -50,7 +56,7 @@ public final class UpgradeHandler {
      * @param c 
      * @return Whether all upgrade actions succeeded. If not, it should be retried later.
      */
-    private static boolean upgrade(Context c){
+    private boolean upgrade(Context c){
         boolean success = true;
         Log.i(TAG, "Beginning upgrade actions");
         // BEGIN Upgrades
@@ -72,12 +78,12 @@ public final class UpgradeHandler {
      * Re-registering is NOT performed here.
      * @return If unregistering succeeded.
      */
-    private static boolean upgradeNotifications() {
+    private boolean upgradeNotifications() {
         SharedPreferences prefs = PreferenceUtility.getPreferences();
         String gcmStored = prefs.getString(PreferenceConstants.gcmToken, null);
         if(StringUtility.isNotNullOrEmpty(gcmStored)){
             try{
-                boolean unregisterPush = PurplemoonAPIAdapter.getInstance().unregisterPush(gcmStored);
+                boolean unregisterPush = apiAdapter.unregisterPush(gcmStored);
                 if(!unregisterPush){
                     Log.w(TAG, "Unregistering push failed. Aborting upgrade action");
                     return false;

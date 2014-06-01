@@ -36,6 +36,8 @@ import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
 import ch.defiant.purplesky.fragments.PostitTabbedFragment;
+import ch.defiant.purplesky.fragments.RadarFragment;
+import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.VisitorTabbedFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteTabbedFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchTabbedFragment;
@@ -138,7 +140,7 @@ class DrawerDelegate {
     }
 
     void updateCounts(UpdateBean b) {
-        PurpleSkyApplication c = PurpleSkyApplication.getContext();
+        PurpleSkyApplication c = PurpleSkyApplication.get();
         c.setEventCount(NavigationDrawerEventType.FAVORITES, b.getFavoritesCount());
         c.setEventCount(NavigationDrawerEventType.MESSAGE, b.getMessagesCount());
         c.setEventCount(NavigationDrawerEventType.POSTIT, b.getPostItCount());
@@ -153,9 +155,9 @@ class DrawerDelegate {
             case LAUNCH_CHATLIST:
                 f = new ChatListFragment();
                 break;
-                // case LAUNCH_RADAR:
-                // f = new RadarFragment();
-                // break;
+            case LAUNCH_RADAR:
+                f = new RadarGridFragment();
+            break;
             case LAUNCH_POSTIT:
                 f = new PostitTabbedFragment();
                 break;
@@ -285,7 +287,7 @@ class DrawerDelegate {
     private List<DrawerItem> populateDrawer() {
         ArrayList<DrawerItem> l = new ArrayList<DrawerItem>();
         l.add(new DrawerItem(R.string.Messages, R.drawable.content_email, NavigationDrawerEventType.MESSAGE));
-        // l.add(new DrawerItem(R.string.Radar, R.drawable.radar, null)); // TODO Replace icon
+        l.add(new DrawerItem(R.string.Radar, R.drawable.radar, null)); // TODO Replace icon
         l.add(new DrawerItem(R.string.Postits, R.drawable.postit_bw, NavigationDrawerEventType.POSTIT));
         l.add(new DrawerItem(R.string.ProfileVisits, R.drawable.visits_1step, NavigationDrawerEventType.VISIT));
         l.add(new DrawerItem(R.string.Favorites_Online_, R.drawable.rating_important,

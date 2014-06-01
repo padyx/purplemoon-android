@@ -1,10 +1,5 @@
 package ch.defiant.purplesky.fragments.conversation;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +18,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -30,11 +39,13 @@ import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.MessageType;
+import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.loaders.CachedUsernameLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
@@ -47,20 +58,15 @@ import ch.defiant.purplesky.loaders.message.OlderMessageDBLoader;
 import ch.defiant.purplesky.loaders.message.OlderMessageOnlineLoader;
 import ch.defiant.purplesky.loaders.message.RefreshMessageLoader;
 import ch.defiant.purplesky.loaders.message.SendMessageLoader;
-import ch.defiant.purplesky.services.MessageService;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+public class ConversationFragment extends BaseFragment implements LoaderCallbacks<Holder<MessageResult>> {
 
-public class ConversationFragment extends SherlockFragment implements LoaderCallbacks<Holder<MessageResult>> {
+    @Inject
+    protected IMessageService messageService;
 
     private final class NotifyAdapter implements Runnable {
         @Override
@@ -79,7 +85,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
                 Toast.makeText(getSherlockActivity(), R.string.MustEnterTextMessage, Toast.LENGTH_LONG).show();
             }
 
-            Long lastReceivedTS = MessageService.getLatestReceivedMessageTimestamp(m_profileId);
+            Long lastReceivedTS = messageService.getLatestReceivedMessageTimestamp(m_profileId);
             if (lastReceivedTS == null) {
                 lastReceivedTS = 0L;
             }
@@ -111,7 +117,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
         public Loader<Drawable> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new ActionBarImageLoader(getSherlockActivity(), b);
+            return new ActionBarImageLoader(getSherlockActivity(), b, apiAdapter);
         }
 
         @Override
@@ -132,7 +138,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
         public Loader<String> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new CachedUsernameLoader(getSherlockActivity(), b);
+            return new CachedUsernameLoader(getSherlockActivity(), b, messageService);
         }
 
         @Override
@@ -149,7 +155,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
         public Loader<Holder<UserMessageHistoryBean>> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new ConversationStatusLoader(getSherlockActivity(), b);
+            return new ConversationStatusLoader(getSherlockActivity(), b, apiAdapter);
         }
 
         @Override
@@ -345,18 +351,18 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
         context.setProgressBarIndeterminateVisibility(true);
         switch (type) {
             case R.id.loader_message_empty:
-                return new EmptyOnlineLoader(context, bundle);
+                return new EmptyOnlineLoader(context, bundle, apiAdapter, messageService);
             case R.id.loader_message_initial:
-                return new InitialDBMessageLoader(context, bundle);
+                return new InitialDBMessageLoader(context, bundle, apiAdapter, messageService);
             case R.id.loader_message_moreoldDB:
-                return new OlderMessageDBLoader(context, bundle);
+                return new OlderMessageDBLoader(context, bundle, apiAdapter, messageService);
             case R.id.loader_message_moreoldOnline:
-                return new OlderMessageOnlineLoader(context, bundle);
+                return new OlderMessageOnlineLoader(context, bundle, apiAdapter, messageService);
             case R.id.loader_message_send:
                 sendPreActions();
-                return new SendMessageLoader(context, bundle);
+                return new SendMessageLoader(context, bundle, apiAdapter, messageService);
             case R.id.loader_message_refresh:
-                return new RefreshMessageLoader(context, bundle);
+                return new RefreshMessageLoader(context, bundle, apiAdapter, messageService);
             default:
                 throw new UnsupportedOperationException("Unknown loader");
         }
@@ -474,7 +480,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
     }
 
     /**
-     * Loads more old messages Only public s.t. message adapter can call this - all others shouldn't!
+     * Loads more old messages Only public s.t. message apiAdapter can call this - all others shouldn't!
      */
     // NICE This is not pretty.
     public void startLoadMoreOldWithDB() {
@@ -486,7 +492,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
 
         PrivateMessage item = (PrivateMessage) m_adapter.getItem(1);
         if (item == null) {
-            Log.w(ConversationFragment.TAG, "Oldest message in adapter was null, cannot load older messages!");
+            Log.w(ConversationFragment.TAG, "Oldest message in apiAdapter was null, cannot load older messages!");
             return;
         }
         Long lastid = item.getMessageHead().getMessageId();
@@ -628,7 +634,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
     private void startRefresh() {
         Bundle b = new Bundle();
         b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-        Long lastRId = NVLUtility.nvl(MessageService.getLatestMessageId(m_profileId), 0L);
+        Long lastRId = NVLUtility.nvl(messageService.getLatestMessageId(m_profileId), 0L);
         b.putLong(ArgumentConstants.ARG_ID, lastRId);
         getLoaderManager().restartLoader(R.id.loader_message_refresh, b, this);
         startRefreshConversationState();
@@ -647,7 +653,7 @@ public class ConversationFragment extends SherlockFragment implements LoaderCall
 
         PrivateMessage item = (PrivateMessage) m_adapter.getItem(1);
         if (item == null) {
-            Log.w(ConversationFragment.TAG, "Oldest message in adapter was null, cannot load older messages!");
+            Log.w(ConversationFragment.TAG, "Oldest message in apiAdapter was null, cannot load older messages!");
             return;
         }
         Long lastid = item.getMessageHead().getMessageId();

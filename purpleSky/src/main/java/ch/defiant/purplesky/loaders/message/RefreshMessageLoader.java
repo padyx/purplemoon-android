@@ -1,30 +1,32 @@
 package ch.defiant.purplesky.loaders.message;
 
+import android.content.Context;
+import android.os.Bundle;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
-import android.os.Bundle;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
-import ch.defiant.purplesky.services.MessageService;
 import ch.defiant.purplesky.util.Holder;
 
 /**
  * Loads new messages with a user after a certain message. Requires the other users profileId (as String in {@link ArgumentConstants#ARG_USERID}) and
  * the messageId (as long in {@link ArgumentConstants#ARG_ID}).
  * 
- * @author Patrick Bänziger
+ * @author Patrick BÃ¤nziger
  * 
  */
 public class RefreshMessageLoader extends AbstractMessageLoader {
 
     private long m_sinceMsgId;
 
-    public RefreshMessageLoader(Context c, Bundle args) {
-        super(c, R.id.loader_message_refresh, args);
+    public RefreshMessageLoader(Context c, Bundle args, IPurplemoonAPIAdapter adapter, IMessageService msgService) {
+        super(c, R.id.loader_message_refresh, args, adapter, msgService);
 
         m_sinceMsgId = args.getLong(ArgumentConstants.ARG_ID, -1L);
         if (m_sinceMsgId == -1) {
@@ -39,7 +41,7 @@ public class RefreshMessageLoader extends AbstractMessageLoader {
 
         while (loadMore) {
             loadMore = false;
-            Holder<List<PrivateMessage>> res = MessageService.getNewMessagesFromUser(m_userId, m_sinceMsgId);
+            Holder<List<PrivateMessage>> res = messageService.getNewMessagesFromUser(m_userId, m_sinceMsgId);
             if (res.getException() != null) {
                 return new Holder<MessageResult>(res.getException());
             }
@@ -48,9 +50,9 @@ public class RefreshMessageLoader extends AbstractMessageLoader {
             if (list != null) {
                 overallList.addAll(list);
             }
-            if (list != null && list.size() == MessageService.BATCH) {
+            if (list != null && list.size() == messageService.BATCH) {
                 // Repeat. Last one is newest - set it
-                m_sinceMsgId = list.get(MessageService.BATCH - 1).getMessageHead().getMessageId();
+                m_sinceMsgId = list.get(messageService.BATCH - 1).getMessageHead().getMessageId();
                 loadMore = true;
             }
         }

@@ -33,7 +33,7 @@ public class SystemUtility {
     }
     
     public static void updateStoredApplicationVersion(){
-        int appVersion = getAppVersion(PurpleSkyApplication.getContext());
+        int appVersion = getAppVersion(PurpleSkyApplication.get());
         
         SharedPreferences prefs = PreferenceUtility.getPreferences();
         prefs.edit().putInt(PreferenceConstants.lastVersionInt, appVersion).commit();

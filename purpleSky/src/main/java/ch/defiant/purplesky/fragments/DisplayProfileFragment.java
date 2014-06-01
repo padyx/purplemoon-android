@@ -204,7 +204,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
                 }
 
                 try {
-                    DetailedUser user = PurpleSkyApplication.getContext().getUserService().getDetailedUser(m_userProfileId);
+                    DetailedUser user = PurpleSkyApplication.get().getUserService().getDetailedUser(m_userProfileId);
                     return new Holder<DetailedUser>(user);
                 } catch (Exception e) {
                     return new Holder<DetailedUser>(e);

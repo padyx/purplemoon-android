@@ -1,17 +1,5 @@
 package ch.defiant.purplesky.dialogs;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -33,20 +21,31 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.NullPictureFolder;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.UploadBean;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PersistantModel;
-import ch.defiant.purplesky.core.PurplemoonAPIAdapter;
+import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.StringUtility;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-
-public class UploadPhotoDialogFragment extends SherlockDialogFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
+public class UploadPhotoDialogFragment extends BaseDialogFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
 
     public static final String ARGUMENT_PICTURE_URI = "picture";
     public static final int INVALID_POSITION = -1;
@@ -131,7 +130,7 @@ public class UploadPhotoDialogFragment extends SherlockDialogFragment implements
             public Holder<List<PictureFolder>> loadInBackground() {
                 List<PictureFolder> folders = null;
                 try {
-                    folders = PurplemoonAPIAdapter.getInstance().getMyPictureFolders();
+                    folders = apiAdapter.getMyPictureFolders();
                 } catch (Exception e) {
                     return new Holder<List<PictureFolder>>(e);
                 }
