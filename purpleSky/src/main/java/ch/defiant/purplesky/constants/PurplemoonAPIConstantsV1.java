@@ -95,6 +95,7 @@ public class PurplemoonAPIConstantsV1 {
 
     public static final String JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE = "homo";
     public static final String JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE = "straight";
+    public static final String JSON_USER_SEXUALITY_BISEXUAL_VALUE = "bi";
 
     /*
      * Favorite related

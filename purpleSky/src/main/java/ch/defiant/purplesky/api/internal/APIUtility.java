@@ -81,7 +81,7 @@ public final class APIUtility {
             case LESBIAN:
                 return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE;
             case BISEXUAL:
-                return "bi"; // TODO pbn add to constants
+                return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_BISEXUAL_VALUE;
             default:
                 throw new IllegalArgumentException("No api value for "+s);
         }
