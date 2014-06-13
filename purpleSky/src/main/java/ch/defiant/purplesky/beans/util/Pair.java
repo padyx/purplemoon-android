@@ -2,6 +2,12 @@ package ch.defiant.purplesky.beans.util;
 
 import java.io.Serializable;
 
+/**
+ * A serializable implementation of a pair - unlike the Android provided version.
+ * Of course this requires the elements to be serializable.
+ * @param <S>
+ * @param <T>
+ */
 public class Pair<S extends Serializable, T extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = -3289373175835990567L;

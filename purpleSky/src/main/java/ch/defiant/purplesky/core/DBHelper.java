@@ -26,8 +26,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * The version of the database. For every release, this field must be increased if the schema was changed.
+     *
+     * Version 1&2: pre-release versions
+     * Version 3: App version 29 (1.0.0)
+     * Version 4: App version 30 (1.0.1)
      */
-    private static final int SCHEMA_VERSION = 3;
+    private static final int SCHEMA_VERSION = 4;
 
     public static DBHelper fromContext(Context c){
         return new DBHelper(c);
@@ -48,11 +52,14 @@ public class DBHelper extends SQLiteOpenHelper {
         createMessageTable(db);
         createConversationTable(db);
         createUserNameMappingTable(db);
+        createBundleStoreTable(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch(oldVersion){
+            case 3:
+                createBundleStoreTable(db);
             case 2:
                 dropTable(db, DatabaseConstants.TABLE_USERMAPPING);
                 createConversationTable(db);
@@ -136,5 +143,33 @@ public class DBHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
         
+    }
+
+    /**
+     * Creates the bundle store table
+     * @param db
+     * @since  Database version 4
+     */
+    private void createBundleStoreTable(SQLiteDatabase db){
+        db.beginTransaction();
+        try{
+            db.execSQL("    CREATE TABLE IF NOT EXISTS "+DatabaseConstants.TABLE_BUNDLESTORE +
+                    " ( " +
+                    "       " + DatabaseConstants.BUNDLESTORE_OWNER + " TEXT, " +
+                    "       " + DatabaseConstants.BUNDLESTORE_KEY + " TEXT, " +
+                    "       " + DatabaseConstants.BUNDLESTORE_TYPE + " TEXT NOT NULL, " +
+                    "       " + DatabaseConstants.BUNDLESTORE_CVALUE + " TEXT, " +
+                    "       " + DatabaseConstants.BUNDLESTORE_NVALUE + " INTEGER, " +
+                    "       " + DatabaseConstants.BUNDLESTORE_FVALUE + " REAL " +
+                    " " +
+                    ", CONSTRAINT PK_BUNDLESTORE PRIMARY KEY ("+
+                            DatabaseConstants.BUNDLESTORE_OWNER +", " +
+                            DatabaseConstants.BUNDLESTORE_KEY+") " +
+                    ")"
+            );
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
 }

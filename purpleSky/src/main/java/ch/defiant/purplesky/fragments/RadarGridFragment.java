@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +27,8 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -34,10 +36,12 @@ import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.ResultConstants;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
+import ch.defiant.purplesky.db.IBundleDao;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
+import ch.defiant.purplesky.util.NVLUtility;
 
 /**
  * Radar fragment
@@ -45,6 +49,7 @@ import ch.defiant.purplesky.util.Holder;
  */
 public class RadarGridFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<MinimalUser>>>, ActionBar.OnNavigationListener {
 
+    private static final String BUNDLESTORE_OWNER = "radargridfragment";
     private UserSearchOptions options;
     private GridView gridview;
 
@@ -59,6 +64,9 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
         }
     }
 
+    @Inject
+    protected IBundleDao dao;
+
     private GridAdapter adapter;
     private SearchMode searchMode;
 
@@ -66,14 +74,14 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setDisplayShowTitleEnabled(false);
-        ModeAdapter adapter = new ModeAdapter(getSherlockActivity(), android.R.layout.two_line_list_item);
-        for (SearchMode m: SearchMode.values()){
-            adapter.add(m);
-        }
-        actionBar.setListNavigationCallbacks(adapter, this);
+//        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//        actionBar.setDisplayShowTitleEnabled(false);
+//        ModeAdapter adapter = new ModeAdapter(getSherlockActivity(), android.R.layout.two_line_list_item);
+//        for (SearchMode m: SearchMode.values()){
+//            adapter.add(m);
+//        }
+//        actionBar.setListNavigationCallbacks(adapter, this);
 
         RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.radar_grid_fragment, container, false);
 
@@ -82,6 +90,30 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
         gridview.setAdapter(this.adapter);
         gridview.setOnItemClickListener(new OpenUserProfileListener(getSherlockActivity()));
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveSearchSelections();
+    }
+
+    private void saveSearchSelections() {
+        if (options != null){
+            Bundle b = options.toBundle();
+            dao.store(b, BUNDLESTORE_OWNER);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        restoreSearchSelections();
+    }
+
+    private void restoreSearchSelections() {
+        Bundle bundle = dao.restore(BUNDLESTORE_OWNER);
+        options = UserSearchOptions.from(bundle);
     }
 
     @Override
@@ -95,6 +127,7 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        restoreSearchSelections();
         getLoaderManager().initLoader(R.id.loader_radar_main, null, this);
     }
 
@@ -113,20 +146,23 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     private void showDialog() {
-            // DialogFragment.show() will take care of adding the fragment
-            // in a transaction.  We also want to remove any currently showing
-            // dialog, so make our own transaction and take care of that here.
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-            if (prev != null) {
-                ft.remove(prev);
-            }
-            ft.addToBackStack(null);
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
 
-            // Create and show the dialog.
-            DialogFragment newFragment = new RadarOptionsDialogFragment();
-            newFragment.setTargetFragment(this,0);
-            newFragment.show(ft, "radarOptionsDialog");
+        // Create and show the dialog.
+        DialogFragment newFragment = new RadarOptionsDialogFragment();
+        Bundle b = new Bundle();
+        b.putSerializable(ArgumentConstants.ARG_SERIALIZABLEOBJECT, options);
+        newFragment.setArguments(b);
+        newFragment.setTargetFragment(this, 0);
+        newFragment.show(ft, "radarOptionsDialog");
     }
 
     @Override
@@ -146,9 +182,9 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
 //                }
                 opts.setUserClass(MinimalUser.class);
                 opts.setNumber(100);
-                //opts.setShowOnlyOnline(true);
-                // FIXME Filter all that have not been online in 30 days
 //                SearchCriteriaTranslator.setSearchCriteria(opts, m_filterValues);
+                // If there is no filter set, require them to be online within last month...
+                opts.setLastOnline(NVLUtility.nvl(opts.getLastOnline(), UserSearchOptions.LastOnline.PAST_MONTH));
                 opts.setSearchOrder(PurplemoonAPIConstantsV1.UserSearchOrder.DISTANCE);
 
                 try {
@@ -262,4 +298,5 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
         options = opts;
         getLoaderManager().restartLoader(R.id.loader_radar_main,null,this);
     }
+
 }

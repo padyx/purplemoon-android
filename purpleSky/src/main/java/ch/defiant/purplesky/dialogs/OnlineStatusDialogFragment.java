@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.util.CompareUtility;
@@ -103,6 +104,8 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
 
         @Override
         protected void onPreExecute() {
+            PurpleSkyApplication context = PurpleSkyApplication.get();
+            // FIXME L18N missing!
             m_dialog = ProgressDialog.show(getSherlockActivity(), "Setting status", "Please wait...", true, false);
         }
 

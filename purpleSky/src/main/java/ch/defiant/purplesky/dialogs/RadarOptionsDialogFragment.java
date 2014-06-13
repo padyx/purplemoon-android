@@ -5,17 +5,19 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.beans.util.Pair;
+import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.ResultConstants;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.customwidgets.IntegerSpinner;
@@ -31,19 +33,30 @@ import ch.defiant.purplesky.util.CollectionUtil;
  */
 public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
-
-    final private UserSearchOptions options = new UserSearchOptions();
     private Spinner genderspinner;
     private Spinner attractionSpinner;
     private CheckBox onlyOnlineCheckbox;
     private IntegerSpinner fromAgeSpinner;
     private IntegerSpinner toAgeSpinner;
+    private UserSearchOptions options;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        options = (UserSearchOptions) getArguments().getSerializable(ArgumentConstants.ARG_SERIALIZABLEOBJECT);
+        if(savedInstanceState != null){
+            // TODO Handle ?
+        }
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getSherlockActivity().getLayoutInflater().inflate(R.layout.dialog_radar_options, null);
 
         createView(view);
+        if(savedInstanceState == null) {
+            restoreSelections();
+        }
 
         return new AlertDialog.Builder(getSherlockActivity()).
                 setTitle("Show only").
@@ -64,9 +77,60 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
                 create();
     }
 
+    private void restoreSelections() {
+        if (options != null){
+            onlyOnlineCheckbox.setChecked(options.getLastOnline() == UserSearchOptions.LastOnline.NOW);
+            fromAgeSpinner.selectValue(options.getMinAge());
+            toAgeSpinner.selectValue(options.getMaxAge());
+
+            boolean targetMen = false, targetWomen = false;
+            boolean attractedMen = false, attractedWomen = false, attractedBi = false;
+            if(options.getAttractions() != null){
+                for(Pair<Gender, Sexuality> p : options.getAttractions()){
+
+                    if(p.getFirst() == Gender.MALE ){
+                           targetMen = true;
+                        if(p.getSecond() == Sexuality.GAY){
+                            attractedMen = true;
+                        } else if (p.getSecond() == Sexuality.BISEXUAL){
+                            attractedBi = true;
+                        } else if (p.getSecond() == Sexuality.HETEROSEXUAL_MALE){
+                            attractedWomen = true;
+                        }
+                    } else if (p.getFirst() == Gender.FEMALE ) {
+                        targetWomen = true;
+                        if(p.getSecond() == Sexuality.GAY){
+                            attractedWomen = true;
+                        } else if (p.getSecond() == Sexuality.BISEXUAL){
+                            attractedBi = true;
+                        } else if (p.getSecond() == Sexuality.HETEROSEXUAL_MALE){
+                            attractedMen = true;
+                        }
+                    }
+                }
+
+                if(targetMen && targetWomen){
+                    genderspinner.setSelection(0);
+                } else if (targetMen){
+                    genderspinner.setSelection(1);
+                } else {
+                    genderspinner.setSelection(2);
+                }
+
+                if(attractedBi){
+                    attractionSpinner.setSelection(0);
+                } else if (attractedMen) {
+                    attractionSpinner.setSelection(1);
+                } else {
+                    attractionSpinner.setSelection(2);
+                }
+            }
+        }
+    }
+
     private void sendResult() {
         updateGenderAttractionOption();
-        options.setShowOnlyOnline(onlyOnlineCheckbox.isChecked());
+        options.setLastOnline(onlyOnlineCheckbox.isChecked() ? UserSearchOptions.LastOnline.NOW : null);
         // TODO pbn validation min/max
         options.setMinAge((Integer) fromAgeSpinner.getSelectedItem());
         options.setMaxAge((Integer) toAgeSpinner.getSelectedItem());
@@ -124,11 +188,6 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
                 break;
         }
 
-        if(genders.size() == 2 && genders.size() == 2) {
-            options.setAttractions(null); // No filter
-            return;
-        }
-
         ArrayList<Pair<Gender, Sexuality>> attractions = new ArrayList<Pair<Gender, Sexuality>>();
         for(Gender g: genders){
             if(attractedto.size() == 2){
@@ -138,7 +197,7 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
                 if(g==otherGender) {
                     attractions.add(new Pair<Gender, Sexuality>(g, Sexuality.GAY));
                 } else {
-                    attractions.add(new Pair<Gender, Sexuality>(g, Sexuality.HETEROSEXUAL_FEMALE));
+                    attractions.add(new Pair<Gender, Sexuality>(g, Sexuality.HETEROSEXUAL_MALE));
                 }
             }
         }

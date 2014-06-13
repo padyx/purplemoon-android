@@ -89,7 +89,6 @@ public class UsernameSearchFragment extends BaseFragment
                 UserSearchOptions options = new UserSearchOptions();
                 options.setNumber(11);
                 options.setUserClass(MinimalUser.class);
-                options.setNeedsOnlineStatus(true);
 
                 try {
                     List<MinimalUser> list = apiAdapter.searchUserByName(username, options);
