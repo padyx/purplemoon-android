@@ -1139,7 +1139,8 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
         params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.RESULTSNUMBER_PARAM, String.valueOf(number)));
         if (options.getSearchType() != null) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_TYPE_PARAM, options.getSearchType().getAPIValue()));
+            // FIXME PBN Search type
+            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_TYPE_PARAM, PurplemoonAPIConstantsV1.USERSEARCH_TYPE_FRIENDS));
         }
         // Add location
         if (options.getLocation() != null) {

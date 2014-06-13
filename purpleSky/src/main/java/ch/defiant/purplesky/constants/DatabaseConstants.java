@@ -24,7 +24,9 @@ public class DatabaseConstants {
      */
     public static final int MESSAGES_PENDING_SENT = 3;
 
-    
+    /********
+     * Conversation table
+     ********/
     public static final String TABLE_CONVERSATIONS = "conversations";
     public static final String CONVERSATIONS_OTHERUSERID = "otheruser_id";
     public static final String CONVERSATIONS_LASTCONTACT = "last_contact";
@@ -32,11 +34,28 @@ public class DatabaseConstants {
     public static final String CONVERSATIONS_EXCERPT = "excerpt";
 
     public static final String CONVERSATIONS_INDEX_LASTCONTACT = "conversations_last_contact_idx";
-    
+
+    /*********
+     * User mapping table
+     *********/
     public static final String TABLE_USERMAPPING = "usermapping";
     public static final String USERMAPPING_USERID = "user_id";
     public static final String USERMAPPING_USERNAME = "user_name";
     public static final String USERMAPPING_PROFILEPICTURE_URL = "profilepicture_url";
     public static final String USERMAPPING_INSERTED = "inserted";
 
+    /********
+     * Bundle store table
+     ********/
+
+    public static final String TABLE_BUNDLESTORE = "bundlestore";
+    public static final String BUNDLESTORE_OWNER = "bundleId";
+    public static final String BUNDLESTORE_KEY = "key";
+    public static final String BUNDLESTORE_TYPE = "type";
+    public static final String BUNDLESTORE_NVALUE = "nval1";
+    public static final String BUNDLESTORE_CVALUE = "cval1";
+    /**
+     * float value (real)
+     */
+    public static final String BUNDLESTORE_FVALUE = "fval1";
 }

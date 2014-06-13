@@ -1,13 +1,12 @@
 package ch.defiant.purplesky.api.internal;
 
-import android.util.Pair;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
+import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
@@ -48,8 +47,8 @@ public final class APIUtility {
             if (options.getCountryId() != null) {
                 object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_COUNTRY, options.getCountryId());
             }
-            if (options.isShowOnlyOnline()) {
-                object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_ONLY, options.isShowOnlyOnline());
+            if (options.getLastOnline() != null) {
+                object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_ONLY, translateLastOnline(options.getLastOnline()));
             }
             if (options.getMaxDistance() != null) {
                 object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_DISTANCE_KM, options.getMaxDistance());
@@ -64,8 +63,8 @@ public final class APIUtility {
     private static JSONArray createGenderSexualityCombinations(List<Pair<Gender, Sexuality>> attractions) {
         JSONArray array = new JSONArray();
         for(Pair<Gender, Sexuality> p: attractions){
-            String genderString = translateGender(p.first);
-            array.put(genderString +PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY_SEPARATOR + translateSexuality(p.second));
+            String genderString = translateGender(p.getFirst());
+            array.put(genderString +PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY_SEPARATOR + translateSexuality(p.getSecond()));
         }
         return array;
     }
@@ -95,6 +94,23 @@ public final class APIUtility {
                 return "female";
             default:
                 throw new IllegalArgumentException("No api value for "+g);
+        }
+    }
+
+    public static String translateLastOnline(UserSearchOptions.LastOnline lastOnline) {
+        switch (lastOnline) {
+            case NOW:
+                return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_NOW;
+            case RECENTLY:
+                return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_PAST_HOUR;
+            case PAST_DAY:
+                return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_PAST_DAY;
+            case PAST_WEEK:
+                return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_PAST_WEEK;
+            case PAST_MONTH:
+                return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_PAST_MONTH;
+            default:
+                throw new IllegalArgumentException("No api value for "+lastOnline);
         }
     }
 }

@@ -14,6 +14,9 @@ public class PreferenceConstants {
     public static final String updateEnabled = BASE + "updateEnabled";
     public static final String lastUpdateServiceRun = BASE + "updateServiceRun";
 
+    /********************
+     * Simple user search
+     ********************/
     private static final String searchBase = BASE + "searchsimple.";
 
     public static final String searchTarget = searchBase + "target";
@@ -23,6 +26,12 @@ public class PreferenceConstants {
     public static final String searchUseDistance = searchBase + "orderDistance";
     public static final String searchOnlineOnly = searchBase + "onlineOnly";
     public static final String searchCountry = searchBase + "country";
+
+    /***************
+     * Radar search
+     ***************/
+    private static final String radaroptionsBase = "radar.searchoptions.";
+    public static final String radarOptionsBundle = radaroptionsBase + "optionsBundle";
 
     public static final String powerUserExpiry = searchBase + "powerUserExpiry";
 

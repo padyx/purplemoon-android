@@ -24,9 +24,9 @@ public class IntegerSpinner extends Spinner {
 
     private AtomicInteger m_lowerBound = new AtomicInteger(0);
     private AtomicInteger m_upperBound = new AtomicInteger(100);
-    private IntegerSpinnerAdapter m_adapter;
+    private static final int POSITION_DONTCARE = 0;
 
-    // TODO Make configurable from XML?
+    private IntegerSpinnerAdapter m_adapter;
 
     public IntegerSpinner(Context context) {
         super(context);
@@ -95,10 +95,21 @@ public class IntegerSpinner extends Spinner {
         m_adapter.boundsChanged();
     }
 
-    private class IntegerSpinnerAdapter extends ArrayAdapter<Integer> {
+    public void selectValue(Integer value){
+        if(value == null) {
+            setSelection(POSITION_DONTCARE);
+            return;
+        }
+        for(int i = 0; i < m_adapter.getCount(); i++){
+            if (value.equals(m_adapter.getItem(i))){
+                setSelection(i);
+                return;
+            }
+        }
+    }
 
+    private class IntegerSpinnerAdapter extends ArrayAdapter<Integer> {
         private static final int LISTITEM_MIN_HEIGHT_DP = 48;
-        private final int POSITION_DONTCARE = 0;
 
         public IntegerSpinnerAdapter(Context context, int textViewResourceId) {
             super(context, textViewResourceId);

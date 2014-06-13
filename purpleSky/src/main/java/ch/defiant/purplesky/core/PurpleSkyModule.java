@@ -1,10 +1,17 @@
 package ch.defiant.purplesky.core;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import javax.inject.Qualifier;
+
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.internal.APIModule;
 import ch.defiant.purplesky.core.internal.CoreModule;
+import ch.defiant.purplesky.db.internal.DatabaseModule;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
@@ -25,6 +32,7 @@ import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Main module for injections.
@@ -33,7 +41,8 @@ import dagger.Module;
 @Module(
     includes = {
             APIModule.class,
-            CoreModule.class
+            CoreModule.class,
+            DatabaseModule.class
     },
     injects = {
             PurpleSkyApplication.class,

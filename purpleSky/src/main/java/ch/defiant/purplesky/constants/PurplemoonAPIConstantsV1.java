@@ -330,9 +330,15 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_USERSEARCH_DISTANCE_KM = "distance";
 
     /**
-     * JSON value type: Integer. 1=enabled
+     * JSON value type: String
      */
     public static final String JSON_USERSEARCH_ONLINE_ONLY = "is_online";
+    public static final String JSON_USERSEARCH_ONLINE_PARAM_NOW = "now";
+    public static final String JSON_USERSEARCH_ONLINE_PARAM_PAST_HOUR = "recently";
+    public static final String JSON_USERSEARCH_ONLINE_PARAM_PAST_DAY = "24hours";
+    public static final String JSON_USERSEARCH_ONLINE_PARAM_PAST_WEEK = "7days";
+    public static final String JSON_USERSEARCH_ONLINE_PARAM_PAST_MONTH= "30days";
+
 
     public static final String USERSEARCH_ORDER_PARAM = "order";
     public static final String USERSEARCH_ORDER_LAST_UPDATED = "last_updated";

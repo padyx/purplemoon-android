@@ -218,7 +218,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
             bean.setCountryId(array[pos]);
         }
 
-        bean.setShowOnlyOnline(onlyOnline.isChecked());
+        bean.setLastOnline(onlyOnline.isChecked() ? UserSearchOptions.LastOnline.NOW : null);
 
         SpinnerStateElement<TARGET> target = (SpinnerStateElement<TARGET>) targetSpinner.getSelectedItem();
         bean.setSearchType(target.getValue() == TARGET.RELATIONSHIP ? SearchType.PARTNER : SearchType.FRIENDS);
