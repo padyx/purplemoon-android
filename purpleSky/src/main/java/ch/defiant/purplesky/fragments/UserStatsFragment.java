@@ -1,15 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.commons.io.IOUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,6 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+
+import com.actionbarsherlock.app.SherlockFragment;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.DetailedUser;
@@ -40,8 +43,6 @@ import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.UserUtility;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 public class UserStatsFragment extends SherlockFragment implements IBroadcastReceiver {
 
@@ -146,7 +147,7 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction() == BroadcastTypes.BROADCAST_USERBEAN_RETRIEVED) {
+        if (BroadcastTypes.BROADCAST_USERBEAN_RETRIEVED.equals(intent.getAction())) {
 
             MinimalUser u = (MinimalUser) intent.getSerializableExtra(ArgumentConstants.ARG_USER);
             if (u instanceof NullUser || m_profileId.equals(u.getUserId())) {
