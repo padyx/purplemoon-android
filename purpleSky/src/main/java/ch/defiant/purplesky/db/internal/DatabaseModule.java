@@ -1,10 +1,7 @@
 package ch.defiant.purplesky.db.internal;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import ch.defiant.purplesky.core.DBHelper;
-import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.db.IBundleDao;
+import ch.defiant.purplesky.db.IDatabaseProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,13 +13,13 @@ import dagger.Provides;
 public class DatabaseModule {
 
     @Provides
-    public SQLiteDatabase provideDatabase(){
-        return DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
+    public IDatabaseProvider provideDatabaseProvider(){
+        return new DatabaseProvider();
     }
 
     @Provides
-    public IBundleDao provideBundleDao(SQLiteDatabase db){
-        return new BundleDao(db);
+    public IBundleDao provideBundleDao(IDatabaseProvider dbProvider){
+        return new BundleDao(dbProvider);
     }
 
 }

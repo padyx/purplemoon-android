@@ -457,15 +457,16 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_LOCATION_COUNTRYID = "country";
     public static final String JSON_LOCATION_NAME = "name";
 
+    // TODO pbn move this out of constants
     public static enum PhotoVoteVerdict {
-        NEUTRAL_NEGATIVE(0, R.string.PhotoVote0_NeutralNegative),
-        CUTE_ATTRACTIVE(1, R.string.PhotoVote1_Cute),
-        VERY_ATTRACTIVE(2, R.string.PhotoVote2_VeryCute),
-        STUNNING(3, R.string.PhotoVote3_Stunning);
-
-        private PhotoVoteVerdict(int apiValue, int resourceId) {
+        NEUTRAL_NEGATIVE(0, R.string.PhotoVote0_NeutralNegative, R.drawable.vote0),
+        CUTE_ATTRACTIVE(1, R.string.PhotoVote1_Cute, R.drawable.vote1),
+        VERY_ATTRACTIVE(2, R.string.PhotoVote2_VeryCute, R.drawable.vote2),
+        STUNNING(3, R.string.PhotoVote3_Stunning, R.drawable.vote3);
+        private PhotoVoteVerdict(int apiValue, int resourceId, int iconId) {
             m_apiValue = apiValue;
             m_resourceId = resourceId;
+            m_iconId = iconId;
         }
 
         public int getAPIValue() {
@@ -476,6 +477,11 @@ public class PurplemoonAPIConstantsV1 {
             return m_resourceId;
         }
 
+        public int getIconId() {
+            return m_iconId;
+        }
+
+        private final int m_iconId;
         private final int m_apiValue;
         private final int m_resourceId;
 

@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
@@ -127,6 +128,7 @@ public class PhotoVoteListFragment extends BaseListFragment {
 
         private class ViewHolder {
             ImageView imgV;
+            ImageView voteResultIcon;
             TextView usernameLbl;
             TextView voteLbl;
             TextView dateLbl;
@@ -147,6 +149,7 @@ public class PhotoVoteListFragment extends BaseListFragment {
                 holder.usernameLbl = (TextView) view.findViewById(R.id.photovotelist_item_usernameLbl);
                 holder.voteLbl = (TextView) view.findViewById(R.id.photovotelist_item_voteLbl);
                 holder.dateLbl = (TextView) view.findViewById(R.id.photovotelist_item_dateLbl);
+                holder.voteResultIcon = (ImageView)view.findViewById(R.id.photovotelist_voteIcon);
                 v = view;
                 v.setTag(holder);
             } else {
@@ -170,7 +173,9 @@ public class PhotoVoteListFragment extends BaseListFragment {
                 holder.imgV.setImageResource(R.drawable.social_person);
                 holder.usernameLbl.setText(R.string.Unknown);
             }
-            holder.voteLbl.setText(item.getVerdict().getResourceId());
+            PurplemoonAPIConstantsV1.PhotoVoteVerdict verdict = item.getVerdict();
+            holder.voteLbl.setText(verdict.getResourceId());
+            holder.voteResultIcon.setImageResource(verdict.getIconId());
             holder.dateLbl.setText(DateUtility.getMediumDateString(item.getTimestamp()));
             return v;
         }
