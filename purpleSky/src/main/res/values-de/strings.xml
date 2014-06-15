@@ -237,4 +237,10 @@
     <string name="NoDataFound">Keine Daten gefunden</string>
     <string name="NoResultsFound">Keine Resultate gefunden</string>
     <string name="Age">Alter</string>
+
+    <string-array name="radar_sex_attraction">
+        <item>Männer &amp; Frauen</item>
+        <item>Nur Männer</item>
+        <item>Nur Frauen</item>
+    </string-array>
 </resources>

@@ -240,6 +240,5 @@
     <string name="NoDataFound">No data found</string>
     <string name="NoResultsFound">No results found</string>
     <string name="Age">Age</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
