@@ -1,11 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,6 +17,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -47,11 +52,6 @@ import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.squareup.picasso.Picasso;
-
-import javax.inject.Inject;
 
 public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Holder<List<UserMessageHistoryBean>>> {
 
@@ -328,8 +328,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
             if (m_listView != null) {
                 m_listView.setAdapter(new ErrorAdapter(R.string.UnknownErrorOccured, getSherlockActivity()));
             }
-            return;
-        }        
+        }
     }
 
     private ArrayList<UserMessageHistoryBean> getAdapterData() {

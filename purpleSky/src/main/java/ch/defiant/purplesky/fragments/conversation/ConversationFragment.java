@@ -600,7 +600,6 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
             default:
                 throw new IllegalArgumentException("Unknwon loader finished");
         }
-        return;
     }
 
     private void loaderExceptionHandling(Loader<?> loader, Exception e) {

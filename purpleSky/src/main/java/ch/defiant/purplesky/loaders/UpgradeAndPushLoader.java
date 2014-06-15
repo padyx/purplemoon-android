@@ -88,11 +88,9 @@ public class UpgradeAndPushLoader extends SimpleAsyncLoader<Object> {
             }
         }catch(IOException ioe){
             Log.i(TAG, "Registering for Google cLoud Messaging failed: IOException", ioe);
-            return;
         } catch (PurpleSkyException e) {
             Log.w(TAG, "Registering for Google Clous Messaging failed with unexpected error", e);
-            return;
-        }        
+        }
     }
 
 }

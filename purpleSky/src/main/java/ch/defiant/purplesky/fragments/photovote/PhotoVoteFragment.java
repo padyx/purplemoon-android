@@ -178,14 +178,10 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
                 Exception e = result.getException();
                 if (e instanceof WrongCredentialsException) {
                     PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
-                    return;
                 } else if (e instanceof IOException) {
                     Toast.makeText(getSherlockActivity(), R.string.ErrorOccurred_NoNetwork, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else {
+                } else {
                     Toast.makeText(getSherlockActivity(), R.string.AnErrorOccurred, Toast.LENGTH_SHORT).show();
-                    return;
                 }
             }
         }

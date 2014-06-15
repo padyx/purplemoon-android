@@ -11,7 +11,7 @@ public class StringUtility {
     }
 
     public static boolean isNotNullOrEmpty(String s) {
-        return (s != null) && (EMPTY_STRING.equals(s) == false);
+        return (s != null) && (!EMPTY_STRING.equals(s));
     }
 
     public static boolean hasText(String s) {

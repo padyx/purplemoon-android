@@ -1,10 +1,5 @@
 package ch.defiant.purplesky.dialogs;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.location.Address;
@@ -33,12 +28,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
-
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class ChooseLocationDialogFragment extends SherlockDialogFragment implements LoaderCallbacks<List<Address>>, Callback {
 
@@ -112,7 +113,6 @@ public class ChooseLocationDialogFragment extends SherlockDialogFragment impleme
                     returnResult(loc);
                 } catch (IllegalStateException e) {
                     // Nop
-                    return;
                 }
             }
         });
