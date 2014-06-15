@@ -75,7 +75,7 @@
             android:layout_alignParentRight="true" />
 
         <ImageView
-            android:id="@+id/uploadphoto:dialog_fragment_imgView"
+            android:id="@+id/uploadphoto_dialog_fragment_imgView"
             android:contentDescription="@string/Accessibility_PictureForUpload"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
