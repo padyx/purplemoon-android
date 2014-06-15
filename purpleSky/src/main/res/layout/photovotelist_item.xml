@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:paddingTop="4dp"
@@ -14,6 +14,7 @@
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:src="@drawable/picture_placeholder" 
         />
 
@@ -38,14 +39,24 @@
         android:layout_below="@+id/photovotelist_item_usernameLbl"
         android:text="TextView" />
 
+    <ImageView
+        android:id="@+id/photovotelist_voteIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/vote1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
     <TextView
         android:id="@+id/photovotelist_item_dateLbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/photovotelist_item_voteLbl"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/photovotelist_item_voteLbl"
+        android:layout_marginRight="8dp"
         android:gravity="right"
-        android:text="TextView" />
+        android:text="TextView"
+        android:layout_below="@+id/photovotelist_item_voteLbl"
+        android:layout_toLeftOf="@+id/photovotelist_voteIcon" />
+
 
 </RelativeLayout>

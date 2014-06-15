@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import ch.defiant.purplesky.constants.DatabaseConstants;
 import ch.defiant.purplesky.db.IBundleDao;
+import ch.defiant.purplesky.db.IDatabaseProvider;
 
 /**
  * Implementation to store bundles in the database.
@@ -29,11 +30,11 @@ class BundleDao implements IBundleDao {
     private static final String TYPE_FLOAT = "F";
     private static final String TYPE_DOUBLE= "D";
 
-    private final SQLiteDatabase db;
+    private final IDatabaseProvider dbProvider;
 
     @Inject
-    public BundleDao(SQLiteDatabase db){
-        this.db = db;
+    public BundleDao(IDatabaseProvider db){
+        this.dbProvider = db;
     }
 
     @Override
@@ -41,6 +42,8 @@ class BundleDao implements IBundleDao {
         if(b==null){
             return;
         }
+        SQLiteDatabase db = dbProvider.getWritableDatabase();
+
         db.beginTransaction();
         try {
             db.delete(DatabaseConstants.TABLE_BUNDLESTORE, DatabaseConstants.BUNDLESTORE_OWNER + "=?", new String[]{owner});
@@ -74,12 +77,14 @@ class BundleDao implements IBundleDao {
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
+            db.close();
         }
     }
 
     @Override
     public Bundle restore(String owner) {
         Cursor cursor = null;
+        SQLiteDatabase db = dbProvider.getReadableDatabase();
         try {
             cursor = db.query(false, DatabaseConstants.TABLE_BUNDLESTORE,
                     new String[]{
@@ -110,6 +115,7 @@ class BundleDao implements IBundleDao {
             if(cursor != null){
                 cursor.close();
             }
+            db.close();
         }
     }
 

@@ -9,4 +9,5 @@ public class PreferenceUtility {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(PurpleSkyApplication.get());
         return sharedPref;
     }
+
 }
