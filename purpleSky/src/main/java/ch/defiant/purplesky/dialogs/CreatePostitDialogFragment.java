@@ -1,10 +1,5 @@
 package ch.defiant.purplesky.dialogs;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -25,6 +20,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.PersistantModel;
@@ -38,8 +39,6 @@ import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
-
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 public class CreatePostitDialogFragment extends BaseDialogFragment implements LoaderCallbacks<Holder<List<Pair<Integer, String>>>> {
 
@@ -117,7 +116,6 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
                 if (selectedItem == Spinner.INVALID_POSITION
                         || (adapter.getItem(selectedItem) != null && adapter.getItem(selectedItem).first == Spinner.INVALID_POSITION)) {
                     Toast.makeText(getSherlockActivity(), "Must select a valid post-it", Toast.LENGTH_SHORT).show();
-                    return;
                 } else {
                     Pair<Integer, String> item = adapter.getItem(selectedItem);
                     if (item != null) {

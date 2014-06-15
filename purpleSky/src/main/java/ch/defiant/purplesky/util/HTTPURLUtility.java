@@ -1,5 +1,13 @@
 package ch.defiant.purplesky.util;
 
+import android.util.Base64;
+import android.util.Base64OutputStream;
+import android.util.Log;
+import android.util.Pair;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.protocol.HTTP;
+
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -17,13 +25,6 @@ import java.util.Locale;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.protocol.HTTP;
-
-import android.util.Base64;
-import android.util.Base64OutputStream;
-import android.util.Log;
-import android.util.Pair;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PersistantModel;
@@ -291,7 +292,7 @@ public class HTTPURLUtility {
         // Case(s) moved
             case HttpURLConnection.HTTP_MOVED_TEMP:
             case HttpURLConnection.HTTP_MOVED_PERM: {
-                if (followRedirect == false) {
+                if (!followRedirect) {
                     throw new IOException("Unexpected/unallowed redirect when at resource '" + url + "'");
                 }
 
