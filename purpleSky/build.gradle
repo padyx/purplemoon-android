@@ -13,11 +13,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+        }
+
         release {
+            debuggable false
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
 }
 
 dependencies {
@@ -28,9 +34,9 @@ dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:+'
     compile 'com.squareup.picasso:picasso:2.2.0'
+    compile 'commons-io:commons-io:2.4'
 
     compile 'com.squareup.dagger:dagger:1.2.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
 
-    compile files('libs/commons-io-2.1.jar')
 }
