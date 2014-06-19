@@ -23,10 +23,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.beans.NoMorePhotoVoteBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.PhotoVoteVerdict;
 import ch.defiant.purplesky.core.PersistantModel;
+import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.fragments.BaseFragment;
@@ -115,7 +116,7 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
             public Holder<PhotoVoteBean> loadInBackground() {
                 m_loadFinished.set(false);
                 if (m_currentBean != null && args.containsKey(VERDICT)) {
-                    m_currentBean.setVerdict(PhotoVoteVerdict.getByApiValue(args.getInt(VERDICT)));
+                    m_currentBean.setVerdict(APIUtility.toPhotoVoteVerdict(args.getInt(VERDICT)));
                 }
                 try {
                     int remaining = 0;

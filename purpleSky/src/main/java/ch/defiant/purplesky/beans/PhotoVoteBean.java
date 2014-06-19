@@ -3,7 +3,7 @@ package ch.defiant.purplesky.beans;
 import java.io.Serializable;
 import java.util.Date;
 
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.PhotoVoteVerdict;
+import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 
 public class PhotoVoteBean implements Serializable {
 

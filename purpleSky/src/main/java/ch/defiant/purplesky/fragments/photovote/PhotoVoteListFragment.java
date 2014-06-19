@@ -28,6 +28,7 @@ import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
+import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.ProfileStatus;
 import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.DisplayProfileFragment;
@@ -173,7 +174,7 @@ public class PhotoVoteListFragment extends BaseListFragment {
                 holder.imgV.setImageResource(R.drawable.social_person);
                 holder.usernameLbl.setText(R.string.Unknown);
             }
-            PurplemoonAPIConstantsV1.PhotoVoteVerdict verdict = item.getVerdict();
+            PhotoVoteVerdict verdict = item.getVerdict();
             holder.voteLbl.setText(verdict.getResourceId());
             holder.voteResultIcon.setImageResource(verdict.getIconId());
             holder.dateLbl.setText(DateUtility.getMediumDateString(item.getTimestamp()));
