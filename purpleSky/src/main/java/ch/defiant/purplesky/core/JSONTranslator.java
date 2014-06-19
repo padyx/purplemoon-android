@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 import ch.defiant.purplesky.BuildConfig;
+import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.BasicUser;
 import ch.defiant.purplesky.beans.LocationBean;
@@ -36,7 +37,6 @@ import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.PhotoVoteVerdict;
 import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageType;
@@ -784,7 +784,7 @@ public class JSONTranslator {
         b.setPosX(obj.optDouble(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_XPOS_FLOAT));
         b.setPosY(obj.optDouble(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_YPOS_FLOAT));
         b.setTimestamp(DateUtility.getFromUnixTime(obj.optLong(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_CREATED)));
-        b.setVerdict(PhotoVoteVerdict.getByApiValue(obj.optInt(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT)));
+        b.setVerdict(APIUtility.toPhotoVoteVerdict(obj.optInt(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT)));
         if (userclazz != null && obj.has(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_USER)) {
             b.setUser(translateToUser(obj.optJSONObject(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_USER), userclazz));
         }

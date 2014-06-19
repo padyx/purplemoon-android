@@ -1195,7 +1195,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         } else {
             ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
             body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VOTEID, String.valueOf(bean.getVoteId())));
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT, String.valueOf(bean.getVerdict().getAPIValue())));
+            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT, APIUtility.translatePhotoVoteVerdict(bean.getVerdict())));
             HTTPURLResponseHolder resp = performPOSTRequestForResponseHolder(u, body, null);
             try {
                 return JSONTranslator.translateToPhotoVoteBean(new JSONObject(resp.getOutput()), MinimalUser.class);
@@ -1331,7 +1331,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         URL url = new URL(sb.toString());
         JSONObject result = performGETRequestForJSONObject(url);
         long check = result.optLong(PurplemoonAPIConstantsV1.JSON_LASTCHECK_TIMESTAMP, -1);
-        JSONArray postits = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_PHOTOVOTES_VOTES);
+        JSONArray votes = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_PHOTOVOTES_VOTES);
         JSONArray users = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
 
         Map<String, MinimalUser> userMap = JSONTranslator.translateToUsers(users, MinimalUser.class);
@@ -1342,12 +1342,12 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             }
         }
 
-        if (postits == null) {
+        if (votes == null) {
             return Collections.emptyList();
         }
         ArrayList<PhotoVoteBean> list = new ArrayList<PhotoVoteBean>();
-        for (int i = 0, size = postits.length(); i < size; i++) {
-            JSONObject object = postits.optJSONObject(i);
+        for (int i = 0, size = votes.length(); i < size; i++) {
+            JSONObject object = votes.optJSONObject(i);
             if (object == null) {
                 continue;
             }

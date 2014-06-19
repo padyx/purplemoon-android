@@ -450,50 +450,18 @@ public class PurplemoonAPIConstantsV1 {
 
     public static final String JSON_PHOTOVOTE_TYPE = "type";
     public static final String JSON_PHOTOVOTE_VERDICT = "verdict";
-    public static final String JSON_PHOTOVOTE_CREATED = "created";
+    // Verdicts
+    public static final int JSON_PHOTOVOTE_VERDICT_NEUTRAL_NEGATIVE = 0;
+    public static final int JSON_PHOTOVOTE_VERDICT_CUTE_ATTRACTIVE = 1;
+    public static final int JSON_PHOTOVOTE_VERDICT_VERY_ATTRACTIVE = 2;
+    public static final int JSON_PHOTOVOTE_VERDICT_STUNNING = 3;
 
+    public static final String JSON_PHOTOVOTE_CREATED = "created";
     public static final String JSON_LOCATION_LAT = "lat";
     public static final String JSON_LOCATION_LONG = "lng";
     public static final String JSON_LOCATION_COUNTRYID = "country";
+
     public static final String JSON_LOCATION_NAME = "name";
-
-    // TODO pbn move this out of constants
-    public static enum PhotoVoteVerdict {
-        NEUTRAL_NEGATIVE(0, R.string.PhotoVote0_NeutralNegative, R.drawable.vote0),
-        CUTE_ATTRACTIVE(1, R.string.PhotoVote1_Cute, R.drawable.vote1),
-        VERY_ATTRACTIVE(2, R.string.PhotoVote2_VeryCute, R.drawable.vote2),
-        STUNNING(3, R.string.PhotoVote3_Stunning, R.drawable.vote3);
-        private PhotoVoteVerdict(int apiValue, int resourceId, int iconId) {
-            m_apiValue = apiValue;
-            m_resourceId = resourceId;
-            m_iconId = iconId;
-        }
-
-        public int getAPIValue() {
-            return m_apiValue;
-        }
-
-        public int getResourceId() {
-            return m_resourceId;
-        }
-
-        public int getIconId() {
-            return m_iconId;
-        }
-
-        private final int m_iconId;
-        private final int m_apiValue;
-        private final int m_resourceId;
-
-        public static PhotoVoteVerdict getByApiValue(int apiValue) {
-            for (PhotoVoteVerdict v : PhotoVoteVerdict.values()) {
-                if (v.getAPIValue() == apiValue) {
-                    return v;
-                }
-            }
-            throw new IllegalArgumentException("Invalid photovote verdict!");
-        }
-    }
 
     public static final String POWERUSER_STATUS_URL = "/me/supporter";
     public static final String JSON_POWERUSER_EXPIRY = "power_user";
