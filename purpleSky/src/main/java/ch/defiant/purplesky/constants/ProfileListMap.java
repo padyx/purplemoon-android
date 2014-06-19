@@ -111,8 +111,6 @@ public final class ProfileListMap {
         aboutProfile.add(ProfileDetails.PROFILE_LASTUPDATE_DATE);
         aboutProfile.add(ProfileDetails.PROFILE_CREATION_DATE);
 
-        // TODO ...
-
         /*
          * List of all elements with special handling
          */
