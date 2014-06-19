@@ -128,7 +128,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
                 if (item.getUserBean() != null) {
                     // Username
                     holder.usernameLbl.setText(item.getUserBean().getUsername());
-                    URL url = UserService.getUserPreviewPicturUrl(item.getUserBean(),
+                    URL url = UserService.getUserPreviewPictureUrl(item.getUserBean(),
                             UserService.UserPreviewPictureSize.getPictureForPx(imgSize));
                     if (url != null) {
                         Picasso.with(getActivity()).load(url.toString()).placeholder(R.drawable.social_person).

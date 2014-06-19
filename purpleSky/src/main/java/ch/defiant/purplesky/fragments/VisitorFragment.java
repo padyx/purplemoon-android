@@ -210,7 +210,7 @@ public class VisitorFragment extends BaseListFragment {
                 if (user != null) {
                     holder.userNameLbl.setText(user.getUsername());
 
-                    URL url = UserService.getUserPreviewPicturUrl(user, UserService.UserPreviewPictureSize.getPictureForPx(px));
+                    URL url = UserService.getUserPreviewPictureUrl(user, UserService.UserPreviewPictureSize.getPictureForPx(px));
                     if (url != null) {
                         Picasso.with(getActivity()).load(url.toString()).error(R.drawable.no_image).
                                 placeholder(R.drawable.social_person).resize(imgSize, imgSize).centerCrop().into(holder.userImgV);

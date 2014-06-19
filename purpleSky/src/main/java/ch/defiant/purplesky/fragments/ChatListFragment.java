@@ -137,7 +137,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
                 int imgPixelSize = LayoutUtility.dpToPx(getResources(), 50);
                 UserPreviewPictureSize picturesize = UserService.UserPreviewPictureSize.getPictureForPx(imgPixelSize);
                 if(o.getUserBean() != null){
-                    url = UserService.getUserPreviewPicturUrl(o.getUserBean(), picturesize);
+                    url = UserService.getUserPreviewPictureUrl(o.getUserBean(), picturesize);
                 } else if (o.getCachedProfilePictureUrl() != null){
                     url = UserService.getUserPreviewPictureUrl(o.getCachedProfilePictureUrl(), picturesize);
                 } 

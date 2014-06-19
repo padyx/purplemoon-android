@@ -253,7 +253,7 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
             holder.usernameView.setText(user.getUsername());
             holder.ageView.setText(user.getAge().toString());
 
-            URL url = UserService.getUserPreviewPicturUrl(user, UserService.UserPreviewPictureSize.getPictureSizeForDpi(100, getResources()));
+            URL url = UserService.getUserPreviewPictureUrl(user, UserService.UserPreviewPictureSize.getPictureSizeForDpi(100, getResources()));
 
             if(url == null) {
                 Picasso.with(getActivity()).load(R.drawable.person).into(holder.imgView);
