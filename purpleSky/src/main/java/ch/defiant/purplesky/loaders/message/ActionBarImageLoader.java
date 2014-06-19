@@ -66,7 +66,7 @@ public class ActionBarImageLoader extends SimpleAsyncLoader<Drawable> {
         int imgSize = LayoutUtility.dpToPx(getContext().getResources(), 50);
         try{
             MinimalUser user = apiAdapter.getMinimalUserData(userId, false);
-            URL url = UserService.getUserPreviewPicturUrl(user, UserPreviewPictureSize.getPictureForPx(imgSize));
+            URL url = UserService.getUserPreviewPictureUrl(user, UserPreviewPictureSize.getPictureForPx(imgSize));
             if(url != null){
                 P_Target target = new P_Target();
                 Picasso.with(PurpleSkyApplication.get()).load(url.toString()).

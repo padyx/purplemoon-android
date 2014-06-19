@@ -233,7 +233,7 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
 
         String picture = DRAWABLE_NOPICTURE_URL;
         UserPreviewPictureSize size = UserPreviewPictureSize.getPictureSizeForDpi(DRAWABLE_NOPICTURE_BASESIZE, getResources());
-        URL previewPic = UserService.getUserPreviewPicturUrl(user, size);
+        URL previewPic = UserService.getUserPreviewPictureUrl(user, size);
         if (previewPic != null) {
             picture = previewPic.toString();
         }

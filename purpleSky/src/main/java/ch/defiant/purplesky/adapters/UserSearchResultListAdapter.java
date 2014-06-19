@@ -76,7 +76,7 @@ public class UserSearchResultListAdapter extends ArrayAdapter<MinimalUser> {
         if (item != null) {
             holder.userNameLbl.setText(item.getUsername());
             int imgSize = LayoutUtility.dpToPx(getContext().getResources(), 75);
-            URL url = UserService.getUserPreviewPicturUrl(item, UserService.UserPreviewPictureSize.getPictureForPx(imgSize));
+            URL url = UserService.getUserPreviewPictureUrl(item, UserService.UserPreviewPictureSize.getPictureForPx(imgSize));
             if (url != null) {
                 Picasso.with(getContext()).load(url.toString()).placeholder(R.drawable.social_person).
                         error(R.drawable.no_image).resize(imgSize, imgSize).centerCrop().into(holder.userImgV);

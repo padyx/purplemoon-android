@@ -178,7 +178,7 @@ public class PostitFragment extends BaseListFragment {
             MinimalUser sender = item.getSender();
             if (sender != null) {
                 holder.usernameLbl.setText(sender.getUsername());
-                URL url = UserService.getUserPreviewPicturUrl(sender,
+                URL url = UserService.getUserPreviewPictureUrl(sender,
                         UserService.UserPreviewPictureSize.getPictureForPx(px));
                 if (url != null) {
                     Picasso.with(getActivity()).load(url.toString()).placeholder(R.drawable.social_person).

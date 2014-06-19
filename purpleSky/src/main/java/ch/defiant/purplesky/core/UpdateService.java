@@ -214,7 +214,7 @@ public class UpdateService extends IntentService {
         // FIXME Image for icon
 
         // // TODO This is a fixed size...Maybe extract to a constant (with all other callers of getPictureSize)
-        // URL u = UserService.getInstance().getUserPreviewPicturUrl(userBean, UserPreviewPictureSize.getPictureSizeForDpi(50, getResources()));
+        // URL u = UserService.getInstance().getUserPreviewPictureUrl(userBean, UserPreviewPictureSize.getPictureSizeForDpi(50, getResources()));
         // if (u != null) {
         // Picasso.with(this).
         // CacheableBitmapDrawable bitmap = ImageManager.getInstance().getCachedBitmap(u.toString());

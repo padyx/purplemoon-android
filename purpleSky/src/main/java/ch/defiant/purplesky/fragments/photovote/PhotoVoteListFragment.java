@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
@@ -161,7 +160,7 @@ public class PhotoVoteListFragment extends BaseListFragment {
             int imgSize = LayoutUtility.dpToPx(getResources(), 50);
             PhotoVoteBean item = getItem(position);
             if (item != null && item.getUser() != null) {
-                URL u = UserService.getUserPreviewPicturUrl(item.getUser(), UserPreviewPictureSize.getPictureForPx(imgSize));
+                URL u = UserService.getUserPreviewPictureUrl(item.getUser(), UserPreviewPictureSize.getPictureForPx(imgSize));
                 holder.usernameLbl.setText(item.getUser().getUsername());
                 if (u != null) {
                     holder.imgV.setTag(u.toString());

@@ -293,8 +293,7 @@ public class UserService {
         return System.currentTimeMillis() - user.getRetrievalTime() <= user.getExpiryDuration();
     }
 
-    // TODO Fix typo
-    public static URL getUserPreviewPicturUrl(MinimalUser u, UserPreviewPictureSize size) {
+    public static URL getUserPreviewPictureUrl(MinimalUser u, UserPreviewPictureSize size) {
         if (u.getProfilePictureURLDirectory() == null) {
             Log.d(TAG, "No preview picture URL available for user with id " + u.getUserId());
             return null;
