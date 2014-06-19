@@ -1,3 +1,4 @@
 build/
 .gradle/
 **/Thumbs.db
+local.properties
