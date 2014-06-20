@@ -1,9 +1,9 @@
 package ch.defiant.purplesky.enums;
 
-import static ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE;
-import static ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE;
+import static ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE;
+import static ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 // TODO pbn Remove the API Constants use here

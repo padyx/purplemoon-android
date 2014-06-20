@@ -40,8 +40,7 @@ import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.MessageRetrievalRestrictionType;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.constants.SecureConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.ErrorTranslator;
@@ -62,7 +61,7 @@ import ch.defiant.purplesky.util.HTTPURLUtility;
 import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-import static ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.REQUEST_DIVIDER;
+import static ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.REQUEST_DIVIDER;
 
 /**
  * Implementation of the API Adapter for Purplemoon
@@ -416,7 +415,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
     @Override
     public List<UserMessageHistoryBean> getRecentContacts(Integer resultCount, Integer startAt,
-            PurplemoonAPIConstantsV1.MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException {
+            MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException {
         if (restrict == null) {
             restrict = MessageRetrievalRestrictionType.LAST_CONTACT;
         }

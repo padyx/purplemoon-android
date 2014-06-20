@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
@@ -21,8 +19,8 @@ import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.util.UserMessageHistoryBeanLastContactComparator;
 import ch.defiant.purplesky.constants.DatabaseConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.MessageRetrievalRestrictionType;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.IMessageService;

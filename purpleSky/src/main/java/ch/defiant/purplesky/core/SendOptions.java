@@ -2,7 +2,7 @@ package ch.defiant.purplesky.core;
 
 import java.util.Date;
 
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 
 public class SendOptions {
 

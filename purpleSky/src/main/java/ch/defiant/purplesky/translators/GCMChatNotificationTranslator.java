@@ -31,7 +31,7 @@ import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.JSONTranslator;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.fragments.ChatListFragment;

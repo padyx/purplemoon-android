@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import ch.defiant.purplesky.BuildConfig;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.translators.GCMChatNotificationTranslator;
 import ch.defiant.purplesky.translators.GCMNewsNotificationTranslator;

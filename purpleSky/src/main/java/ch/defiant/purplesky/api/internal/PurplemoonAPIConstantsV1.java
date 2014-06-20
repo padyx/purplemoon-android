@@ -1,8 +1,9 @@
-package ch.defiant.purplesky.constants;
+package ch.defiant.purplesky.api.internal;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
+// TODO Make this package-private
 public class PurplemoonAPIConstantsV1 {
 
     public static final String BASE_URL = "https://api.ppmoon.com/v1";
@@ -120,7 +121,6 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_PICTUREFOLDER_PICTURE_COUNT = "number";
     public static final String JSON_PICTUREFOLDER_PASSPROTECTED_BOOL = "password_protected";
     public static final String JSON_PICTUREFOLDER_ACCESSGRANTED_BOOL = "access_granted";
-    public static final int PICTUREFOLDER_PICTURELIMIT = 100;
 
     public static final String JSON_PICTUREFOLDER_PICTURE_ARRAY = "pictures";
     public static final String JSON_PICTUREFOLDER_PICTURE_ID = "pic_id";
@@ -199,36 +199,6 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_MESSAGE_SEND_UNREAD_MSGS = "unread_msgs";
     public static final String JSON_MESSAGE_SEND_NEWMSG = "new_msg";
 
-    /**
-     * Restriction enum for restricting or reordering the retrieved chats.
-     * 
-     * @see IPurplemoonAPIAdapter#getRecentContacts(Integer, Integer, MessageRetrievalRestrictionType)
-     */
-    public enum MessageRetrievalRestrictionType {
-        /**
-		 * 
-		 */
-        UNREAD_FIRST(MESSAGE_CHATLIST_ORDER_UNREADFIRST),
-        /**
-		 * 
-		 */
-        UNOPENED_ONLY(MESSAGE_CHATLIST_ORDER_UNREADONLY),
-        /**
-		 * 
-		 */
-        LAST_CONTACT(MESSAGE_CHATLIST_ORDER_LASTCONTACT);
-
-        private final String m_apiValue;
-
-        private MessageRetrievalRestrictionType(String apiValue) {
-            m_apiValue = apiValue;
-        }
-
-        public String getApiValue() {
-            return m_apiValue;
-        }
-    }
-
     /*
      * Image related
      */
@@ -277,7 +247,6 @@ public class PurplemoonAPIConstantsV1 {
     public static final String POSTIT_CREATE_POSTIT_PROFILEID = "profile_id";
     public static final String POSTIT_CREATE_POSTIT_VALUE = "postit_value";
     public static final String POSTIT_CREATE_POSTIT_CUSTOMTEXT = "postit_text";
-    public static final int POSTIT_CUSTOM_MAXLENGTH = 50;
 
     /*
      * Online Status related
@@ -347,38 +316,6 @@ public class PurplemoonAPIConstantsV1 {
     public static final String USERSEARCH_ORDER_DISTANCE = "distance";
 
     public static final int USERSEARCH_MAXDIST_NONPOWERUSER = 29;
-
-    public static enum UserSearchOrder {
-        LAST_UPDATED("last_updated", PurpleSkyApplication.get().getString(R.string.LastUpdated)),
-        LAST_ONLINE("last_online", PurpleSkyApplication.get().getString(R.string.LastOnline)),
-        CREATED("created", PurpleSkyApplication.get().getString(R.string.Created)),
-        DISTANCE("distance", PurpleSkyApplication.get().getString(R.string.Distance));
-
-        private String m_apiValue;
-        private String m_localizedString;
-
-        private UserSearchOrder(String apiValue, String localizedString) {
-            setApiValue(apiValue);
-            setLocalizedString(localizedString);
-        }
-
-        public String getLocalizedString() {
-            return m_localizedString;
-        }
-
-        private void setLocalizedString(String localizedString) {
-            m_localizedString = localizedString;
-        }
-
-        public String getApiValue() {
-            return m_apiValue;
-        }
-
-        private void setApiValue(String apiValue) {
-            m_apiValue = apiValue;
-        }
-
-    }
 
     public static class ProfileDetails {
         public static final String BIRTHDATE = "birthdate";

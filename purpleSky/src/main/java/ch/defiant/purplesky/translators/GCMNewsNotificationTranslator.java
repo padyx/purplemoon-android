@@ -17,7 +17,7 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;

@@ -35,7 +35,7 @@ import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.ProfileListMap;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.ProfileDetails;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;

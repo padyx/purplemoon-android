@@ -41,7 +41,6 @@ public class GalleryPictureFragment extends SherlockFragment {
 
         createGUI(inflated, m_picture);
 
-        // TODO Auto-generated method stub
         return inflated;
     }
 
