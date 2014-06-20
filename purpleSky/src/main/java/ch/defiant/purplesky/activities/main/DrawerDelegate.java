@@ -1,8 +1,5 @@
 package ch.defiant.purplesky.activities.main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,6 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity.NavigationDrawerEntries;
@@ -36,15 +39,12 @@ import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
 import ch.defiant.purplesky.fragments.PostitTabbedFragment;
-import ch.defiant.purplesky.fragments.RadarFragment;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.VisitorTabbedFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteTabbedFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchTabbedFragment;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
-
-import com.squareup.picasso.Picasso;
 
 /**
  * Delegate handling drawer and navigation-related tasks.
