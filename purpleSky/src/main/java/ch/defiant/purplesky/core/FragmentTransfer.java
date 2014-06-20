@@ -1,9 +1,6 @@
 package ch.defiant.purplesky.core;
 
-import java.util.Map;
-
 import ch.defiant.purplesky.enums.SearchCriteria;
-import ch.defiant.purplesky.fragments.RadarFragment;
 
 /**
  * Singleton to pass data between fragments
@@ -23,11 +20,6 @@ public class FragmentTransfer {
      */
     private FragmentTransfer() {
     }
-
-    /**
-     * Used for transfer from/to {@link RadarFragment}
-     */
-    public Map<SearchCriteria, Object> m_searchFilterValues;
 
     public SearchCriteria m_chosenCriterium;
 }

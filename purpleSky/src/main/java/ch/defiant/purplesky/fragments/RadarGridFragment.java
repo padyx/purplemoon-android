@@ -182,7 +182,6 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
 //                }
                 opts.setUserClass(MinimalUser.class);
                 opts.setNumber(100);
-//                SearchCriteriaTranslator.setSearchCriteria(opts, m_filterValues);
                 // If there is no filter set, require them to be online within last month...
                 opts.setLastOnline(NVLUtility.nvl(opts.getLastOnline(), UserSearchOptions.LastOnline.PAST_MONTH));
                 opts.setSearchOrder(UserSearchOrder.DISTANCE);
