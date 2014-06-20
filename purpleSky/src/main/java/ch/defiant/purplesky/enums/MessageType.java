@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.enums;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.util.CompareUtility;
 

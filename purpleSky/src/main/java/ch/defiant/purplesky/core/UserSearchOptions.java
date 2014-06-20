@@ -1,22 +1,15 @@
 package ch.defiant.purplesky.core;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.util.Pair;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.UserSearchOrder;
+import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.util.BundleUtil;

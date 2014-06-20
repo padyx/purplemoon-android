@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import ch.defiant.purplesky.beans.util.Pair;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;

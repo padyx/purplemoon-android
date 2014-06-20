@@ -2,7 +2,7 @@ package ch.defiant.purplesky.enums;
 
 import android.content.res.Resources;
 import android.util.TypedValue;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 
 public enum UserPictureSize {
 	MINUSCULE(PurplemoonAPIConstantsV1.USERPICTURE_URLPOSTFIX_MINUSCULE, 50), 

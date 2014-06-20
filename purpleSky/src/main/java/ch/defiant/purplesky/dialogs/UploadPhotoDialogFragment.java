@@ -38,7 +38,7 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.NullPictureFolder;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.UploadBean;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;

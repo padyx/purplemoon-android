@@ -9,7 +9,7 @@ import android.content.Context;
 import android.util.Log;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.Errors;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.Errors;
 import ch.defiant.purplesky.exceptions.PoweruserException;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;

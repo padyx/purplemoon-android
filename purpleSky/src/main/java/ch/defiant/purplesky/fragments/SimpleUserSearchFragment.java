@@ -26,7 +26,7 @@ import ch.defiant.purplesky.adapters.SpinnerStateElement;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.UserSearchOrder;
+import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserSearchOptions.SearchType;

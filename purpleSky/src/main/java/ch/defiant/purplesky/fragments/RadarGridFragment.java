@@ -32,12 +32,12 @@ import javax.inject.Inject;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.ResultConstants;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.db.IBundleDao;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
+import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
@@ -185,7 +185,7 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
 //                SearchCriteriaTranslator.setSearchCriteria(opts, m_filterValues);
                 // If there is no filter set, require them to be online within last month...
                 opts.setLastOnline(NVLUtility.nvl(opts.getLastOnline(), UserSearchOptions.LastOnline.PAST_MONTH));
-                opts.setSearchOrder(PurplemoonAPIConstantsV1.UserSearchOrder.DISTANCE);
+                opts.setSearchOrder(UserSearchOrder.DISTANCE);
 
                 try {
                     List<MinimalUser> result = apiAdapter.searchUser(opts);

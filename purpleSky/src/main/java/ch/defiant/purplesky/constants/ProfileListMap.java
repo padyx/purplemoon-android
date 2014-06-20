@@ -12,7 +12,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.ProfileDetails;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 /**

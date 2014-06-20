@@ -23,7 +23,7 @@ import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.StringUtility;

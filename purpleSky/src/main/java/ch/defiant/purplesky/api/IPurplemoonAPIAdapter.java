@@ -20,8 +20,7 @@ import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.constants.PurplemoonAPIConstantsV1.MessageRetrievalRestrictionType;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.core.SendOptions;
@@ -139,7 +138,7 @@ public interface IPurplemoonAPIAdapter {
      * @param startAt
      *            At which user to start (paging). Starts at first, if null
      * @param restrict
-     *            Determine order of the retrieved beans. Default is {@link MessageRetrievalRestrictionType#LAST_CONTACT}
+     *            Determine order of the retrieved beans. Default is {@link ch.defiant.purplesky.enums.MessageRetrievalRestrictionType#LAST_CONTACT}
      * @param since_date
      *            Restricts to contacts updated this date. Null: No restriction
      * @return List of Beans, recent contacts come first
@@ -147,7 +146,7 @@ public interface IPurplemoonAPIAdapter {
      * @throws PurpleSkyException
      */
     public List<UserMessageHistoryBean> getRecentContacts(Integer resultCount, Integer startAt,
-            PurplemoonAPIConstantsV1.MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException;
+            MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException;
 
     /**
      * Retrieve the status of the conversation with the user.
