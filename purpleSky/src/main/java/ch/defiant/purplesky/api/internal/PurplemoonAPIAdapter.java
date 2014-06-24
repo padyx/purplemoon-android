@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ import ch.defiant.purplesky.core.SendOptions.UnreadHandling;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.OnlineStatus;
+import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.util.DateUtility;
@@ -73,13 +75,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     private static final String TAG = PurplemoonAPIAdapter.class.getSimpleName();
     private static PurplemoonAPIAdapter m_instance;
 
-    public static PurplemoonAPIAdapter getInstance() {
-        if (m_instance == null) {
-            m_instance = new PurplemoonAPIAdapter();
-        }
-        return m_instance;
-    }
-
     @Override
     public MinimalUser getMinimalUserData(String userid, boolean withOnlineStatus) throws IOException, PurpleSkyException {
         if (userid == null)
@@ -94,8 +89,8 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     private String getOAuthToken(String username, String password) throws IOException, WrongCredentialsException {
         URL requestUrl = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.OAUTH_TOKENREQUEST_URL);
         ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_ID, SecureConstants.CLIENT_ID));
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_SECRET, SecureConstants.CLIENT_SECRET));
+        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_ID, SecureConstants.get("api.id")));
+        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_SECRET, SecureConstants.get("api.sec")));
         body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE,
                 PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE_PASSWORD));
         body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_USERNAME, username));
@@ -1293,6 +1288,20 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         } else {
             return false;
         }
+    }
+
+    public void reportUser(String profileId, UserReportReason reason, String description) throws IOException, PurpleSkyException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
+        sb.append(PurplemoonAPIConstantsV1.REPORT_URL);
+        sb.append(profileId);
+
+        BasicNameValuePair param1 = new BasicNameValuePair(PurplemoonAPIConstantsV1.REPORT_REASON_PARAM, APIUtility.translateReportReason(reason));
+        BasicNameValuePair param2 = new BasicNameValuePair(PurplemoonAPIConstantsV1.REPORT_DESCRIPTION_PARAM, description);
+
+        List<NameValuePair> args = Arrays.<NameValuePair>asList(param1, param2);
+
+        HTTPURLResponseHolder response = performPOSTRequestForResponseHolder(new URL(sb.toString()), null, args);
     }
 
     private List<PhotoVoteBean> getVotes(boolean given, AdapterOptions opts) throws IOException, PurpleSkyException {

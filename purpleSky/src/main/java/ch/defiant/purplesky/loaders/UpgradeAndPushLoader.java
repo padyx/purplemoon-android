@@ -72,7 +72,7 @@ public class UpgradeAndPushLoader extends SimpleAsyncLoader<Object> {
         // Otherwise, we need to get a new one
         try{
             GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getContext());
-            String regId = gcm.register(SecureConstants.GCM_SENDER_ID);
+            String regId = gcm.register(SecureConstants.get("gcm.id"));
 
             if(StringUtility.isNullOrEmpty(regId)){
                 Log.w(TAG, "Setup of Google Cloud Messaging failed: No registratioId received");

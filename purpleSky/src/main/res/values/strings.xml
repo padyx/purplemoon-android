@@ -241,4 +241,21 @@
     <string name="NoResultsFound">No results found</string>
     <string name="Age">Age</string>
 
+    <string name="ReportUser">Report a user</string>
+    <string name="ReportUser_Description">
+        With this function, you can report a user to the staff of Purplemoon, without the other user seeing it. Choose a reason and explain why you report the user.
+        You will not necessarily receive a response. Malicious reports can cause your access to be revoked.</string>
+    <string name="Report_Hint_Explanation">Please provide explanation</string>
+
+    <string name="ReportReason_InsultThreat">The user insulted/threatened me.</string>
+    <string name="ReportReason_Fake">The profile is fake.</string>
+    <string name="ReportReason_WrongAge">The age in the profile is wrong.</string>
+    <string name="ReportReason_AbsurdProfile">The profile is absurd.</string>
+    <string name="ReportReason_Duplicate">The profile is a duplicate.</string>
+    <string name="ReportReason_Advertising">The profile is used for advertisement.</string>
+    <string name="ReportReason_PoliticalExtremist">The profile is politically extreme.</string>
+    <string name="ReportReason_XRated">The profile contains explicit material.</string>
+    <string name="ReportReason_CopyrightViolation">The profile violates copyrights.</string>
+    <string name="ReportReason_Other">Other reason</string>
+
 </resources>

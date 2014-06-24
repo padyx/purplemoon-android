@@ -202,8 +202,8 @@
         <item quantity="other">%1$d neue Ereignisse</item>
     </plurals>
     <plurals name="XUnreadConversations">
-        <item quantity="one">1 unread conversation</item>
-        <item quantity="other">%1$d unread conversations</item>
+        <item quantity="one">1 ungelesene Unterhaltung</item>
+        <item quantity="other">%1$d ungelesene Unterhaltungen</item>
     </plurals>
     <string name="PreferenceNotifyPostits">Neue Post-its</string>
     <string name="PreferenceNotifyNewMessages">Neue Nachrichten</string>
@@ -243,4 +243,22 @@
         <item>Nur Männer</item>
         <item>Nur Frauen</item>
     </string-array>
+
+
+    <string name="ReportUser">Benutzer melden</string>
+    <string name="ReportUser_Description">
+        Mit dieser Funktion kannst den Benutzer dem Team von Purplemoon melden, ohne dass dieser das sieht. Wähle einen Grund aus und beschreibe, wieso du den Benutzer meldest.
+        Du wirst keine Rückmeldung erhalten. Bei absichtlichen Falschmeldungen kann dein Zugang gesperrt werden.</string>
+    <string name="Report_Hint_Explanation">Bitte gib hier eine Begründung an</string>
+
+    <string name="ReportReason_InsultThreat">Der Benutzer beleidigt/bedroht mich.</string>
+    <string name="ReportReason_Fake">Das Profil ist eine Fälschung.</string>
+    <string name="ReportReason_WrongAge">Das angegebene Alter ist falsch.</string>
+    <string name="ReportReason_AbsurdProfile">Das Profil ist ein Scherz.</string>
+    <string name="ReportReason_Duplicate">Das Profil ist ein Duplikat.</string>
+    <string name="ReportReason_Advertising">Der Benutzer verbreitet Werbung.</string>
+    <string name="ReportReason_PoliticalExtremist">Das Profil verbreitet extremistische Ansichten.</string>
+    <string name="ReportReason_XRated">Das Profil enthält pornographisches Material.</string>
+    <string name="ReportReason_CopyrightViolation">Das Profil verletzt Urheberrechte.</string>
+    <string name="ReportReason_Other">Anderer Grund</string>
 </resources>

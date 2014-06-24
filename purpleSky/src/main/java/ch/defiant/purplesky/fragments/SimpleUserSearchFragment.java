@@ -209,7 +209,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         bean.setMaxAge((Integer) ageToSpinner.getSelectedItem());
 
         Pair<Gender, Sexuality> genderSexuality = ((SpinnerStateElement<Pair<Gender, Sexuality>>) targetPersonSpinner.getSelectedItem()).getValue();
-        bean.setGenderSexualities(createGenderSexList(genderSexuality));
+        bean.setAttractions(createGenderSexList(genderSexuality));
 
         // Get the value
         int pos = countrySpinner.getSelectedItemPosition();
@@ -227,31 +227,31 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         return bean;
     }
 
-    private List<String> createGenderSexList(Pair<Gender, Sexuality> pair) {
+    private List<Pair<Gender, Sexuality>> createGenderSexList(Pair<Gender, Sexuality> pair) {
         if (pair == null) {
             return Collections.emptyList();
         }
-        ArrayList<String> genders = new ArrayList<String>();
+        List<Gender> genders = new ArrayList<Gender>();
         if (pair.getFirst() == null) {
-            genders.add(Gender.MALE.getAPIValue());
-            genders.add(Gender.FEMALE.getAPIValue());
+            genders.add(Gender.MALE);
+            genders.add(Gender.FEMALE);
         } else {
-            genders.add(pair.getFirst().getAPIValue());
+            genders.add(pair.getFirst());
         }
 
-        ArrayList<String> sexualities = new ArrayList<String>();
+        List<Sexuality> sexualities = new ArrayList<Sexuality>();
         if (pair.getSecond() == null) {
-            sexualities.add(Sexuality.HETEROSEXUAL_MALE.getAPIValue());
-            sexualities.add(Sexuality.BISEXUAL.getAPIValue());
-            sexualities.add(Sexuality.GAY.getAPIValue());
+            sexualities.add(Sexuality.HETEROSEXUAL_MALE);
+            sexualities.add(Sexuality.BISEXUAL);
+            sexualities.add(Sexuality.GAY);
         } else {
-            sexualities.add(pair.getSecond().getAPIValue());
+            sexualities.add(pair.getSecond());
         }
 
-        ArrayList<String> res = new ArrayList<String>();
-        for (String f : genders) {
-            for (String s : sexualities) {
-                res.add(f + '_' + s);
+        List<Pair<Gender, Sexuality>> res = new ArrayList<Pair<Gender, Sexuality>>();
+        for (Gender g : genders) {
+            for (Sexuality s : sexualities) {
+                res.add(new Pair<Gender, Sexuality>(g,s));
             }
         }
         return res;
