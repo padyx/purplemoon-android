@@ -2,7 +2,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item android:id="@+id/radar_grid_menu_filter"
-    android:title = "Filter"
+    android:title = "@string/Filter"
     android:icon="@drawable/ic_filter"
     android:showAsAction="withText|ifRoom"
     />
