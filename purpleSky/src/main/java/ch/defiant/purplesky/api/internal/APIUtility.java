@@ -11,6 +11,7 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.Sexuality;
+import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 
 /**
@@ -56,15 +57,15 @@ public final class APIUtility {
 
             return object;
         } catch (JSONException e) {
-            throw new PurpleSkyException("Internal error",e); // FIXME pbn error handling
+            throw new PurpleSkyException("Internal error", e); // FIXME pbn error handling
         }
     }
 
     private static JSONArray createGenderSexualityCombinations(List<Pair<Gender, Sexuality>> attractions) {
         JSONArray array = new JSONArray();
-        for(Pair<Gender, Sexuality> p: attractions){
+        for (Pair<Gender, Sexuality> p : attractions) {
             String genderString = translateGender(p.getFirst());
-            array.put(genderString +PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY_SEPARATOR + translateSexuality(p.getSecond()));
+            array.put(genderString + PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY_SEPARATOR + translateSexuality(p.getSecond()));
         }
         return array;
     }
@@ -82,18 +83,18 @@ public final class APIUtility {
             case BISEXUAL:
                 return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_BISEXUAL_VALUE;
             default:
-                throw new IllegalArgumentException("No api value for "+s);
+                throw new IllegalArgumentException("No api value for " + s);
         }
     }
 
-    public static String translateGender(Gender g){
-        switch(g){
+    public static String translateGender(Gender g) {
+        switch (g) {
             case MALE:
                 return "male";
             case FEMALE:
                 return "female";
             default:
-                throw new IllegalArgumentException("No api value for "+g);
+                throw new IllegalArgumentException("No api value for " + g);
         }
     }
 
@@ -110,13 +111,13 @@ public final class APIUtility {
             case PAST_MONTH:
                 return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_PAST_MONTH;
             default:
-                throw new IllegalArgumentException("No api value for "+lastOnline);
+                throw new IllegalArgumentException("No api value for " + lastOnline);
         }
 
     }
 
-    public static String translatePhotoVoteVerdict(PhotoVoteVerdict verdict){
-        switch (verdict){
+    public static String translatePhotoVoteVerdict(PhotoVoteVerdict verdict) {
+        switch (verdict) {
             case NEUTRAL_NEGATIVE:
                 return String.valueOf(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_NEUTRAL_NEGATIVE);
             case CUTE_ATTRACTIVE:
@@ -126,12 +127,12 @@ public final class APIUtility {
             case STUNNING:
                 return String.valueOf(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_STUNNING);
             default:
-                throw new IllegalArgumentException("No api value for "+verdict);
+                throw new IllegalArgumentException("No api value for " + verdict);
         }
     }
 
     public static PhotoVoteVerdict toPhotoVoteVerdict(int apiValue) {
-        switch(apiValue){
+        switch (apiValue) {
             case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_NEUTRAL_NEGATIVE:
                 return PhotoVoteVerdict.NEUTRAL_NEGATIVE;
             case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_CUTE_ATTRACTIVE:
@@ -141,7 +142,35 @@ public final class APIUtility {
             case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_STUNNING:
                 return PhotoVoteVerdict.STUNNING;
             default:
-                throw new IllegalArgumentException("No api value for "+apiValue);
+                throw new IllegalArgumentException("No api value for " + apiValue);
+        }
+
+    }
+
+    public static String translateReportReason(UserReportReason reason) {
+        switch (reason) {
+            case INSULT_THREAT:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case FAKE:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case WRONGAGE:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case ABSURD:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case DUPE:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case ADVERTISING:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case POLITICALEXTREMIS:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case XRATED:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case COPYRIGHT:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            case OTHER:
+                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
+            default:
+                throw new IllegalArgumentException("No api value for " + reason);
         }
     }
 }
