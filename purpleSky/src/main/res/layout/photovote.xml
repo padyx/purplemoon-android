@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@color/holo_blue_light"
+        android:background="#ff3c78ff"
         android:baselineAligned="false"
         android:gravity="center_horizontal"
         android:paddingBottom="8dp"
