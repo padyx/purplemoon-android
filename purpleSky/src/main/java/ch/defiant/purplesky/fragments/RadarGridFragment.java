@@ -2,12 +2,16 @@ package ch.defiant.purplesky.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,70 +26,111 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.constants.ResultConstants;
+import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.db.IBundleDao;
+import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
+import ch.defiant.purplesky.loaders.GetAndUpdateProfilePositionLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.NVLUtility;
+import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * Radar fragment
  * @author Patrick Bänziger
+ * @since 1.1.0
  */
-public class RadarGridFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<MinimalUser>>>, ActionBar.OnNavigationListener {
+public class RadarGridFragment extends BaseFragment implements
+        LoaderManager.LoaderCallbacks<Holder<List<MinimalUser>>>,
+        GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener,
+        LocationListener
+{
 
-    private static final String BUNDLESTORE_OWNER = "radargridfragment";
-    private UserSearchOptions options;
-    private GridView gridview;
+    private class GeocoderLoaderCallback implements  LoaderManager.LoaderCallbacks<Address>{
 
-    private enum SearchMode {
-        LOCATION_PROFILE_CURRENT("Around profile location"),
-        LOCATION_DEVICE("Around device location"); // FIXME I18N
-        private final String string;
+        @Override
+        public Loader<Address> onCreateLoader(int id, Bundle args) {
+            getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 
-        private SearchMode (String localizedString){
-            this.string = localizedString;
-//            this.stringRes = localizedString;
+            return new GetAndUpdateProfilePositionLoader(getActivity(), apiAdapter, currentLocation);
         }
+
+        @Override
+        public void onLoadFinished(Loader<Address> loader, Address data) {
+            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+
+            if(data == null){
+                addressTextView.setText(getString(R.string.Unknown));
+            } else {
+                currentAddress = data;
+                updateLocationDisplay();
+            }
+            getLoaderManager().restartLoader(R.id.loader_radar_main, null, RadarGridFragment.this);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Address> loader) {  }
     }
+
+    // Saving instance values keys
+    private static final String STATE_ADDRESS = "address";
+    private static final String STATE_LOCATION = "location";
+    private static final String STATE_DATA = "data";
+
+    // Constants
+    private static final String TAG = RadarGridFragment.class.getSimpleName();
+    private static final long OUTDATE_THRESHOLD_MS = 5*60*1000; // 5 Minutes
+    private static final int REQUIRED_ACCURACY = 250;
+    private static final String BUNDLESTORE_OWNER = "radargridfragment";
+    private static final int REQUESTCODE_SEARCHOPTIONS_DIALOG = 0;
 
     @Inject
     protected IBundleDao dao;
 
+    // UI-Elements and Adapters
+    private GridView gridview;
+    private TextView addressTextView;
     private GridAdapter adapter;
-    private SearchMode searchMode;
+
+    // Logic
+    private UserSearchOptions options;
+    private boolean useLocation;
+    private LocationClient locationClient;
+    private LocationRequest locationRequest;
+    private Location currentLocation;
+    private Address currentAddress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-//        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-//        actionBar.setDisplayShowTitleEnabled(false);
-//        ModeAdapter adapter = new ModeAdapter(getSherlockActivity(), android.R.layout.two_line_list_item);
-//        for (SearchMode m: SearchMode.values()){
-//            adapter.add(m);
-//        }
-//        actionBar.setListNavigationCallbacks(adapter, this);
-
         RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.radar_grid_fragment, container, false);
-
-        this.adapter = new GridAdapter(getActivity(), 0);
+        addressTextView = (TextView) view.findViewById(R.id.radar_grid_fragment_addressText);
         gridview = (GridView) view.findViewById(R.id.gridview);
         gridview.setAdapter(this.adapter);
         gridview.setOnItemClickListener(new OpenUserProfileListener(getSherlockActivity()));
@@ -96,6 +141,20 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     public void onPause() {
         super.onPause();
         saveSearchSelections();
+        removeLocationListener();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(STATE_ADDRESS, currentAddress);
+        outState.putParcelable(STATE_LOCATION, currentLocation);
+        ArrayList<MinimalUser> data = new ArrayList<MinimalUser>();
+        for(int i=0; i<adapter.getCount(); i++){
+            data.add(adapter.getItem(i));
+        }
+        outState.putSerializable(STATE_DATA, data);
     }
 
     private void saveSearchSelections() {
@@ -109,6 +168,61 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     public void onResume() {
         super.onResume();
         restoreSearchSelections();
+        updateLocationDisplay();
+        checkLocationPermission();
+        // If we have no data - or it is outdated
+        if(adapter.getCount() == 0 || (useLocation && isLocationOutdated())) {
+            reload();
+        }
+    }
+
+    private void updateLocationDisplay() {
+        if (currentAddress != null && getActivity() != null) {
+            List<String> parts = new ArrayList<String>();
+            for(int i=0; i<currentAddress.getMaxAddressLineIndex();  i++){
+                parts.add(currentAddress.getAddressLine(i));
+            }
+
+            addressTextView.setText(StringUtility.join(", ", parts));
+        }
+        else {
+            addressTextView.setText(getString(R.string.Unknown));
+        }
+    }
+
+    private boolean isLocationOutdated() {
+        if(currentLocation == null){
+            if(BuildConfig.DEBUG){
+                Log.d(TAG, "Outdated: No location yet.");
+            }
+            return true;
+        }
+        return (System.currentTimeMillis() - currentLocation.getTime()) > OUTDATE_THRESHOLD_MS;
+    }
+
+    private void attachLocationListener() {
+        if(locationClient == null) {
+            locationClient = new LocationClient(getActivity(), this, this);
+        }
+        locationClient.connect();
+    }
+
+    private void removeLocationListener() {
+        if(locationClient != null && locationClient.isConnected()) {
+            locationClient.removeLocationUpdates(this);
+            locationClient.disconnect();
+        }
+    }
+
+    private void checkLocationPermission() {
+        SharedPreferences prefs = PreferenceUtility.getPreferences();
+        if(!prefs.contains(PreferenceConstants.radarAutomaticLocationUpdateEnabled)){
+            AlertDialogFragment frag = AlertDialogFragment.newYesNoDialog(R.string.AutomaticLocationUpdates_Dialog_Title, R.string.AutomaticLocationUpdates_Dialog_Question, 0);
+            frag.setTargetFragment(this, 0);
+            frag.show(getFragmentManager(), "question");
+        } else {
+            useLocation = prefs.getBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, false);
+        }
     }
 
     private void restoreSearchSelections() {
@@ -128,7 +242,31 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         restoreSearchSelections();
-        getLoaderManager().initLoader(R.id.loader_radar_main, null, this);
+        this.adapter = new GridAdapter(getActivity(), 0);
+        if (savedInstanceState != null) {
+            this.currentAddress = savedInstanceState.getParcelable(STATE_ADDRESS);
+            this.currentLocation = savedInstanceState.getParcelable(STATE_LOCATION);
+            List<MinimalUser> data = (List<MinimalUser>) savedInstanceState.getSerializable(STATE_DATA);
+            if(data != null){
+                for(MinimalUser u:data ){
+                   adapter.add(u);
+                }
+            }
+        }
+    }
+
+    private void reload() {
+        if(useLocation && isLocationOutdated()){
+            if(BuildConfig.DEBUG){
+                Log.d(TAG, "Location is outdated. Starting retrieval");
+            }
+            attachLocationListener();
+        } else {
+            if(BuildConfig.DEBUG){
+                Log.d(TAG, "Location still up-to-date or not configured to be used.");
+            }
+            getLoaderManager().restartLoader(R.id.loader_radar_main, null, this);
+        }
     }
 
     @Override
@@ -161,14 +299,15 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
         Bundle b = new Bundle();
         b.putSerializable(ArgumentConstants.ARG_SERIALIZABLEOBJECT, options);
         newFragment.setArguments(b);
-        newFragment.setTargetFragment(this, 0);
+        newFragment.setTargetFragment(this, REQUESTCODE_SEARCHOPTIONS_DIALOG);
         newFragment.show(ft, "radarOptionsDialog");
     }
 
     @Override
-    public Loader<Holder<List<MinimalUser>>> onCreateLoader(int arg0, Bundle arg1) {
+    public Loader<Holder<List<MinimalUser>>> onCreateLoader(int id, Bundle arg1) {
         getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 
+        // TODO refactor to own class
         return new SimpleAsyncLoader<Holder<List<MinimalUser>>>(getSherlockActivity(), R.id.loader_radar_main) {
 
             @Override
@@ -177,12 +316,10 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
                 if(opts == null){
                     opts = new UserSearchOptions();
                 }
-//                if (m_location != null) {
-//                    opts.setLocation(new Pair<Double, Double>(m_location.getLatitude(), m_location.getLongitude()));
-//                }
                 opts.setUserClass(MinimalUser.class);
                 opts.setNumber(100);
                 // If there is no filter set, require them to be online within last month...
+                // TODO Set to last hour and retrieve more, if necessary
                 opts.setLastOnline(NVLUtility.nvl(opts.getLastOnline(), UserSearchOptions.LastOnline.PAST_MONTH));
                 opts.setSearchOrder(UserSearchOrder.DISTANCE);
 
@@ -211,6 +348,43 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<Holder<List<MinimalUser>>> loader) {  }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        locationRequest = LocationRequest.create();
+        // Use low power accuracy
+        locationRequest.setPriority(
+                LocationRequest.PRIORITY_LOW_POWER);
+        // Set the update interval to 10 seconds
+        locationRequest.setInterval(1000*10);
+        // Set the fastest update interval to 1 second
+        locationRequest.setFastestInterval(1000);
+
+        locationClient.requestLocationUpdates(locationRequest, this);
+    }
+
+    @Override
+    public void onDisconnected() {
+        locationClient = null;
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // TODO Implement
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation = location;
+        if(location.getAccuracy() < REQUIRED_ACCURACY){
+            if(BuildConfig.DEBUG){
+                Log.d(TAG, "Location obtained "+location);
+            }
+            // Accurate enough
+            removeLocationListener();
+            getLoaderManager().restartLoader(R.id.loader_geocoderAddress, null, new GeocoderLoaderCallback() ); // TODO Bundle?
+        }
+    }
 
     private class GridAdapter extends ArrayAdapter<MinimalUser> {
 
@@ -265,37 +439,31 @@ public class RadarGridFragment extends BaseFragment implements LoaderManager.Loa
     }
 
     @Override
-    public boolean onNavigationItemSelected(int i, long l) {
-        return false;
-    }
-
-    private class ModeAdapter extends ArrayAdapter<SearchMode> {
-
-        public ModeAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            SearchMode mode = getItem(position);
-
-            View view = getSherlockActivity().getLayoutInflater().inflate(android.R.layout.two_line_list_item, parent, false);
-            ((TextView)view.findViewById(android.R.id.text1)).setText(mode.string);
-
-            return view;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getView(position, convertView, parent);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode){
+            case REQUESTCODE_SEARCHOPTIONS_DIALOG:
+                UserSearchOptions opts = (UserSearchOptions) data.getSerializableExtra(ResultConstants.GENERIC);
+                options = opts;
+                getLoaderManager().restartLoader(R.id.loader_radar_main,null,this);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown result request code "+requestCode);
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        UserSearchOptions opts = (UserSearchOptions) data.getSerializableExtra(ResultConstants.GENERIC);
-        options = opts;
-        getLoaderManager().restartLoader(R.id.loader_radar_main,null,this);
+    public void doPositiveAlertClick(int dialogId) {
+        SharedPreferences.Editor editor = PreferenceUtility.getPreferences().edit();
+        editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, true);
+        editor.commit();
+        useLocation = true;
+        reload();
     }
 
+    @Override
+    public void doNegativeAlertClick(int dialogId) {
+        SharedPreferences.Editor editor = PreferenceUtility.getPreferences().edit();
+        editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, false);
+        editor.commit();
+    }
 }

@@ -6,13 +6,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+
 import ch.defiant.purplesky.R;
 
 /**
- * Fragment for alert dialogs. Use the static methods to create instances. If you wish a notification about which button the user clicked, use
- * {@link #setResponder(IAlertDialogFragmentResponder)}.
+ * Fragment for alert dialogs. Use the static methods to create instances.
+ * If you wish a notification about which button the user clicked, set the fragment as the target fragment and implement @link{}IAlertDialogFragmentResponder}.
  * 
- * @author padyx
+ * @author Patrick Bänziger
  * @since 0.3.2
  */
 public class AlertDialogFragment extends DialogFragment {
@@ -20,8 +21,8 @@ public class AlertDialogFragment extends DialogFragment {
     protected final class NegativeClickListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int whichButton) {
-            if (m_responder != null) {
-                m_responder.doNegativeAlertClick(getDialogIdentifier());
+            if (getTargetFragment() instanceof IAlertDialogFragmentResponder) {
+                ((IAlertDialogFragmentResponder)getTargetFragment()).doNegativeAlertClick(getDialogIdentifier());
             }
         }
     }
@@ -29,8 +30,8 @@ public class AlertDialogFragment extends DialogFragment {
     protected final class PositiveClickListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int whichButton) {
-            if (m_responder != null) {
-                m_responder.doPositiveAlertClick(getDialogIdentifier());
+            if (getTargetFragment() instanceof IAlertDialogFragmentResponder) {
+                ((IAlertDialogFragmentResponder)getTargetFragment()).doPositiveAlertClick(getDialogIdentifier());
             }
         }
     }
@@ -38,8 +39,8 @@ public class AlertDialogFragment extends DialogFragment {
     protected final class NeutralClickListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int whichButton) {
-            if (m_responder != null) {
-                m_responder.doNeutralAlertClick(getDialogIdentifier());
+            if (getTargetFragment() instanceof IAlertDialogFragmentResponder) {
+                ((IAlertDialogFragmentResponder)getTargetFragment()).doNegativeAlertClick(getDialogIdentifier());
             }
         }
     }
@@ -54,7 +55,6 @@ public class AlertDialogFragment extends DialogFragment {
     protected static final String EXTRA_NEUTRAL_TITLE_RES = "neutralRes";
 
     private int m_dialogIdentifier;
-    private IAlertDialogFragmentResponder m_responder;
 
     /**
      * Creates an alert dialog with an OK button (mapped to neutral callback).
@@ -119,6 +119,30 @@ public class AlertDialogFragment extends DialogFragment {
         args.putInt(EXTRA_MESSAGE_RES, message);
         args.putInt(EXTRA_POSITIVE_TITLE_RES, R.string.alert_dialog_ok);
         args.putInt(EXTRA_NEGATIVE_TITLE_RES, R.string.alert_dialog_cancel);
+        frag.setArguments(args);
+        return frag;
+    }
+
+
+    /**
+     * Creates an alert dialog with options Yes, No. The Yes button is mapped to the positive and the No button to negative callback.
+     *
+     * @param title
+     *            Title resource to use
+     * @param message
+     *            Message resource to use
+     * @param dialogIdentifier
+     *            Identifier for the dialog.
+     * @return The created fragment.
+     */
+    public static AlertDialogFragment newYesNoDialog(int title, int message, int dialogIdentifier) {
+        AlertDialogFragment frag = new AlertDialogFragment();
+        frag.setDialogIdentifier(dialogIdentifier);
+        Bundle args = new Bundle();
+        args.putInt(EXTRA_TITLE_RES, title);
+        args.putInt(EXTRA_MESSAGE_RES, message);
+        args.putInt(EXTRA_POSITIVE_TITLE_RES, R.string.alert_dialog_yes);
+        args.putInt(EXTRA_NEGATIVE_TITLE_RES, R.string.alert_dialog_no);
         frag.setArguments(args);
         return frag;
     }

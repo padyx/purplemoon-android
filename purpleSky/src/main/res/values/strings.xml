@@ -258,4 +258,11 @@
     <string name="ReportReason_CopyrightViolation">The profile violates copyrights.</string>
     <string name="ReportReason_Other">Other reason</string>
 
+    <string name="AutomaticLocationUpdates_Dialog_Title">Enable location updates?</string>
+    <string name="AutomaticLocationUpdates_Dialog_Question">By using your device\'s location, you can see other users in your vincinity.
+        Your approximate location will be visible on the Purplemoon profile. You can change this setting in the search options later.</string>
+
+    <string name="Enable">Enable</string>
+    <string name="Disable">Disable</string>
+
 </resources>

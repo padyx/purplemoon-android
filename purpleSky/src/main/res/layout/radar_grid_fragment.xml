@@ -3,13 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    >
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/radar_grid_fragment_locationbox"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#ffffff"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Location:"
+            android:id="@+id/textView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:ellipsize="end"
+            android:text="Teststreet, 1234 Testplace"
+            android:id="@+id/radar_grid_fragment_addressText"
+            android:layout_marginLeft="8dp"/>
+    </LinearLayout>
+
     <GridView
         android:id="@+id/gridview"
+        android:layout_below="@id/radar_grid_fragment_locationbox"
         android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:numColumns="auto_fit"
         android:columnWidth="100dp"
@@ -17,5 +44,7 @@
         android:horizontalSpacing="4dp"
         android:stretchMode="spacingWidth"
         android:gravity="center"
-        tools:listitem="@layout/user_avatar" />
+        tools:listitem="@layout/user_avatar"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp" />
 </RelativeLayout>
