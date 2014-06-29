@@ -1,14 +1,14 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "20.0.0"
 
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 18
 
-        testPackageName "ch.defiant.purplesky.test"
+        testApplicationId "ch.defiant.purplesky.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 
@@ -28,11 +28,11 @@ android {
 
 dependencies {
     compile project(':endlessAdapter')
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:20.+'
     compile 'com.android.support:gridlayout-v7:18.0.+'
     compile 'com.google.android.gms:play-services:+'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:20.+'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'commons-io:commons-io:2.4'
 
