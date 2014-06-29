@@ -106,7 +106,7 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
         protected void onPreExecute() {
             PurpleSkyApplication context = PurpleSkyApplication.get();
             // FIXME L18N missing!
-            m_dialog = ProgressDialog.show(getSherlockActivity(), "Setting status", "Please wait...", true, false);
+            m_dialog = ProgressDialog.show(getSherlockActivity(), "Setting status", getString(R.string.PleaseWait), true, false);
         }
 
         @Override
