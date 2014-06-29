@@ -12,6 +12,11 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
+
     buildTypes {
         debug {
             debuggable true
@@ -32,7 +37,6 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:18.0.+'
     compile 'com.google.android.gms:play-services:+'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:20.+'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'commons-io:commons-io:2.4'
 
