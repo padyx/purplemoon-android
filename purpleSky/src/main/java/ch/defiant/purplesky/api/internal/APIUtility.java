@@ -86,6 +86,30 @@ public final class APIUtility {
         }
     }
 
+    public static Sexuality toSexuality(String sexuality, Gender g){
+        if(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE.equals(sexuality)){
+            if(g==Gender.MALE) {
+                return Sexuality.HETEROSEXUAL_MALE;
+            } else if (g==Gender.FEMALE) {
+                return Sexuality.HETEROSEXUAL_FEMALE;
+            } else {
+                throw new IllegalArgumentException("Unknown gender value "+g);
+            }
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_BISEXUAL_VALUE.equals(sexuality)){
+            return Sexuality.BISEXUAL;
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE.equals(sexuality)){
+            if(g==Gender.MALE) {
+                return Sexuality.GAY;
+            } else if (g==Gender.FEMALE) {
+                return Sexuality.LESBIAN;
+            } else {
+                throw new IllegalArgumentException("Unknown gender value "+g);
+            }
+        } else {
+            throw new IllegalArgumentException("Unknown value for sexuality "+sexuality);
+        }
+    }
+
     public static String translateGender(Gender g) {
         switch (g) {
             case MALE:

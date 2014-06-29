@@ -44,7 +44,6 @@ import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.ProfileStatus;
-import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.translators.ProfileTranslator;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.StringUtility;
@@ -110,7 +109,7 @@ public class JSONTranslator {
             // 'sexuality': string,
             if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY)) {
                 String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY);
-                user.setSexuality(Sexuality.getStatusByAPIValue(string, gender));
+                user.setSexuality(APIUtility.toSexuality(string, gender));
             }
 
             // 'age': integer,
