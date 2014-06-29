@@ -382,7 +382,7 @@ public class RadarGridFragment extends BaseFragment implements
             }
             // Accurate enough
             removeLocationListener();
-            getLoaderManager().restartLoader(R.id.loader_geocoderAddress, null, new GeocoderLoaderCallback() ); // TODO Bundle?
+            getLoaderManager().restartLoader(R.id.loader_profilePositionUpdate, null, new GeocoderLoaderCallback() ); // TODO Bundle?
         }
     }
 
