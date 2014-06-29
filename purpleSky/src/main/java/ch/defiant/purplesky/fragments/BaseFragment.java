@@ -8,11 +8,14 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
+import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 
 /**
- * Created by Chakotay on 08.05.2014.
+ * Base fragment class, containing the injection call.
+ * @author Patrick Bänziger
+ * @since 1.1.0
  */
-public class BaseFragment extends SherlockFragment {
+public class BaseFragment extends SherlockFragment implements IAlertDialogFragmentResponder{
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
@@ -21,5 +24,18 @@ public class BaseFragment extends SherlockFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         PurpleSkyApplication.get().inject(this);
+    }
+
+
+    @Override
+    public void doPositiveAlertClick(int dialogId) {
+    }
+
+    @Override
+    public void doNegativeAlertClick(int dialogId) {
+    }
+
+    @Override
+    public void doNeutralAlertClick(int dialogId) {
     }
 }
