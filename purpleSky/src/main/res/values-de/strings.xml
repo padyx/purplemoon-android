@@ -9,8 +9,6 @@
     <string name="loginfailed">Login fehlgeschlagen!</string>
     <string name="Unknown">Unbekannt</string>
     <string name="NewMessages">Neue Nachrichten</string>
-    <string name="reply">Antworten</string>
-    <string name="Sent_">Gesendet: </string>
     <string name="Message">Nachricht</string>
     <string name="composeMessage">Nachricht schreiben</string>
     <string name="ProfileVisits">Profilbesuche</string>
@@ -111,7 +109,6 @@
     <string name="ObtainingLocation">Ermittle deinen Standort…</string>
     <string name="VerifiedUser">Verifizierter Benutzer</string>
     <string name="UnverifiedUser">Unverifizierter Benutzer</string>
-    <string name="MyProfile">Mein Profil</string>
     <string name="CreatePostit">Post-it erstellen</string>
     <string name="PleaseChoose">Auswählen…</string>
     <string name="PasswordProtected">Passwortgeschützt</string>

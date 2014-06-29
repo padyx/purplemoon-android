@@ -10,8 +10,6 @@
     <string name="loginfailed">Login failed!</string>
     <string name="Unknown">Unknown</string>
     <string name="NewMessages">New messages</string>
-    <string name="reply">Reply</string>
-    <string name="Sent_">Sent: </string>
     <string name="Message">Message</string>
     <string name="composeMessage">Compose Message</string>
     <string name="ProfileVisits">Profile Visits</string>
@@ -111,7 +109,6 @@
     <string name="ObtainingLocation">Waiting for your location…</string>
     <string name="VerifiedUser">Verified User</string>
     <string name="UnverifiedUser">Unverified User</string>
-    <string name="MyProfile">My profile</string>
     <string name="CreatePostit">Create Post-it</string>
     <string name="PleaseChoose">Choose…</string>
     <string name="PasswordProtected">Password protected</string>
