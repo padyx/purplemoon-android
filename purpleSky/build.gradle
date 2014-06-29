@@ -12,11 +12,6 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
-
     buildTypes {
         debug {
             debuggable true

@@ -244,7 +244,7 @@
 
     <string name="ReportUser">Benutzer melden</string>
     <string name="ReportUser_Description">
-        Mit dieser Funktion kannst den Benutzer dem Team von Purplemoon melden, ohne dass dieser das sieht. Wähle einen Grund aus und beschreibe, wieso du den Benutzer meldest.
+        Mit dieser Funktion kannst du den Benutzer dem Team von Purplemoon melden, ohne dass dieser das sieht. Wähle einen Grund aus und beschreibe, wieso du den Benutzer meldest.
         Du wirst keine Rückmeldung erhalten. Bei absichtlichen Falschmeldungen kann dein Zugang gesperrt werden.</string>
     <string name="Report_Hint_Explanation">Bitte gib hier eine Begründung an</string>
 
@@ -258,4 +258,8 @@
     <string name="ReportReason_XRated">Das Profil enthält pornographisches Material.</string>
     <string name="ReportReason_CopyrightViolation">Das Profil verletzt Urheberrechte.</string>
     <string name="ReportReason_Other">Anderer Grund</string>
+
+    <string name="AutomaticLocationUpdates_Dialog_Title">Standortaktualisierung einschalten?</string>
+    <string name="AutomaticLocationUpdates_Dialog_Question">Mit der Position deines Gerätes kannst du andere Benutzer in deiner Nähe sehen.
+        Deine ungefähre Position wird in deinem Purplemoon-Profil angezeigt. Du kannst diese Einstellung später in den Suchoptionen ändern.</string>
 </resources>
