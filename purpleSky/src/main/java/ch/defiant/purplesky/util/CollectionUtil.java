@@ -24,7 +24,9 @@ public class CollectionUtil {
     * @return Last element or <tt>null</tt>
     */
     public static <T> T firstElement(Collection<T> collection) {
-        if (collection.isEmpty()) {
+        if(collection == null){
+            return null;
+        } else if (collection.isEmpty()) {
             return null;
         } else {
             return collection.iterator().next();
