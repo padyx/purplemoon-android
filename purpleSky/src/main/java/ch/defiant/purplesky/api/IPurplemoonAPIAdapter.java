@@ -3,6 +3,7 @@ package ch.defiant.purplesky.api;
 import android.util.Pair;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,15 +18,17 @@ import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.PostIt;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
+import ch.defiant.purplesky.beans.PurplemoonLocation;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
-import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
+import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 
@@ -357,7 +360,7 @@ public interface IPurplemoonAPIAdapter {
     public Date getPowerUserExpiry() throws IOException, PurpleSkyException;
 
     /**
-     * Register for Push messages
+     * Register for push messages.
      * 
      * @param gcmRegId
      *            CGM Register
@@ -368,7 +371,7 @@ public interface IPurplemoonAPIAdapter {
     public boolean registerPush(String gcmRegId) throws IOException, PurpleSkyException;
 
     /**
-     * Unregister from push messages
+     * Unregister from push messages.
      * 
      * @param gcmRegId
      * @return whether the action succeeded
@@ -377,4 +380,30 @@ public interface IPurplemoonAPIAdapter {
      */
     public boolean unregisterPush(String gcmRegId) throws IOException, PurpleSkyException;
 
-    }
+    /**
+     * Report the user.
+     *
+     * @param profileId
+     * @param reason
+     * @param description
+     * @throws IOException
+     * @throws PurpleSkyException
+     */
+    void reportUser(String profileId, UserReportReason reason, String description) throws IOException, PurpleSkyException;
+
+    /**
+     * Get all locations from the users profile
+     * @return Locations of the user from his profile
+     * @throws IOException
+     * @throws PurpleSkyException
+     */
+    Collection<PurplemoonLocation> getOwnLocations() throws IOException, PurpleSkyException;
+
+    /**
+     * Update the user's profile with a new location.
+     * @param location
+     * @throws IOException
+     * @throws PurpleSkyException
+     */
+    void setOwnLocation(PurplemoonLocation location) throws IOException, PurpleSkyException;
+}

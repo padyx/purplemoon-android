@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,10 +39,10 @@ import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.PostIt;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
+import ch.defiant.purplesky.beans.PurplemoonLocation;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
-import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.constants.SecureConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.ErrorTranslator;
@@ -53,6 +54,7 @@ import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.SendOptions.UnreadHandling;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -1290,6 +1292,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
     }
 
+    @Override
     public void reportUser(String profileId, UserReportReason reason, String description) throws IOException, PurpleSkyException {
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
@@ -1302,6 +1305,39 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         List<NameValuePair> args = Arrays.<NameValuePair>asList(param1, param2);
 
         HTTPURLResponseHolder response = performPOSTRequestForResponseHolder(new URL(sb.toString()), null, args);
+    }
+
+    @Override
+    public Collection<PurplemoonLocation> getOwnLocations() throws IOException, PurpleSkyException {
+        String url = PurplemoonAPIConstantsV1.BASE_URL+PurplemoonAPIConstantsV1.LOCATIONS_URL;
+
+        JSONArray array = performGETRequestForJSONArray(new URL(url));
+        if(array == null){
+            Log.w(TAG, "No locations returned from API");
+            return Collections.emptyList();
+        }
+        List<PurplemoonLocation> result = new ArrayList<PurplemoonLocation>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            result.add(JSONTranslator.toPurplemoonLocation(array.optJSONObject(i)));
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setOwnLocation(PurplemoonLocation location) throws IOException, PurpleSkyException {
+        String url = PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.LOCATIONS_URL;
+
+        List<NameValuePair> postData = new ArrayList<NameValuePair>();
+        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_TYPE, APIUtility.translateLocationType(location.getLocationType())));
+        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_COUNTRYCODE, location.getCountryCode()));
+        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_NAME, location.getLocationName()));
+        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_ADDRESS, location.getStreetAddress()));
+        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_LATITUDE, String.valueOf(location.getLatitude())));
+        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE, String.valueOf(location.getLongitude())));
+
+       performPOSTRequestForResponseHolder(new URL(url), postData, null);
     }
 
     private List<PhotoVoteBean> getVotes(boolean given, AdapterOptions opts) throws IOException, PurpleSkyException {

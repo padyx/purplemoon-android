@@ -10,6 +10,7 @@ import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
+import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -171,6 +172,43 @@ public final class APIUtility {
                 return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
             default:
                 throw new IllegalArgumentException("No api value for " + reason);
+        }
+    }
+
+    public static PurplemoonLocationType toLocationType(String type) {
+        if (PurplemoonAPIConstantsV1.LOCATIONS_TYPE_CURRENT.equals(type)) {
+            return PurplemoonLocationType.CURRENT;
+        } else if (PurplemoonAPIConstantsV1.LOCATIONS_TYPE_HOME.equals(type)) {
+            return PurplemoonLocationType.HOME;
+        } else if (PurplemoonAPIConstantsV1.LOCATIONS_TYPE_HOME2.equals(type)) {
+            return PurplemoonLocationType.HOME2;
+        } else if (PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK.equals(type)) {
+            return PurplemoonLocationType.WORK;
+        } else if (PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK2.equals(type)) {
+            return PurplemoonLocationType.WORK2;
+        } else if (PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK3.equals(type)) {
+            return PurplemoonLocationType.WORK3;
+        } else {
+            throw new IllegalArgumentException("No type defined for " + type);
+        }
+    }
+
+    public static String translateLocationType(PurplemoonLocationType type){
+        switch(type){
+            case CURRENT:
+                return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_CURRENT;
+            case HOME:
+                return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_HOME;
+            case HOME2:
+                return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_HOME2;
+            case WORK:
+                return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK;
+            case WORK2:
+                return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK2;
+            case WORK3:
+                return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK3;
+            default:
+                throw new IllegalArgumentException("No api value for "+type);
         }
     }
 }

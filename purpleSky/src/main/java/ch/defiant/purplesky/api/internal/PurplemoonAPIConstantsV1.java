@@ -1,8 +1,5 @@
 package ch.defiant.purplesky.api.internal;
 
-import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.core.PurpleSkyApplication;
-
 // TODO Make this package-private
 public class PurplemoonAPIConstantsV1 {
 
@@ -481,5 +478,21 @@ public class PurplemoonAPIConstantsV1 {
 
     public static final int REPORT_TEXT_MAX_LENGTH = 5000;
 
+    /*
+     * Location
+     */
+    public static final String LOCATIONS_URL = "/me/locations";
+    public static final String LOCATIONS_TYPE = "type";
+    public static final String LOCATIONS_TYPE_CURRENT = "current";
+    public static final String LOCATIONS_TYPE_HOME = "home";
+    public static final String LOCATIONS_TYPE_HOME2 = "home2";
+    public static final String LOCATIONS_TYPE_WORK = "work";
+    public static final String LOCATIONS_TYPE_WORK2 = "work2";
+    public static final String LOCATIONS_TYPE_WORK3 = "work3";
+    public static final String LOCATIONS_LATITUDE = "lat";
+    public static final String LOCATIONS_LONGITUE = "lng";
+    public static final String LOCATIONS_COUNTRYCODE = "country";
+    public static final String LOCATIONS_NAME = "name";
+    public static final String LOCATIONS_ADDRESS = "address";
 
 }

@@ -57,4 +57,7 @@ public class PreferenceConstants {
     public static final String notifyForVisits = notificationBase + "notifyForVisits";
     public static final String notifyForPostit = notificationBase + "notifyForPostits";
     public static final String notifyForVotes = notificationBase + "notifyForVotes";
+
+
+    public static final String radarAutomaticLocationUpdateEnabled = radaroptionsBase + "autoLocationUpdate";
 }

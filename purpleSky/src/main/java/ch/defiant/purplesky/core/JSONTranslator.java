@@ -1,5 +1,11 @@
 package ch.defiant.purplesky.core;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,13 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.api.internal.APIUtility;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.BasicUser;
 import ch.defiant.purplesky.beans.LocationBean;
@@ -33,11 +36,10 @@ import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.ProfileTriplet;
+import ch.defiant.purplesky.beans.PurplemoonLocation;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.enums.OnlineStatus;
@@ -793,4 +795,19 @@ public class JSONTranslator {
         }
         return b;
     }
+
+    public static PurplemoonLocation toPurplemoonLocation(JSONObject obj){
+        String type = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_TYPE);
+
+        double latitude = obj.optDouble(PurplemoonAPIConstantsV1.LOCATIONS_LATITUDE);
+        double longitude = obj.optDouble(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE);
+        String locationName = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_NAME);
+        String countryCode = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_COUNTRYCODE);
+        String address = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_ADDRESS);
+
+        PurplemoonLocation location = new PurplemoonLocation(APIUtility.toLocationType(type),
+                locationName, countryCode, address, longitude, latitude);
+        return location;
+    }
+
 }
