@@ -59,6 +59,16 @@ public final class APIUtility {
         return array;
     }
 
+    public static Gender toGender(String apiValue){
+        if(PurplemoonAPIConstantsV1.JSON_USER_GENDER_MALE.equals(apiValue)){
+            return Gender.MALE;
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_GENDER_FEMALE.equals(apiValue)){
+            return Gender.FEMALE;
+        } else {
+            throw new IllegalArgumentException("No gender defined for "+apiValue);
+        }
+    }
+
     public static String translateSexuality(Sexuality s) {
         switch (s) {
             case HETEROSEXUAL_MALE:
