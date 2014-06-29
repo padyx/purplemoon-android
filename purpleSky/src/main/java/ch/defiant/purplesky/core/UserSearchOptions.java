@@ -9,9 +9,9 @@ import java.util.List;
 
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.util.Pair;
-import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.Sexuality;
+import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.util.BundleUtil;
 import ch.defiant.purplesky.util.EnumUtility;
 import ch.defiant.purplesky.util.StringUtility;
@@ -34,8 +34,6 @@ public class UserSearchOptions implements Serializable {
 
     private SearchType m_searchType;
     private String m_userName;
-    @Deprecated
-    private List<String> m_genderSexualities;
     private List<Pair<Gender, Sexuality>> attractions;
     private Integer m_minAge;
     private Integer m_maxAge;
@@ -87,17 +85,7 @@ public class UserSearchOptions implements Serializable {
         m_countryId = countryId;
     }
 
-    @Deprecated
-    public List<String> getGenderSexualities() {
-        return m_genderSexualities;
-    }
-
-    @Deprecated
-    public void setGenderSexualities(List<String> sexualities) {
-        m_genderSexualities = sexualities;
-    }
-
-    public UserSearchOrder getSearchOrder() {
+   public UserSearchOrder getSearchOrder() {
         return m_searchOrder;
     }
 

@@ -24,18 +24,6 @@ public final class APIUtility {
     public static JSONObject getJSONUserSearchObject(UserSearchOptions options) throws PurpleSkyException {
         JSONObject object = new JSONObject();
         try {
-            if (options.getGenderSexualities() != null && !options.getGenderSexualities().isEmpty()) { // TODO Remove
-                JSONArray arr = new JSONArray();
-                for (String pair : options.getGenderSexualities()) {
-                    if (pair == null) {
-                        continue;
-                    }
-                    arr.put(pair);
-                }
-
-                object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY, arr);
-            }
-
             if (options.getAttractions() != null) {
                 object.put(PurplemoonAPIConstantsV1.JSON_USERSEARCH_GENDER_SEXUALITY, createGenderSexualityCombinations(options.getAttractions()));
             }
