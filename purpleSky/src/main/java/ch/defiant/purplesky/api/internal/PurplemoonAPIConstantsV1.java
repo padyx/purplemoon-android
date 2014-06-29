@@ -77,6 +77,9 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_USER_PROFILE_ID = "profile_id";
     public static final String JSON_USER_NAME = "name";
     public static final String JSON_USER_GENDER = "gender";
+    public static final String JSON_USER_GENDER_MALE = "male";
+    public static final String JSON_USER_GENDER_FEMALE = "female";
+
     public static final String JSON_USER_SEXUALITY = "sexuality";
     public static final String JSON_USER_AGE_INT = "age";
     public static final String JSON_USER_VERIFIED_BOOL = "verified";

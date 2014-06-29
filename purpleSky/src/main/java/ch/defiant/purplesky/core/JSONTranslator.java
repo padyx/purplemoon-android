@@ -103,7 +103,7 @@ public class JSONTranslator {
             Gender gender = null;
             if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_GENDER)) {
                 String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_GENDER);
-                gender = Gender.getStatusByAPIValue(string);
+                gender = APIUtility.toGender(string);
                 user.setGender(gender);
             }
 
