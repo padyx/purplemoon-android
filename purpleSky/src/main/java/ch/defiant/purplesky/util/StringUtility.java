@@ -1,5 +1,8 @@
 package ch.defiant.purplesky.util;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class StringUtility {
 
     private static final String WHITESPACE_STRING = " ";
@@ -198,10 +201,10 @@ public class StringUtility {
             return def;
         }
     }
-    
-    public static String join(String delimiter, String... values){
+
+    public static String join (String delimiter, Collection<String> strings){
         StringBuilder sb = new StringBuilder();
-        for (String s : values) {
+        for (String s : strings) {
             if(isNotNullOrEmpty(s)){
                 if(sb.length() != 0 ){
                     sb.append(delimiter);
@@ -210,5 +213,9 @@ public class StringUtility {
             }
         }
         return sb.toString();
+    }
+
+    public static String join(String delimiter, String... values){
+       return join(delimiter, Arrays.asList(values));
     }
 }
