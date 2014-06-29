@@ -90,6 +90,7 @@ public class RadarGridFragment extends BaseFragment implements
                 currentAddress = data;
                 updateLocationDisplay();
             }
+            getLoaderManager().destroyLoader(R.id.loader_profilePositionUpdate);
             getLoaderManager().restartLoader(R.id.loader_radar_main, null, RadarGridFragment.this);
         }
 
@@ -344,6 +345,8 @@ public class RadarGridFragment extends BaseFragment implements
             adapter.add(user);
         }
         adapter.notifyDataSetChanged();
+
+        getLoaderManager().destroyLoader(R.id.loader_radar_main);
     }
 
     @Override
