@@ -81,9 +81,9 @@
     <orderEntry type="library" exported="" name="play-services-4.4.52" level="project" />
     <orderEntry type="library" exported="" name="javawriter-2.3.0" level="project" />
     <orderEntry type="library" exported="" name="dagger-1.2.1" level="project" />
-    <orderEntry type="library" exported="" name="CWAC-AdapterWrapper" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.3.2" level="project" />
