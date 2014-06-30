@@ -35,7 +35,6 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
     private Spinner genderspinner;
     private Spinner attractionSpinner;
-    private CheckBox onlyOnlineCheckbox;
     private IntegerSpinner fromAgeSpinner;
     private IntegerSpinner toAgeSpinner;
     private UserSearchOptions options;
@@ -79,7 +78,6 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
     private void restoreSelections() {
         if (options != null){
-            onlyOnlineCheckbox.setChecked(options.getLastOnline() == UserSearchOptions.LastOnline.NOW);
             fromAgeSpinner.selectValue(options.getMinAge());
             toAgeSpinner.selectValue(options.getMaxAge());
 
@@ -130,7 +128,6 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
     private void sendResult() {
         updateGenderAttractionOption();
-        options.setLastOnline(onlyOnlineCheckbox.isChecked() ? UserSearchOptions.LastOnline.NOW : null);
         // TODO pbn validation min/max
         options.setMinAge((Integer) fromAgeSpinner.getSelectedItem());
         options.setMaxAge((Integer) toAgeSpinner.getSelectedItem());
@@ -152,7 +149,6 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
         attraction.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         attractionSpinner.setAdapter(attraction);
 
-        onlyOnlineCheckbox = (CheckBox) view.findViewById(R.id.dialog_radar_options_showOnlyOnlineChkBox);
         fromAgeSpinner = (IntegerSpinner) view.findViewById(R.id.dialog_radar_options_ageFromSpinner);
         toAgeSpinner = (IntegerSpinner) view.findViewById(R.id.dialog_radar_options_ageToSpinner);
     }

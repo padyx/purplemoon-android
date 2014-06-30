@@ -51,12 +51,10 @@ import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.db.IBundleDao;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
-import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
 import ch.defiant.purplesky.loaders.GetAndUpdateProfilePositionLoader;
-import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
+import ch.defiant.purplesky.loaders.RadarResultLoader;
 import ch.defiant.purplesky.util.Holder;
-import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
 /**
@@ -307,31 +305,7 @@ public class RadarGridFragment extends BaseFragment implements
     @Override
     public Loader<Holder<List<MinimalUser>>> onCreateLoader(int id, Bundle arg1) {
         getSherlockActivity().setProgressBarIndeterminateVisibility(true);
-
-        // TODO refactor to own class
-        return new SimpleAsyncLoader<Holder<List<MinimalUser>>>(getSherlockActivity(), R.id.loader_radar_main) {
-
-            @Override
-            public Holder<List<MinimalUser>> loadInBackground() {
-                UserSearchOptions opts = options;
-                if(opts == null){
-                    opts = new UserSearchOptions();
-                }
-                opts.setUserClass(MinimalUser.class);
-                opts.setNumber(100);
-                // If there is no filter set, require them to be online within last month...
-                // TODO Set to last hour and retrieve more, if necessary
-                opts.setLastOnline(NVLUtility.nvl(opts.getLastOnline(), UserSearchOptions.LastOnline.PAST_MONTH));
-                opts.setSearchOrder(UserSearchOrder.DISTANCE);
-
-                try {
-                    List<MinimalUser> result = apiAdapter.searchUser(opts);
-                    return new Holder<List<MinimalUser>>(result);
-                } catch (Exception e) {
-                    return new Holder<List<MinimalUser>>(e);
-                }
-            }
-        };
+        return new RadarResultLoader(getSherlockActivity(), apiAdapter, options);
     }
 
     @Override
@@ -469,4 +443,5 @@ public class RadarGridFragment extends BaseFragment implements
         editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, false);
         editor.commit();
     }
+
 }
