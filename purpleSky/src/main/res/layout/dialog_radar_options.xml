@@ -78,12 +78,4 @@
 
     </LinearLayout>
 
-    CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ShowOnlyOnline"
-        android:id="@+id/dialog_radar_options_showOnlyOnlineChkBox"
-        android:checked="false" />
-
-
 </LinearLayout>
