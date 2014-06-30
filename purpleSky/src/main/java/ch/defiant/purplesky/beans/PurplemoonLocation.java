@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
+import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.StringUtility;
 
 /**
@@ -40,7 +41,7 @@ public class PurplemoonLocation {
             streetAddress = StringUtility.join(", ", list);
 
             // Location name
-            this.locationName = streetAddress;
+            this.locationName = CollectionUtil.lastElement(list);
         }
     }
 
