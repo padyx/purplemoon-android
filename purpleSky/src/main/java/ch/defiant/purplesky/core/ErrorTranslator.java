@@ -1,12 +1,13 @@
 package ch.defiant.purplesky.core;
 
-import java.net.HttpURLConnection;
+import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.util.Log;
+import java.net.HttpURLConnection;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.Errors;
@@ -67,7 +68,7 @@ public class ErrorTranslator {
         }
     }
 
-    private static void throwGenericException(Context c) throws PurpleSkyException {
+    public static void throwGenericException(Context c) throws PurpleSkyException {
         throw new PurpleSkyException(c, R.string.UnknownErrorOccured);
     }
 
