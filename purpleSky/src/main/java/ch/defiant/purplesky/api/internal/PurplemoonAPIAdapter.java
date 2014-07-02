@@ -3,6 +3,11 @@ package ch.defiant.purplesky.api.internal;
 import android.util.Log;
 import android.util.Pair;
 
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -10,10 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -89,32 +93,36 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     }
 
     private String getOAuthToken(String username, String password) throws IOException, WrongCredentialsException {
+        Request.Builder builder = new Request.Builder();
+
         URL requestUrl = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.OAUTH_TOKENREQUEST_URL);
-        ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_ID, SecureConstants.get("api.id")));
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_SECRET, SecureConstants.get("api.sec")));
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE,
-                PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE_PASSWORD));
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_USERNAME, username));
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_PASSWORD, password));
-        HTTPURLResponseHolder response = HTTPURLUtility.doHTTPPost(requestUrl, new ArrayList<NameValuePair>(),
-                HTTPURLUtility.encodeForPOST(body, HTTP.UTF_8), HTTP.UTF_8, true, null);
 
-        if (response != null) {
-            int code = response.getResponseCode();
-            switch (code) {
-                case HttpURLConnection.HTTP_OK: {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.getOutput());
-                        return jsonObject.optString(PurplemoonAPIConstantsV1.JSON_OAUTH_ACCESSTOKEN, null);
-                    } catch (JSONException e) {
-                        if (BuildConfig.DEBUG) {
-                            Log.w(TAG, "Parsing OAUTH Token - JSONException ");
-                        }
-                        return null;
-                    }
+        builder.url(requestUrl);
+
+        FormEncodingBuilder formBuilder = new FormEncodingBuilder();
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_ID, SecureConstants.get("api.id"));
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_SECRET, SecureConstants.get("api.sec"));
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE,
+                PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE_PASSWORD);
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_USERNAME, username);
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_PASSWORD, password);
+
+        builder.post(formBuilder.build());
+        Response response = new OkHttpClient().newCall(builder.build()).execute();
+
+        int code = response.code();
+        if(response.isSuccessful()){
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                return jsonObject.optString(PurplemoonAPIConstantsV1.JSON_OAUTH_ACCESSTOKEN, null);
+            } catch (JSONException e) {
+                if (BuildConfig.DEBUG) {
+                    Log.w(TAG, "Parsing OAUTH Token - JSONException ");
                 }
-
+                return null;
+            }
+        } else {
+            switch (code) {
                 case HttpURLConnection.HTTP_UNAUTHORIZED: {
                     throw new WrongCredentialsException();
                 }
@@ -126,11 +134,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                     return null;
                 }
             }
-        } else {
-            if (BuildConfig.DEBUG) {
-                Log.w(TAG, "Requesting OAUTH Token - got no response");
-            }
-            return null;
         }
     }
 
@@ -1453,60 +1456,77 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
      *             If the users credentials were rejected.
      */
     private String performGETRequestForString(URL resource) throws IOException, PurpleSkyException {
-        try {
-            ArrayList<NameValuePair> headers = new ArrayList<NameValuePair>();
+        ArrayList<NameValuePair> headers = new ArrayList<NameValuePair>();
 
-            HTTPURLResponseHolder resp = HTTPURLUtility.doHTTPGet(resource, headers, HTTP.UTF_8, false, null);
-            if (resp.getResponseCode() >= 400) {
-                ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), resp.getResponseCode(), resp.getError(), resource.toString());
-            }
+        OkHttpClient httpClient = new OkHttpClient();
+        Request.Builder builder = new Request.Builder();
 
-            return resp.getOutput();
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Malformed URL when requesting GET access to API", e);
-            return null;
+        addLanguageHeader(builder);
+        addAuthenticationHeader(builder, resource);
+
+        Request request = builder.url(resource).build();
+        Response response = httpClient.newCall(request).execute();
+        if(response.isSuccessful()){
+            return response.body().string();
+        } else {
+            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), response.body().string(), resource.toString());
         }
+        // We should never get here - translator will throw above
+        return StringUtility.EMPTY_STRING;
+    }
+
+    private void addAuthenticationHeader(Request.Builder builder, URL resource) {
+        if (resource.toString().startsWith(PurplemoonAPIConstantsV1.BASE_URL)) { // TODO Rewrite this
+            String token = PersistantModel.getInstance().getOAuthAccessToken();
+            if (StringUtility.isNullOrEmpty(token)) {
+                if (BuildConfig.DEBUG)
+                    Log.w(TAG, "Requesting URL " + resource + " without token");
+            } else {
+                builder.addHeader(PurplemoonAPIConstantsV1.AUTH_HEADER_NAME, PurplemoonAPIConstantsV1.AUTH_HEADER_VALUEPREFIX + token);
+            }
+        }
+    }
+
+    private void addLanguageHeader(Request.Builder builder) {
+        String language = Locale.getDefault().getLanguage();
+        if (StringUtility.isNullOrEmpty(language)) {
+            language = Locale.US.getLanguage();
+        }
+        builder.addHeader("Accept-Language", language);
     }
 
     private HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
             throws IOException, PurpleSkyException {
-        ArrayList<NameValuePair> headers = new ArrayList<NameValuePair>();
-
-        if (headrs != null) {
-            for (NameValuePair pair : headrs) {
-                if (pair != null)
-                    headers.add(pair);
+        Request.Builder builder = new Request.Builder();
+        builder.url(resource);
+        if(headrs != null){
+            for(NameValuePair pair : headrs){
+                builder.addHeader(pair.getName(), pair.getValue());
             }
         }
 
-        String encodedBody = HTTPURLUtility.encodeForPOST(postBody, HTTP.UTF_8);
+        addLanguageHeader(builder);
+        addAuthenticationHeader(builder, resource);
 
-        HTTPURLResponseHolder resp;
-        int triesLeft = 3;
-        while (triesLeft > 0) {
-            triesLeft--;
-            try {
-                resp = HTTPURLUtility.doHTTPPost(resource, headers, encodedBody, HTTP.UTF_8, false, null);
-                if (resp.getResponseCode() >= 400) {
-                    ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), resp.getResponseCode(), resp.getError(),
-                            resource.toString());
-                }
-                return resp;
-            } catch (EOFException eofe) {
-                if (triesLeft == 0) {
-                    if (BuildConfig.DEBUG) {
-                        Log.i(TAG, "Cannot retry the post request anymore. URL:" + resource);
-                    }
-                    throw eofe;
-                } else if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "EOF Exception. Retrying... URL:" + resource);
-                }
+        FormEncodingBuilder formBuilder = new FormEncodingBuilder();
+        if(postBody != null){
+            for(NameValuePair pair : postBody){
+                formBuilder.add(pair.getName(), pair.getValue());
             }
         }
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "(HTTP Post: This should not occur. Out of tries without result? URL:" + resource);
+        builder.post(formBuilder.build());
+        Response response = new OkHttpClient().newCall(builder.build()).execute();
+
+        HTTPURLResponseHolder holder = new HTTPURLResponseHolder();
+        holder.setResponseCode(response.code());
+        if(response.isSuccessful()){
+            holder.setOutput(response.body().string());
+        } else {
+            holder.setError(response.body().string());
+            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), response.body().string(), resource.toString());
         }
-        throw new IOException("Unknown error: Could not POST to URL " + resource);
+
+        return holder;
     }
 
 }
