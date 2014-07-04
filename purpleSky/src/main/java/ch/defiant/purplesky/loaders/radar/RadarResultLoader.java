@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.loaders;
+package ch.defiant.purplesky.loaders.radar;
 
 import android.content.Context;
 
@@ -9,6 +9,7 @@ import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.UserSearchOrder;
+import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.NVLUtility;
 
