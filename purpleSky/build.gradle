@@ -29,6 +29,7 @@ android {
 dependencies {
     compile project(':endlessAdapter')
     compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:support-annotations:20.+'
     compile 'com.android.support:gridlayout-v7:18.0.+'
     compile 'com.google.android.gms:play-services:+'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
