@@ -26,5 +26,6 @@
 	<item type="id" name="loader_message_profileImage" />  
 	<item type="id" name="loader_username" /> 
 	<item type="id" name="loader_conversationstatus" />
-    <item type="id" name ="loader_profilePositionUpdate" />
+    <item type="id" name="loader_profilePositionUpdate" />
+    <item type="id" name="loader_profilePositionRetrieval" />
 </resources>
