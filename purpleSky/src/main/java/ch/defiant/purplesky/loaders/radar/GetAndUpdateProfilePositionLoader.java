@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.loaders;
+package ch.defiant.purplesky.loaders.radar;
 
 import android.content.Context;
 import android.location.Address;
@@ -16,6 +16,7 @@ import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
+import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.CollectionUtil;
 
 /**
@@ -25,7 +26,7 @@ import ch.defiant.purplesky.util.CollectionUtil;
  * @author Patrick Bänziger
  * @since 1.1.0
  */
-public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address>{
+public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address> {
 
     private static final int ACCURACY_BOUND_METERS = 500;
     private static String TAG = GetAndUpdateProfilePositionLoader.class.getSimpleName();
@@ -45,11 +46,17 @@ public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address
             PurplemoonLocation location;
             Collection<PurplemoonLocation> locations = apiAdapter.getOwnLocations();
             location = getCurrentLocation(locations);
-            Address address = getAddressFromNewLocation();
-            if(location == null && BuildConfig.DEBUG){
-                Log.d(TAG, "No current newLocation found in locations");
-            } else {
-                if(requiresUpdate(newLocation, location)){
+            Address address = null;
+            if(newLocation != null) {
+                address = getAddressFromLocation(getContext(), newLocation);
+                if (location != null) {
+                    if(requiresUpdate(newLocation, location)){
+                        updateLocation(newLocation, address, locations);
+                    }
+                }  else {
+                    if (BuildConfig.DEBUG) {
+                        Log.d(TAG, "No current location found in api. Sending location");
+                    }
                     updateLocation(newLocation, address, locations);
                 }
             }
@@ -62,8 +69,8 @@ public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address
         }
     }
 
-    private Address getAddressFromNewLocation() throws IOException {
-        List<Address> address = new Geocoder(getContext())
+    private static Address getAddressFromLocation(Context c, Location newLocation) throws IOException {
+        List<Address> address = new Geocoder(c)
                 .getFromLocation(newLocation.getLatitude(), newLocation.getLongitude(), 1);
         if(address == null || address.isEmpty()){
             if(BuildConfig.DEBUG){
@@ -80,7 +87,7 @@ public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address
         apiAdapter.setOwnLocation(location);
     }
 
-    private boolean requiresUpdate(Location newLocation, PurplemoonLocation location) {
+    private static boolean requiresUpdate(Location newLocation, PurplemoonLocation location) {
         float[] results = new float[1];
         Location.distanceBetween(
                 newLocation.getLatitude(), newLocation.getLongitude(),
