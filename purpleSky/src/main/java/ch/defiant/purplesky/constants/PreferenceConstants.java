@@ -60,4 +60,5 @@ public class PreferenceConstants {
 
 
     public static final String radarAutomaticLocationUpdateEnabled = radaroptionsBase + "autoLocationUpdate";
+    public static final String radarLastLocationUpdate = radaroptionsBase + "lastLocationUpdate";
 }

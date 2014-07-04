@@ -20,6 +20,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -52,8 +53,9 @@ import ch.defiant.purplesky.db.IBundleDao;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
-import ch.defiant.purplesky.loaders.GetAndUpdateProfilePositionLoader;
-import ch.defiant.purplesky.loaders.RadarResultLoader;
+import ch.defiant.purplesky.loaders.radar.GetAndUpdateProfilePositionLoader;
+import ch.defiant.purplesky.loaders.radar.GetCurrentPurplemoonAddress;
+import ch.defiant.purplesky.loaders.radar.RadarResultLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -69,6 +71,8 @@ public class RadarGridFragment extends BaseFragment implements
         LocationListener
 {
 
+    // TODO Handling that google play services are not available?
+
     private class GeocoderLoaderCallback implements  LoaderManager.LoaderCallbacks<Address>{
 
         @Override
@@ -80,20 +84,55 @@ public class RadarGridFragment extends BaseFragment implements
 
         @Override
         public void onLoadFinished(Loader<Address> loader, Address data) {
-            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+            if(getSherlockActivity() != null) {
+                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 
-            if(data == null){
-                addressTextView.setText(getString(R.string.Unknown));
-            } else {
-                currentAddress = data;
-                updateLocationDisplay();
+                if (data == null) {
+                    // TODO Handle error
+                    addressTextView.setText(getString(R.string.Unknown));
+                } else {
+                    SharedPreferences.Editor edit = PreferenceUtility.getPreferences().edit();
+                    edit.putLong(PreferenceConstants.radarLastLocationUpdate, System.currentTimeMillis());
+                    edit.commit();
+
+                    currentAddress = data;
+                    updateLocationDisplay();
+                }
+                getLoaderManager().destroyLoader(R.id.loader_profilePositionUpdate);
+                getLoaderManager().restartLoader(R.id.loader_radar_main, null, RadarGridFragment.this);
             }
-            getLoaderManager().destroyLoader(R.id.loader_profilePositionUpdate);
-            getLoaderManager().restartLoader(R.id.loader_radar_main, null, RadarGridFragment.this);
         }
 
         @Override
         public void onLoaderReset(Loader<Address> loader) {  }
+    }
+
+    private class PurplemoonLocationLoaderCallback implements LoaderManager.LoaderCallbacks<Address>{
+
+        @Override
+        public Loader<Address> onCreateLoader(int i, Bundle bundle) {
+            return new GetCurrentPurplemoonAddress(getSherlockActivity(), apiAdapter);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Address> loader, Address address) {
+            if(address != null) {
+                currentAddress = address;
+            }
+            if(getSherlockActivity() != null){
+                String s;
+                if(address != null && address.getMaxAddressLineIndex()>0){
+                    s = address.getAddressLine(0);
+                } else {
+                    s=getString(R.string.Unknown);
+                }
+                addressTextView.setText(s);
+                getLoaderManager().destroyLoader(R.id.loader_profilePositionRetrieval);
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Address> loader) { }
     }
 
     // Saving instance values keys
@@ -103,7 +142,7 @@ public class RadarGridFragment extends BaseFragment implements
 
     // Constants
     private static final String TAG = RadarGridFragment.class.getSimpleName();
-    private static final long OUTDATE_THRESHOLD_MS = 5*60*1000; // 5 Minutes
+    private static final long OUTDATE_THRESHOLD_MS = 2*60*1000; // 2 Minutes
     private static final int REQUIRED_ACCURACY = 250;
     private static final String BUNDLESTORE_OWNER = "radargridfragment";
     private static final int REQUESTCODE_SEARCHOPTIONS_DIALOG = 0;
@@ -111,8 +150,6 @@ public class RadarGridFragment extends BaseFragment implements
     @Inject
     protected IBundleDao dao;
 
-    // UI-Elements and Adapters
-    private GridView gridview;
     private TextView addressTextView;
     private GridAdapter adapter;
 
@@ -120,7 +157,6 @@ public class RadarGridFragment extends BaseFragment implements
     private UserSearchOptions options;
     private boolean useLocation;
     private LocationClient locationClient;
-    private LocationRequest locationRequest;
     private Location currentLocation;
     private Address currentAddress;
 
@@ -130,7 +166,7 @@ public class RadarGridFragment extends BaseFragment implements
 
         RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.radar_grid_fragment, container, false);
         addressTextView = (TextView) view.findViewById(R.id.radar_grid_fragment_addressText);
-        gridview = (GridView) view.findViewById(R.id.gridview);
+        GridView gridview = (GridView) view.findViewById(R.id.gridview);
         gridview.setAdapter(this.adapter);
         gridview.setOnItemClickListener(new OpenUserProfileListener(getSherlockActivity()));
         return view;
@@ -200,6 +236,9 @@ public class RadarGridFragment extends BaseFragment implements
     }
 
     private void attachLocationListener() {
+        if(getSherlockActivity() != null){
+            getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        }
         if(locationClient == null) {
             locationClient = new LocationClient(getActivity(), this, this);
         }
@@ -210,6 +249,9 @@ public class RadarGridFragment extends BaseFragment implements
         if(locationClient != null && locationClient.isConnected()) {
             locationClient.removeLocationUpdates(this);
             locationClient.disconnect();
+        }
+        if(getSherlockActivity() != null){
+            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -255,7 +297,11 @@ public class RadarGridFragment extends BaseFragment implements
     }
 
     private void reload() {
-        if(useLocation && isLocationOutdated()){
+        SharedPreferences prefs = PreferenceUtility.getPreferences();
+        long lastOnlineUpdate = prefs.getLong(PreferenceConstants.radarLastLocationUpdate, 0L);
+        long ageOnline = System.currentTimeMillis() - lastOnlineUpdate;
+
+        if(useLocation && (isLocationOutdated() && ageOnline > OUTDATE_THRESHOLD_MS)){
             if(BuildConfig.DEBUG){
                 Log.d(TAG, "Location is outdated. Starting retrieval");
             }
@@ -263,6 +309,9 @@ public class RadarGridFragment extends BaseFragment implements
         } else {
             if(BuildConfig.DEBUG){
                 Log.d(TAG, "Location still up-to-date or not configured to be used.");
+            }
+            if(currentAddress == null) {
+                getLoaderManager().restartLoader(R.id.loader_profilePositionRetrieval, null, new PurplemoonLocationLoaderCallback());
             }
             getLoaderManager().restartLoader(R.id.loader_radar_main, null, this);
         }
@@ -328,14 +377,13 @@ public class RadarGridFragment extends BaseFragment implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        locationRequest = LocationRequest.create();
+        LocationRequest locationRequest = LocationRequest.create();
         // Use low power accuracy
-        locationRequest.setPriority(
-                LocationRequest.PRIORITY_LOW_POWER);
-        // Set the update interval to 10 seconds
-        locationRequest.setInterval(1000*10);
-        // Set the fastest update interval to 1 second
-        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        // Set the update interval to 0.5 seconds
+        locationRequest.setInterval(500);
+        // Set the fastest update interval to 0.25 second
+        locationRequest.setFastestInterval(250);
 
         locationClient.requestLocationUpdates(locationRequest, this);
     }
@@ -347,7 +395,8 @@ public class RadarGridFragment extends BaseFragment implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // TODO Implement
+        Log.w(TAG, "Could not connect to retrieve location. Result "+connectionResult);
+        Toast.makeText(getSherlockActivity(), getString(R.string.LocationNotFound), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -359,7 +408,7 @@ public class RadarGridFragment extends BaseFragment implements
             }
             // Accurate enough
             removeLocationListener();
-            getLoaderManager().restartLoader(R.id.loader_profilePositionUpdate, null, new GeocoderLoaderCallback() ); // TODO Bundle?
+            getLoaderManager().restartLoader(R.id.loader_profilePositionUpdate, null, new GeocoderLoaderCallback());
         }
     }
 
@@ -419,8 +468,7 @@ public class RadarGridFragment extends BaseFragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode){
             case REQUESTCODE_SEARCHOPTIONS_DIALOG:
-                UserSearchOptions opts = (UserSearchOptions) data.getSerializableExtra(ResultConstants.GENERIC);
-                options = opts;
+                options = (UserSearchOptions) data.getSerializableExtra(ResultConstants.GENERIC);
                 getLoaderManager().restartLoader(R.id.loader_radar_main,null,this);
                 break;
             default:
