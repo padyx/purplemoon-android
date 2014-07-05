@@ -1,6 +1,7 @@
 package ch.defiant.purplesky.loaders;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.v4.content.AsyncTaskLoader;
 
 /**
@@ -14,7 +15,7 @@ public abstract class SimpleAsyncLoader<T> extends AsyncTaskLoader<T> {
         this(context, 0);
     }
 
-    public SimpleAsyncLoader(Context context, int type) {
+    public SimpleAsyncLoader(Context context, @IdRes int type) {
         super(context);
         m_type = type;
     }
@@ -28,8 +29,8 @@ public abstract class SimpleAsyncLoader<T> extends AsyncTaskLoader<T> {
     @Override
     public void deliverResult(T value) {
         if (isReset()) {
-            // An async query came in while the loader is stopped. We
-            // don't need the result.
+            // An async query came in while the loader is stopped.
+            // We don't need the result.
             if (m_result != null) {
                 onReleaseResources(m_result);
             }
