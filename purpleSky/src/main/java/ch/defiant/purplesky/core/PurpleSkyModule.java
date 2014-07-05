@@ -16,7 +16,6 @@ import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.UserStatsFragment;
-import ch.defiant.purplesky.fragments.VisitorFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteFragment;
@@ -24,6 +23,7 @@ import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
 import ch.defiant.purplesky.fragments.postit.PostitFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
+import ch.defiant.purplesky.fragments.visits.VisitorFragment;
 import dagger.Module;
 
 /**

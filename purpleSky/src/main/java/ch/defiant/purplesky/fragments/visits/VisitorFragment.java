@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.fragments;
+package ch.defiant.purplesky.fragments.visits;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -34,6 +34,8 @@ import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
+import ch.defiant.purplesky.fragments.BaseListFragment;
+import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.UserUtility;

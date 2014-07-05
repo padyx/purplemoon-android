@@ -39,10 +39,10 @@ import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
-import ch.defiant.purplesky.fragments.VisitorTabbedFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteTabbedFragment;
 import ch.defiant.purplesky.fragments.postit.PostitTabbedFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchTabbedFragment;
+import ch.defiant.purplesky.fragments.visits.VisitorTabbedFragment;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
