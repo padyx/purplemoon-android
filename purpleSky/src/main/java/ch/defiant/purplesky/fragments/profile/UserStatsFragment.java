@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.fragments;
+package ch.defiant.purplesky.fragments.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -35,7 +36,6 @@ import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.ProfileListMap;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;

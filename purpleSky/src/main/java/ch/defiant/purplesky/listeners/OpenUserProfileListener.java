@@ -5,12 +5,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.fragments.DisplayProfileFragment;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 
 public class OpenUserProfileListener implements AdapterView.OnItemClickListener {
     private final SherlockFragmentActivity m_activity;

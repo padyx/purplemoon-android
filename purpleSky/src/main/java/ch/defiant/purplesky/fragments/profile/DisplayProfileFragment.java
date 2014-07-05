@@ -1,6 +1,4 @@
-package ch.defiant.purplesky.fragments;
-
-import java.io.IOException;
+package ch.defiant.purplesky.fragments.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +7,14 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+import java.io.IOException;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -20,17 +26,13 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.ProfileStatus;
+import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.StringUtility;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 public class DisplayProfileFragment extends AbstractTabbedFragment
         implements IAlertDialogFragmentResponder, LoaderCallbacks<Holder<DetailedUser>> {

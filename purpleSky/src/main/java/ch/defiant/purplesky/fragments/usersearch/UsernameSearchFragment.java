@@ -43,7 +43,7 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.fragments.DisplayProfileFragment;
+import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;

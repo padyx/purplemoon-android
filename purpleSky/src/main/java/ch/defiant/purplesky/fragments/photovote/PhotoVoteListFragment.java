@@ -30,7 +30,7 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.ProfileStatus;
 import ch.defiant.purplesky.fragments.BaseListFragment;
-import ch.defiant.purplesky.fragments.DisplayProfileFragment;
+import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 

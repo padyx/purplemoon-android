@@ -46,7 +46,7 @@ import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.fragments.DisplayProfileFragment;
+import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.loaders.CachedUsernameLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.loaders.conversations.ConversationStatusLoader;
