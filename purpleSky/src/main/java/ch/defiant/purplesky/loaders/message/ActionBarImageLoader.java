@@ -68,14 +68,13 @@ public class ActionBarImageLoader extends SimpleAsyncLoader<Drawable> {
             MinimalUser user = apiAdapter.getMinimalUserData(userId, false);
             URL url = UserService.getUserPreviewPictureUrl(user, UserPreviewPictureSize.getPictureForPx(imgSize));
             if(url != null){
-                P_Target target = new P_Target();
-                Picasso.with(PurpleSkyApplication.get()).load(url.toString()).
-                    resize(imgSize, imgSize).centerCrop().into(target);
-                while(!target.finished && !isAbandoned() && !isReset()){ // TODO
-                    Thread.sleep(250);
+                Bitmap bitmap = Picasso.with(PurpleSkyApplication.get()).load(url.toString()).
+                        resize(imgSize, imgSize).centerCrop().get();
+
+                if(bitmap != null){
+                    return new BitmapDrawable(getContext().getResources(),bitmap);
                 }
-                return target.m_bitmap;
-            } 
+            }
         }
         catch(IOException e){
         } catch (Exception e) {
