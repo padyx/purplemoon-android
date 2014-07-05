@@ -1,11 +1,5 @@
 package ch.defiant.purplesky.core;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import javax.inject.Qualifier;
-
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
@@ -19,9 +13,7 @@ import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
-import ch.defiant.purplesky.fragments.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
-import ch.defiant.purplesky.fragments.PostitFragment;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.UserStatsFragment;
 import ch.defiant.purplesky.fragments.VisitorFragment;
@@ -29,10 +21,10 @@ import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
+import ch.defiant.purplesky.fragments.postit.PostitFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * Main module for injections.

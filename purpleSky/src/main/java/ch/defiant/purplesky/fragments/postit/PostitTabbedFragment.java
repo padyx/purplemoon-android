@@ -1,8 +1,10 @@
-package ch.defiant.purplesky.fragments;
+package ch.defiant.purplesky.fragments.postit;
 
 import android.os.Bundle;
 import android.view.View;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 import ch.defiant.purplesky.util.CompareUtility;
 
 public class PostitTabbedFragment extends AbstractTabbedFragment {
