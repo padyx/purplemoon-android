@@ -5,8 +5,6 @@ import android.util.Log;
 import org.apache.http.NameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -56,16 +54,4 @@ public class HTTPURLUtility {
         return builder.toString();
     }
     
-    public static void close(Closeable s) {
-        if (s != null) {
-            try {
-                s.close();
-            } catch (IOException e) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Stream already closed.");
-                }
-            }
-        }
-    }
-
 }
