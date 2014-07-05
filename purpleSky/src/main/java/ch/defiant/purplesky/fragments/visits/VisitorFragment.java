@@ -35,7 +35,7 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.fragments.BaseListFragment;
-import ch.defiant.purplesky.fragments.DisplayProfileFragment;
+import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.UserUtility;
