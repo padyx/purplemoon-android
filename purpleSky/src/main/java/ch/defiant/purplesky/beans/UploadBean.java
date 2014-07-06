@@ -1,13 +1,15 @@
 package ch.defiant.purplesky.beans;
 
-import java.net.URL;
-import java.util.Collection;
+import android.net.Uri;
 
 import org.apache.http.NameValuePair;
 
-import android.net.Uri;
+import java.net.URL;
+import java.util.Collection;
 
 public class UploadBean {
+
+    public static final long UNKNOWN_LENGTH = -1L;
 
     public enum State {
         PENDING,
@@ -45,10 +47,6 @@ public class UploadBean {
         m_headerParams = headers;
         m_fileUri = fileUri;
         m_formName = fileFormName;
-    }
-
-    public Collection<NameValuePair> getAdditionalParams() {
-        return m_formParams;
     }
 
     public Collection<NameValuePair> getHeaderParams() {
