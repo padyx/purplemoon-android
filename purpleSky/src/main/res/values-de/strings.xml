@@ -262,4 +262,7 @@
     <string name="AutomaticLocationUpdates_Dialog_Title">Standortaktualisierung einschalten?</string>
     <string name="AutomaticLocationUpdates_Dialog_Question">Mit der Position deines Gerätes kannst du andere Benutzer in deiner Nähe sehen.
         Deine ungefähre Position wird in deinem Purplemoon-Profil angezeigt. Du kannst diese Einstellung später in den Suchoptionen ändern.</string>
+
+    <string name="PictureNotFound">Bild konnte nicht gefunden werden.</string>
+    <string name="UnknownError_X">Unbekannter Fehler (%1$d)</string>
 </resources>

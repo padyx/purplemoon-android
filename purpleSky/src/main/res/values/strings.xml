@@ -259,4 +259,7 @@
     <string name="AutomaticLocationUpdates_Dialog_Question">By using your device\'s location, you can see other users in your vincinity.
         Your approximate location will be visible on the Purplemoon profile. You can change this setting in the search options later.</string>
 
+    <string name="PictureNotFound">Picture could not be found.</string>
+
+    <string name="UnknownError_X">Unknown error (%1$d)</string>
 </resources>
