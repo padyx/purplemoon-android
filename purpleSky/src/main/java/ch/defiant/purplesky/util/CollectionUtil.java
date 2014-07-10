@@ -33,4 +33,16 @@ public class CollectionUtil {
         }
     }
 
+    /**
+     * Returns the size of the collection or zero, if null.
+     * @param c
+     * @return size of collection, or zero if <tt>null</tt>
+     */
+    public static int safeSize(Collection<?> c){
+        if(c == null){
+            return 0;
+        } else {
+            return c.size();
+        }
+    }
 }
