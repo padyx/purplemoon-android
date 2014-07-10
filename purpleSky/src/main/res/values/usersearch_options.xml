@@ -10,7 +10,7 @@
         <item>Straight women</item>
     </string-array>
 
-    <string-array name="radarsearch_options_attractions_values">
+    <string-array name="radarsearch_options_attractions_values" translatable="false">
         <item>MALE_HOMOSEXUAL</item>
         <item>MALE_BISEXUAL</item>
         <item>MALE_HETEROSEXUAL</item>

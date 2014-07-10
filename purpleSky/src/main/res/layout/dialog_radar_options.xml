@@ -46,7 +46,7 @@
                 android:minHeight="48dp"
                 android:minWidth="96dp"
                 android:src="@drawable/action_edit"
-                android:text="@string/Select"
+                android:contentDescription="@string/Select"
                 />
         </LinearLayout>
 
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:attr/listSeparatorTextViewStyle"
-            android:text="Age"
+            android:text="@string/Age"
             android:textColor="#ff666666"
             android:textStyle="bold"/>
 
@@ -70,7 +70,7 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"

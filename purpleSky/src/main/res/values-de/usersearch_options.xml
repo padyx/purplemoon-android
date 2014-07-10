@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="radarsearch_options_attractions_strings">
+        <item>Schwule Männer</item>
+        <item>Bisexuelle Männer</item>
+        <item>Heterosexualle Männer</item>
+        <item>Lesbische Frauen</item>
+        <item>Bisexuelle Frauen</item>
+        <item>Heterosexualle Frauen</item>
+    </string-array>
+
     <string-array name="usersearch_opts_str_online">
         <item>Jetzt</item>
         <item>Letzte Stunde</item>
