@@ -113,9 +113,9 @@ public final class APIUtility {
     public static String translateGender(Gender g) {
         switch (g) {
             case MALE:
-                return "male";
+                return PurplemoonAPIConstantsV1.JSON_USER_GENDER_MALE;
             case FEMALE:
-                return "female";
+                return PurplemoonAPIConstantsV1.JSON_USER_GENDER_FEMALE;
             default:
                 throw new IllegalArgumentException("No api value for " + g);
         }
