@@ -1,45 +1,41 @@
 package ch.defiant.purplesky.enums;
 
+import android.content.res.Resources;
+
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 // TODO pbn Merge hetero/homo values
 public enum Sexuality {
 
     /**
-     * Sexuality 'heterosexual' for a male. Is indistinguishable by its API value from the female counterpart.
+     * Sexuality 'heterosexual' for a male.
      */
-    HETEROSEXUAL_MALE(PurpleSkyApplication.get().getString(R.string.SexualityHetero)),
+    HETEROSEXUAL,
     /**
-     * Sexuality 'heterosexual' for a female. Is indistinguishable by its API value from the male counterpart.
+     * Sexuality 'homosexual'
      */
-    HETEROSEXUAL_FEMALE(PurpleSkyApplication.get().getString(R.string.SexualityHetero)),
-    /**
-     * Sexuality 'homosexual' for a male. Is indistinguishable by its API value from the female counterpart.
-     */
-    GAY(PurpleSkyApplication.get().getString(R.string.SexualityGay)),
-    /**
-     * Sexuality 'homosexual' for a female. Is indistinguishable by its API value from the male counterpart.
-     */
-    LESBIAN(PurpleSkyApplication.get().getString(R.string.SexualityLesbian)),
+    HOMOSEXUAL,
     /**
      * Sexuality 'bisexual'
      */
-    BISEXUAL(PurpleSkyApplication.get().getString(R.string.SexualityBisexual));
+    BISEXUAL;
 
-    Sexuality(String l10n) {
-        m_localizationString = l10n;
-    }
 
-    private String m_localizationString;
-
-    public String getLocalizedString() {
-        return m_localizationString;
-    }
-
-    @Override
-    public String toString() {
-        return m_localizationString;
+    public String getLocalizedString(Resources r, Gender g) {
+        switch (this){
+            case HETEROSEXUAL:
+                return r.getString(R.string.SexualityHetero);
+            case HOMOSEXUAL:
+                switch(g){
+                    case MALE:
+                        return r.getString(R.string.SexualityGay);
+                    case FEMALE:
+                        return r.getString(R.string.SexualityLesbian);
+                }
+            case BISEXUAL:
+                return r.getString(R.string.SexualityBisexual);
+        }
+        throw new IllegalArgumentException("Unknown sexuality/gender combination: "+this+"/"+g);
     }
 
 }

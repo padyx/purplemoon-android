@@ -5,15 +5,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.Spinner;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.util.Pair;
@@ -24,8 +25,9 @@ import ch.defiant.purplesky.customwidgets.IntegerSpinner;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.fragments.BaseDialogFragment;
-import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.util.CollectionUtil;
+import ch.defiant.purplesky.util.CompareUtility;
+import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * Option dialog for radar fragment
@@ -33,11 +35,14 @@ import ch.defiant.purplesky.util.CollectionUtil;
  */
 public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
-    private Spinner genderspinner;
-    private Spinner attractionSpinner;
+    private static final String TAG = RadarOptionsDialogFragment.class.getSimpleName();
+    private static final int GENDERSEXUALIT_REQUEST = 1;
+
     private IntegerSpinner fromAgeSpinner;
     private IntegerSpinner toAgeSpinner;
     private UserSearchOptions options;
+    private TextView genderSexualityLabel;
+    private ImageButton genderSexualityBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,76 +63,40 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
         }
 
         return new AlertDialog.Builder(getSherlockActivity()).
-                setTitle("Show only").
-                setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        sendResult();
-                        dialogInterface.dismiss();
-                    }
-                }).
-                setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).
-                setView(view).
-                create();
+            setTitle("Show only").
+            setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    sendResult();
+                    dialogInterface.dismiss();
+                }
+            }).
+            setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).
+            setView(view).
+            create();
     }
 
     private void restoreSelections() {
-        if (options != null){
+        if (options != null) {
             fromAgeSpinner.selectValue(options.getMinAge());
             toAgeSpinner.selectValue(options.getMaxAge());
 
-            boolean targetMen = false, targetWomen = false;
-            boolean attractedMen = false, attractedWomen = false, attractedBi = false;
-            if(options.getAttractions() != null){
-                for(Pair<Gender, Sexuality> p : options.getAttractions()){
+            if (options.getAttractions() != null) {
+                ArrayList<String> attractions = new ArrayList<String>();
+                for (Pair<Gender, Sexuality> p : options.getAttractions()) {
 
-                    if(p.getFirst() == Gender.MALE ){
-                           targetMen = true;
-                        if(p.getSecond() == Sexuality.GAY){
-                            attractedMen = true;
-                        } else if (p.getSecond() == Sexuality.BISEXUAL){
-                            attractedBi = true;
-                        } else if (p.getSecond() == Sexuality.HETEROSEXUAL_MALE){
-                            attractedWomen = true;
-                        }
-                    } else if (p.getFirst() == Gender.FEMALE ) {
-                        targetWomen = true;
-                        if(p.getSecond() == Sexuality.GAY){
-                            attractedWomen = true;
-                        } else if (p.getSecond() == Sexuality.BISEXUAL){
-                            attractedBi = true;
-                        } else if (p.getSecond() == Sexuality.HETEROSEXUAL_MALE){
-                            attractedMen = true;
-                        }
-                    }
-                }
-
-                if(targetMen && targetWomen){
-                    genderspinner.setSelection(0);
-                } else if (targetMen){
-                    genderspinner.setSelection(1);
-                } else {
-                    genderspinner.setSelection(2);
-                }
-
-                if(attractedBi){
-                    attractionSpinner.setSelection(0);
-                } else if (attractedMen) {
-                    attractionSpinner.setSelection(1);
-                } else {
-                    attractionSpinner.setSelection(2);
+                    // FIXME Reimplement
                 }
             }
         }
     }
 
     private void sendResult() {
-        updateGenderAttractionOption();
         // TODO pbn validation min/max
         options.setMinAge((Integer) fromAgeSpinner.getSelectedItem());
         options.setMaxAge((Integer) toAgeSpinner.getSelectedItem());
@@ -137,68 +106,115 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
     }
 
     private void createView(View view) {
-        genderspinner = (Spinner) view.findViewById(R.id.dialog_radar_options_genderspinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getSherlockActivity(),
-                R.array.radar_sex_attraction, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genderspinner.setAdapter(adapter);
+        genderSexualityLabel = (TextView) view.findViewById(R.id.dialog_radar_options_genderattractionsLbl);
+        genderSexualityBtn = (ImageButton) view.findViewById(R.id.dialog_radar_options_genderattractionsBtn);
 
-        attractionSpinner = (Spinner) view.findViewById(R.id.dialog_radar_options_attraction);
-        ArrayAdapter<CharSequence> attraction = ArrayAdapter.createFromResource(getSherlockActivity(),
-                R.array.radar_sex_attraction, android.R.layout.simple_spinner_item);
-        attraction.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        attractionSpinner.setAdapter(attraction);
+        genderSexualityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSexualityOptions();
+            }
+        });
 
         fromAgeSpinner = (IntegerSpinner) view.findViewById(R.id.dialog_radar_options_ageFromSpinner);
         toAgeSpinner = (IntegerSpinner) view.findViewById(R.id.dialog_radar_options_ageToSpinner);
+        updateAttractionUI();
     }
 
-    private void updateGenderAttractionOption() {
-        int selectedGender = genderspinner.getSelectedItemPosition();
-        int selectedAttraction = attractionSpinner.getSelectedItemPosition();
+    private void showSexualityOptions() {
+        ListDialogFragment fragment = new ListDialogFragment();
+        fragment.setTargetFragment(this, GENDERSEXUALIT_REQUEST);
 
-        // Both, Men >only<, Women >only<
+        List<String> texts = Arrays.asList(getResources().getStringArray(R.array.usersearch_opts_str_gendersexuality));
 
-        List<Gender> genders = new ArrayList<Gender>();
-        switch(selectedGender){
-            case 0:
-                genders = Arrays.asList(Gender.MALE, Gender.FEMALE);
-                break;
-            case 1:
-                genders = Arrays.asList(Gender.MALE);
-                break;
-            case 2:
-                genders = Arrays.asList(Gender.FEMALE);
-                break;
-        }
-        List<Gender> attractedto = new ArrayList<Gender>();
-        switch(selectedAttraction){
-            case 0:
-                attractedto = Arrays.asList(Gender.MALE, Gender.FEMALE);
-                break;
-            case 1:
-                attractedto = Arrays.asList(Gender.MALE);
-                break;
-            case 2:
-                attractedto = Arrays.asList(Gender.FEMALE);
-                break;
+        Bundle args = new Bundle();
+        args.putStringArrayList(ArgumentConstants.ARG_ITEMS, new ArrayList<String>(texts));
+        args.putIntegerArrayList(ArgumentConstants.ARG_SELECTION, new ArrayList<Integer>(toIndexList(options.getAttractions())));
+        fragment.setArguments(args);
+
+        fragment.show(getFragmentManager(), "sexualityGenderDialog");
+    }
+
+    private List<Integer> toIndexList(List<Pair<Gender, Sexuality>> attractions) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        if(attractions == null){
+            return list;
         }
 
-        ArrayList<Pair<Gender, Sexuality>> attractions = new ArrayList<Pair<Gender, Sexuality>>();
-        for(Gender g: genders){
-            if(attractedto.size() == 2){
-                attractions.add(new Pair<Gender, Sexuality>(g, Sexuality.BISEXUAL));
-            } else {
-                Gender otherGender = CollectionUtil.firstElement(attractedto);
-                if(g==otherGender) {
-                    attractions.add(new Pair<Gender, Sexuality>(g, Sexuality.GAY));
-                } else {
-                    attractions.add(new Pair<Gender, Sexuality>(g, Sexuality.HETEROSEXUAL_MALE));
-                }
+        String[] values = getResources().getStringArray(R.array.radarsearch_options_attractions_values);
+        StringBuilder sb = new StringBuilder();
+        for (Pair<Gender, Sexuality> pair : attractions) {
+            sb.setLength(0);
+            sb.append(pair.getFirst().name());
+            sb.append("_");
+            sb.append(pair.getSecond().name());
+            int index = find(sb.toString(), values);
+            if(index != -1){
+                list.add(index);
             }
         }
 
-        options.setAttractions(attractions);
+        return list;
+    }
+
+    private <T> int find(T search, T[] elements) {
+        int i = 0;
+        for (T element : elements) {
+            if (CompareUtility.equals(element, search)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+
+    @Override
+    public void doListSelectResult(int dialogId, Set<Integer> selected) {
+        options.setAttractions(toAttractions(selected));
+        updateAttractionUI();
+    }
+
+    private void updateAttractionUI() {
+        List<Integer> indexes = toIndexList(options.getAttractions());
+        List<String> strings = new ArrayList<String>();
+        String[] values = getResources().getStringArray(R.array.radarsearch_options_attractions_strings);
+        for (Integer index : indexes) {
+            strings.add(values[index]);
+        }
+
+        String joined = StringUtility.join(", ", strings);
+
+        int count = CollectionUtil.safeSize(options.getAttractions());
+        if(count>0) {
+            genderSexualityLabel.setText(getString(R.string.X_Selected_Y, count, joined));
+        } else {
+            genderSexualityLabel.setText(getString(R.string.NothingSelected));
+        }
+    }
+
+    private List<Pair<Gender, Sexuality>> toAttractions(Set<Integer> selected) {
+        if(selected == null){
+            return Collections.emptyList();
+        }
+        List<Pair<Gender, Sexuality>> list = new ArrayList<Pair<Gender, Sexuality>>();
+        String[] values = getResources().getStringArray(R.array.radarsearch_options_attractions_values);
+        if(values == null){
+            return Collections.emptyList();
+        }
+        for (Integer pos : selected) {
+            if(pos >= values.length){
+                Log.w(TAG, "");
+            } else {
+                String[] split = values[pos].split("_");
+                if(split.length != 2){
+                    Log.w(TAG, "");
+                } else {
+                    list.add(new Pair<Gender, Sexuality>(Gender.valueOf(split[0]), Sexuality.valueOf(split[1])));
+                }
+            }
+        }
+        return list;
     }
 
 }

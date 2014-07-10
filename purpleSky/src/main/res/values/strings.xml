@@ -262,4 +262,9 @@
     <string name="PictureNotFound">Picture could not be found.</string>
 
     <string name="UnknownError_X">Unknown error (%1$d)</string>
+    <string name="Select">Select</string>
+    <string name="MinimumAge">Minimum age</string>
+    <string name="MaximumAge">Maximum age</string>
+    <string name="X_Selected_Y">%1$d selected: %2$s</string>
+    <string name="NothingSelected">Nothing selected</string>
 </resources>

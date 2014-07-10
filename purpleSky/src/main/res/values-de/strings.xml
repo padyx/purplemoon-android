@@ -265,4 +265,5 @@
 
     <string name="PictureNotFound">Bild konnte nicht gefunden werden.</string>
     <string name="UnknownError_X">Unbekannter Fehler (%1$d)</string>
+    <string name="Select">Select</string>
 </resources>

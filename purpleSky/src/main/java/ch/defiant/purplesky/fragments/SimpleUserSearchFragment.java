@@ -1,9 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,12 +17,19 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.SpinnerStateElement;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserSearchOptions.SearchType;
@@ -36,14 +39,12 @@ import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.ChooseLocationDialogFragment;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.Sexuality;
+import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.util.CompareUtility;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class SimpleUserSearchFragment extends SherlockFragment implements IBroadcastReceiver {
 
@@ -159,19 +160,19 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(null, null), getString(R.string.targetperson_any)));
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, null),
                 getString(R.string.targetperson_man)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.GAY),
+        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.HOMOSEXUAL),
                 getString(R.string.targetperson_gayman)));
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.BISEXUAL),
                 getString(R.string.targetperson_bisexualman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.HETEROSEXUAL_MALE),
+        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.HETEROSEXUAL),
                 getString(R.string.targetperson_heteroman)));
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, null),
                 getString(R.string.targetperson_woman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.LESBIAN),
+        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.HOMOSEXUAL),
                 getString(R.string.targetperson_lesbianwoman)));
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.BISEXUAL),
                 getString(R.string.targetperson_bisexualwoman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.HETEROSEXUAL_FEMALE),
+        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.HETEROSEXUAL),
                 getString(R.string.targetperson_heterowoman)));
 
         ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>> adapter = new ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>>(
@@ -241,9 +242,9 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
 
         List<Sexuality> sexualities = new ArrayList<Sexuality>();
         if (pair.getSecond() == null) {
-            sexualities.add(Sexuality.HETEROSEXUAL_MALE);
+            sexualities.add(Sexuality.HETEROSEXUAL);
             sexualities.add(Sexuality.BISEXUAL);
-            sexualities.add(Sexuality.GAY);
+            sexualities.add(Sexuality.HOMOSEXUAL);
         } else {
             sexualities.add(pair.getSecond());
         }
@@ -299,8 +300,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         if (m_menuVisible) {
             SherlockFragmentActivity fragCtx = SimpleUserSearchFragment.this.getSherlockActivity();
             if (fragCtx != null) {
-                fragCtx.runOnUiThread(
-                        new Runnable() {
+                fragCtx.runOnUiThread(new Runnable() {
 
                             @Override
                             public void run() {

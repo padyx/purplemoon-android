@@ -1,5 +1,7 @@
 package ch.defiant.purplesky.dialogs;
 
+import java.util.Set;
+
 /**
  * Callbacks that are called by {@link AlertDialogFragment} after dismissal.
  * 
@@ -32,4 +34,10 @@ public interface IAlertDialogFragmentResponder {
      */
     public void doNeutralAlertClick(int dialogId);
 
+    /**
+     * Callback to deliver the selection results.
+     * @param dialogId Identifier of the dialog.
+     * @param data
+     */
+    public void doListSelectResult(int dialogId, Set<Integer> data);
 }

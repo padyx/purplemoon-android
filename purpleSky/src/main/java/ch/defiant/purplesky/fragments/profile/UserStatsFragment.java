@@ -339,7 +339,7 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
 
         sb.append( StringUtility.join(", ", 
                 String.valueOf(user.getAge()), 
-                user.getSexuality().getLocalizedString(),
+                user.getSexuality().getLocalizedString(getResources(), user.getGender()),
                 relStatus)
                 );
         sb.append("</div>");

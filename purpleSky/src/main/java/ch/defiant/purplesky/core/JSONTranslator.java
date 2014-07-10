@@ -109,7 +109,7 @@ public class JSONTranslator {
             // 'sexuality': string,
             if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY)) {
                 String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY);
-                user.setSexuality(APIUtility.toSexuality(string, gender));
+                user.setSexuality(APIUtility.toSexuality(string));
             }
 
             // 'age': integer,

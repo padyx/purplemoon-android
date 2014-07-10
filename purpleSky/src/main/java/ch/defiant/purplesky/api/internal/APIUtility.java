@@ -71,13 +71,9 @@ public final class APIUtility {
 
     public static String translateSexuality(Sexuality s) {
         switch (s) {
-            case HETEROSEXUAL_MALE:
+            case HETEROSEXUAL:
                 return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE;
-            case HETEROSEXUAL_FEMALE:
-                return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE;
-            case GAY:
-                return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE;
-            case LESBIAN:
+            case HOMOSEXUAL:
                 return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE;
             case BISEXUAL:
                 return PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_BISEXUAL_VALUE;
@@ -86,25 +82,13 @@ public final class APIUtility {
         }
     }
 
-    public static Sexuality toSexuality(String sexuality, Gender g){
+    public static Sexuality toSexuality(String sexuality){
         if(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE.equals(sexuality)){
-            if(g==Gender.MALE) {
-                return Sexuality.HETEROSEXUAL_MALE;
-            } else if (g==Gender.FEMALE) {
-                return Sexuality.HETEROSEXUAL_FEMALE;
-            } else {
-                throw new IllegalArgumentException("Unknown gender value "+g);
-            }
+            return Sexuality.HOMOSEXUAL;
         } else if (PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_BISEXUAL_VALUE.equals(sexuality)){
             return Sexuality.BISEXUAL;
         } else if (PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE.equals(sexuality)){
-            if(g==Gender.MALE) {
-                return Sexuality.GAY;
-            } else if (g==Gender.FEMALE) {
-                return Sexuality.LESBIAN;
-            } else {
-                throw new IllegalArgumentException("Unknown gender value "+g);
-            }
+            return Sexuality.HOMOSEXUAL;
         } else {
             throw new IllegalArgumentException("Unknown value for sexuality "+sexuality);
         }
