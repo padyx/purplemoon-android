@@ -1,144 +1,122 @@
 package ch.defiant.purplesky.dialogs;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import ch.defiant.purplesky.constants.ArgumentConstants;
-import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.constants.ArgumentConstants;
 
 /**
- * DialogFragment that shows a dialog with a list out of which the user can choose elements.
- * 
- * @author Patrick Baenziger
- * 
- * @param <T>
- *            Type of values that serve as the key of the elements presented in the list.
+ * @author Patrick Bänziger
+ * @since 1.1.0
  */
-public class ListDialogFragment<T> extends ResultDialogFragment<ArrayList<T>> {
+public class ListDialogFragment extends DialogFragment {
 
-    /**
-     * Argument to provide the keys which will be returned as a result. Must be provided as an array of T. Must be the same length as the array in
-     * {@link #ARG_STRINGS}. Must be a subtype of {@link Serializable}.
-     */
-    public static final String ARG_KEYS = "keys";
-    /**
-     * Argument to provide the strings used to label the keys Must be provided as an array of T. Must be the same length as the array in
-     * {@link #ARG_KEYS}
-     */
-    public static final String ARG_STRINGS = "strings";
-    /**
-     * Optional. Provides the initialization of the selection. If the dialog is configured for multiselect, then this must be a boolean array.
-     * Otherwise it must be an int, providing the position!
-     */
-    public static final String ARG_INITIALCHECKED = "initialchecked";
-    /**
-     * Optional. Sets the dialog to mutiselect. Argument must be a boolean. Default is false.
-     */
-    public static final String ARG_MULTISELECT = "multiselect";
-    
+    private static final String STATE_SELECTED = "selected";
+
+    private Set<Integer> selectedItems = new HashSet<Integer>();
+    boolean isMultiCheckable = true; // FIXME make multicheckable
+
+    @NonNull
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle args = getArguments();
-        m_isMultiSelect = args.getBoolean(ARG_MULTISELECT, false);
-        m_keys = (T[]) args.getSerializable(ARG_KEYS);
-        m_enumOrdinal = args.getInt(ArgumentConstants.ARG_ENUMORDINAL, -1);
-        if (m_keys == null) {
-            throw new IllegalArgumentException("Need a set of keys!");
-        }
-        m_strings = (String[]) args.getStringArray(ARG_STRINGS);
-        if (m_strings == null) {
-            throw new IllegalArgumentException("Need a set of label strings!");
-        }
-
-        if (m_strings.length != m_keys.length) {
-            throw new IllegalArgumentException("Strings and keys need to have the same length!");
-        }
-        if (m_isMultiSelect) {
-            m_multiChecked = args.getBooleanArray(ARG_INITIALCHECKED);
-            if (m_multiChecked == null) {
-                m_multiChecked = new boolean[m_keys.length];
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        List<String> elements = Collections.emptyList();
+        List<Integer> checked = Collections.emptyList();
+        if(getArguments() != null) {
+            if(getArguments().getCharSequenceArrayList(ArgumentConstants.ARG_ITEMS) != null){
+                elements = getArguments().getStringArrayList(ArgumentConstants.ARG_ITEMS);
             }
-        } else {
-            m_singleCheckPosition = args.getInt(ARG_INITIALCHECKED, -1);
+            if(getArguments().getIntegerArrayList(ArgumentConstants.ARG_SELECTION) != null) {
+                checked = getArguments().getIntegerArrayList(ArgumentConstants.ARG_SELECTION);
+            }
         }
-        
-    }
 
-    private T[] m_keys;
-    private String[] m_strings;
-    private boolean[] m_multiChecked;
-    private int m_singleCheckPosition;
+        boolean[] checkedState;
+        if(savedInstanceState != null){
+            ArrayList<Integer> selected = savedInstanceState.getIntegerArrayList(STATE_SELECTED);
+            this.selectedItems = new HashSet<Integer>(selected);
+        } else {
+            this.selectedItems.addAll(checked);
+        }
 
-    private boolean m_isMultiSelect;
-
-    private int m_enumOrdinal;
-
-    @Override
-    protected void createButtons(Builder builder) {
-        builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                // Collect every selected element and return it
-
-                ArrayList<T> l = new ArrayList<T>();
-
-                if (m_isMultiSelect) {
-                    int i = 0;
-                    for (boolean b : m_multiChecked) {
-                        if (b) {
-                            l.add(m_keys[i]);
+        checkedState = toBooleanIndexArray(checked, elements.size());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getTitle());
+        if (isMultiCheckable) {
+            builder.setMultiChoiceItems(
+                elements.toArray(new String[elements.size()]),
+                checkedState,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    // indexSelected contains the index of item (of which checkbox checked)
+                    @Override
+                    public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                        if (isChecked) {
+                            // If the user checked the item, add it
+                            selectedItems.add(indexSelected);
+                        } else if (selectedItems.contains(indexSelected)) {
+                            // Otherwise, remove if present
+                            selectedItems.remove(Integer.valueOf(indexSelected));
                         }
-                        i++;
                     }
-                } else {
-                    if (m_singleCheckPosition >= 0 && m_singleCheckPosition < m_keys.length) {
-                        l.add(m_keys[m_singleCheckPosition]);
+            });
+        } else {
+            builder.setSingleChoiceItems(
+                elements.toArray(new String[elements.size()]),
+                -1,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        selectedItems.clear();
+                        selectedItems.add(i);
                     }
+                });
+        }
+        builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //  Your code when user clicked on OK
+                //  You can write the code  to save the selected item here
+                if (getTargetFragment() instanceof IAlertDialogFragmentResponder){
+                    ((IAlertDialogFragmentResponder)getTargetFragment()).doListSelectResult(getId(), selectedItems);
                 }
-
-                setResult(l);
-                deliverResult(l);
             }
         });
-        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.setNegativeButton(getString(android.R.string.cancel), null);
+
+        return builder.create();
     }
 
     @Override
-    protected boolean createContent(Builder builder) {
-        if (m_isMultiSelect) {
-            builder.setMultiChoiceItems(m_strings, m_multiChecked, new OnMultiChoiceClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    m_multiChecked[which] = isChecked;
-                }
-            });
-        }
-        else {
-            builder.setSingleChoiceItems(m_strings, m_singleCheckPosition, new OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    m_singleCheckPosition = which;
-                }
-            });
-        }
-        return super.createContent(builder);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntegerArrayList(STATE_SELECTED, new ArrayList<Integer>(selectedItems));
     }
-    
-    @Override
-    protected void addResultElements(Intent i){
-        if(m_enumOrdinal >= 0){
-            i.putExtra(ArgumentConstants.ARG_ENUMORDINAL, m_enumOrdinal);
+
+    private String getTitle() {
+        if(getArguments().containsKey(ArgumentConstants.STRING_1)){
+            return getArguments().getString(ArgumentConstants.STRING_1);
+        } else {
+            return getString(R.string.PleaseChoose);
         }
     }
+
+    private boolean[] toBooleanIndexArray(Collection<Integer> selectedItems, int size) {
+        boolean[] array = new boolean[size];
+        for(Integer i: selectedItems){
+            array[i] = true;
+        }
+        return array;
+    }
+
 }

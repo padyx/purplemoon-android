@@ -1,9 +1,10 @@
 package ch.defiant.purplesky.util;
 
+import android.content.Context;
+
 import java.util.Map;
 import java.util.Map.Entry;
 
-import android.content.Context;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.BasicUser;
 import ch.defiant.purplesky.beans.DetailedUser;
@@ -135,7 +136,7 @@ public final class UserUtility {
             if (sb.length() > 0) {
                 sb.append(DESCRIPTION_DIVIDER);
             }
-            sb.append(item.getSexuality().getLocalizedString());
+            sb.append(item.getSexuality().getLocalizedString(c.getResources(), item.getGender()));
         }
         if (item instanceof PreviewUser) {
             PreviewUser p = (PreviewUser) item;

@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
@@ -37,5 +39,9 @@ public class BaseFragment extends SherlockFragment implements IAlertDialogFragme
 
     @Override
     public void doNeutralAlertClick(int dialogId) {
+    }
+
+    @Override
+    public void doListSelectResult(int dialogId, Set<Integer> selected) {
     }
 }

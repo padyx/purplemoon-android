@@ -1,81 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp"
-    android:gravity="center_horizontal">
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_radar_options_genderspinner"
-        android:layout_gravity="center_horizontal"
-        android:minHeight="48dp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="who are attracted to"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_radar_options_attraction"
-        android:layout_gravity="center_horizontal"
-        android:minHeight="48dp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="aged between"
-        android:id="@+id/textView2"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="8dp">
-
-        <view
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            class="ch.defiant.purplesky.customwidgets.IntegerSpinner"
-            app:lowerBound="12"
-            app:upperBound="99"
-            android:id="@+id/dialog_radar_options_ageFromSpinner"
-            android:minHeight="48dp"
-            android:layout_gravity="center_horizontal" />
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/and"
-            android:id="@+id/textView3"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp" />
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:text="@string/GenderAndSexuality"
+            android:textColor="#ff666666"
+            android:textStyle="bold"/>
 
-        <view
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            class="ch.defiant.purplesky.customwidgets.IntegerSpinner"
             android:minHeight="48dp"
-            app:lowerBound="12"
-            app:upperBound="99"
-            android:id="@+id/dialog_radar_options_ageToSpinner" />
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/dialog_radar_options_genderattractionsLbl"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+            />
+
+            <ImageButton
+                android:id="@+id/dialog_radar_options_genderattractionsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:background="#00FFFFFF"
+                android:minHeight="48dp"
+                android:minWidth="96dp"
+                android:src="@drawable/action_edit"
+                android:text="@string/Select"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:text="Age"
+            android:textColor="#ff666666"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:gravity="center_vertical"
+                android:text="@string/MinimumAge"/>
+
+            <view
+                android:id="@+id/dialog_radar_options_ageFromSpinner"
+                class="ch.defiant.purplesky.customwidgets.IntegerSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="48dp"
+                android:minWidth="96dp"
+                app:lowerBound="12"
+                app:upperBound="99"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:gravity="center_vertical"
+                android:text="@string/MaximumAge"/>
+
+            <view
+                android:id="@+id/dialog_radar_options_ageToSpinner"
+                class="ch.defiant.purplesky.customwidgets.IntegerSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:minHeight="48dp"
+                android:minWidth="96dp"
+                app:lowerBound="12"
+                app:upperBound="99"/>
+
+
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

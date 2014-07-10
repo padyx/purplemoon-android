@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="radarsearch_options_attractions_strings">
+        <item>Gay men</item>
+        <item>Bisexual men</item>
+        <item>Straight men</item>
+        <item>Lesbian women</item>
+        <item>Bisexual women</item>
+        <item>Straight women</item>
+    </string-array>
+
+    <string-array name="radarsearch_options_attractions_values">
+        <item>MALE_HOMOSEXUAL</item>
+        <item>MALE_BISEXUAL</item>
+        <item>MALE_HETEROSEXUAL</item>
+        <item>FEMALE_HOMOSEXUAL</item>
+        <item>FEMALE_BISEXUAL</item>
+        <item>FEMALE_HETEROSEXUAL</item>
+    </string-array>
+
     <string-array name="usersearch_opts_str_online">
         <item>Now</item>
         <item>Last hour</item>
