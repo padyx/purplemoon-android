@@ -20,6 +20,7 @@ import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
 import ch.defiant.purplesky.fragments.postit.PostitFragment;
+import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.profile.UserStatsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
@@ -61,7 +62,8 @@ import dagger.Module;
             RadarGridFragment.class,
             RadarOptionsDialogFragment.class,
             CreatePostitDialogFragment.class,
-            UploadPhotoDialogFragment.class
+            UploadPhotoDialogFragment.class,
+            DisplayProfileFragment.class
 
     }
 )

@@ -1,12 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,13 +9,20 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import ch.defiant.purplesky.R;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragment;
 
-public abstract class AbstractTabbedFragment extends SherlockFragment {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+import ch.defiant.purplesky.R;
+
+public abstract class AbstractTabbedFragment extends BaseFragment {
 
     private static final String TABSELECTION = AbstractTabbedFragment.class.getCanonicalName() + ".TABSELECTION";
     private AtomicReference<TabListener<?>> m_activeTabListener = new AtomicReference<AbstractTabbedFragment.TabListener<?>>();
