@@ -30,7 +30,7 @@ public class PreferenceConstants {
     /***************
      * Radar search
      ***************/
-    private static final String radaroptionsBase = "radar.searchoptions.";
+    private static final String radaroptionsBase = BASE + "radar.searchoptions.";
     public static final String radarOptionsBundle = radaroptionsBase + "optionsBundle";
 
     public static final String powerUserExpiry = searchBase + "powerUserExpiry";
@@ -58,7 +58,7 @@ public class PreferenceConstants {
     public static final String notifyForPostit = notificationBase + "notifyForPostits";
     public static final String notifyForVotes = notificationBase + "notifyForVotes";
 
-
+    public static final String radarLocationUpdateDialogShown = radaroptionsBase + "radarLocationUpdateDialogShown";
     public static final String radarAutomaticLocationUpdateEnabled = radaroptionsBase + "autoLocationUpdate";
     public static final String radarLastLocationUpdate = radaroptionsBase + "lastLocationUpdate";
 }
