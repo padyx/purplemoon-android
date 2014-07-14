@@ -121,7 +121,7 @@ public class RadarGridFragment extends BaseFragment implements
             }
             if(getSherlockActivity() != null){
                 String s;
-                if(address != null && address.getMaxAddressLineIndex()>0){
+                if(address != null && address.getMaxAddressLineIndex()>=0){
                     s = address.getAddressLine(0);
                 } else {
                     s=getString(R.string.Unknown);
@@ -214,7 +214,7 @@ public class RadarGridFragment extends BaseFragment implements
     private void updateLocationDisplay() {
         if (currentAddress != null && getActivity() != null) {
             List<String> parts = new ArrayList<String>();
-            for(int i=0; i<currentAddress.getMaxAddressLineIndex();  i++){
+            for(int i=0; i<=currentAddress.getMaxAddressLineIndex();  i++){
                 parts.add(currentAddress.getAddressLine(i));
             }
 
@@ -257,7 +257,7 @@ public class RadarGridFragment extends BaseFragment implements
 
     private void checkLocationPermission() {
         SharedPreferences prefs = PreferenceUtility.getPreferences();
-        if(!prefs.contains(PreferenceConstants.radarAutomaticLocationUpdateEnabled)){
+        if(!prefs.contains(PreferenceConstants.radarLocationUpdateDialogShown)){
             AlertDialogFragment frag = AlertDialogFragment.newYesNoDialog(R.string.AutomaticLocationUpdates_Dialog_Title, R.string.AutomaticLocationUpdates_Dialog_Question, 0);
             frag.setTargetFragment(this, 0);
             frag.show(getFragmentManager(), "question");
@@ -480,6 +480,7 @@ public class RadarGridFragment extends BaseFragment implements
     public void doPositiveAlertClick(int dialogId) {
         SharedPreferences.Editor editor = PreferenceUtility.getPreferences().edit();
         editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, true);
+        editor.putBoolean(PreferenceConstants.radarLocationUpdateDialogShown, true);
         editor.commit();
         useLocation = true;
         reload();
@@ -489,6 +490,7 @@ public class RadarGridFragment extends BaseFragment implements
     public void doNegativeAlertClick(int dialogId) {
         SharedPreferences.Editor editor = PreferenceUtility.getPreferences().edit();
         editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, false);
+        editor.putBoolean(PreferenceConstants.radarLocationUpdateDialogShown, true);
         editor.commit();
     }
 

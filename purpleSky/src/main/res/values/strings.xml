@@ -257,7 +257,7 @@
 
     <string name="AutomaticLocationUpdates_Dialog_Title">Enable location updates?</string>
     <string name="AutomaticLocationUpdates_Dialog_Question">By using your device\'s location, you can see other users in your vincinity.
-        Your approximate location will be visible on the Purplemoon profile. You can change this setting in the search options later.</string>
+        Your approximate location will be visible on the Purplemoon profile. You can change this later in the settings.</string>
 
     <string name="PictureNotFound">Picture could not be found.</string>
 
@@ -267,4 +267,6 @@
     <string name="MaximumAge">Maximum age</string>
     <string name="X_Selected_Y">%1$d selected: %2$s</string>
     <string name="NothingSelected">Nothing selected</string>
+    <string name="PreferenceUpdateProfileLocation">Update profile location</string>
+    <string name="PreferenceSummaryUpdateProfileLocation">When opening the radar, your device location be sent to Purplemoon to update your profile location.</string>
 </resources>

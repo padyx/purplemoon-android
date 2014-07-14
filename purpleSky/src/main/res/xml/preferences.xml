@@ -60,6 +60,17 @@
             android:key="ch.defiant.purplesky.notification.vibrate"
             android:title="@string/PreferenceVibration" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Privacy"
+        >
+        <CheckBoxPreference
+            android:key="ch.defiant.purplesky.preferences.radar.searchoptions.autoLocationUpdate"
+            android:title="@string/PreferenceUpdateProfileLocation"
+            android:summary="@string/PreferenceSummaryUpdateProfileLocation"
+            />
+
+        </PreferenceCategory>
     <PreferenceCategory android:title="@string/preferences_header_account" >
         <Preference
             android:key="ch.defiant.purplesky.preferences.poweruserStatus"
