@@ -53,7 +53,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
     private enum TARGET {
         RELATIONSHIP,
         FRIENDSHIP
-    };
+    }
 
     private LocalBroadcastReceiver m_broadcastReceiver;
     private boolean m_menuVisible;
@@ -100,7 +100,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         pref.putInt(PreferenceConstants.searchCountry, ((Spinner) v.findViewById(R.id.usersearch_simple_countrySpinner)).getSelectedItemPosition());
         pref.putBoolean(PreferenceConstants.searchUseDistance, ((CheckBox) v.findViewById(R.id.usersearch_simple_distance)).isChecked());
         pref.putBoolean(PreferenceConstants.searchOnlineOnly, ((CheckBox) v.findViewById(R.id.usersearch_simple_onlineOnly)).isChecked());
-        pref.commit();
+        pref.apply();
     }
 
     private void restoreViewSelections() {

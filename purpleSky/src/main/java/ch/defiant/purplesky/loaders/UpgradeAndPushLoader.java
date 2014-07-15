@@ -81,7 +81,7 @@ public class UpgradeAndPushLoader extends SimpleAsyncLoader<Object> {
 
             boolean registered = apiAdapter.registerPush(regId);
             if(registered){
-                prefs.edit().putString(PreferenceConstants.gcmToken, regId).commit();
+                prefs.edit().putString(PreferenceConstants.gcmToken, regId).apply();
                 Log.i(TAG, "Register for push with server: Success");
             } else {
                 Log.w(TAG, "Register for push with server: Failed");

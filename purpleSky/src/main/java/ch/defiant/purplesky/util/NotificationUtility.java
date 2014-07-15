@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
@@ -34,7 +35,7 @@ public class NotificationUtility {
                     // Reset it to default
                     Editor editor = prefs.edit();
                     String defaultVal = Settings.System.DEFAULT_NOTIFICATION_URI.toString();
-                    editor.putString(PreferenceConstants.notificationCustomSound, defaultVal).commit();
+                    editor.putString(PreferenceConstants.notificationCustomSound, defaultVal).apply();
                 }
             }
         }

@@ -1,9 +1,5 @@
 package ch.defiant.purplesky.core;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -17,6 +13,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
@@ -30,11 +36,6 @@ import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.util.CompareUtility;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
-import javax.inject.Inject;
 
 public class UpdateService extends IntentService {
 
@@ -116,7 +117,7 @@ public class UpdateService extends IntentService {
             Log.e(TAG, "Update service exception, ignoring", e);
         }
         lastRun = System.currentTimeMillis();
-        pref.edit().putLong(PreferenceConstants.lastUpdateServiceRun, lastRun).commit();
+        pref.edit().putLong(PreferenceConstants.lastUpdateServiceRun, lastRun).apply();
     }
 
     /**

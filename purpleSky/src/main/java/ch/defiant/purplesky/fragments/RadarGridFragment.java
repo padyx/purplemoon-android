@@ -42,7 +42,6 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
@@ -92,7 +91,7 @@ public class RadarGridFragment extends BaseFragment implements
                 } else {
                     SharedPreferences.Editor edit = PreferenceUtility.getPreferences().edit();
                     edit.putLong(PreferenceConstants.radarLastLocationUpdate, System.currentTimeMillis());
-                    edit.commit();
+                    edit.apply();
 
                     currentAddress = data;
                     updateLocationDisplay();
@@ -201,9 +200,7 @@ public class RadarGridFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (getSherlockActivity() instanceof MainActivity){
-            ((MainActivity) getSherlockActivity()).setTitle(R.string.Radar);
-        }
+        getSherlockActivity().setTitle(R.string.Radar);
         restoreSearchSelections();
         updateLocationDisplay();
         checkLocationPermission();
@@ -289,6 +286,7 @@ public class RadarGridFragment extends BaseFragment implements
         if (savedInstanceState != null) {
             this.currentAddress = savedInstanceState.getParcelable(STATE_ADDRESS);
             this.currentLocation = savedInstanceState.getParcelable(STATE_LOCATION);
+            @SuppressWarnings("unchecked")
             List<MinimalUser> data = (List<MinimalUser>) savedInstanceState.getSerializable(STATE_DATA);
             if(data != null){
                 for(MinimalUser u:data ){
@@ -483,7 +481,7 @@ public class RadarGridFragment extends BaseFragment implements
         SharedPreferences.Editor editor = PreferenceUtility.getPreferences().edit();
         editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, true);
         editor.putBoolean(PreferenceConstants.radarLocationUpdateDialogShown, true);
-        editor.commit();
+        editor.apply();
         useLocation = true;
         reload();
     }
@@ -493,7 +491,7 @@ public class RadarGridFragment extends BaseFragment implements
         SharedPreferences.Editor editor = PreferenceUtility.getPreferences().edit();
         editor.putBoolean(PreferenceConstants.radarAutomaticLocationUpdateEnabled, false);
         editor.putBoolean(PreferenceConstants.radarLocationUpdateDialogShown, true);
-        editor.commit();
+        editor.apply();
     }
 
 }
