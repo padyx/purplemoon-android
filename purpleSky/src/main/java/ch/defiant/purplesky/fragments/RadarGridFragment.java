@@ -42,6 +42,7 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
@@ -70,7 +71,6 @@ public class RadarGridFragment extends BaseFragment implements
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener
 {
-
     // TODO Handling that google play services are not available?
 
     private class GeocoderLoaderCallback implements  LoaderManager.LoaderCallbacks<Address>{
@@ -88,8 +88,7 @@ public class RadarGridFragment extends BaseFragment implements
                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (data == null) {
-                    // TODO Handle error
-                    addressTextView.setText(getString(R.string.Unknown));
+                    addressTextView.setText(getString(R.string.LocationNotFound));
                 } else {
                     SharedPreferences.Editor edit = PreferenceUtility.getPreferences().edit();
                     edit.putLong(PreferenceConstants.radarLastLocationUpdate, System.currentTimeMillis());
@@ -124,7 +123,7 @@ public class RadarGridFragment extends BaseFragment implements
                 if(address != null && address.getMaxAddressLineIndex()>=0){
                     s = address.getAddressLine(0);
                 } else {
-                    s=getString(R.string.Unknown);
+                    s=getString(R.string.LocationNotFound);
                 }
                 addressTextView.setText(s);
                 getLoaderManager().destroyLoader(R.id.loader_profilePositionRetrieval);
@@ -202,6 +201,9 @@ public class RadarGridFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        if (getSherlockActivity() instanceof MainActivity){
+            ((MainActivity) getSherlockActivity()).setTitle(R.string.Radar);
+        }
         restoreSearchSelections();
         updateLocationDisplay();
         checkLocationPermission();
