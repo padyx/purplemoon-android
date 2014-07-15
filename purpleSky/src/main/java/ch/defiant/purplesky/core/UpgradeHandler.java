@@ -1,10 +1,10 @@
 package ch.defiant.purplesky.core;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import java.io.IOException;
 
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.constants.PreferenceConstants;
@@ -97,7 +97,7 @@ public final class UpgradeHandler {
                 return false;
             }
             // Delete from store
-            prefs.edit().remove(PreferenceConstants.gcmToken).commit();
+            prefs.edit().remove(PreferenceConstants.gcmToken).apply();
         }
         return true;
     }

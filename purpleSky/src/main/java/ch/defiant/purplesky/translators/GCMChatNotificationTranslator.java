@@ -1,15 +1,5 @@
 package ch.defiant.purplesky.translators;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -25,13 +15,24 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.JSONTranslator;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.fragments.ChatListFragment;
@@ -93,7 +94,7 @@ public class GCMChatNotificationTranslator {
 
         Editor editPrefs = prefs.edit();
         editPrefs.putLong(PreferenceConstants.lastEventNotification, DateUtility.getUnixTime(new Date()));
-        editPrefs.commit();
+        editPrefs.apply();
     }
 
     private static void processBigStyle(Map<String, MinimalUser> map, Builder b, Intent intent, Conversation firstConversation, final Resources res) {

@@ -54,7 +54,7 @@ public class NotificationLoader extends SimpleAsyncLoader<Object> {
                     if (expiry != null) {
                         Editor edit = PreferenceUtility.getPreferences().edit();
                         edit.putLong(PreferenceConstants.powerUserExpiry, expiry.getTime());
-                        edit.commit();
+                        edit.apply();
                     }
                 } catch (Exception e) {
                 }

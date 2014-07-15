@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.Toast;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.LoginActivity;
@@ -49,7 +50,7 @@ public class PersistantModel {
         Editor edit = m_preferences.edit();
         edit.putString(PreferenceConstants.oAuthToken, getOAuthAccessToken());
         edit.putString(PreferenceConstants.userprofileId, getUserProfileId());
-        edit.commit();
+        edit.apply();
     }
 
     public static PersistantModel getInstance() {
@@ -58,10 +59,6 @@ public class PersistantModel {
 
     /**
      * Will clear the password from storage, switch state to "logged out".
-     * 
-     * @param isForeground
-     *            Indicates whether the caller is in the foreground. If true, the login activity will be launched, and a Toast will be displayed. If
-     *            false, only the Toast will be generated.
      */
     public void handleWrongCredentials(Context c) {
         clearCredentials();
@@ -104,6 +101,7 @@ public class PersistantModel {
     private synchronized void clearCredentials() {
         m_oAuthAccessToken = null;
         m_userProfileId = null;
+        // Synchronous
         m_preferences.edit().clear().commit();
 
         UpdateService.unregisterUpdateService();
@@ -129,6 +127,6 @@ public class PersistantModel {
         Editor edit = m_preferences.edit();
         edit.putString(PreferenceConstants.cachedOwnUserProfilePictureUrl, s);
         edit.putLong(PreferenceConstants.cachedOwnUserProfilePictureUrlExpiry, System.currentTimeMillis());
-        edit.commit();
+        edit.apply();
     }
 }

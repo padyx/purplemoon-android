@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
@@ -36,7 +37,7 @@ public class SystemUtility {
         int appVersion = getAppVersion(PurpleSkyApplication.get());
         
         SharedPreferences prefs = PreferenceUtility.getPreferences();
-        prefs.edit().putInt(PreferenceConstants.lastVersionInt, appVersion).commit();
+        prefs.edit().putInt(PreferenceConstants.lastVersionInt, appVersion).apply();
     }
 
 }

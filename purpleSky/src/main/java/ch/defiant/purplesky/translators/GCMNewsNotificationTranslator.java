@@ -1,7 +1,5 @@
 package ch.defiant.purplesky.translators;
 
-import java.util.Date;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,11 +11,14 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat.InboxStyle;
+
+import java.util.Date;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
@@ -119,6 +120,6 @@ public class GCMNewsNotificationTranslator {
 
         Editor editPrefs = prefs.edit();
         editPrefs.putLong(PreferenceConstants.lastEventNotification, DateUtility.getUnixTime(new Date()));
-        editPrefs.commit();
+        editPrefs.apply();
     }
 }
