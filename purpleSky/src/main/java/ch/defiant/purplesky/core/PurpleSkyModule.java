@@ -10,6 +10,7 @@ import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment;
+import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
@@ -25,6 +26,7 @@ import ch.defiant.purplesky.fragments.profile.UserStatsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import ch.defiant.purplesky.fragments.visits.VisitorFragment;
+import ch.defiant.purplesky.fragments.visits.VisitorTabbedFragment;
 import dagger.Module;
 
 /**
@@ -44,6 +46,7 @@ import dagger.Module;
             BaseListFragment.class,
             BaseFragment.class,
             SettingActivity.class,
+            AbstractTabbedFragment.class,
 
             UserService.class,
 
@@ -63,7 +66,8 @@ import dagger.Module;
             RadarOptionsDialogFragment.class,
             CreatePostitDialogFragment.class,
             UploadPhotoDialogFragment.class,
-            DisplayProfileFragment.class
+            DisplayProfileFragment.class,
+            VisitorTabbedFragment.class
 
     }
 )
