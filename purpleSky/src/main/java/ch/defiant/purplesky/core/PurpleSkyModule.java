@@ -20,10 +20,13 @@ import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
+import ch.defiant.purplesky.fragments.photovote.PhotoVoteTabbedFragment;
 import ch.defiant.purplesky.fragments.postit.PostitFragment;
+import ch.defiant.purplesky.fragments.postit.PostitTabbedFragment;
 import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.profile.UserStatsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
+import ch.defiant.purplesky.fragments.usersearch.UserSearchTabbedFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import ch.defiant.purplesky.fragments.visits.VisitorFragment;
 import ch.defiant.purplesky.fragments.visits.VisitorTabbedFragment;
@@ -43,32 +46,44 @@ import dagger.Module;
             PurpleSkyApplication.class,
             MainActivity.class,
             LoginActivity.class,
+            SettingActivity.class,
+
+            // Base or abstract classes
             BaseListFragment.class,
             BaseFragment.class,
-            SettingActivity.class,
             AbstractTabbedFragment.class,
 
+            // Services
             UserService.class,
 
-            VisitorFragment.class,
+            // Fragments
+            PostitTabbedFragment.class,
             PostitFragment.class,
-            FavoritesFragment.class,
-            ConversationFragment.class,
+
+            VisitorTabbedFragment.class,
+            VisitorFragment.class,
+
+            UserSearchTabbedFragment.class,
             UsernameSearchFragment.class,
-            UserSearchResultsFragment.class,
+
+            DisplayProfileFragment.class,
+            UserStatsFragment.class,
+
+            PhotoVoteTabbedFragment.class,
             PhotoVoteFragment.class,
             PhotoVoteListFragment.class,
+
+            FavoritesFragment.class,
+            ConversationFragment.class,
+            UserSearchResultsFragment.class,
+
             PictureFolderGridViewFragment.class,
-            UserStatsFragment.class,
             ChatListFragment.class,
             OnlineStatusDialogFragment.class,
             RadarGridFragment.class,
             RadarOptionsDialogFragment.class,
             CreatePostitDialogFragment.class,
-            UploadPhotoDialogFragment.class,
-            DisplayProfileFragment.class,
-            VisitorTabbedFragment.class
-
+            UploadPhotoDialogFragment.class
     }
 )
 public class PurpleSkyModule {
