@@ -5,6 +5,7 @@ public class HTTPURLResponseHolder{
 	private String output;
 	private String error;
 	private int responseCode;
+    private boolean isSuccessful;
 	
 	public String getOutput() {
 		return output;
@@ -24,4 +25,12 @@ public class HTTPURLResponseHolder{
 	public void setResponseCode(int responseCode) {
 		this.responseCode = responseCode;
 	}
+
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+    public void setSuccessful(boolean isSuccessful) {
+        this.isSuccessful = isSuccessful;
+    }
 }
