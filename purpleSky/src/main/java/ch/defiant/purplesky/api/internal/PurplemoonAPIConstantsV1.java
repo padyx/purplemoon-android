@@ -464,23 +464,6 @@ public class PurplemoonAPIConstantsV1 {
     public static final String GCM_EXTRA_VISITS_LASTTIMESTAMP = "visits_ts";
     public static final String GCM_EXTRA_POSTITS_LASTTIMESTAMP = "postits_ts";
 
-    public static final String REPORT_URL = " /users/report/";
-    public static final String REPORT_REASON_PARAM = "reason";
-    public static final String REPORT_DESCRIPTION_PARAM = "description";
-
-    public static final String REPORT_REASON_INSULT_THREAT = "insult_threat";
-    public static final String REPORT_REASON_FAKE = "fake";
-    public static final String REPORT_REASON_WRONGAGE = "wrong_age";
-    public static final String REPORT_REASON_ABSURD = "absurd_profile";
-    public static final String REPORT_REASON_DUPE = "duplicate";
-    public static final String REPORT_REASON_ADVERTISING = "advertising";
-    public static final String REPORT_REASON_POLITICALEXTREMIST = "political_extreme";
-    public static final String REPORT_REASON_XRATED = "x_rated";
-    public static final String REPORT_REASON_COPYRIGHT = "copyright_infringement";
-    public static final String REPORT_REASON_OTHER = "other";
-
-    public static final int REPORT_TEXT_MAX_LENGTH = 5000;
-
     /*
      * Location
      */

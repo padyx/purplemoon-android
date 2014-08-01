@@ -28,7 +28,6 @@ import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 
@@ -379,17 +378,6 @@ public interface IPurplemoonAPIAdapter {
      * @throws PurpleSkyException
      */
     public boolean unregisterPush(String gcmRegId) throws IOException, PurpleSkyException;
-
-    /**
-     * Report the user.
-     *
-     * @param profileId
-     * @param reason
-     * @param description
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    void reportUser(String profileId, UserReportReason reason, String description) throws IOException, PurpleSkyException;
 
     /**
      * Get all locations from the users profile
