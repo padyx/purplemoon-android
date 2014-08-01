@@ -23,7 +23,7 @@ public class ReportReasonTranslator implements ITranslator<UserReportReason, Str
                 return ReportAPIConstants.REPORT_REASON_DUPE;
             case ADVERTISING:
                 return ReportAPIConstants.REPORT_REASON_ADVERTISING;
-            case POLITICALEXTREMIS:
+            case POLITICALEXTREMIST:
                 return ReportAPIConstants.REPORT_REASON_POLITICALEXTREMIST;
             case XRATED:
                 return ReportAPIConstants.REPORT_REASON_XRATED;
