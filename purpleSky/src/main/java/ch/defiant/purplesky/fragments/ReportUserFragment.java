@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.dialogs;
+package ch.defiant.purplesky.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +23,6 @@ import ch.defiant.purplesky.api.report.IReportAdapter;
 import ch.defiant.purplesky.api.report.ReportResponse;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.enums.UserReportReason;
-import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.loaders.report.ReportUserLoader;
 import ch.defiant.purplesky.util.ErrorUtility;
 import ch.defiant.purplesky.util.Holder;
