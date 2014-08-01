@@ -20,7 +20,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -60,7 +59,6 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.util.DateUtility;
@@ -1288,26 +1286,11 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             }
 
             boolean wasUnregisterSuccessful = !object.optBoolean(PurplemoonAPIConstantsV1.JSON_PUSH_ACTIVE, true);
-            
+
             return wasUnregisterSuccessful;
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void reportUser(String profileId, UserReportReason reason, String description) throws IOException, PurpleSkyException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.REPORT_URL);
-        sb.append(profileId);
-
-        BasicNameValuePair param1 = new BasicNameValuePair(PurplemoonAPIConstantsV1.REPORT_REASON_PARAM, APIUtility.translateReportReason(reason));
-        BasicNameValuePair param2 = new BasicNameValuePair(PurplemoonAPIConstantsV1.REPORT_DESCRIPTION_PARAM, description);
-
-        List<NameValuePair> args = Arrays.<NameValuePair>asList(param1, param2);
-
-        HTTPURLResponseHolder response = performPOSTRequestForResponseHolder(new URL(sb.toString()), null, args);
     }
 
     @Override
@@ -1495,6 +1478,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         builder.addHeader("Accept-Language", language);
     }
 
+    // TODO Move to network utility
     private HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
             throws IOException, PurpleSkyException {
         Request.Builder builder = new Request.Builder();
@@ -1519,6 +1503,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         HTTPURLResponseHolder holder = new HTTPURLResponseHolder();
         holder.setResponseCode(response.code());
+        holder.setSuccessful(response.isSuccessful());
         if(response.isSuccessful()){
             holder.setOutput(response.body().string());
         } else {
@@ -1528,5 +1513,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         return holder;
     }
+
+
 
 }

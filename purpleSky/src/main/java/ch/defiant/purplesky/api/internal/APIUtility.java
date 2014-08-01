@@ -12,14 +12,22 @@ import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.enums.Sexuality;
-import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
+import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * @author Patrick Bänziger
  * @since 1.0.1
  */
 public final class APIUtility {
+
+    public static String getErrorTypeString(JSONObject obj){
+        if(obj != null) {
+            return obj.optString(PurplemoonAPIConstantsV1.Errors.JSON_ERROR_TYPE);
+        } else {
+            return StringUtility.EMPTY_STRING;
+        }
+    }
 
     public static JSONObject getJSONUserSearchObject(UserSearchOptions options) throws PurpleSkyException {
         JSONObject object = new JSONObject();
@@ -152,33 +160,6 @@ public final class APIUtility {
                 throw new IllegalArgumentException("No api value for " + apiValue);
         }
 
-    }
-
-    public static String translateReportReason(UserReportReason reason) {
-        switch (reason) {
-            case INSULT_THREAT:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case FAKE:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case WRONGAGE:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case ABSURD:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case DUPE:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case ADVERTISING:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case POLITICALEXTREMIS:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case XRATED:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case COPYRIGHT:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            case OTHER:
-                return PurplemoonAPIConstantsV1.REPORT_REASON_INSULT_THREAT;
-            default:
-                throw new IllegalArgumentException("No api value for " + reason);
-        }
     }
 
     public static PurplemoonLocationType toLocationType(String type) {
