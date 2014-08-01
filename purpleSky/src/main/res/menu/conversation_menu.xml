@@ -6,7 +6,7 @@
         android:title="@string/ShowProfile"
         android:titleCondensed="@string/ShowProfile"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/person">
+        android:icon="@drawable/action_person">
     </item>
     <item
         android:id="@+id/conversation_menu_refresh"
@@ -15,5 +15,11 @@
         android:title="@string/Refresh"
         android:titleCondensed="@string/Refresh">
     </item>
+    <item android:id="@+id/conversation_menu_report"
+           android:title="@string/_Action_Report"
+           android:titleCondensed="@string/_Action_Report"
+           android:icon="@drawable/action_flag"
+           android:showAsAction="ifRoom"
+    />
 
 </menu>

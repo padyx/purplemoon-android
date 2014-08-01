@@ -4,11 +4,13 @@ import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.internal.APIModule;
+import ch.defiant.purplesky.api.report.internal.ReportModule;
 import ch.defiant.purplesky.core.internal.CoreModule;
 import ch.defiant.purplesky.db.internal.DatabaseModule;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
+import ch.defiant.purplesky.dialogs.ReportUserFragment;
 import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment;
 import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 import ch.defiant.purplesky.fragments.BaseFragment;
@@ -40,7 +42,8 @@ import dagger.Module;
     includes = {
             APIModule.class,
             CoreModule.class,
-            DatabaseModule.class
+            DatabaseModule.class,
+            ReportModule.class
     },
     injects = {
             PurpleSkyApplication.class,
@@ -83,7 +86,8 @@ import dagger.Module;
             RadarGridFragment.class,
             RadarOptionsDialogFragment.class,
             CreatePostitDialogFragment.class,
-            UploadPhotoDialogFragment.class
+            UploadPhotoDialogFragment.class,
+            ReportUserFragment.class
     }
 )
 public class PurpleSkyModule {

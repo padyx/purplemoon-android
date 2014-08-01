@@ -44,6 +44,7 @@ import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
+import ch.defiant.purplesky.dialogs.ReportUserFragment;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
@@ -273,6 +274,10 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
             }
             case R.id.conversation_menu_refresh: {
                 startRefresh();
+                return true;
+            }
+            case R.id.conversation_menu_report : {
+                openReportFragment();
                 return true;
             }
             default:
@@ -554,6 +559,15 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+    }
+
+    private void openReportFragment() {
+        ReportUserFragment f = new ReportUserFragment();
+        Bundle b = new Bundle();
+        b.putSerializable(ArgumentConstants.ARG_USERID, m_profileId);
+        f.setArguments(b);
+        FragmentTransaction trans = getFragmentManager().beginTransaction();
+        trans.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
     }
 
     private void sendPreActions() {

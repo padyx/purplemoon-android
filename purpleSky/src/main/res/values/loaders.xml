@@ -28,4 +28,5 @@
 	<item type="id" name="loader_conversationstatus" />
     <item type="id" name="loader_profilePositionUpdate" />
     <item type="id" name="loader_profilePositionRetrieval" />
+    <item type="id" name="loader_reportUser" />
 </resources>
