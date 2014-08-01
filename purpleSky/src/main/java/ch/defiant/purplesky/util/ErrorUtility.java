@@ -1,5 +1,8 @@
 package ch.defiant.purplesky.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 /**
  * @author Patrick Bänziger
  * @since  1.1.0
@@ -11,11 +14,14 @@ public class ErrorUtility {
      * @param t
      * @return
      */
-    public static int getLineNumber(Throwable t){
+    public static int getLineNumber(@NonNull Throwable t){
         return t.getStackTrace()[0].getLineNumber();
     }
 
-    public static CharSequence getErrorId(Throwable t){
+    public static CharSequence getErrorId(@Nullable Throwable t){
+        if(t == null){
+            return "---";
+        }
         StackTraceElement element = t.getStackTrace()[0];
         String className = element.getClassName();
 
