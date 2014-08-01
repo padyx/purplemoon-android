@@ -243,27 +243,30 @@
 
 
     <string name="ReportUser">Benutzer melden</string>
-    <string name="ReportUser_Description">
-        Mit dieser Funktion kannst du den Benutzer dem Team von Purplemoon melden, ohne dass dieser das sieht. Wähle einen Grund aus und beschreibe, wieso du den Benutzer meldest.
-        Du wirst keine Rückmeldung erhalten. Bei absichtlichen Falschmeldungen kann dein Zugang gesperrt werden.</string>
-    <string name="Report_Hint_Explanation">Bitte gib hier eine Begründung an</string>
+    <string name="ReportUser_Instruction">Füll dieses Formular aus, um einen anderen Nutzer an das Purplemoon-Team zu melden.</string>
+    <string name="Report_Hint_Explanation">Bitte gib eine Begründung an</string>
 
-    <string name="ReportReason_InsultThreat">Der Benutzer beleidigt/bedroht mich.</string>
-    <string name="ReportReason_Fake">Das Profil ist eine Fälschung.</string>
-    <string name="ReportReason_WrongAge">Das angegebene Alter ist falsch.</string>
-    <string name="ReportReason_AbsurdProfile">Das Profil ist ein Scherz.</string>
-    <string name="ReportReason_Duplicate">Das Profil ist ein Duplikat.</string>
-    <string name="ReportReason_Advertising">Der Benutzer verbreitet Werbung.</string>
-    <string name="ReportReason_PoliticalExtremist">Das Profil verbreitet extremistische Ansichten.</string>
-    <string name="ReportReason_XRated">Das Profil enthält pornographisches Material.</string>
-    <string name="ReportReason_CopyrightViolation">Das Profil verletzt Urheberrechte.</string>
-    <string name="ReportReason_Other">Anderer Grund</string>
+    <string-array name="ReportReasons">
+        <item name="ReportReason_InsultThreat">Der Benutzer beleidigt/bedroht mich.</item>
+        <item name="ReportReason_Fake">Das Profil ist eine Fälschung.</item>
+        <item name="ReportReason_WrongAge">Das angegebene Alter ist falsch.</item>
+        <item name="ReportReason_AbsurdProfile">Das Profil ist ein Scherz.</item>
+        <item name="ReportReason_Duplicate">Das Profil ist ein Duplikat.</item>
+        <item name="ReportReason_Advertising">Der Benutzer verbreitet Werbung.</item>
+        <item name="ReportReason_PoliticalExtremist">Das Profil verbreitet extremistische Ansichten.</item>
+        <item name="ReportReason_XRated">Das Profil enthält pornographisches Material.</item>
+        <item name="ReportReason_CopyrightViolation">Das Profil verletzt Urheberrechte.</item>
+        <item name="ReportReason_Other">Anderer Grund</item>
+    </string-array>
+
+    <string name="_Action_Report">Melden</string>
 
     <string name="AutomaticLocationUpdates_Dialog_Title">Standortaktualisierung einschalten?</string>
     <string name="AutomaticLocationUpdates_Dialog_Question">Mit der Position deines Gerätes kannst du andere Benutzer in deiner Nähe sehen.
         Deine ungefähre Position wird in deinem Purplemoon-Profil angezeigt. Du kannst diese Einstellung später in den Optionen ändern.</string>
 
     <string name="PictureNotFound">Bild konnte nicht gefunden werden.</string>
+
     <string name="UnknownError_X">Unbekannter Fehler (%1$d)</string>
     <string name="Select">Select</string>
     <string name="MinimumAge">Mindestalter</string>
@@ -272,4 +275,8 @@
     <string name="NothingSelected">Nichts gewählt</string>
     <string name="PreferenceUpdateProfileLocation">Profilstandort aktualisieren</string>
     <string name="PreferenceSummaryUpdateProfileLocation">Wenn du das Radar benutzt, wird dein Standort an Purplemoon gesendet und im Profil aktualisiert.</string>
+
+    <string name="ReportComplete">Deine Meldung wurde gesendet. Benutze die Zurück-Taste um zurückzugelangen.</string>
+    <string name="ErrorTooManyReports">Du hast zu viele Benutzer in einer kurzen Zeit gemeldet. Versuche es später erneut.</string>
+
 </resources>

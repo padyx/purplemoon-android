@@ -239,24 +239,27 @@
     <string name="Age">Age</string>
 
     <string name="ReportUser">Report a user</string>
-    <string name="ReportUser_Description">
-        With this function, you can report a user to the staff of Purplemoon, without the other user seeing it. Choose a reason and explain why you report the user.
-        You will not necessarily receive a response. Malicious reports can cause your access to be revoked.</string>
+    <string name="ReportUser_Instruction">
+        Fill out this form to report the user to the staff of Purplemoon.</string>
     <string name="Report_Hint_Explanation">Please provide explanation</string>
 
-    <string name="ReportReason_InsultThreat">The user insulted/threatened me.</string>
-    <string name="ReportReason_Fake">The profile is fake.</string>
-    <string name="ReportReason_WrongAge">The age in the profile is wrong.</string>
-    <string name="ReportReason_AbsurdProfile">The profile is absurd.</string>
-    <string name="ReportReason_Duplicate">The profile is a duplicate.</string>
-    <string name="ReportReason_Advertising">The profile is used for advertisement.</string>
-    <string name="ReportReason_PoliticalExtremist">The profile is politically extreme.</string>
-    <string name="ReportReason_XRated">The profile contains explicit material.</string>
-    <string name="ReportReason_CopyrightViolation">The profile violates copyrights.</string>
-    <string name="ReportReason_Other">Other reason</string>
+    <string-array name="ReportReasons">
+        <item name="ReportReason_InsultThreat">The user insulted/threatened me.</item>
+        <item name="ReportReason_Fake">The profile is fake.</item>
+        <item name="ReportReason_WrongAge">The age in the profile is wrong.</item>
+        <item name="ReportReason_AbsurdProfile">The profile is absurd.</item>
+        <item name="ReportReason_Duplicate">The profile is a duplicate.</item>
+        <item name="ReportReason_Advertising">The profile is used for advertisement.</item>
+        <item name="ReportReason_PoliticalExtremist">The profile is politically extreme.</item>
+        <item name="ReportReason_XRated">The profile contains explicit material.</item>
+        <item name="ReportReason_CopyrightViolation">The profile violates copyrights.</item>
+        <item name="ReportReason_Other">Other reason</item>
+    </string-array>
+
+    <string name="_Action_Report">Report</string>
 
     <string name="AutomaticLocationUpdates_Dialog_Title">Enable location updates?</string>
-    <string name="AutomaticLocationUpdates_Dialog_Question">By using your device\'s location, you can see other users in your vincinity.
+    <string name="AutomaticLocationUpdates_Dialog_Question">By using your device\'s location, you can see other users in your vicinity.
         Your approximate location will be visible on the Purplemoon profile. You can change this later in the settings.</string>
 
     <string name="PictureNotFound">Picture could not be found.</string>
@@ -269,4 +272,8 @@
     <string name="NothingSelected">Nothing selected</string>
     <string name="PreferenceUpdateProfileLocation">Update profile location</string>
     <string name="PreferenceSummaryUpdateProfileLocation">When opening the radar, your device location be sent to Purplemoon to update your profile location.</string>
+
+    <string name="ReportComplete">Your report has been submitted. Use the back key to return to the previous screen.</string>
+    <string name="ErrorTooManyReports">You have reported too many users in a short time. Try again later.</string>
+
 </resources>
