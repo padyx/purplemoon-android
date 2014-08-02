@@ -288,7 +288,7 @@ class DrawerDelegate {
         ArrayList<DrawerItem> l = new ArrayList<DrawerItem>();
         l.add(new DrawerItem(R.string.Messages, R.drawable.content_email, NavigationDrawerEventType.MESSAGE));
         l.add(new DrawerItem(R.string.Radar, R.drawable.radar, null)); // TODO Replace icon
-        l.add(new DrawerItem(R.string.Postits, R.drawable.postit_bw, NavigationDrawerEventType.POSTIT));
+        l.add(new DrawerItem(R.string.Postits, R.drawable.postit_black, NavigationDrawerEventType.POSTIT));
         l.add(new DrawerItem(R.string.ProfileVisits, R.drawable.visits_1step, NavigationDrawerEventType.VISIT));
         l.add(new DrawerItem(R.string.Favorites_Online_, R.drawable.rating_important,
                 NavigationDrawerEventType.FAVORITES));

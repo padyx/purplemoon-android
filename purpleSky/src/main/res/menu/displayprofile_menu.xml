@@ -5,7 +5,7 @@
         android:id="@+id/postit_menu"
         android:showAsAction="ifRoom|withText"
         android:title="@string/GivePostit"
-        android:icon="@drawable/postit_bw"
+        android:icon="@drawable/action_postit"
         android:titleCondensed="@string/GivePostit">
 </item>
     
