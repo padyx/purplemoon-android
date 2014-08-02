@@ -3,7 +3,6 @@ package ch.defiant.purplesky.fragments.photovote;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,6 @@ import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.beans.NoMorePhotoVoteBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.core.PersistantModel;
-import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.fragments.BaseFragment;
@@ -143,9 +141,6 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
 
     @Override
     public void onLoadFinished(Loader<Holder<PhotoVoteBean>> arg0, Holder<PhotoVoteBean> result) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
         m_loadFinished.set(true);
         PhotoVoteBean voteBean = result.getContainedObject();
         boolean success = voteBean != null;
@@ -172,7 +167,6 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
                 }
                 m_remainingLbl.setText(getString(R.string.PhotoVote_Xmore, m_remaining));
 
-                // TODO Picasso 2.0: Use resizing if possible
                 Picasso.with(getActivity()).load(url.toString()).placeholder(R.drawable.picture_placeholder).
                         error(R.drawable.no_image).into(m_imgV);
             } else {
