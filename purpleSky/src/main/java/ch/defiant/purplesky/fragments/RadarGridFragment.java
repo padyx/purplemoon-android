@@ -305,6 +305,9 @@ public class RadarGridFragment extends BaseFragment implements
             if(BuildConfig.DEBUG){
                 Log.d(TAG, "Location is outdated. Starting retrieval");
             }
+            if(adapter.getCount() == 0){
+                getLoaderManager().restartLoader(R.id.loader_radar_main, null, this);
+            }
             attachLocationListener();
         } else {
             if(BuildConfig.DEBUG){
@@ -408,7 +411,9 @@ public class RadarGridFragment extends BaseFragment implements
             }
             // Accurate enough
             removeLocationListener();
-            getLoaderManager().restartLoader(R.id.loader_profilePositionUpdate, null, new GeocoderLoaderCallback());
+            if(getSherlockActivity() != null) {
+                getLoaderManager().restartLoader(R.id.loader_profilePositionUpdate, null, new GeocoderLoaderCallback());
+            }
         }
     }
 
