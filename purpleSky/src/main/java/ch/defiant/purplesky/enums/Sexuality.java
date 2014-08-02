@@ -4,7 +4,6 @@ import android.content.res.Resources;
 
 import ch.defiant.purplesky.R;
 
-// TODO pbn Merge hetero/homo values
 public enum Sexuality {
 
     /**
