@@ -383,7 +383,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         body.add(
                 new BasicNameValuePair(
                         PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_PARAM,
-                        opts.getUnreadHandling().getAPIValue()));
+                        APIUtility.translateUnreadHandling(opts.getUnreadHandling())));
         if (opts.getUnreadHandling() == UnreadHandling.ABORT && opts.getLatestRead() != null) {
             body.add(
                     new BasicNameValuePair(
@@ -440,7 +440,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, String.valueOf(100)));
         params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
 
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, restrict.getApiValue()));
+        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, APIUtility.translateMessageRetrievalRestrictionType(restrict)));
         // End of parameters
         urlBuilder.append(HTTPURLUtility.createGetQueryString(params));
 
