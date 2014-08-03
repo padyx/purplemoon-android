@@ -65,7 +65,7 @@ public class APINetworkUtility {
     }
 
     private static void addAuthenticationHeader(Request.Builder builder, URL resource) {
-        if (resource.toString().startsWith(PurplemoonAPIConstantsV1.BASE_URL)) { // TODO Rewrite this
+        if (PurplemoonAPIConstantsV1.HOST.equalsIgnoreCase(resource.getHost())) { // TODO Rewrite this
             String token = PersistantModel.getInstance().getOAuthAccessToken();
             if (StringUtility.isNullOrEmpty(token)) {
                 if (BuildConfig.DEBUG)
