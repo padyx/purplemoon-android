@@ -7,8 +7,10 @@ import org.json.JSONObject;
 import java.util.List;
 
 import ch.defiant.purplesky.beans.util.Pair;
+import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.enums.Sexuality;
@@ -194,6 +196,30 @@ public final class APIUtility {
                 return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK2;
             case WORK3:
                 return PurplemoonAPIConstantsV1.LOCATIONS_TYPE_WORK3;
+            default:
+                throw new IllegalArgumentException("No api value for "+type);
+        }
+    }
+
+    public static String translateUnreadHandling(SendOptions.UnreadHandling handling){
+        switch (handling){
+            case SEND:
+                return PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_SEND;
+            case ABORT:
+                return PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_ABORT;
+            default:
+                throw new IllegalArgumentException("No api value for "+handling);
+        }
+    }
+
+    public static String translateMessageRetrievalRestrictionType(MessageRetrievalRestrictionType type){
+        switch (type){
+            case UNREAD_FIRST:
+                return PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_UNREADFIRST;
+            case UNOPENED_ONLY:
+                return PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_UNREADONLY;
+            case LAST_CONTACT:
+                return PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_LASTCONTACT;
             default:
                 throw new IllegalArgumentException("No api value for "+type);
         }

@@ -3,6 +3,7 @@ package ch.defiant.purplesky.api.internal;
 // TODO Make this package-private
 public class PurplemoonAPIConstantsV1 {
 
+    public static final String HOST = "api.ppmoon.com";
     public static final String BASE_URL = "https://api.ppmoon.com/v1";
     public static final char REQUEST_DIVIDER = ',';
 
