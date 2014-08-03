@@ -49,7 +49,7 @@ import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.UserUtility;
 
-public class JSONTranslator {
+public class JSONTranslator { // TODO Make package private
 
     private static final String TAG = "JSONTranslator";
 
