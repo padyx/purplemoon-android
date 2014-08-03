@@ -11,6 +11,7 @@ import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
+import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.enums.Sexuality;
@@ -222,6 +223,39 @@ public final class APIUtility {
                 return PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_LASTCONTACT;
             default:
                 throw new IllegalArgumentException("No api value for "+type);
+        }
+    }
+
+    public static OnlineStatus toOnlineStatus(String value) {
+        if (StringUtility.isNullOrEmpty(value)){
+            return OnlineStatus.OFFLINE;
+        } else if (PurplemoonAPIConstantsV1.ONLINESTATUS_ONLINE.equals(value)) {
+            return OnlineStatus.ONLINE;
+        } else if (PurplemoonAPIConstantsV1.ONLINESTATUS_INVISIBLE.equals(value)) {
+            return OnlineStatus.INVISIBLE;
+        } else if (PurplemoonAPIConstantsV1.ONLINESTATUS_AWAY.equals(value)) {
+            return OnlineStatus.AWAY;
+        } else if (PurplemoonAPIConstantsV1.ONLINESTATUS_BUSY.equals(value)) {
+            return OnlineStatus.BUSY;
+        } else {
+            throw new IllegalArgumentException("No enum for online status: "+value);
+        }
+    }
+
+    public static String translateOnlineStatus(OnlineStatus status) {
+        switch (status) {
+            case INVISIBLE:
+                return PurplemoonAPIConstantsV1.ONLINESTATUS_INVISIBLE;
+            case AWAY:
+                return PurplemoonAPIConstantsV1.ONLINESTATUS_AWAY;
+            case BUSY:
+                return PurplemoonAPIConstantsV1.ONLINESTATUS_BUSY;
+            case ONLINE:
+                return PurplemoonAPIConstantsV1.ONLINESTATUS_ONLINE;
+            case OFFLINE:
+                throw new IllegalArgumentException("No value for offline");
+            default:
+                throw new IllegalArgumentException("No api value for "+status);
         }
     }
 }
