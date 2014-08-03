@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.core;
+package ch.defiant.purplesky.api.internal;
 
 import android.util.Log;
 
@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ch.defiant.purplesky.BuildConfig;
-import ch.defiant.purplesky.api.internal.APIUtility;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.BasicUser;
@@ -40,6 +38,8 @@ import ch.defiant.purplesky.beans.PurplemoonLocation;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
 import ch.defiant.purplesky.beans.VisitsReceivedBean;
+import ch.defiant.purplesky.core.MessageResult;
+import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.enums.OnlineStatus;
@@ -158,7 +158,7 @@ public class JSONTranslator {
                 // 'online_status': string,
                 if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS)) {
                     String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS);
-                    OnlineStatus status = OnlineStatus.getStatusByAPIValue(string);
+                    OnlineStatus status =  APIUtility.toOnlineStatus(string);
                     basicUser.setOnlineStatus(status);
                 } else {
                     basicUser.setOnlineStatus(OnlineStatus.OFFLINE);
@@ -294,7 +294,7 @@ public class JSONTranslator {
             }
             if (obj.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS)) {
                 String string = obj.getString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS);
-                OnlineStatus status = OnlineStatus.getStatusByAPIValue(string);
+                OnlineStatus status =  APIUtility.toOnlineStatus(string);
                 bean.setOnlineStatus(status);
             }
             if (obj.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUSTEXT)) {

@@ -49,7 +49,6 @@ import ch.defiant.purplesky.beans.VisitsReceivedBean;
 import ch.defiant.purplesky.constants.SecureConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.ErrorTranslator;
-import ch.defiant.purplesky.core.JSONTranslator;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
@@ -898,7 +897,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MY_ONLINESTATUS_STATUS_PARAM, status.getAPIValue()));
+        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MY_ONLINESTATUS_STATUS_PARAM, APIUtility.translateOnlineStatus(status)));
 
         if (StringUtility.isNotNullOrEmpty(custom)) {
             // Make sure to truncate
@@ -936,7 +935,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         String customText = object.optString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUSTEXT, null);
 
         if (predefined != null) {
-            OnlineStatus status = OnlineStatus.getStatusByAPIValue(predefined);
+            OnlineStatus status = APIUtility.toOnlineStatus(predefined);
             return new Pair<OnlineStatus, String>(status, customText);
         } else {
             // Unknown case...
@@ -989,7 +988,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                 continue;
             }
 
-            OnlineStatus status = OnlineStatus.getStatusByAPIValue(predefined);
+            OnlineStatus status = APIUtility.toOnlineStatus(predefined);
             if (predefined != null) {
                 map.put(profileId, new Pair<OnlineStatus, String>(status, customText));
             } else {
