@@ -1,9 +1,5 @@
 package ch.defiant.purplesky.activities;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -11,6 +7,15 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v4.content.LocalBroadcastManager;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
@@ -20,10 +25,6 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UpdateService;
 import ch.defiant.purplesky.gcm.GcmRegisterTask;
 import ch.defiant.purplesky.util.DateUtility;
-
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 /**
  * Setting activity 
@@ -90,6 +91,16 @@ public class SettingActivity extends SherlockPreferenceActivity {
                 return true;
             }
         });
+
+        findPreference("ch.defiant.purplesky.preferences.about").setOnPreferenceClickListener(
+                new OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivity(new Intent(SettingActivity.this, AboutActivity.class));
+                        return  true;
+                    }
+                }
+        );
 
     }
 

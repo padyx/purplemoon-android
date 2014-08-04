@@ -80,5 +80,9 @@
             android:summary="@string/CredentialsClearExplanation"
             android:title="@string/CredentialsClear" />
     </PreferenceCategory>
-
+<Preference
+    android:key="ch.defiant.purplesky.preferences.about"
+    android:title="@string/PreferenceAboutApp"
+    android:summary="@string/PreferenceAboutApp_Summary"
+    />
 </PreferenceScreen>
