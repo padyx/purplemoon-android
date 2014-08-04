@@ -78,7 +78,7 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // TODO Add loading include
-        View inflated = inflater.inflate(R.layout.displayuser, container, false);
+        View inflated = inflater.inflate(R.layout.webview_full, container, false);
 
         Bundle arguments = getArguments();
         if (savedInstanceState != null) {
@@ -162,7 +162,7 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
             assert (false); // Should never happen
             return;
         }
-        final WebView webView = (WebView) root.findViewById(R.id.displayuser_contentWebView);
+        final WebView webView = (WebView) root.findViewById(R.id.webview_full_webview);
 
         m_user = content;
         if (content instanceof NullUser) {
