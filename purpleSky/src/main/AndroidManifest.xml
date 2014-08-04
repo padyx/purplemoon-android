@@ -59,6 +59,7 @@
         </service>
 
         <activity android:name=".activities.SettingActivity" />
+        <activity android:name=".activities.AboutActivity" />
         <activity android:name="ch.defiant.purplesky.activities.main.MainActivity" />
 
         <service

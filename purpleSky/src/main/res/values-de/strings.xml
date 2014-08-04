@@ -278,5 +278,7 @@
 
     <string name="ReportComplete">Deine Meldung wurde gesendet. Benutze die Zurück-Taste um zurückzugelangen.</string>
     <string name="ErrorTooManyReports">Du hast zu viele Benutzer in einer kurzen Zeit gemeldet. Versuche es später erneut.</string>
+    <string name="PreferenceAboutApp">Über diese App</string>
+    <string name="PreferenceAboutApp_Summary">Lizenzinformationen eingeschlossener Software</string>
 
 </resources>

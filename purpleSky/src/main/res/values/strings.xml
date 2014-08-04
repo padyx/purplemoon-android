@@ -275,5 +275,7 @@
 
     <string name="ReportComplete">Your report has been submitted. Use the back key to return to the previous screen.</string>
     <string name="ErrorTooManyReports">You have reported too many users in a short time. Try again later.</string>
+    <string name="PreferenceAboutApp">About this app</string>
+    <string name="PreferenceAboutApp_Summary">Licences of included software</string>
 
 </resources>
