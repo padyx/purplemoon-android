@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.defiant.purplesky"
     android:installLocation="internalOnly"
-    android:versionCode="32"
-    android:versionName="1.1.0 BETA" >
+    android:versionCode="33"
+    android:versionName="1.1.0 BETA2" >
 
     <!-- Min and Max SDK are defined in GRADLE file! -->
 
