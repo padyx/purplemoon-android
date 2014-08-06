@@ -23,7 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -36,6 +39,8 @@ import ch.defiant.purplesky.util.LayoutUtility;
 
 public class PictureFolderGridViewFragment extends BaseFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
 
+    @Inject
+    protected IGalleryAdapter galleryAdapter;
     private ImageAdapter m_adapter;
 
     public static final String TAG = PictureFolderGridViewFragment.class.getSimpleName();
@@ -180,7 +185,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             @Override
             public Holder<List<PictureFolder>> loadInBackground() {
                 try {
-                    Map<String, PictureFolder> foldersWithPictures = apiAdapter.getFoldersWithPictures(userid, null);
+                    Map<String, PictureFolder> foldersWithPictures = galleryAdapter.getFoldersWithPictures(userid, null);
                     return new Holder<List<PictureFolder>>(new ArrayList<PictureFolder>(foldersWithPictures.values()));
                 } catch (IOException e) {
                     return new Holder<List<PictureFolder>>(e);

@@ -3,6 +3,7 @@ package ch.defiant.purplesky.core;
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
 import ch.defiant.purplesky.api.internal.APIModule;
 import ch.defiant.purplesky.api.postits.internal.PostitModule;
 import ch.defiant.purplesky.api.report.internal.ReportModule;
@@ -45,7 +46,8 @@ import dagger.Module;
             CoreModule.class,
             DatabaseModule.class,
             ReportModule.class,
-            PostitModule.class
+            PostitModule.class,
+            GalleryModule.class
     },
     injects = {
             PurpleSkyApplication.class,

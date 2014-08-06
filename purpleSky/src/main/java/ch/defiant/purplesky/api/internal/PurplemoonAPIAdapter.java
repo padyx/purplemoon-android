@@ -38,7 +38,6 @@ import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
-import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
@@ -618,64 +617,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     public boolean isLoggedIn() {
         PersistantModel model = PurpleSkyApplication.get().getPersistantModel();
         return StringUtility.isNotNullOrEmpty(model.getOAuthAccessToken());
-    }
-
-    @Override
-    public List<PictureFolder> getPictureFolders(String profileId) throws IOException, PurpleSkyException {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.PICTUREFOLDER_FOLDERSONLY_URL);
-        sb.append(profileId);
-
-        JSONObject jsonObject = performGETRequestForJSONObject(new URL(sb.toString()));
-        return JSONTranslator.translateToPictureFolders(jsonObject);
-    }
-
-    @Override
-    public List<PictureFolder> getMyPictureFolders() throws IOException, PurpleSkyException {
-        PersistantModel model = PurpleSkyApplication.get().getPersistantModel();
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.PICTUREFOLDER_FOLDERSONLY_ME_URL);
-
-        JSONArray jsonArray = performGETRequestForJSONArray(new URL(sb.toString()));
-        return JSONTranslator.translateToPictureFolders(model.getUserProfileId(), jsonArray);
-    }
-
-    @Override
-    public Map<String, PictureFolder> getFoldersWithPictures(String profileId, List<String> folders) throws IOException, PurpleSkyException {
-        HashMap<String, PictureFolder> map = new HashMap<String, PictureFolder>();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.PICTUREFOLDER_WITHPICTURES_URL);
-        sb.append(profileId);
-        if (folders != null && folders.size() > 0) {
-            sb.append("?");
-            sb.append(PurplemoonAPIConstantsV1.JSON_PICTUREFOLDER_IDS);
-            sb.append("=");
-            for (int i = 0, size = folders.size(); i < size; i++) {
-                sb.append(folders.get(i));
-                if (i != size - 1) {
-                    sb.append(",");
-                }
-            }
-        }
-
-        JSONObject obj = performGETRequestForJSONObject(new URL(sb.toString()));
-        if (obj == null) {
-            return map;
-        }
-        List<PictureFolder> translatedFolders = JSONTranslator.translateToPictureFolders(obj);
-        if (translatedFolders != null) {
-            for (PictureFolder f : translatedFolders) {
-                if (f == null)
-                    continue;
-                map.put(f.getFolderId(), f);
-            }
-        }
-        return map;
     }
 
     @Override

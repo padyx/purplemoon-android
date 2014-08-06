@@ -34,11 +34,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.NullPictureFolder;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.UploadBean;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
@@ -49,6 +52,9 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
 
     public static final String ARGUMENT_PICTURE_URI = "picture";
     public static final int INVALID_POSITION = -1;
+
+    @Inject
+    protected IGalleryAdapter galleryAdapter;
 
     private ArrayAdapter<PictureFolder> m_spinnerAdapter;
     private OnDismiss m_onDismissListener;
@@ -130,7 +136,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             public Holder<List<PictureFolder>> loadInBackground() {
                 List<PictureFolder> folders = null;
                 try {
-                    folders = apiAdapter.getMyPictureFolders();
+                    folders = galleryAdapter.getMyPictureFolders();
                 } catch (Exception e) {
                     return new Holder<List<PictureFolder>>(e);
                 }

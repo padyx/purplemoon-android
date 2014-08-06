@@ -14,7 +14,6 @@ import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
-import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
@@ -180,33 +179,7 @@ public interface IPurplemoonAPIAdapter {
 
     public boolean isLoggedIn();
 
-    /**
-     * Returns the picture folders for the specified user.
-     * 
-     * @param profileId
-     * @return
-     * @throws IOException
-     * @throws PurpleSkyException
-     * @throws IllegalArgumentException
-     *             If the profileId
-     */
-    public List<PictureFolder> getPictureFolders(String profileId) throws IOException, PurpleSkyException;
 
-    public List<PictureFolder> getMyPictureFolders() throws IOException, PurpleSkyException;
-
-    /**
-     * Retrieves folders, with pictures associated.
-     * 
-     * @param profileId
-     *            For which profile to retrieve
-     * @param folders
-     *            (Optional) Restrict to particular folders
-     * @return Map of Folders: Key = FolderId
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public Map<String, PictureFolder> getFoldersWithPictures(String profileId, List<String> folders)
-            throws IOException, PurpleSkyException;
 
     public NotificationBean getNotificationBean() throws IOException, PurpleSkyException;
 
