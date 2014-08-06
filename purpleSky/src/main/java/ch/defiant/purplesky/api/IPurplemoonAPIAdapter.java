@@ -15,7 +15,6 @@ import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.beans.PictureFolder;
-import ch.defiant.purplesky.beans.PostIt;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
@@ -225,43 +224,6 @@ public interface IPurplemoonAPIAdapter {
      *             If the class is not supported.
      */
     public List<MinimalUser> searchUserByName(String text, UserSearchOptions options) throws IOException,
-            PurpleSkyException;
-
-    /**
-     * Get received postits.
-     * 
-     * @param options
-     *            Supports the options 'start', 'number' and 'sinceTimestamp'
-     * @return List of postits
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<PostIt> getReceivedPostIts(AdapterOptions options) throws IOException, PurpleSkyException;
-
-    /**
-     * Get received postits.
-     * 
-     * @param options
-     *            Supports the options 'start', 'number' and 'sinceTimestamp'
-     * @return List of postits
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<PostIt> getGivenPostIts(AdapterOptions options) throws IOException, PurpleSkyException;
-
-    /**
-     * Retrieve the possible postits for the vlau
-     * 
-     * @param profileId
-     * @return
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<Pair<Integer, String>> getPostitOptions(String profileId) throws IOException,
-            PurpleSkyException;
-
-    public boolean createPostit(String profileId, Integer postitValue, String postitCustomText)
-            throws IOException, WrongCredentialsException,
             PurpleSkyException;
 
     /**

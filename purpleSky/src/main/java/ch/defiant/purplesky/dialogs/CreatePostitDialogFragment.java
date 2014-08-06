@@ -26,8 +26,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.postits.IPostitAdapter;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.exceptions.PoweruserException;
@@ -53,6 +56,9 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
 
     private Spinner m_spinner;
     private boolean m_cachedPowerUser;
+
+    @Inject
+    protected IPostitAdapter postitAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -232,7 +238,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
         @Override
         protected Holder<Boolean> doInBackground(Object... params) {
             try {
-                boolean success = apiAdapter.createPostit(m_id, m_value, m_customText);
+                boolean success = postitAdapter.createPostit(m_id, m_value, m_customText);
                 return new Holder<Boolean>(success);
             } catch (Exception e) {
                 return new Holder<Boolean>(e);
@@ -284,7 +290,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
             @Override
             public Holder<List<Pair<Integer, String>>> loadInBackground() {
                 try {
-                    List<Pair<Integer, String>> list = apiAdapter.getPostitOptions(m_profileId);
+                    List<Pair<Integer, String>> list = postitAdapter.getPostitOptions(m_profileId);
                     return new Holder<List<Pair<Integer, String>>>(list);
                 } catch (IOException e) {
                     return new Holder<List<Pair<Integer, String>>>(e);

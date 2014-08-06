@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.postits.IPostitAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PostIt;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -45,6 +48,10 @@ public class PostitFragment extends BaseListFragment {
     private boolean isShowGiven;
 
     private PostitEndlessAdapter m_endlessAdapter;
+
+
+    @Inject
+    protected IPostitAdapter postitAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,11 +114,11 @@ public class PostitFragment extends BaseListFragment {
             AdapterOptions options = new AdapterOptions();
             options.setStart(m_currentCount.get());
 
-            List<PostIt> postIts = new ArrayList<PostIt>();
+            List<PostIt> postIts;
             if (isShowGiven) {
-                postIts = apiAdapter.getGivenPostIts(options);
+                postIts = postitAdapter.getGivenPostIts(options);
             } else {
-                postIts = apiAdapter.getReceivedPostIts(options);
+                postIts = postitAdapter.getReceivedPostIts(options);
                 // If this does not throw an exception, mark as read
                 PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.POSTIT, 0);
             }
@@ -160,7 +167,7 @@ public class PostitFragment extends BaseListFragment {
             View v = convertView;
             ViewHolder holder = null;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getContext());
+                LayoutInflater vi = LayoutInflater.from(getContext());
                 v = vi.inflate(R.layout.displaypostit_item, null);
 
                 holder = createViewHolder(v);
