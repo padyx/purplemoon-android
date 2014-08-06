@@ -110,11 +110,6 @@ public class PurplemoonAPIConstantsV1 {
     /*
      * Picture Folder related
      */
-    public static final String PICTUREFOLDER_FOLDERSONLY_URL = "/users/folders/";
-    public static final String PICTUREFOLDER_FOLDERSONLY_ME_URL = "/me/folders";
-
-    public static final String PICTUREFOLDER_WITHPICTURES_URL = "/users/pictures/";
-
     public static final String JSON_PICTUREFOLDER_FOLDERS = "folders";
     public static final String JSON_PICTUREFOLDER_ID = "folder_id";
     public static final String JSON_PICTUREFOLDER_IDS = "folder_ids";

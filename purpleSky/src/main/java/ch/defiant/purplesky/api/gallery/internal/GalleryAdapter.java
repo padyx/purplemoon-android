@@ -29,7 +29,7 @@ public class GalleryAdapter implements IGalleryAdapter {
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.PICTUREFOLDER_FOLDERSONLY_URL);
+        sb.append(ReportAPIConstants.PICTUREFOLDER_FOLDERSONLY_URL);
         sb.append(profileId);
 
         JSONObject jsonObject = APINetworkUtility.performGETRequestForJSONObject(new URL(sb.toString()));
@@ -41,7 +41,7 @@ public class GalleryAdapter implements IGalleryAdapter {
         PersistantModel model = PurpleSkyApplication.get().getPersistantModel();
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.PICTUREFOLDER_FOLDERSONLY_ME_URL);
+        sb.append(ReportAPIConstants.PICTUREFOLDER_FOLDERSONLY_ME_URL);
 
         JSONArray jsonArray = APINetworkUtility.performGETRequestForJSONArray(new URL(sb.toString()));
         return JSONTranslator.translateToPictureFolders(model.getUserProfileId(), jsonArray);
@@ -53,7 +53,7 @@ public class GalleryAdapter implements IGalleryAdapter {
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.PICTUREFOLDER_WITHPICTURES_URL);
+        sb.append(ReportAPIConstants.PICTUREFOLDER_WITHPICTURES_URL);
         sb.append(profileId);
         if (folders != null && folders.size() > 0) {
             sb.append("?");
