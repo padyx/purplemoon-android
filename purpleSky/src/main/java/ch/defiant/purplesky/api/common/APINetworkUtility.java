@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -96,8 +95,6 @@ public class APINetworkUtility {
      *             If the users credentials were rejected.
      */
     public static String performGETRequestForString(URL resource) throws IOException, PurpleSkyException {
-        ArrayList<NameValuePair> headers = new ArrayList<NameValuePair>();
-
         OkHttpClient httpClient = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
 

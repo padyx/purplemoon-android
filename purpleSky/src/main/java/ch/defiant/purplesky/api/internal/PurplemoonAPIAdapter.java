@@ -75,7 +75,6 @@ import static ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.REQUEST
 class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
     private static final String TAG = PurplemoonAPIAdapter.class.getSimpleName();
-    private static PurplemoonAPIAdapter m_instance;
 
     @Override
     public MinimalUser getMinimalUserData(String userid, boolean withOnlineStatus) throws IOException, PurpleSkyException {
@@ -349,7 +348,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         if (message == null) {
             throw new IllegalArgumentException("Cannot send message with 'null' message.");
         }
-        String userid = null;
+        String userid;
         if (message.getRecipient() != null) {
             userid = message.getRecipient().getUserId();
         } else {
@@ -545,8 +544,8 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                 if (bean == null)
                     continue;
 
-                Integer unopened = bean.getUnopenedMessageCount();
-                if (unopened != null && unopened > 0) {
+                int unopened = bean.getUnopenedMessageCount();
+                if (unopened > 0) {
                     count += unopened;
                 }
             }
@@ -896,8 +895,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             }
         }
 
-        for (int i = 0, size = result.size(); i < size; i++) {
-            VisitsReceivedBean bean = result.get(i);
+        for (VisitsReceivedBean bean : result) {
             if (bean == null) {
                 continue;
             }
@@ -1282,8 +1280,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
      *             If the users credentials were rejected.
      */
     private String performGETRequestForString(URL resource) throws IOException, PurpleSkyException {
-        ArrayList<NameValuePair> headers = new ArrayList<NameValuePair>();
-
         OkHttpClient httpClient = new OkHttpClient();
         Request.Builder builder = new Request.Builder();
 
