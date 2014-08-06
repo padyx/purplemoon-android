@@ -46,7 +46,7 @@ class PostitAdapter implements IPostitAdapter {
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.POSTIT_RECEIVED_URL);
+        sb.append(PostitAPIConstants.POSTIT_RECEIVED_URL);
 
         return getPostits(options, list, sb);
     }
@@ -125,7 +125,7 @@ class PostitAdapter implements IPostitAdapter {
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.POSTIT_GIVEN_URL);
+        sb.append(PostitAPIConstants.POSTIT_GIVEN_URL);
 
         return getPostits(options, list, sb);
     }
@@ -137,7 +137,7 @@ class PostitAdapter implements IPostitAdapter {
             return list;
         }
 
-        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.POSTIT_GETOPTIONS_URL + profileId);
+        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PostitAPIConstants.POSTIT_GETOPTIONS_URL + profileId);
         JSONArray array = APINetworkUtility.performGETRequestForJSONArray(url);
 
         if (array != null) {
@@ -175,15 +175,15 @@ class PostitAdapter implements IPostitAdapter {
             return false;
         }
 
-        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.POSTIT_CREATE_URL);
+        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PostitAPIConstants.POSTIT_CREATE_URL);
 
         List<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.POSTIT_CREATE_POSTIT_PROFILEID, profileId));
+        body.add(new BasicNameValuePair(PostitAPIConstants.POSTIT_CREATE_POSTIT_PROFILEID, profileId));
 
         if (postitValue != null) {
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.POSTIT_CREATE_POSTIT_VALUE, String.valueOf(postitValue)));
+            body.add(new BasicNameValuePair(PostitAPIConstants.POSTIT_CREATE_POSTIT_VALUE, String.valueOf(postitValue)));
         } else {
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.POSTIT_CREATE_POSTIT_CUSTOMTEXT, postitCustomText));
+            body.add(new BasicNameValuePair(PostitAPIConstants.POSTIT_CREATE_POSTIT_CUSTOMTEXT, postitCustomText));
         }
 
         HTTPURLResponseHolder result = APINetworkUtility.postForResponseHolderNoThrow(url, body, null);
