@@ -15,8 +15,15 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Window;
+
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.BaseFragmentActivity;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
@@ -36,9 +43,6 @@ import ch.defiant.purplesky.loaders.ProfileImageLoader;
 import ch.defiant.purplesky.loaders.StatusLoader;
 import ch.defiant.purplesky.loaders.UpgradeAndPushLoader;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Window;
-
 /**
  * The main activity hosting all fragments once the user is logged in.
  * @author Patrick Bänziger
@@ -46,6 +50,8 @@ import com.actionbarsherlock.view.Window;
  */
 public class MainActivity extends BaseFragmentActivity implements LoaderCallbacks<Object> {
 
+    @Inject
+    protected IConversationAdapter conversationAdapter;
     private static final String LOGOUT_FRAGMENT_TAG = "LOGOUT";
 
     // TODO Move
@@ -239,7 +245,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
             case R.id.loader_drawermenu_profileimage:
                 return new ProfileImageLoader(this);
             case R.id.loader_drawermenu_notificationCounters:
-                return new NotificationLoader(this, apiAdapter);
+                return new NotificationLoader(this, apiAdapter, conversationAdapter);
             case R.id.loader_drawermenu_status:
                 return new StatusLoader(this, apiAdapter);
             case R.id.loader_main_upgradePush:

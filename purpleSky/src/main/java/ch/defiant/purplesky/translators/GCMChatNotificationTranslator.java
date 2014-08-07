@@ -29,7 +29,7 @@ import java.util.Map;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
-import ch.defiant.purplesky.api.internal.JSONTranslator;
+import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.constants.NotificationConstants;
@@ -56,7 +56,7 @@ public class GCMChatNotificationTranslator {
 
         try {
             users = new JSONArray(NVLUtility.nvl(extras.getString(PurplemoonAPIConstantsV1.GCM_EXTRA_USERS), ""));
-            map = JSONTranslator.translateToUsers(users, MinimalUser.class);
+            map = CommonJSONTranslator.translateToUsers(users, MinimalUser.class);
             chats = new JSONArray(NVLUtility.nvl(extras.getString(PurplemoonAPIConstantsV1.GCM_EXTRA_NEWEST), ""));
         } catch (JSONException e) {
             if (BuildConfig.DEBUG) {

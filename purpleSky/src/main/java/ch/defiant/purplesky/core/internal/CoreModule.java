@@ -1,8 +1,6 @@
 package ch.defiant.purplesky.core.internal;
 
-import javax.inject.Singleton;
-
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import dagger.Module;
@@ -19,7 +17,7 @@ import dagger.Provides;
 public class CoreModule {
 
     @Provides
-    public IMessageService provideMessageService(IPurplemoonAPIAdapter apiAdapter){
+    public IMessageService provideMessageService(IConversationAdapter apiAdapter){
         return new MessageService(apiAdapter);
     }
 

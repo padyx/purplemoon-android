@@ -24,7 +24,10 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.visit.IVisitAdapter;
 import ch.defiant.purplesky.beans.AbstractVisitBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
@@ -47,6 +50,9 @@ import ch.defiant.purplesky.util.UserUtility;
  * 
  */
 public class VisitorFragment extends BaseListFragment {
+
+    @Inject
+    protected IVisitAdapter visitAdapter;
 
     private static final String DATA = "data";
     private static final int MAXVISITS = 3;
@@ -131,12 +137,12 @@ public class VisitorFragment extends BaseListFragment {
             boolean hasMore = false;
             final ArrayList<AbstractVisitBean> list = new ArrayList<AbstractVisitBean>();
             if (isShowOwnVisits) {
-                List<VisitsMadeBean> own = apiAdapter.getOwnVists(options);
+                List<VisitsMadeBean> own = visitAdapter.getOwnVists(options);
                 if (own != null) {
                     list.addAll(own);
                 }
             } else {
-                List<VisitsReceivedBean> received = apiAdapter.getReceivedVists(options, m_lastCheckDate);
+                List<VisitsReceivedBean> received = visitAdapter.getReceivedVists(options, m_lastCheckDate);
                 if (received != null) {
                     list.addAll(received);
                 }

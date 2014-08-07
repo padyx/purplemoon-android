@@ -30,30 +30,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ch.defiant.purplesky.BuildConfig;
-import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PreviewUser;
-import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
-import ch.defiant.purplesky.beans.UserMessageHistoryBean;
-import ch.defiant.purplesky.beans.VisitsMadeBean;
-import ch.defiant.purplesky.beans.VisitsReceivedBean;
 import ch.defiant.purplesky.constants.SecureConstants;
-import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.ErrorTranslator;
-import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.SendOptions;
-import ch.defiant.purplesky.core.SendOptions.UnreadHandling;
 import ch.defiant.purplesky.core.UserSearchOptions;
-import ch.defiant.purplesky.core.UserService;
-import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
@@ -186,7 +176,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             if (object == null) {
                 continue;
             }
-            MinimalUser translatedUser = JSONTranslator.translateToUser(object, MinimalUser.class);
+            MinimalUser translatedUser = CommonJSONTranslator.translateToUser(object, MinimalUser.class);
             if (translatedUser != null && StringUtility.isNotNullOrEmpty(translatedUser.getUserId())) {
                 result.put(translatedUser.getUserId(), translatedUser);
             }
@@ -238,7 +228,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             if (object == null) {
                 continue;
             }
-            PreviewUser translatedUser = JSONTranslator.translateToUser(object, PreviewUser.class);
+            PreviewUser translatedUser = CommonJSONTranslator.translateToUser(object, PreviewUser.class);
             if (translatedUser != null && StringUtility.isNotNullOrEmpty(translatedUser.getUserId())) {
                 result.put(translatedUser.getUserId(), translatedUser);
             }
@@ -266,7 +256,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
 
         // Convert user into bean
-        DetailedUser translatedUser = JSONTranslator.translateToUser(jsonUser, DetailedUser.class);
+        DetailedUser translatedUser = CommonJSONTranslator.translateToUser(jsonUser, DetailedUser.class);
         if (translatedUser != null && StringUtility.isNotNullOrEmpty(translatedUser.getUserId())) {
             return translatedUser;
         } else {
@@ -300,7 +290,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             return null;
         }
 
-        DetailedUser translatedUser = JSONTranslator.translateToUser(user, DetailedUser.class);
+        DetailedUser translatedUser = CommonJSONTranslator.translateToUser(user, DetailedUser.class);
         return translatedUser;
     }
 
@@ -342,158 +332,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     }
 
     @Override
-    public MessageResult sendMessage(PrivateMessage message, SendOptions opts) throws IOException, PurpleSkyException {
-        if (message == null) {
-            throw new IllegalArgumentException("Cannot send message with 'null' message.");
-        }
-        String userid;
-        if (message.getRecipient() != null) {
-            userid = message.getRecipient().getUserId();
-        } else {
-            userid = message.getMessageHead().getRecipientProfileId();
-        }
-
-        if (StringUtility.isNullOrEmpty(userid)) {
-            throw new IllegalArgumentException("Cannot send message with without a receiver!");
-        }
-
-        if (StringUtility.isNullOrEmpty(message.getMessageText())) {
-            throw new PurpleSkyException(PurpleSkyApplication.get().getString(R.string.SendFailNoText));
-        }
-
-        // Fix issue BB-41: Without an unread handling, the output format is different
-        // This leads to parsing errors. Ensure it now.
-        if (opts == null || opts.getUnreadHandling() == null) {
-            throw new IllegalArgumentException("Need a unread handling set!");
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.MESSAGE_SEND_URL);
-        sb.append(userid);
-        URL url = new URL(sb.toString());
-
-        List<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_MESSAGE_TEXT, message.getMessageText()));
-        body.add(
-                new BasicNameValuePair(
-                        PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_PARAM,
-                        APIUtility.translateUnreadHandling(opts.getUnreadHandling())));
-        if (opts.getUnreadHandling() == UnreadHandling.ABORT && opts.getLatestRead() != null) {
-            body.add(
-                    new BasicNameValuePair(
-                            PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_TIMESTAMPSINCE,
-                            String.valueOf(DateUtility.getUnixTime(opts.getLatestRead()))
-                            )
-                    );
-        }
-
-        HTTPURLResponseHolder result = performPOSTRequestForResponseHolder(url, body, null);
-        if (result == null) {
-            throw new PurpleSkyException(PurpleSkyApplication.get().getString(R.string.UnknownErrorOccured));
-        }
-
-        // The default handling will have translated all default stuff (of the errors)
-        // Now return the translated message
-        try {
-            return JSONTranslator.translateToMessageResult(new JSONObject(result.getOutput()));
-        } catch (JSONException jsonE) {
-            if (BuildConfig.DEBUG) {
-                Log.e(TAG, "Could not translate the message returned from sending", jsonE);
-            }
-            throw new PurpleSkyException(PurpleSkyApplication.get().getString(R.string.UnknownErrorOccured));
-        }
-
-    }
-
-    @Override
-    public List<UserMessageHistoryBean> getRecentContacts(Integer resultCount, Integer startAt,
-            MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException {
-        if (restrict == null) {
-            restrict = MessageRetrievalRestrictionType.LAST_CONTACT;
-        }
-
-        ArrayList<UserMessageHistoryBean> resultList = new ArrayList<UserMessageHistoryBean>();
-
-        StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append(PurplemoonAPIConstantsV1.BASE_URL);
-        urlBuilder.append(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_URL);
-
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        if (startAt != null && startAt >= 0) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(startAt)));
-        }
-        if (resultCount != null && resultCount >= 0) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(resultCount)));
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(resultCount)));
-        } else {
-            // TODO Remove the bean retrieval when beans are cached
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(15)));
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(15)));
-        }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, "true"));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, String.valueOf(100)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, APIUtility.translateMessageRetrievalRestrictionType(restrict)));
-        // End of parameters
-        urlBuilder.append(HTTPURLUtility.createGetQueryString(params));
-
-        JSONObject res = performGETRequestForJSONObject(new URL(urlBuilder.toString()));
-        if (res == null)
-            return resultList; // Empty
-
-        JSONArray beans = res.optJSONArray(PurplemoonAPIConstantsV1.JSON_CHATLIST_CHATS);
-        JSONArray users = res.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
-
-        // Parse Users first to associate them with messages
-        Map<String, MinimalUser> map = null;
-        if (users != null) {
-            map = JSONTranslator.translateToUsers(users, MinimalUser.class);
-        }
-
-        if (beans != null) {
-            // Get chats
-            int size = beans.length();
-            for (int i = 0; i < size; i++) {
-                JSONObject jsonObject = beans.optJSONObject(i);
-                if (jsonObject != null) {
-                    UserMessageHistoryBean bean = JSONTranslator.translateToUserMessageHistoryBean(jsonObject);
-                    if (map != null && map.containsKey(bean.getProfileId())) {
-                        bean.setUserBean(map.get(bean.getProfileId()));
-                    }
-                    resultList.add(bean);
-                }
-            }
-        }
-
-        return resultList;
-    }
-    
-    @Override
-    public UserMessageHistoryBean getConversationStatus(String profileId) throws IOException, PurpleSkyException {
-        if (profileId == null) {
-            throw new IllegalArgumentException("Missing profileId of other user");
-        }
-
-        StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append(PurplemoonAPIConstantsV1.BASE_URL);
-        urlBuilder.append(PurplemoonAPIConstantsV1.MESSAGE_CHATSTATUS_URL);
-        urlBuilder.append(profileId);
-
-
-        JSONArray res = performGETRequestForJSONArray(new URL(urlBuilder.toString()));
-        if (res == null ){
-            return null;
-        }
-        JSONObject object = res.optJSONObject(0);
-        if(object == null){
-            return null;
-        }
-        return JSONTranslator.translateToUserMessageHistoryBean(object);
-    }
-
-    @Override
     public int getOnlineFavoritesCount() throws IOException, PurpleSkyException {
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.FAVORITES_ONLINECOUNT_URL);
         JSONObject result = performGETRequestForJSONObject(url);
@@ -512,105 +350,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
     }
 
-    @Override
-    public int getUnopenedMessagesCount() throws IOException, PurpleSkyException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_URL);
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM,
-                PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_UNREADONLY));
-
-        int count = 0;
-        int nextStartIdx = 0;
-
-        while (true) {
-            List<UserMessageHistoryBean> contacts = getRecentContacts(25, nextStartIdx, MessageRetrievalRestrictionType.UNOPENED_ONLY);
-            if (contacts == null) {
-                // Error
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Get message count: Got null list, aborting.");
-                }
-                return 0;
-            }
-            if (contacts.isEmpty())
-                break; // Empty list? Exit loop!
-            nextStartIdx += contacts.size(); // Otherwise calculate next start index.
-
-            for (UserMessageHistoryBean bean : contacts) {
-                if (bean == null)
-                    continue;
-
-                int unopened = bean.getUnopenedMessageCount();
-                if (unopened > 0) {
-                    count += unopened;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    @Override
-    public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options) throws IOException, PurpleSkyException {
-
-        ArrayList<PrivateMessage> list = new ArrayList<PrivateMessage>();
-        if (profileId == null)
-            return list;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_URL);
-        sb.append(profileId);
-
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-
-        if (options != null) {
-            if (options.getNumber() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(options.getNumber())));
-            }
-            if (options.getSinceTimestamp() != null) {
-                long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
-                params.add(time);
-            }
-            if (options.getUptoTimestamp() != null) {
-                long u = DateUtility.getUnixTime(options.getUptoTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.UPTO_TIMESTAMP_PARAM, String.valueOf(u));
-                params.add(time);
-            }
-            if (options.getSinceId() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_SINCE_MESSAGEID, String.valueOf(options.getSinceId())));
-            }
-            if (options.getUptoId() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_UPTO_MESSAGEID, String.valueOf(options.getUptoId())));
-            }
-            if (options.getOrder() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, options.getOrder()));
-            }
-        }
-        sb.append(HTTPURLUtility.createGetQueryString(params));
-
-        URL url = new URL(sb.toString());
-        JSONArray array = performGETRequestForJSONArray(url);
-        if (array == null) {
-            return list;
-        }
-
-        for (int i = 0; i < array.length(); i++) {
-            try {
-                JSONObject obj = array.getJSONObject(i);
-                PrivateMessage message = JSONTranslator.translateToPrivateMessage(obj);
-                if (message != null) {
-                    list.add(message);
-                }
-            } catch (JSONException e) {
-                Log.d(TAG, "Message Array did contain non-object entities.");
-            }
-        }
-        return list;
-    }
 
     @Override
     public boolean isLoggedIn() {
@@ -660,7 +400,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             for (int i = 0, size = array.length(); i < size; i++) {
                 JSONObject object = array.optJSONObject(i);
                 if (object != null) {
-                    MinimalUser user = JSONTranslator.translateToUser(object, PreviewUser.class);
+                    MinimalUser user = CommonJSONTranslator.translateToUser(object, PreviewUser.class);
                     if (user != null) {
                         list.add(user);
                     }
@@ -791,117 +531,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     }
 
     @Override
-    public List<VisitsReceivedBean> getReceivedVists(AdapterOptions options, Date overrideLastDateCheck) throws IOException, PurpleSkyException {
-        StringBuilder builder = new StringBuilder();
-
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        int number = 20;
-        if (options != null) {
-            if (options.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
-            }
-            if (options.getNumber() != null) {
-                number = options.getNumber();
-            }
-            if (options.getSinceTimestamp() != null) {
-                long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
-                params.add(time);
-            }
-        }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
-
-        builder.append(HTTPURLUtility.createGetQueryString(params));
-        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.VISITORS_URL + builder.toString());
-
-        JSONObject obj = performGETRequestForJSONObject(url);
-        if (obj == null) {
-            return null;
-        }
-
-        List<VisitsReceivedBean> result = JSONTranslator.translateToVisitsReceivedList(obj, overrideLastDateCheck);
-        if (result == null || result.isEmpty()) {
-            return result;
-        }
-
-        JSONArray users = obj.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
-        Map<String, MinimalUser> userMap = JSONTranslator.translateToUsers(users, MinimalUser.class);
-        if (userMap != null) { // Add to cache
-            UserService service = PurpleSkyApplication.get().getUserService();
-            for (MinimalUser u : userMap.values()) {
-                service.addToCache(u);
-            }
-        }
-
-        for (VisitsReceivedBean bean : result) {
-            if (bean == null) {
-                continue;
-            }
-            bean.setUser(userMap.get(bean.getProfileId()));
-        }
-
-        return result;
-    }
-
-    @Override
-    public List<VisitsMadeBean> getOwnVists(AdapterOptions options) throws IOException, PurpleSkyException {
-        StringBuilder builder = new StringBuilder();
-
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        int number = 20;
-        if (options != null) {
-            if (options.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
-            }
-            if (options.getNumber() != null) {
-                number = options.getNumber();
-            }
-            if (options.getSinceTimestamp() != null) {
-                long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
-                params.add(time);
-            }
-        }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
-
-        builder.append(HTTPURLUtility.createGetQueryString(params));
-        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.VISITS_MADE_URL + builder.toString());
-
-        JSONObject obj = performGETRequestForJSONObject(url);
-        if (obj == null) {
-            return null;
-        }
-
-        List<VisitsMadeBean> result = JSONTranslator.translateToVisitsMadeList(obj);
-        if (result == null || result.isEmpty()) {
-            return result;
-        }
-
-        JSONArray users = obj.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
-        Map<String, MinimalUser> userMap = JSONTranslator.translateToUsers(users, MinimalUser.class);
-        if (userMap != null) { // Add to cache
-            UserService service = PurpleSkyApplication.get().getUserService();
-            for (MinimalUser u : userMap.values()) {
-                service.addToCache(u);
-            }
-        }
-
-        for (int i = 0, size = result.size(); i < size; i++) {
-            VisitsMadeBean bean = result.get(i);
-            if (bean == null) {
-                continue;
-            }
-            bean.setUser(userMap.get(bean.getProfileId()));
-        }
-
-        return result;
-    }
-
-    @Override
     public List<MinimalUser> searchUser(UserSearchOptions options) throws IOException, PurpleSkyException {
         if (options == null) {
             return Collections.emptyList();
@@ -948,7 +577,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         ArrayList<MinimalUser> result = new ArrayList<MinimalUser>();
         for (int i = 0, size = array.length(); i < size; i++) {
-            PreviewUser translated = JSONTranslator.translateToUser(array.optJSONObject(i), PreviewUser.class);
+            PreviewUser translated = CommonJSONTranslator.translateToUser(array.optJSONObject(i), PreviewUser.class);
             if (translated == null) {
                 continue;
             }

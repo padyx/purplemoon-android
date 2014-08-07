@@ -250,20 +250,6 @@ public class PurplemoonAPIConstantsV1 {
     public static final String ONLINESTATUS_URL = "/users/online_status/";
 
     /*
-     * Visitors-related
-     */
-    public static final String VISITORS_URL = "/me/visitors";
-
-    public static final String JSON_VISITORS_LASTCHECK = "last_check";
-    public static final String JSON_VISITORS_ARRAY = "visitors";
-
-    public static final String JSON_VISITS_OF_VISITORS = "visits";
-    public static final String JSON_VISITS_TIMESTAMP = "timestamp";
-
-    public static final String VISITS_MADE_URL = "/me/visits_made";
-    public static final String VISIT_MADE_VISIBLE = "visible";
-
-    /*
      * User search related
      */
     public static final String USERSEARCH_URL = "/search/users";
@@ -348,38 +334,6 @@ public class PurplemoonAPIConstantsV1 {
         public static final String PROFILE_DATE_LAST24h = "last24h";
     }
 
-    public static final String PHOTOVOTE_VOTE_URL = "/photovotes/vote";
-    public static final String PHOTOVOTE_REMAINING_URL = "/photovotes/remaining";
-    public static final String PHOTOVOTE_RECEIVED_URL = "/photovotes/received";
-    public static final String PHOTOVOTE_GIVEN_URL = "/photovotes/sent";
-
-    public static final String JSON_PHOTOVOTE_VOTEID = "vote_id";
-    public static final String JSON_PHOTOVOTE_PROFILEID = "profile_id";
-    public static final String JSON_PHOTOVOTE_MAXWIDTH = "max_width";
-    public static final String JSON_PHOTOVOTE_MAXHEIGHT = "max_height";
-    public static final String JSON_PHOTOVOTE_XPOS_FLOAT = "xpos";
-    public static final String JSON_PHOTOVOTE_YPOS_FLOAT = "ypos";
-    public static final String JSON_PHOTOVOTE_PICTUREURL = "picture";
-    public static final String JSON_PHOTOVOTE_PREVIOUS = "previous";
-    public static final String JSON_PHOTOVOTE_USER = "user";
-
-    public static final String JSON_PHOTOVOTES_REMAINING = "photovotes";
-    public static final String JSON_PHOTOVOTES_LASTCHECK = "last_check";
-    /**
-     * JSONArray of Votes
-     */
-    public static final String JSON_PHOTOVOTES_VOTES = "photovotes";
-    public static final String JSON_PHOTOVOTES_USERS = "users";
-
-    public static final String JSON_PHOTOVOTE_TYPE = "type";
-    public static final String JSON_PHOTOVOTE_VERDICT = "verdict";
-    // Verdicts
-    public static final int JSON_PHOTOVOTE_VERDICT_NEUTRAL_NEGATIVE = 0;
-    public static final int JSON_PHOTOVOTE_VERDICT_CUTE_ATTRACTIVE = 1;
-    public static final int JSON_PHOTOVOTE_VERDICT_VERY_ATTRACTIVE = 2;
-    public static final int JSON_PHOTOVOTE_VERDICT_STUNNING = 3;
-
-    public static final String JSON_PHOTOVOTE_CREATED = "created";
     public static final String JSON_LOCATION_LAT = "lat";
     public static final String JSON_LOCATION_LONG = "lng";
     public static final String JSON_LOCATION_COUNTRYID = "country";

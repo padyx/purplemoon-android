@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
@@ -12,10 +12,10 @@ import ch.defiant.purplesky.util.Holder;
 
 public class ConversationStatusLoader extends SimpleAsyncLoader<Holder<UserMessageHistoryBean>> {
 
-    private final IPurplemoonAPIAdapter apiAdapter;
+    private final IConversationAdapter apiAdapter;
     private String m_profileId;
 
-    public ConversationStatusLoader(Context context, Bundle b, IPurplemoonAPIAdapter apiAdapter) {
+    public ConversationStatusLoader(Context context, Bundle b, IConversationAdapter apiAdapter) {
         super(context, R.id.loader_conversationstatus);
         this.apiAdapter = apiAdapter;
         if(b==null){

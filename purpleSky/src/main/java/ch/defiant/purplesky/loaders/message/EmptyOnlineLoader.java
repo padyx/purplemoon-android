@@ -6,7 +6,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -26,7 +26,7 @@ public class EmptyOnlineLoader extends AbstractMessageLoader {
      * @param c context
      * @param args Argument bundle
      */
-    public EmptyOnlineLoader(Context c, Bundle args, IPurplemoonAPIAdapter adapter, IMessageService msgService) {
+    public EmptyOnlineLoader(Context c, Bundle args, IConversationAdapter adapter, IMessageService msgService) {
         super(c, R.id.loader_message_empty, args, adapter, msgService);
     }
 

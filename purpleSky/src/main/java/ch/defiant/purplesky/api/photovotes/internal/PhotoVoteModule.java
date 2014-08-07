@@ -16,7 +16,7 @@ public class PhotoVoteModule {
     @Provides
     @Singleton
     public IPhotoVoteAdapter providePhotoVoteAdapter(){
-        return new PhotoVoteAdapter();
+        return new PhotoVoteAPIAdapter();
     }
 
 }

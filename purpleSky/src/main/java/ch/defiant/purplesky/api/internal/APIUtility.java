@@ -12,7 +12,6 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -130,37 +129,6 @@ public final class APIUtility {
                 return PurplemoonAPIConstantsV1.JSON_USERSEARCH_ONLINE_PARAM_PAST_MONTH;
             default:
                 throw new IllegalArgumentException("No api value for " + lastOnline);
-        }
-
-    }
-
-    public static String translatePhotoVoteVerdict(PhotoVoteVerdict verdict) {
-        switch (verdict) {
-            case NEUTRAL_NEGATIVE:
-                return String.valueOf(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_NEUTRAL_NEGATIVE);
-            case CUTE_ATTRACTIVE:
-                return String.valueOf(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_CUTE_ATTRACTIVE);
-            case VERY_ATTRACTIVE:
-                return String.valueOf(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_VERY_ATTRACTIVE);
-            case STUNNING:
-                return String.valueOf(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_STUNNING);
-            default:
-                throw new IllegalArgumentException("No api value for " + verdict);
-        }
-    }
-
-    public static PhotoVoteVerdict toPhotoVoteVerdict(int apiValue) {
-        switch (apiValue) {
-            case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_NEUTRAL_NEGATIVE:
-                return PhotoVoteVerdict.NEUTRAL_NEGATIVE;
-            case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_CUTE_ATTRACTIVE:
-                return PhotoVoteVerdict.CUTE_ATTRACTIVE;
-            case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_VERY_ATTRACTIVE:
-                return PhotoVoteVerdict.VERY_ATTRACTIVE;
-            case PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT_STUNNING:
-                return PhotoVoteVerdict.STUNNING;
-            default:
-                throw new IllegalArgumentException("No api value for " + apiValue);
         }
 
     }

@@ -12,20 +12,20 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
+import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.util.UserMessageHistoryBeanLastContactComparator;
 import ch.defiant.purplesky.constants.DatabaseConstants;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
-import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
+import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.CollectionUtil;
@@ -36,9 +36,9 @@ import ch.defiant.purplesky.util.NVLUtility;
 // TODO Rename
 class MessageService implements IMessageService {
 
-    private final IPurplemoonAPIAdapter apiAdapter;
+    private final IConversationAdapter apiAdapter;
 
-    public MessageService(IPurplemoonAPIAdapter apiAdapter){
+    public MessageService(IConversationAdapter apiAdapter){
         this.apiAdapter = apiAdapter;
     }
 

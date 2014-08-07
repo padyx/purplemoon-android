@@ -6,7 +6,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -24,7 +24,7 @@ public class OlderMessageDBLoader extends AbstractMessageLoader {
 
     private final long m_upToMessageId;
 
-    public OlderMessageDBLoader(Context c, Bundle args, IPurplemoonAPIAdapter adapter, IMessageService msgService) {
+    public OlderMessageDBLoader(Context c, Bundle args, IConversationAdapter adapter, IMessageService msgService) {
         super(c, R.id.loader_message_moreoldDB, args, adapter, msgService);
         
         m_upToMessageId = args.getLong(ArgumentConstants.ARG_ID, -1L);

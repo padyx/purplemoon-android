@@ -14,19 +14,10 @@ import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PreviewUser;
-import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
-import ch.defiant.purplesky.beans.UserMessageHistoryBean;
-import ch.defiant.purplesky.beans.VisitsMadeBean;
-import ch.defiant.purplesky.beans.VisitsReceivedBean;
-import ch.defiant.purplesky.core.AdapterOptions;
-import ch.defiant.purplesky.core.MessageResult;
-import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
-import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
-import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 
 /**
  * Interface for Purplemoon API Functions
@@ -114,67 +105,11 @@ public interface IPurplemoonAPIAdapter {
 
     public List<OnlineBean> getOnlineFavorites() throws IOException, PurpleSkyException;
 
-    /**
-     * Send a private message.
-     * 
-     * @param message
-     *            The message to send. Needs to have the recipient (either bean or profileId) and text set.
-     * @param opts
-     *            Send options. May not be null. Must have the unread handling set!
-     * @return The private message, with all necessary data set
-     * @throws IOException
-     * @throws WrongCredentialsException
-     * @throws PurpleSkyException
-     */
-    public MessageResult sendMessage(PrivateMessage message, SendOptions opts) throws IOException,
-            PurpleSkyException;
 
-    /**
-     * Returns beans indicating the recent contacts.
-     * 
-     * @param resultCount
-     *            How many results to be returned. Uses API default, if null
-     * @param startAt
-     *            At which user to start (paging). Starts at first, if null
-     * @param restrict
-     *            Determine order of the retrieved beans. Default is {@link ch.defiant.purplesky.enums.MessageRetrievalRestrictionType#LAST_CONTACT}
-     * @param since_date
-     *            Restricts to contacts updated this date. Null: No restriction
-     * @return List of Beans, recent contacts come first
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<UserMessageHistoryBean> getRecentContacts(Integer resultCount, Integer startAt,
-            MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException;
-
-    /**
-     * Retrieve the status of the conversation with the user.
-     * @param profileId ProfileID of the user
-     * @return Bean without excerpt
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public UserMessageHistoryBean getConversationStatus(String profileId) throws IOException,
-            PurpleSkyException;
 
     public int getOnlineFavoritesCount() throws IOException, PurpleSkyException;
 
-    public int getUnopenedMessagesCount() throws IOException, PurpleSkyException;
 
-    /**
-     * Retrieves the messages between the application user and another user.
-     * 
-     * @param profileId
-     *            The id of the other user
-     * @param options
-     *            Supports the {@link ch.defiant.purplesky.core.AdapterOptions#setUptoId(String)}, {@link ch.defiant.purplesky.core.AdapterOptions#setSinceId(String)},
-     *            {@link ch.defiant.purplesky.core.AdapterOptions#setNumber(Integer)}
-     * @return
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options)
-            throws IOException, PurpleSkyException;
 
     public boolean isLoggedIn();
 
@@ -231,31 +166,6 @@ public interface IPurplemoonAPIAdapter {
             throws IOException, PurpleSkyException;
 
     public AlertBean getAlertBean() throws IOException, PurpleSkyException;
-
-    /**
-     * Retrieve the visits made by other users to the application user's profile.
-     * 
-     * @param options
-     *            Will handle the following options: Since_Timestamp, Start, Number.
-     * @param overrideLastDateCheck
-     *            Date to set the last check. Useful when loading more entries.
-     * @return List of visits
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<VisitsReceivedBean> getReceivedVists(AdapterOptions options, Date overrideLastDateCheck)
-            throws IOException, PurpleSkyException;
-
-    /**
-     * Retrieve the visits made by the application user.
-     * 
-     * @param options
-     *            Will handle the following options: Since_Timestamp, Start, Number.
-     * @return List of visits
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public List<VisitsMadeBean> getOwnVists(AdapterOptions options) throws IOException, PurpleSkyException;
 
     public List<MinimalUser> searchUser(UserSearchOptions options) throws IOException, PurpleSkyException;
 

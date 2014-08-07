@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -25,7 +25,7 @@ public class RefreshMessageLoader extends AbstractMessageLoader {
 
     private long m_sinceMsgId;
 
-    public RefreshMessageLoader(Context c, Bundle args, IPurplemoonAPIAdapter adapter, IMessageService msgService) {
+    public RefreshMessageLoader(Context c, Bundle args, IConversationAdapter adapter, IMessageService msgService) {
         super(c, R.id.loader_message_refresh, args, adapter, msgService);
 
         m_sinceMsgId = args.getLong(ArgumentConstants.ARG_ID, -1L);

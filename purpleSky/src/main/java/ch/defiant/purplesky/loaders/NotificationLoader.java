@@ -9,6 +9,7 @@ import java.util.Date;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.constants.PreferenceConstants;
@@ -20,10 +21,12 @@ import ch.defiant.purplesky.exceptions.PurpleSkyException;
 public class NotificationLoader extends SimpleAsyncLoader<Object> {
 
     private final IPurplemoonAPIAdapter adapter;
+    private final IConversationAdapter conversationAdapter;
 
-    public NotificationLoader(Context c, IPurplemoonAPIAdapter adapter) {
+    public NotificationLoader(Context c, IPurplemoonAPIAdapter adapter, IConversationAdapter conversationAdapter) {
         super(c, R.id.loader_drawermenu_notificationCounters);
         this.adapter = adapter;
+        this.conversationAdapter = conversationAdapter;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class NotificationLoader extends SimpleAsyncLoader<Object> {
             int onlineFavoritCount = adapter.getOnlineFavoritesCount();
             updateBean.setFavoritesCount(onlineFavoritCount);
 
-            int unopenedMessagesCount = adapter.getUnopenedMessagesCount();
+            int unopenedMessagesCount = conversationAdapter.getUnopenedMessagesCount();
             updateBean.setMessagesCount(unopenedMessagesCount);
 
             updateBean.setPostItCount(alertBean.getUnseenPostits());

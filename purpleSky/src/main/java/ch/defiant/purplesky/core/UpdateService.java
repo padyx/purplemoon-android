@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -41,6 +42,8 @@ public class UpdateService extends IntentService {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
+    @Inject
+    protected IConversationAdapter conversationAdapter;
 
     public UpdateService() {
         super("UpdateService");
@@ -85,7 +88,7 @@ public class UpdateService extends IntentService {
 
             int totalUnopenedMessages = 0;
             if (hasMessages) {
-                List<UserMessageHistoryBean> recentContactsList = apiAdapter.getRecentContacts(null, null,
+                List<UserMessageHistoryBean> recentContactsList = conversationAdapter.getRecentContacts(null, null,
                         MessageRetrievalRestrictionType.UNOPENED_ONLY);
 
                 if (recentContactsList != null) {

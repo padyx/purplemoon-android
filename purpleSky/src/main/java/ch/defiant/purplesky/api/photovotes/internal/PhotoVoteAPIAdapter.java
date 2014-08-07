@@ -19,8 +19,7 @@ import java.util.Map;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.common.APINetworkUtility;
-import ch.defiant.purplesky.api.internal.APIUtility;
-import ch.defiant.purplesky.api.internal.JSONTranslator;
+import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.api.photovotes.IPhotoVoteAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -37,29 +36,29 @@ import ch.defiant.purplesky.util.HTTPURLUtility;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-class PhotoVoteAdapter implements IPhotoVoteAdapter{
+class PhotoVoteAPIAdapter implements IPhotoVoteAdapter{
 
-    private static final String TAG = PhotoVoteAdapter.class.getSimpleName();
+    private static final String TAG = PhotoVoteAPIAdapter.class.getSimpleName();
 
     @Override
     public int getRemainingPhotoVotes() throws IOException, PurpleSkyException {
-        JSONObject obj = APINetworkUtility.performGETRequestForJSONObject(new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PHOTOVOTE_REMAINING_URL));
-        return obj.optInt(PurplemoonAPIConstantsV1.JSON_PHOTOVOTES_REMAINING, 0);
+        JSONObject obj = APINetworkUtility.performGETRequestForJSONObject(new URL(PurplemoonAPIConstantsV1.BASE_URL + PhotoVoteAPIConstants.PHOTOVOTE_REMAINING_URL));
+        return obj.optInt(PhotoVoteAPIConstants.JSON_PHOTOVOTES_REMAINING, 0);
     }
 
     @Override
     public PhotoVoteBean getNextPhotoVoteAndVote(PhotoVoteBean bean) throws IOException, PurpleSkyException {
-        URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PHOTOVOTE_VOTE_URL);
+        URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PhotoVoteAPIConstants.PHOTOVOTE_VOTE_URL);
         if (bean == null) {
             JSONObject res = APINetworkUtility.performGETRequestForJSONObject(u);
-            return JSONTranslator.translateToPhotoVoteBean(res, MinimalUser.class);
+            return PhotoVoteJSONTranslator.translateToPhotoVoteBean(res, MinimalUser.class);
         } else {
             ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VOTEID, String.valueOf(bean.getVoteId())));
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT, APIUtility.translatePhotoVoteVerdict(bean.getVerdict())));
+            body.add(new BasicNameValuePair(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VOTEID, String.valueOf(bean.getVoteId())));
+            body.add(new BasicNameValuePair(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VERDICT, PhotoVoteAPIUtility.translatePhotoVoteVerdict(bean.getVerdict())));
             HTTPURLResponseHolder resp = APINetworkUtility.performPOSTRequestForResponseHolder(u, body, null);
             try {
-                return JSONTranslator.translateToPhotoVoteBean(new JSONObject(resp.getOutput()), MinimalUser.class);
+                return PhotoVoteJSONTranslator.translateToPhotoVoteBean(new JSONObject(resp.getOutput()), MinimalUser.class);
             } catch (JSONException e) {
                 if (BuildConfig.DEBUG) {
                     Log.e(TAG, "Could not translate photovote output from POST request to JSON!", e);
@@ -83,9 +82,9 @@ class PhotoVoteAdapter implements IPhotoVoteAdapter{
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
         if (given) {
-            sb.append(PurplemoonAPIConstantsV1.PHOTOVOTE_GIVEN_URL);
+            sb.append(PhotoVoteAPIConstants.PHOTOVOTE_GIVEN_URL);
         } else {
-            sb.append(PurplemoonAPIConstantsV1.PHOTOVOTE_RECEIVED_URL);
+            sb.append(PhotoVoteAPIConstants.PHOTOVOTE_RECEIVED_URL);
         }
         int number = 20;
 
@@ -114,10 +113,10 @@ class PhotoVoteAdapter implements IPhotoVoteAdapter{
         URL url = new URL(sb.toString());
         JSONObject result = APINetworkUtility.performGETRequestForJSONObject(url);
         long check = result.optLong(PurplemoonAPIConstantsV1.JSON_LASTCHECK_TIMESTAMP, -1);
-        JSONArray votes = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_PHOTOVOTES_VOTES);
+        JSONArray votes = result.optJSONArray(PhotoVoteAPIConstants.JSON_PHOTOVOTES_VOTES);
         JSONArray users = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
 
-        Map<String, MinimalUser> userMap = JSONTranslator.translateToUsers(users, MinimalUser.class);
+        Map<String, MinimalUser> userMap = CommonJSONTranslator.translateToUsers(users, MinimalUser.class);
         if (userMap != null) { // Add to cache
             UserService service = PurpleSkyApplication.get().getUserService();
             for (MinimalUser u : userMap.values()) {
@@ -143,7 +142,7 @@ class PhotoVoteAdapter implements IPhotoVoteAdapter{
             } else {
                 fromUnixTime = new Date();
             }
-            PhotoVoteBean p = JSONTranslator.translateToPhotoVoteBean(object, MinimalUser.class);
+            PhotoVoteBean p = PhotoVoteJSONTranslator.translateToPhotoVoteBean(object, MinimalUser.class);
             if (p != null) {
                 p.setUser(userMap.get(profileId));
                 list.add(p);

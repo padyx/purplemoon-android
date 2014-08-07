@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
@@ -68,6 +69,8 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
 
     @Inject
     protected IMessageService messageService;
+    @Inject
+    protected IConversationAdapter conversationAdapter;
 
     private final class NotifyAdapter implements Runnable {
         @Override
@@ -156,7 +159,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         public Loader<Holder<UserMessageHistoryBean>> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new ConversationStatusLoader(getSherlockActivity(), b, apiAdapter);
+            return new ConversationStatusLoader(getSherlockActivity(), b, conversationAdapter);
         }
 
         @Override
@@ -356,18 +359,18 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         context.setProgressBarIndeterminateVisibility(true);
         switch (type) {
             case R.id.loader_message_empty:
-                return new EmptyOnlineLoader(context, bundle, apiAdapter, messageService);
+                return new EmptyOnlineLoader(context, bundle, conversationAdapter, messageService);
             case R.id.loader_message_initial:
-                return new InitialDBMessageLoader(context, bundle, apiAdapter, messageService);
+                return new InitialDBMessageLoader(context, bundle, conversationAdapter, messageService);
             case R.id.loader_message_moreoldDB:
-                return new OlderMessageDBLoader(context, bundle, apiAdapter, messageService);
+                return new OlderMessageDBLoader(context, bundle, conversationAdapter, messageService);
             case R.id.loader_message_moreoldOnline:
-                return new OlderMessageOnlineLoader(context, bundle, apiAdapter, messageService);
+                return new OlderMessageOnlineLoader(context, bundle, conversationAdapter, messageService);
             case R.id.loader_message_send:
                 sendPreActions();
-                return new SendMessageLoader(context, bundle, apiAdapter, messageService);
+                return new SendMessageLoader(context, bundle, conversationAdapter, messageService);
             case R.id.loader_message_refresh:
-                return new RefreshMessageLoader(context, bundle, apiAdapter, messageService);
+                return new RefreshMessageLoader(context, bundle, conversationAdapter, messageService);
             default:
                 throw new UnsupportedOperationException("Unknown loader");
         }

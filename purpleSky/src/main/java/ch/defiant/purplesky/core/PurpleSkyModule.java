@@ -3,11 +3,13 @@ package ch.defiant.purplesky.core;
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.api.conversation.internal.ConversationModule;
 import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
 import ch.defiant.purplesky.api.internal.APIModule;
 import ch.defiant.purplesky.api.photovotes.internal.PhotoVoteModule;
 import ch.defiant.purplesky.api.postits.internal.PostitModule;
 import ch.defiant.purplesky.api.report.internal.ReportModule;
+import ch.defiant.purplesky.api.visit.internal.VisitModule;
 import ch.defiant.purplesky.core.internal.CoreModule;
 import ch.defiant.purplesky.db.internal.DatabaseModule;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
@@ -49,7 +51,9 @@ import dagger.Module;
             ReportModule.class,
             PostitModule.class,
             GalleryModule.class,
-            PhotoVoteModule.class
+            PhotoVoteModule.class,
+            VisitModule.class,
+            ConversationModule.class
     },
     injects = {
             PurpleSkyApplication.class,

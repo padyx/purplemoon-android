@@ -6,7 +6,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
@@ -19,7 +19,7 @@ import ch.defiant.purplesky.util.Holder;
  */
 public class InitialDBMessageLoader extends AbstractMessageLoader {
 
-    public InitialDBMessageLoader(Context c, Bundle args, IPurplemoonAPIAdapter adapter, IMessageService msgService) {
+    public InitialDBMessageLoader(Context c, Bundle args, IConversationAdapter adapter, IMessageService msgService) {
         super(c, R.id.loader_message_initial, args, adapter, msgService);
     }
 

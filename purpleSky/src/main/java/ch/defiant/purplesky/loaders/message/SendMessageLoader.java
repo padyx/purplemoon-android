@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -29,7 +29,7 @@ public class SendMessageLoader extends AbstractMessageLoader {
     private static final String TAG = SendMessageLoader.class.getSimpleName();
     private PrivateMessage m_message;
     
-    public SendMessageLoader(Context c, Bundle args, IPurplemoonAPIAdapter apiAdapter, IMessageService msgService) {
+    public SendMessageLoader(Context c, Bundle args, IConversationAdapter apiAdapter, IMessageService msgService) {
         super(c, R.id.loader_message_send, args, apiAdapter, msgService);
         
         m_message = (PrivateMessage) args.getSerializable(ArgumentConstants.ARG_MESSAGE);
