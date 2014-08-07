@@ -13,7 +13,6 @@ import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
-import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
@@ -259,30 +258,6 @@ public interface IPurplemoonAPIAdapter {
     public List<VisitsMadeBean> getOwnVists(AdapterOptions options) throws IOException, PurpleSkyException;
 
     public List<MinimalUser> searchUser(UserSearchOptions options) throws IOException, PurpleSkyException;
-
-    /**
-     * Returns the remaining photos to vote on. Only call at the beginning, then cache and decrement it!
-     * 
-     * @return Number of photos the user can still vote on
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public int getRemainingPhotoVotes() throws IOException, PurpleSkyException;
-
-    /**
-     * Retrieves the next bean that the user can vote on. If <code>bean</code> is non-null, then the verdict contained will be posted to the photo and
-     * a new bean returned.
-     * 
-     * @param bean
-     * @return The next photovote bean to vote on
-     * @throws IOException
-     * @throws PurpleSkyException
-     */
-    public PhotoVoteBean getNextPhotoVoteAndVote(PhotoVoteBean bean) throws IOException, PurpleSkyException;
-
-    public List<PhotoVoteBean> getReceivedVotes(AdapterOptions opts) throws IOException, PurpleSkyException;
-
-    public List<PhotoVoteBean> getGivenVotes(AdapterOptions opts) throws IOException, PurpleSkyException;
 
     /**
      * Checks if the user is a power user.

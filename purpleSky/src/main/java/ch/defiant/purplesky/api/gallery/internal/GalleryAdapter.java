@@ -11,7 +11,6 @@ import java.util.Map;
 
 import ch.defiant.purplesky.api.common.APINetworkUtility;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
-import ch.defiant.purplesky.api.internal.JSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.core.PersistantModel;
@@ -29,11 +28,11 @@ public class GalleryAdapter implements IGalleryAdapter {
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(ReportAPIConstants.PICTUREFOLDER_FOLDERSONLY_URL);
+        sb.append(GalleryAPIConstants.PICTUREFOLDER_FOLDERSONLY_URL);
         sb.append(profileId);
 
         JSONObject jsonObject = APINetworkUtility.performGETRequestForJSONObject(new URL(sb.toString()));
-        return JSONTranslator.translateToPictureFolders(jsonObject);
+        return GalleryJSONTranslator.translateToPictureFolders(jsonObject);
     }
 
     @Override
@@ -41,10 +40,10 @@ public class GalleryAdapter implements IGalleryAdapter {
         PersistantModel model = PurpleSkyApplication.get().getPersistantModel();
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(ReportAPIConstants.PICTUREFOLDER_FOLDERSONLY_ME_URL);
+        sb.append(GalleryAPIConstants.PICTUREFOLDER_FOLDERSONLY_ME_URL);
 
         JSONArray jsonArray = APINetworkUtility.performGETRequestForJSONArray(new URL(sb.toString()));
-        return JSONTranslator.translateToPictureFolders(model.getUserProfileId(), jsonArray);
+        return GalleryJSONTranslator.translateToPictureFolders(model.getUserProfileId(), jsonArray);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class GalleryAdapter implements IGalleryAdapter {
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(ReportAPIConstants.PICTUREFOLDER_WITHPICTURES_URL);
+        sb.append(GalleryAPIConstants.PICTUREFOLDER_WITHPICTURES_URL);
         sb.append(profileId);
         if (folders != null && folders.size() > 0) {
             sb.append("?");
@@ -71,7 +70,7 @@ public class GalleryAdapter implements IGalleryAdapter {
         if (obj == null) {
             return map;
         }
-        List<PictureFolder> translatedFolders = JSONTranslator.translateToPictureFolders(obj);
+        List<PictureFolder> translatedFolders = GalleryJSONTranslator.translateToPictureFolders(obj);
         if (translatedFolders != null) {
             for (PictureFolder f : translatedFolders) {
                 if (f == null)

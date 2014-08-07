@@ -37,7 +37,6 @@ import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
-import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
@@ -960,44 +959,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     }
 
     @Override
-    public int getRemainingPhotoVotes() throws IOException, PurpleSkyException {
-        JSONObject obj = performGETRequestForJSONObject(new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PHOTOVOTE_REMAINING_URL));
-        return obj.optInt(PurplemoonAPIConstantsV1.JSON_PHOTOVOTES_REMAINING, 0);
-    }
-
-    @Override
-    public PhotoVoteBean getNextPhotoVoteAndVote(PhotoVoteBean bean) throws IOException, PurpleSkyException {
-        URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PHOTOVOTE_VOTE_URL);
-        if (bean == null) {
-            JSONObject res = performGETRequestForJSONObject(u);
-            return JSONTranslator.translateToPhotoVoteBean(res, MinimalUser.class);
-        } else {
-            ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VOTEID, String.valueOf(bean.getVoteId())));
-            body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_PHOTOVOTE_VERDICT, APIUtility.translatePhotoVoteVerdict(bean.getVerdict())));
-            HTTPURLResponseHolder resp = performPOSTRequestForResponseHolder(u, body, null);
-            try {
-                return JSONTranslator.translateToPhotoVoteBean(new JSONObject(resp.getOutput()), MinimalUser.class);
-            } catch (JSONException e) {
-                if (BuildConfig.DEBUG) {
-                    Log.e(TAG, "Could not translate photovote output from POST request to JSON!", e);
-                }
-                throw new PurpleSkyException(PurpleSkyApplication.get().getString(R.string.UnknownErrorOccured));
-            }
-        }
-    }
-
-    @Override
-    public List<PhotoVoteBean> getReceivedVotes(AdapterOptions opts) throws IOException, PurpleSkyException {
-        return getVotes(false, opts);
-    }
-
-    @Override
-    public List<PhotoVoteBean> getGivenVotes(AdapterOptions opts) throws IOException, PurpleSkyException {
-        return getVotes(true, opts);
-    }
-
-    @Override
     public Date getPowerUserExpiry() throws IOException, PurpleSkyException {
         URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.POWERUSER_STATUS_URL);
         JSONObject jsonObject = performGETRequestForJSONObject(u);
@@ -1106,80 +1067,6 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE, String.valueOf(location.getLongitude())));
 
        performPOSTRequestForResponseHolder(new URL(url), postData, null);
-    }
-
-    private List<PhotoVoteBean> getVotes(boolean given, AdapterOptions opts) throws IOException, PurpleSkyException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        if (given) {
-            sb.append(PurplemoonAPIConstantsV1.PHOTOVOTE_GIVEN_URL);
-        } else {
-            sb.append(PurplemoonAPIConstantsV1.PHOTOVOTE_RECEIVED_URL);
-        }
-        int number = 20;
-
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-
-        if (opts != null) {
-            if (opts.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(opts.getStart())));
-            }
-            if (opts.getNumber() != null) {
-                number = opts.getNumber();
-            }
-            if (opts.getSinceTimestamp() != null) {
-                long s = DateUtility.getUnixTime(opts.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
-                params.add(time);
-            }
-        }
-        // Total count same as user object count
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
-
-        sb.append(HTTPURLUtility.createGetQueryString(params));
-
-        URL url = new URL(sb.toString());
-        JSONObject result = performGETRequestForJSONObject(url);
-        long check = result.optLong(PurplemoonAPIConstantsV1.JSON_LASTCHECK_TIMESTAMP, -1);
-        JSONArray votes = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_PHOTOVOTES_VOTES);
-        JSONArray users = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
-
-        Map<String, MinimalUser> userMap = JSONTranslator.translateToUsers(users, MinimalUser.class);
-        if (userMap != null) { // Add to cache
-            UserService service = PurpleSkyApplication.get().getUserService();
-            for (MinimalUser u : userMap.values()) {
-                service.addToCache(u);
-            }
-        }
-
-        if (votes == null) {
-            return Collections.emptyList();
-        }
-        ArrayList<PhotoVoteBean> list = new ArrayList<PhotoVoteBean>();
-        for (int i = 0, size = votes.length(); i < size; i++) {
-            JSONObject object = votes.optJSONObject(i);
-            if (object == null) {
-                continue;
-            }
-
-            String profileId = object.optString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID, null);
-
-            Date fromUnixTime;
-            if (check != -1) {
-                fromUnixTime = DateUtility.getFromUnixTime(check);
-            } else {
-                fromUnixTime = new Date();
-            }
-            PhotoVoteBean p = JSONTranslator.translateToPhotoVoteBean(object, MinimalUser.class);
-            if (p != null) {
-                p.setUser(userMap.get(profileId));
-                list.add(p);
-            }
-        }
-
-        return list;
     }
 
     private JSONObject performGETRequestForJSONObject(URL resource) throws IOException, PurpleSkyException {

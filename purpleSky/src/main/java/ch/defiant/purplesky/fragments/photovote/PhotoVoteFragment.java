@@ -20,9 +20,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.internal.APIUtility;
+import ch.defiant.purplesky.api.photovotes.IPhotoVoteAdapter;
 import ch.defiant.purplesky.beans.NoMorePhotoVoteBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.core.PersistantModel;
@@ -37,6 +40,9 @@ import ch.defiant.purplesky.util.LayoutUtility;
 public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<Holder<PhotoVoteBean>> {
 
     public static final String TAG = PhotoVoteFragment.class.getSimpleName();
+
+    @Inject
+    protected IPhotoVoteAdapter photoVoteAdapter;
 
     private static final String VERDICT = "verdict";
     private PhotoVoteBean m_currentBean = null;
@@ -119,13 +125,13 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
                 try {
                     int remaining = 0;
                     if (needsCount) {
-                        remaining = apiAdapter.getRemainingPhotoVotes();
+                        remaining = photoVoteAdapter.getRemainingPhotoVotes();
                         if (remaining == 0) {
                             return new Holder<PhotoVoteBean>(new NoMorePhotoVoteBean());
                         }
                     }
 
-                    PhotoVoteBean vote = apiAdapter.getNextPhotoVoteAndVote(m_currentBean);
+                    PhotoVoteBean vote = photoVoteAdapter.getNextPhotoVoteAndVote(m_currentBean);
                     if (needsCount) {
                         vote.setVotesRemaining(remaining - 1);
                     } else {

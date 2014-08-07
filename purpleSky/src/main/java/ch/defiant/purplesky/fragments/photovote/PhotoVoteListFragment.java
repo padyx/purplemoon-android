@@ -21,7 +21,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.photovotes.IPhotoVoteAdapter;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.AdapterOptions;
@@ -37,6 +40,9 @@ import ch.defiant.purplesky.util.LayoutUtility;
 public class PhotoVoteListFragment extends BaseListFragment {
 
     public static final String EXTRA_BOOL_SHOWGIVEN = "given";
+    @Inject
+    protected IPhotoVoteAdapter photoVoteAdapter;
+
     private boolean m_showGiven;
     private PhotoVoteEndlessAdapter m_endlessAdapter;
     private PhotoVoteAdapter m_innerAdapter;
@@ -112,9 +118,9 @@ public class PhotoVoteListFragment extends BaseListFragment {
 
             List<PhotoVoteBean> votes;
             if (m_showGiven) {
-                votes = apiAdapter.getGivenVotes(opts);
+                votes = photoVoteAdapter.getGivenVotes(opts);
             } else {
-                votes = apiAdapter.getReceivedVotes(opts);
+                votes = photoVoteAdapter.getReceivedVotes(opts);
             }
 
             boolean hasMore = votes != null && !votes.isEmpty();

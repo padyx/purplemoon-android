@@ -126,6 +126,41 @@ public class APINetworkUtility {
         }
     }
 
+    public static HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
+            throws IOException, PurpleSkyException {
+        Request.Builder builder = new Request.Builder();
+        builder.url(resource);
+        if(headrs != null){
+            for(NameValuePair pair : headrs){
+                builder.addHeader(pair.getName(), pair.getValue());
+            }
+        }
+
+        addLanguageHeader(builder);
+        addAuthenticationHeader(builder, resource);
+
+        FormEncodingBuilder formBuilder = new FormEncodingBuilder();
+        if(postBody != null){
+            for(NameValuePair pair : postBody){
+                formBuilder.add(pair.getName(), pair.getValue());
+            }
+        }
+        builder.post(formBuilder.build());
+        Response response = new OkHttpClient().newCall(builder.build()).execute();
+
+        HTTPURLResponseHolder holder = new HTTPURLResponseHolder();
+        holder.setResponseCode(response.code());
+        holder.setSuccessful(response.isSuccessful());
+        if(response.isSuccessful()){
+            holder.setOutput(response.body().string());
+        } else {
+            holder.setError(response.body().string());
+            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), response.body().string(), resource.toString());
+        }
+
+        return holder;
+    }
+
     private static void addAuthenticationHeader(Request.Builder builder, URL resource) {
         if (PurplemoonAPIConstantsV1.HOST.equalsIgnoreCase(resource.getHost())) { // TODO Rewrite this
             String token = PersistantModel.getInstance().getOAuthAccessToken();

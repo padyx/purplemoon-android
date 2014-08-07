@@ -109,7 +109,7 @@ class PostitAdapter implements IPostitAdapter {
             } else {
                 fromUnixTime = new Date();
             }
-            PostIt p = JSONTranslator.translateToPostIt(object, fromUnixTime);
+            PostIt p = PostitJSONTranslator.translateToPostIt(object, fromUnixTime);
             if (p != null) {
                 p.setSender(userMap.get(profileId));
                 list.add(p);
