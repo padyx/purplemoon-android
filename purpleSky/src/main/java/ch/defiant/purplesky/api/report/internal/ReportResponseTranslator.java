@@ -7,7 +7,7 @@ import ch.defiant.purplesky.api.report.ReportResponse;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-public class ReportResponseTranslator implements ITranslator<String, ReportResponse> {
+class ReportResponseTranslator implements ITranslator<String, ReportResponse> {
 
     @Override
     public ReportResponse translate(String source) {

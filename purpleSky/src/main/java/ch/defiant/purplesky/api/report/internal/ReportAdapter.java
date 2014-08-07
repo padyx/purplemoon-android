@@ -20,7 +20,7 @@ import ch.defiant.purplesky.util.HTTPURLResponseHolder;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-public class ReportAdapter implements IReportAdapter {
+class ReportAdapter implements IReportAdapter {
 
     public static final ReportAdapter INSTANCE = new ReportAdapter();
 

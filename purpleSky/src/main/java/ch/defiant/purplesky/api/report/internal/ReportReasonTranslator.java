@@ -7,7 +7,7 @@ import ch.defiant.purplesky.enums.UserReportReason;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-public class ReportReasonTranslator implements ITranslator<UserReportReason, String> {
+class ReportReasonTranslator implements ITranslator<UserReportReason, String> {
 
     public String translate(UserReportReason reason) {
         switch (reason) {

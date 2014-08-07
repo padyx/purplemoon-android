@@ -21,7 +21,7 @@ import ch.defiant.purplesky.exceptions.PurpleSkyException;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-public class GalleryAdapter implements IGalleryAdapter {
+class GalleryAdapter implements IGalleryAdapter {
 
     @Override
     public List<PictureFolder> getPictureFolders(String profileId) throws IOException, PurpleSkyException {
