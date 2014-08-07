@@ -37,7 +37,7 @@ public interface IPurplemoonAPIAdapter {
      * @throws IOException
      *             If no connection can be established
      * @throws PurpleSkyException
-     * @see #getMinimalUserData(List)
+     * @see #getMinimalUserData(java.util.List, boolean)
      */
     public MinimalUser getMinimalUserData(String userid, boolean withOnlineStatus) throws IOException,
             PurpleSkyException;
@@ -70,7 +70,7 @@ public interface IPurplemoonAPIAdapter {
      * @throws IOException
      *             If no connection can be established
      * @throws PurpleSkyException
-     * @see #getMinimalUserData(List)
+     * @see #getMinimalUserData(String, boolean)
      */
     public PreviewUser getPreviewUserData(String userid, boolean withOnlineStatus) throws IOException,
             PurpleSkyException;
@@ -93,7 +93,7 @@ public interface IPurplemoonAPIAdapter {
      * Retrieve a set of detailed users. Note: The API does not offer a bulk method for detailed user data, neither does this apiAdapter. Bulk querying
      * for details is <em>strongly</em> discouraged.
      * 
-     * @param userids
+     * @param userid
      *            List of profileIds
      * @return Map, with key being the profileId of this user and the value being the requested bean.
      * @throws IOException
