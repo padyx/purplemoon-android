@@ -9,12 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.defiant.purplesky.api.common.APINetworkUtility;
+import ch.defiant.purplesky.api.common.ErrorJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.api.report.IReportAdapter;
 import ch.defiant.purplesky.api.report.ReportResponse;
 import ch.defiant.purplesky.enums.UserReportReason;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.HTTPURLResponseHolder;
+import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * @author Patrick Bänziger
@@ -40,7 +42,12 @@ class ReportAdapter implements IReportAdapter {
         if (response.isSuccessful()) {
             return ReportResponse.OK;
         } else {
-            return new ReportResponseTranslator().translate(response.getError());
+            String errorString = new ErrorJSONTranslator().translate(response.getError());
+            if(StringUtility.isNullOrEmpty(errorString)){
+                return ReportResponse.ERROR;
+            } else {
+                return new ReportResponseTranslator().translate(errorString);
+            }
         }
     }
 }
