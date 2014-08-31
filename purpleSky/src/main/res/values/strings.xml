@@ -277,6 +277,7 @@
     <string name="ErrorTooManyReports">You have reported too many users in a short time. Try again later.</string>
     <string name="PreferenceAboutApp">About this app</string>
     <string name="PreferenceAboutApp_Summary">Licences of included software</string>
+    <string name="EnterPassword">Enter password</string>
     <string name="Location_">Location:</string>
     <string name="Dismiss">Dismiss</string>
     <string name="ActionOpen">Open</string>
@@ -304,4 +305,7 @@
     <string name="UnregisterFromEvent">Unregister from event</string>
     <string name="UnregisterForEvent_Condensed_">Unregister</string>
 
+    <string name="WrongPassword">Wrong password</string>
+    <string name="TooManyWrongAttempts">Too many incorret password attempts. You need to wait some time to retry.</string>
+    <string name="ErrorFolderNotFound">The folder was not found.</string>
 </resources>

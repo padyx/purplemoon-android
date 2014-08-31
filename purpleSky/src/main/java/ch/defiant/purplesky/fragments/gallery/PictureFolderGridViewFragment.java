@@ -25,24 +25,42 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.PictureGridViewActivity;
+import ch.defiant.purplesky.api.gallery.EnterPasswordResponse;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.fragments.BaseFragment;
+import ch.defiant.purplesky.loaders.EnterPasswordLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-public class PictureFolderGridViewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>> {
+public class PictureFolderGridViewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>>, EnterPasswordDialogFragment.PasswordResult {
+
+    private final String STATE_CHOSENFOLDER = "STATE_CHOSENFOLDER";
 
     @Inject
     protected IGalleryAdapter galleryAdapter;
     private ImageAdapter m_adapter;
+    private PictureFolder clickedFolder;
 
-    public static final String TAG = PictureFolderGridViewFragment.class.getSimpleName();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(STATE_CHOSENFOLDER, clickedFolder);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null) {
+            clickedFolder = (PictureFolder) savedInstanceState.getSerializable(STATE_CHOSENFOLDER);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +74,11 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < m_adapter.m_size) {
-                    List<PictureFolder> data = m_adapter.getData();
-
-                    PictureFolder value = data.get(position);
+                    PictureFolder value = m_adapter.getData().get(position);
 
                     if (!value.isAccessGranted() && value.isPasswordProtected()) {
-                        Toast.makeText(getActivity(), getString(R.string.FolderRequiresPassword), Toast.LENGTH_LONG).show();
+                        clickedFolder = value;
+                        startEnterPassword();
                         return;
                     }
 
@@ -79,6 +96,62 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(R.id.loader_picturefolders_main, getActivity().getIntent().getExtras(), this);
+    }
+
+    @Override
+    public void onResult(final String password) {
+        Bundle bundle = new Bundle();
+        getLoaderManager().restartLoader(R.id.loader_picturefolder_enterpassword, bundle, new LoaderCallbacks<Holder<EnterPasswordResponse>>() {
+            @Override
+            public Loader<Holder<EnterPasswordResponse>> onCreateLoader(int i, Bundle bundle) {
+                final String userid = getArguments().getString(ArgumentConstants.ARG_USERID);
+                return new EnterPasswordLoader(galleryAdapter, getActivity(), userid, clickedFolder.getFolderId(), password);
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Holder<EnterPasswordResponse>> objectLoader, Holder<EnterPasswordResponse> resp) {
+                if(getSherlockActivity() != null){
+                    getLoaderManager().destroyLoader(R.id.loader_picturefolder_enterpassword);
+                    int errorString = 0;
+                    if (resp.isObject()) {
+                        switch (resp.getContainedObject()) {
+                            case OK:
+                                startFragmentForFolder(clickedFolder); // FIXME Cannot start that here
+                                break;
+                            case ERROR:
+                                errorString = R.string.ErrorGeneric;
+                                break;
+                            case WRONG_PASSWORD:
+                                errorString = R.string.WrongPassword;
+                                break;
+                            case FOLDER_UNAVAILABLE:
+                                errorString = R.string.ErrorFolderNotFound;
+                                break;
+                            case PROFILE_NOT_FOUND:
+                                errorString = R.string.ErrorCouldNotFindUser;
+                                break;
+                            case TOO_MANY:
+                                errorString = R.string.TooManyWrongAttempts;
+                                break;
+                        }
+                        if (errorString != 0){
+                            Toast.makeText(getActivity(), errorString, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (resp.getException() instanceof IOException) {
+                            Toast.makeText(getActivity(), R.string.ErrorNoNetworkGenericShort, Toast.LENGTH_SHORT).show();
+                        } else {
+                            // TODO Handle
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Holder<EnterPasswordResponse>> objectLoader) {
+            }
+        });
     }
 
     public class ViewHolder {
@@ -172,8 +245,6 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
 
     @Override
     public SimpleAsyncLoader<Holder<List<PictureFolder>>> onCreateLoader(int arg0, Bundle arg1) {
-        hasArguments(arg1);
-
         final String userid = arg1.getString(ArgumentConstants.ARG_USERID);
 
         return new SimpleAsyncLoader<Holder<List<PictureFolder>>>(getActivity()) {
@@ -191,23 +262,22 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
         };
     }
 
-    private boolean hasArguments(Bundle arg1) {
-        return arg1 != null && arg1.getString(ArgumentConstants.ARG_USERID) != null;
-    }
-
     @Override
     public void onLoadFinished(Loader<Holder<List<PictureFolder>>> arg0, Holder<List<PictureFolder>> arg1) {
         if (arg1 == null || arg1.getException() != null) {
             // TODO handle errors
             return;
         }
-
         m_adapter.setData(arg1.getContainedObject());
-
     }
 
     @Override
-    public void onLoaderReset(Loader<Holder<List<PictureFolder>>> arg0) {
+    public void onLoaderReset(Loader<Holder<List<PictureFolder>>> arg0) { }
+
+    private void startEnterPassword() {
+        EnterPasswordDialogFragment f = new EnterPasswordDialogFragment();
+        f.setTargetFragment(this, 0);
+        f.show(getFragmentManager(), "password");
     }
 
 }

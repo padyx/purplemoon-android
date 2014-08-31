@@ -39,4 +39,15 @@ public interface IGalleryAdapter {
      */
     public List<PictureFolder> getFoldersWithPictures(String profileId, List<String> folders)
             throws IOException, PurpleSkyException;
+
+    /**
+     * Enter the password for the password protected folder.
+     * @param profileId Users id
+     * @param folderId  Folder id
+     * @param password Password for the folder
+     * @return Result of this operation
+     * @throws IOException
+     * @throws PurpleSkyException
+     */
+    public EnterPasswordResponse enterPassword(String profileId, String folderId, String password) throws IOException, PurpleSkyException;
 }

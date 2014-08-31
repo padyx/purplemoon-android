@@ -280,6 +280,10 @@
     <string name="ErrorTooManyReports">Du hast zu viele Benutzer in einer kurzen Zeit gemeldet. Versuche es später erneut.</string>
     <string name="PreferenceAboutApp">Über diese App</string>
     <string name="PreferenceAboutApp_Summary">Lizenzinformationen eingeschlossener Software</string>
+    <string name="EnterPassword">Passwort eingeben</string>
+    <string name="WrongPassword">Falsches Passwort</string>
+    <string name="TooManyWrongAttempts">Zu viele falsche Passworteingaben. Du musst eine Weile warten um es erneut zu versuchen.</string>
+    <string name="ErrorFolderNotFound">The folder was not found.</string>
     <string name="Location_">Standort:</string>
     <string name="Dismiss">Schliessen</string>
     <string name="ActionOpen">Öffnen</string>
