@@ -10,4 +10,5 @@ Under the Apache 2 licence (http://www.apache.org/licenses/LICENSE-2.0):
 * Apache Commons IO (http://commons.apache.org/proper/commons-io/)
 
 With permission:
+
 * Photo Vote icons, adapted from the "Kuikshow" icon from Nuvola icon set, by David Vignoni.
