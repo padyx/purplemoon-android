@@ -155,7 +155,7 @@ public class APINetworkUtility {
             holder.setOutput(response.body().string());
         } else {
             holder.setError(response.body().string());
-            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), response.body().string(), resource.toString());
+            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), holder.getError(), resource.toString());
         }
 
         return holder;
