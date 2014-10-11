@@ -68,6 +68,7 @@ import dagger.Module;
 
             // Services
             UserService.class,
+            UpdateService.class,
 
             // Fragments
             PostitTabbedFragment.class,
