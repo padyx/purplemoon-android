@@ -1,11 +1,11 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.FragmentManager;
+import android.app.LoaderManager;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +53,7 @@ import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Holder<List<UserMessageHistoryBean>>> {
+public class ChatListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<UserMessageHistoryBean>>> {
 
     @Inject
     protected IMessageService messageService;
@@ -193,7 +193,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
     
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.emptyadapter_element, null);
+            View v = LayoutInflater.from(getActivity()).inflate(R.layout.emptyadapter_element, null);
             ((TextView) v.findViewById(R.id.emptyadapter_element_text)).setText(R.string.NoMessagesYet);
             return v;
         }
@@ -205,7 +205,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
      */
     public static final String EXTRA_STRING_GOCHAT = "open_chat";
 
-    public static final String TAG = ChatListFragment.class.getSimpleName();;
+    public static final String TAG = ChatListFragment.class.getSimpleName();
 
     private static final String SAVESTATE_MESSAGEARRAY = "messagearray";
 
@@ -225,7 +225,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.Messages);
+        getActivity().getActionBar().setTitle(R.string.Messages);
         getOrUpdateData();
         cancelMessageNotifications();
     }
@@ -247,7 +247,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
         if (savedInstanceState != null && savedInstanceState.containsKey(SAVESTATE_MESSAGEARRAY)) {
             @SuppressWarnings("unchecked")
             ArrayList<UserMessageHistoryBean> l = (ArrayList<UserMessageHistoryBean>) savedInstanceState.getSerializable(SAVESTATE_MESSAGEARRAY);
-            m_adapter = new MessageHistoryBeanAdapter(getSherlockActivity(), l);
+            m_adapter = new MessageHistoryBeanAdapter(getActivity(), l);
             m_listView.setAdapter(m_adapter);
         }
 
@@ -256,12 +256,12 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
 
     @Override
     public Loader<Holder<List<UserMessageHistoryBean>>> onCreateLoader(int type, Bundle arg1) {
-        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
         switch(type){
             case R.id.loader_chatlist_offline:
-                return new OfflineConversationLoader(getSherlockActivity(), messageService);
+                return new OfflineConversationLoader(getActivity(), messageService);
             case R.id.loader_chatlist_online:
-                return new OnlineConversationLoader(getSherlockActivity(), messageService);
+                return new OnlineConversationLoader(getActivity(), messageService);
                 default:
                     throw new IllegalArgumentException("Unknown conversation loader "+type);
         }
@@ -273,7 +273,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
             final Exception exception = result.getException();
             if(exception != null){
                 handleLoaderException(exception);
-            } else if (getSherlockActivity() != null) {
+            } else if (getActivity() != null) {
                 AbstractConversationLoader convLoader = (AbstractConversationLoader) loader;
                 List<UserMessageHistoryBean> list = Collections.emptyList();
                 switch (convLoader.getType()) {
@@ -291,7 +291,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
                 }
                 Collections.sort(list, new MessageHistoryDisplaySorter());
                 publishMessageCount(list);
-                m_adapter = new MessageHistoryBeanAdapter(getSherlockActivity(), list);
+                m_adapter = new MessageHistoryBeanAdapter(getActivity(), list);
 
                 if (m_listView != null) {
                     if (list.isEmpty()) {
@@ -318,7 +318,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
 
     private void handleLoaderException(Exception exception) {
         if(exception instanceof WrongCredentialsException){
-            PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+            PersistantModel.getInstance().handleWrongCredentials(getActivity());
         } else if (exception instanceof IOException){
             // TODO Handle better?
             // Ignore
@@ -326,7 +326,7 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
             Log.e(TAG, "Unknown error when loading messages online", exception);
             m_adapter = null;
             if (m_listView != null) {
-                m_listView.setAdapter(new ErrorAdapter(R.string.UnknownErrorOccured, getSherlockActivity()));
+                m_listView.setAdapter(new ErrorAdapter(R.string.UnknownErrorOccured, getActivity()));
             }
         }
     }
@@ -343,11 +343,11 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
     }
 
     private void getOrUpdateData() {
-        getSherlockActivity().getSupportLoaderManager().restartLoader(R.id.loader_chatlist_offline, null, this);
+        getActivity().getLoaderManager().restartLoader(R.id.loader_chatlist_offline, null, this);
     }
 
     private void cancelMessageNotifications() {
-        NotificationManager manager = (NotificationManager) getSherlockActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(NotificationConstants.NEWMESSAGES);
     }
 
@@ -361,8 +361,8 @@ public class ChatListFragment extends BaseFragment implements LoaderCallbacks<Ho
     }
 
     private void loaderFinished() {
-        if (getSherlockActivity() != null) {
-            getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+        if (getActivity() != null) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
         }
     }
 

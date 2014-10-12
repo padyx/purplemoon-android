@@ -1,10 +1,10 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +41,7 @@ import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.UserUtility;
 
-public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<Holder<List<OnlineBean>>> {
+public class FavoritesFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<OnlineBean>>> {
 
     public static final String TAG = FavoritesFragment.class.getSimpleName();
 
@@ -50,8 +50,8 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
-        m_adapter = new FavoritesAdapter(getSherlockActivity(), R.layout.usersearch_result_item);
+        getActivity().setProgressBarIndeterminateVisibility(false);
+        m_adapter = new FavoritesAdapter(getActivity(), R.layout.usersearch_result_item);
 
         m_listView = (ListView) inflater.inflate(R.layout.list_plain, container, false);
         m_listView.setAdapter(m_adapter);
@@ -67,7 +67,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
                     args.putString(ArgumentConstants.ARG_USERID, item.getProfileId());
                     f.setArguments(args);
 
-                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
                     t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
                 }
             }
@@ -81,7 +81,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.Favorites_Online_);
+        getActivity().getActionBar().setTitle(R.string.Favorites_Online_);
     }
 
     private void getOrUpdateData() {
@@ -152,7 +152,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
                 // Status image
                 if (item.getOnlineStatus() != null) {
                     holder.statusLbl.setTextColor(getContext().getResources().getColor(item.getOnlineStatus().getColor()));
-                    holder.statusLbl.setText(item.getOnlineStatus().getLocalizedString(getSherlockActivity()));
+                    holder.statusLbl.setText(item.getOnlineStatus().getLocalizedString(getActivity()));
                 } 
             }
 
@@ -166,9 +166,9 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
 
     @Override
     public Loader<Holder<List<OnlineBean>>> onCreateLoader(int arg0, Bundle arg1) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
 
-        return new SimpleAsyncLoader<Holder<List<OnlineBean>>>(getSherlockActivity()) {
+        return new SimpleAsyncLoader<Holder<List<OnlineBean>>>(getActivity()) {
 
             @Override
             public Holder<List<OnlineBean>> loadInBackground() {
@@ -188,7 +188,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
 
     @Override
     public void onLoadFinished(Loader<Holder<List<OnlineBean>>> loader, Holder<List<OnlineBean>> result) {
-        getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+        getActivity().setProgressBarIndeterminateVisibility(false);
 
         if (result != null && result.getContainedObject() != null) {
             if (m_adapter instanceof ArrayAdapter) {
@@ -203,13 +203,13 @@ public class FavoritesFragment extends BaseFragment implements LoaderCallbacks<H
             PurpleSkyApplication.get().setEventCount(NavigationDrawerEventType.FAVORITES, size);
         } else {
             if (result.getException() instanceof IOException) {
-                m_adapter = new ErrorAdapter(getSherlockActivity());
+                m_adapter = new ErrorAdapter(getActivity());
                 m_listView.setAdapter(m_adapter);
             } else {
                 if (BuildConfig.DEBUG) {
                     Log.w(TAG, "Retrieving favorites got exception", result.getException());
                 }
-                m_adapter = new ErrorAdapter(R.string.UnknownErrorOccured, getSherlockActivity());
+                m_adapter = new ErrorAdapter(R.string.UnknownErrorOccured, getActivity());
                 m_listView.setAdapter(m_adapter);
             }
         }

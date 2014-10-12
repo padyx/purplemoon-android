@@ -1,12 +1,12 @@
 package ch.defiant.purplesky.activities.main;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Pair;
@@ -66,7 +66,7 @@ class DrawerDelegate {
     private class ChangeStatusListener implements OnClickListener {
         @Override
         public void onClick(View v) {
-            new OnlineStatusDialogFragment().show(m_activity.getSupportFragmentManager(), "status");
+            new OnlineStatusDialogFragment().show(m_activity.getFragmentManager(), "status");
         }
     }
     
@@ -215,7 +215,7 @@ class DrawerDelegate {
         String url = PersistantModel.getInstance().getCachedOwnProfilePictureURLDirectory();
         if (url == null) {
             Picasso.with(m_activity).load(R.drawable.social_person).fit().into(profileImgV);
-            m_activity.getSupportLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, m_activity); // Restart, if it
+            m_activity.getLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, m_activity); // Restart, if it
             // failed once
         } else {
             UserPreviewPictureSize size = UserService.UserPreviewPictureSize.getPictureForPx(imgSize);
@@ -304,7 +304,7 @@ class DrawerDelegate {
     }
 
     private void clearBackstackAndLaunch(Fragment f) {
-        m_activity.getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        m_activity.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         m_activity.launchFragment(f);
         closeDrawer();
     }

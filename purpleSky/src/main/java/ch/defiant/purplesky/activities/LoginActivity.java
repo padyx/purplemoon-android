@@ -1,6 +1,9 @@
 package ch.defiant.purplesky.activities;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -238,7 +238,7 @@ public class LoginActivity extends BaseFragmentActivity {
 
     private synchronized Fragment showFragmentDialog(int dialogId, AsyncTask<?, ?, ?> task) {
         // Don't show if already present
-        if (getSupportFragmentManager().findFragmentByTag(String.valueOf(dialogId)) != null) {
+        if (getFragmentManager().findFragmentByTag(String.valueOf(dialogId)) != null) {
             return null;
         }
 
@@ -269,12 +269,12 @@ public class LoginActivity extends BaseFragmentActivity {
             }
         }
         f.setRetainInstance(true);
-        f.show(getSupportFragmentManager(), String.valueOf(dialogId));
+        f.show(getFragmentManager(), String.valueOf(dialogId));
         return f;
     }
 
     private synchronized void dismissFragmentDialog(int dialogId) {
-        final FragmentManager manager = getSupportFragmentManager();
+        final FragmentManager manager = getFragmentManager();
         Fragment frag = manager.findFragmentByTag(String.valueOf(dialogId));
         if (frag instanceof DialogFragment) {
             ((DialogFragment) frag).dismissAllowingStateLoss();
@@ -293,7 +293,7 @@ public class LoginActivity extends BaseFragmentActivity {
             } else {
                 AlertDialogFragment dialog = AlertDialogFragment.newOKDialog(R.string.PushNotifications,
                         R.string.ErrorPushNotificationsUnavailableExpl, 0);
-                dialog.show(getSupportFragmentManager(), "PUSH_NOTIFICATIONS");
+                dialog.show(getFragmentManager(), "PUSH_NOTIFICATIONS");
                 Log.i(TAG, "Push notifications unavailable. Result code " + resultCode);
             }
             return false;

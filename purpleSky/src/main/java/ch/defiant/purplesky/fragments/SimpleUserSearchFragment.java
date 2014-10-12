@@ -1,5 +1,9 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -7,8 +11,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +45,7 @@ import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.util.CompareUtility;
 
-public class SimpleUserSearchFragment extends SherlockFragment implements IBroadcastReceiver {
+public class SimpleUserSearchFragment extends Fragment implements IBroadcastReceiver {
 
     private static final String TAG_PROGRESS_DIALOG = "locationProgressDialog";
 
@@ -73,13 +72,13 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_SEARCH);
         m_broadcastReceiver = new LocalBroadcastReceiver(this);
-        LocalBroadcastManager.getInstance(getSherlockActivity()).registerReceiver(m_broadcastReceiver, filter);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(m_broadcastReceiver, filter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getSherlockActivity()).unregisterReceiver(m_broadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(m_broadcastReceiver);
         View v = getView();
         saveViewSelections(v);
     }
@@ -87,7 +86,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager.getInstance(getSherlockActivity()).unregisterReceiver(m_broadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(m_broadcastReceiver);
     }
 
     private void saveViewSelections(View v) {
@@ -121,7 +120,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         try {
             verify(bean);
         } catch (PurpleSkyException e) {
-            Toast.makeText(getSherlockActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -140,7 +139,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         b.putSerializable(UserSearchResultsFragment.EXTRA_SEARCHOBJ, bean);
         f.setArguments(b);
 
-        FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
+        FragmentManager manager = getActivity().getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
     }
@@ -176,7 +175,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
                 getString(R.string.targetperson_heterowoman)));
 
         ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>> adapter = new ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>>(
-                this.getSherlockActivity(), android.R.layout.simple_spinner_dropdown_item, list);
+                this.getActivity(), android.R.layout.simple_spinner_dropdown_item, list);
         ((Spinner) inflated.findViewById(R.id.usersearch_simple_targetpersonSpinner)).setAdapter(adapter);
     }
 
@@ -185,7 +184,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
         list.add(new SpinnerStateElement<TARGET>(TARGET.FRIENDSHIP, getString(R.string.target_friendship)));
         list.add(new SpinnerStateElement<TARGET>(TARGET.RELATIONSHIP, getString(R.string.target_relationship)));
 
-        ArrayAdapter<SpinnerStateElement<TARGET>> adapter = new ArrayAdapter<SpinnerStateElement<TARGET>>(this.getSherlockActivity(),
+        ArrayAdapter<SpinnerStateElement<TARGET>> adapter = new ArrayAdapter<SpinnerStateElement<TARGET>>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, list);
         ((Spinner) inflated.findViewById(R.id.usersearch_simple_targetSpinner)).setAdapter(adapter);
     }
@@ -279,7 +278,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
             public void noResult() {
             }
         });
-        f.show(getSherlockActivity().getSupportFragmentManager(), TAG_PROGRESS_DIALOG);
+        f.show(getActivity().getFragmentManager(), TAG_PROGRESS_DIALOG);
     }
 
     private void locationObtained(Location l, UserSearchOptions bean) {
@@ -298,7 +297,7 @@ public class SimpleUserSearchFragment extends SherlockFragment implements IBroad
     @Override
     public void onReceive(Context context, Intent intent) {
         if (m_menuVisible) {
-            SherlockFragmentActivity fragCtx = SimpleUserSearchFragment.this.getSherlockActivity();
+            Activity fragCtx = SimpleUserSearchFragment.this.getActivity();
             if (fragCtx != null) {
                 fragCtx.runOnUiThread(new Runnable() {
 

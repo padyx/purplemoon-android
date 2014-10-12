@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments.postit;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +56,7 @@ public class PostitFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_adapter = new PostitAdapter(getSherlockActivity(), R.layout.displaypostit_item);
+        m_adapter = new PostitAdapter(getActivity(), R.layout.displaypostit_item);
         if (savedInstanceState != null) {
             // Try to restore the data
             @SuppressWarnings("unchecked")
@@ -68,7 +68,7 @@ public class PostitFragment extends BaseListFragment {
             }
         }
         // Make sure to wrap normal apiAdapter in the endlessadapter AFTER restoring state
-        m_endlessAdapter = new PostitEndlessAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
+        m_endlessAdapter = new PostitEndlessAdapter(getActivity(), m_adapter, R.layout.loading_listitem);
     }
 
     @Override
@@ -223,10 +223,10 @@ public class PostitFragment extends BaseListFragment {
                 args.putString(ArgumentConstants.ARG_USERID, user.getUserId());
                 f.setArguments(args);
 
-                FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
                 t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
             } else {
-                Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
             }
         }
     }

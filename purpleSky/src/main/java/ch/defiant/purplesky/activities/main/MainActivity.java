@@ -1,23 +1,23 @@
 package ch.defiant.purplesky.activities.main;
 
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Window;
 
 import javax.inject.Inject;
 
@@ -48,7 +48,7 @@ import ch.defiant.purplesky.loaders.UpgradeAndPushLoader;
  * @author Patrick Bänziger
  *
  */
-public class MainActivity extends BaseFragmentActivity implements LoaderCallbacks<Object> {
+public class MainActivity extends BaseFragmentActivity implements LoaderManager.LoaderCallbacks<Object> {
 
     @Inject
     protected IConversationAdapter conversationAdapter;
@@ -132,7 +132,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
         };
 
         // Upgrade actions that don't require blocking stuff
-        getSupportLoaderManager().initLoader(R.id.loader_main_upgradePush, null, this);
+        getLoaderManager().initLoader(R.id.loader_main_upgradePush, null, this);
 
         PurpleSkyApplication.get().setListener(m_listener);
         triggerUpdate();
@@ -159,12 +159,12 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
     protected void onResume() {
         super.onResume();
         if (logoutInProgress) {
-            Fragment frag = getSupportFragmentManager().findFragmentByTag(LOGOUT_FRAGMENT_TAG);
+            Fragment frag = getFragmentManager().findFragmentByTag(LOGOUT_FRAGMENT_TAG);
             if (frag == null) {
                 ProgressFragmentDialog fragmentDialog = new ProgressFragmentDialog();
                 fragmentDialog.setMessage("Logging out...");
                 fragmentDialog.setCancelable(false);
-                fragmentDialog.show(getSupportFragmentManager(), LOGOUT_FRAGMENT_TAG);
+                fragmentDialog.show(getFragmentManager(), LOGOUT_FRAGMENT_TAG);
             }
         }
     }
@@ -181,7 +181,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
     }
 
     @Override
-    public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // MenuInflater inflater = getMenuInflater();
         // inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -189,7 +189,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
 
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
-    public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
 
         // If needed add stuff here
@@ -200,7 +200,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
     }
 
     @Override
-    public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
         // WORKAROUND
@@ -279,7 +279,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
                     if (succeeded) {
                         logoutComplete();
                     } else {
-                        FragmentManager manager = getSupportFragmentManager();
+                        FragmentManager manager = getFragmentManager();
                         Fragment frag = manager.findFragmentByTag(LOGOUT_FRAGMENT_TAG);
                         if (frag != null) {
                             FragmentTransaction t = manager.beginTransaction();
@@ -303,18 +303,18 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
     public void onLoaderReset(Loader<Object> arg0) { }
 
     void launchFragment(Fragment f) {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, f).commit();
     }
 
     void setActionBarTitles(CharSequence title, CharSequence subtitle){
-        ActionBar bar = getSupportActionBar();
+        ActionBar bar = getActionBar();
         bar.setTitle(title);
         bar.setSubtitle(subtitle);
     }
     
     void backupActionBarTitles(){
-        ActionBar bar = getSupportActionBar();
+        ActionBar bar = getActionBar();
         m_title = bar.getTitle();
         m_subtitle = bar.getSubtitle();
     }
@@ -325,8 +325,8 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
 
     private void setupDrawer() {
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 
         m_drawerDelegate = new DrawerDelegate(this);
     }
@@ -337,8 +337,8 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
             public void onReceive(Context context, Intent intent) {
                 logoutInProgress = true;
                 Log.i(TAG, "Received logout broadcast. Launching loader to logout.");
-                getSupportLoaderManager().destroyLoader(R.id.loader_main_upgradePush);
-                getSupportLoaderManager().restartLoader(R.id.loader_main_logout, new Bundle(), MainActivity.this);
+                getLoaderManager().destroyLoader(R.id.loader_main_upgradePush);
+                getLoaderManager().restartLoader(R.id.loader_main_logout, new Bundle(), MainActivity.this);
             }
         });
         LocalBroadcastManager.getInstance(this).registerReceiver(m_logoutBroadcastReceiver,
@@ -359,7 +359,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderCallback
     }
 
     private void triggerUpdate() {
-        LoaderManager lm = getSupportLoaderManager();
+        LoaderManager lm = getLoaderManager();
         lm.initLoader(R.id.loader_drawermenu_notificationCounters, null, this);
         lm.initLoader(R.id.loader_drawermenu_status, null, this);
     }

@@ -1,5 +1,27 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,24 +31,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.UploadBean;
@@ -37,12 +41,7 @@ import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment.OnDismiss;
 import ch.defiant.purplesky.services.BinderServiceWrapper;
 import ch.defiant.purplesky.services.UploadService;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
-public class MultiUploadFragment extends SherlockFragment {
+public class MultiUploadFragment extends BaseFragment {
 
     private static final String FRAGMENTTAG_PICTURE_UPLOADER = "fragment_picture_uploader";
     private static final int REQUESTCODE_CHOOSEIMAGE = 0;
@@ -114,7 +113,7 @@ public class MultiUploadFragment extends SherlockFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getSherlockActivity().getSupportMenuInflater().inflate(R.menu.multiupload_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.multiupload_menu, menu);
     }
 
     @Override
@@ -147,8 +146,8 @@ public class MultiUploadFragment extends SherlockFragment {
             } else {
                 m_size = m_list.size();
             }
-            if (getSherlockActivity() != null) {
-                getSherlockActivity().runOnUiThread(new Runnable() {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
 
                     @Override
                     public void run() {
@@ -183,7 +182,7 @@ public class MultiUploadFragment extends SherlockFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
+            final LayoutInflater inflater = LayoutInflater.from(getActivity());
             if (m_list == null || m_list.isEmpty()) {
                 View inflated = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
                 ((TextView) inflated.findViewById(android.R.id.text1)).setText(R.string.NoPendingRecentlyCompletedUploads);
@@ -274,7 +273,7 @@ public class MultiUploadFragment extends SherlockFragment {
     private void handleResultImageChoose(int result, Intent intent) {
         if (result == Activity.RESULT_OK) {
             final Uri selectedImage = intent.getData();
-            final FragmentManager fm = getSherlockActivity().getSupportFragmentManager();
+            final FragmentManager fm = getActivity().getFragmentManager();
 
             // Wrap this as a workaround. See bug
             new AsyncTask<Object, Object, Object>() {

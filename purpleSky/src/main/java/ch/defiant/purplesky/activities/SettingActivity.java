@@ -6,9 +6,9 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -32,7 +32,7 @@ import ch.defiant.purplesky.util.DateUtility;
  *
  */
 // TODO Convert into preferenceFragment as soon as minVersion > 3.0
-public class SettingActivity extends SherlockPreferenceActivity {
+public class SettingActivity extends PreferenceActivity {
 
     private GcmRegisterTask m_asyncTask = null;
 
@@ -46,7 +46,7 @@ public class SettingActivity extends SherlockPreferenceActivity {
         super.onCreate(savedInstanceState);
         PurpleSkyApplication.get().inject(this);
 
-        getSupportActionBar().setTitle(R.string.Settings);
+        getActionBar().setTitle(R.string.Settings);
         addPreferencesFromResource(R.xml.preferences);
 
         createPreferences();

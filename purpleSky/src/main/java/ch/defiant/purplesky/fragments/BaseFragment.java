@@ -1,8 +1,7 @@
 package ch.defiant.purplesky.fragments;
 
 import android.app.Activity;
-
-import com.actionbarsherlock.app.SherlockFragment;
+import android.app.Fragment;
 
 import java.util.Set;
 
@@ -17,7 +16,7 @@ import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
  * @author Patrick Bänziger
  * @since 1.1.0
  */
-public class BaseFragment extends SherlockFragment implements IAlertDialogFragmentResponder{
+public class BaseFragment extends Fragment implements IAlertDialogFragmentResponder{
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;

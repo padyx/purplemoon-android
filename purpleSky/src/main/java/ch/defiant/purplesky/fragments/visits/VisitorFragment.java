@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments.visits;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +71,7 @@ public class VisitorFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_adapter = new VisitorListAdapter(getSherlockActivity(), R.layout.uservisit_item);
+        m_adapter = new VisitorListAdapter(getActivity(), R.layout.uservisit_item);
         if (savedInstanceState != null) {
             // Try to restore the data
             @SuppressWarnings("unchecked")
@@ -83,7 +83,7 @@ public class VisitorFragment extends BaseListFragment {
             }
         }
         // Make sure to wrap normal apiAdapter in the endlessadapter AFTER restoring state
-        m_endlessAdapter = new EndlessVisitorAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
+        m_endlessAdapter = new EndlessVisitorAdapter(getActivity(), m_adapter, R.layout.loading_listitem);
     }
 
     @Override
@@ -265,10 +265,10 @@ public class VisitorFragment extends BaseListFragment {
                 args.putString(ArgumentConstants.ARG_USERID, profileId);
                 DisplayProfileFragment f = new DisplayProfileFragment();
                 f.setArguments(args);
-                FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
                 t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
             } else {
-                Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
             }
         }
     }

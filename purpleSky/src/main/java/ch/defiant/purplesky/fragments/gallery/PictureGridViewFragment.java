@@ -1,10 +1,8 @@
 package ch.defiant.purplesky.fragments.gallery;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +12,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
@@ -21,10 +25,7 @@ import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.squareup.picasso.Picasso;
-
-public class PictureGridViewFragment extends SherlockFragment {
+public class PictureGridViewFragment extends Fragment {
 
     public static final String TAG = PictureGridViewFragment.class.getSimpleName();
     private PictureAdapter m_adapter;
@@ -52,7 +53,7 @@ public class PictureGridViewFragment extends SherlockFragment {
                     b.putSerializable(ArgumentConstants.ARG_FOLDER, m_folder);
                     b.putInt(GallerySwipeFragment.ARG_START_POSITION, position);
                     f.setArguments(b);
-                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
                     t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
                 }
             });
@@ -97,7 +98,7 @@ public class PictureGridViewFragment extends SherlockFragment {
             View v = convertView;
             ViewHolder h;
             if (v == null) {
-                v = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.picturegrid_item, parent, false);
+                v = LayoutInflater.from(getActivity()).inflate(R.layout.picturegrid_item, parent, false);
                 h = new ViewHolder();
                 h.imgV = (ImageView) v.findViewById(R.id.picturegrid_item_nwImgV);
                 v.setTag(h);
@@ -109,7 +110,7 @@ public class PictureGridViewFragment extends SherlockFragment {
             URL url;
             try {
                 url = new URL(picture.getUrl() + UserPictureSize.getPictureSizeForPx(px).getAPIValue());
-                Picasso.with(getSherlockActivity()).load(url.toString()).placeholder(R.drawable.picture_placeholder)
+                Picasso.with(getActivity()).load(url.toString()).placeholder(R.drawable.picture_placeholder)
                         .error(R.drawable.no_image).resize(px, px).centerCrop().into(h.imgV);
             } catch (MalformedURLException e) {
                 Log.e(TAG, "Malformed url created", e);

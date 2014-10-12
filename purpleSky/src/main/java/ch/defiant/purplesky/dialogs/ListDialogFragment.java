@@ -2,10 +2,10 @@ package ch.defiant.purplesky.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.Collection;

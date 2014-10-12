@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    
-<style name="Theme.Styled" parent="Theme.Sherlock.Light">
-    <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
-    <item name="android:actionBarStyle" tools:ignore="NewApi">@style/Widget.Styled.ActionBar</item>
-</style>
-
-<style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
-    <item name="background">@color/purple_light</item>
-    <item name="android:background">@color/purple_light</item>
-</style>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 <style name="TextAppearance.MediumLarge" parent="@android:style/TextAppearance">
     <item name="android:textSize">16sp</item> <!-- This actually is default, but we should explicitly say it -->

@@ -1,9 +1,5 @@
 package ch.defiant.purplesky.adapters.message;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +10,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.PrivateMessage;
@@ -59,7 +60,7 @@ public class MessageAdapter extends BaseAdapter {
         private View createButtonView(View convertView) {
             View buttonView;
             if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_conversationFragment.getSherlockActivity());
+                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_conversationFragment.getActivity());
                 buttonView = vi.inflate(R.layout.conversation_button_loadmore, null);
                 Button b = (Button) buttonView.findViewById(R.id.conversation_button_loadmore_button);
                 b.setOnClickListener(new OnClickListener() {
@@ -82,7 +83,7 @@ public class MessageAdapter extends BaseAdapter {
             View v;
             ViewHolder holder = null;
             if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_conversationFragment.getSherlockActivity());
+                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_conversationFragment.getActivity());
                 v = vi.inflate(R.layout.conversation_item, null);
 
                 holder = new ViewHolder();
@@ -109,7 +110,7 @@ public class MessageAdapter extends BaseAdapter {
                 holder.rightSpacer.setVisibility(View.GONE);
 
                 if (m.getTimeSent() != null) {
-                    holder.dateTimeLbl.setText(DateUtils.formatDateTime(m_conversationFragment.getSherlockActivity(), m.getTimeSent().getTime(), (DateUtils.FORMAT_SHOW_DATE
+                    holder.dateTimeLbl.setText(DateUtils.formatDateTime(m_conversationFragment.getActivity(), m.getTimeSent().getTime(), (DateUtils.FORMAT_SHOW_DATE
                             | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_NUMERIC_DATE)));
                 }
 

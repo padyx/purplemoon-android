@@ -1,9 +1,9 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +46,7 @@ public class ReportUserFragment extends BaseFragment implements LoaderManager.Lo
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getSherlockActivity().setTitle(R.string.ReportUser);
+        getActivity().setTitle(R.string.ReportUser);
 
         View view = inflater.inflate(R.layout.dialog_reportuser, null);
         reasonSpinner = (Spinner) view.findViewById(R.id.fragment_reportuser_reasonSpinner);

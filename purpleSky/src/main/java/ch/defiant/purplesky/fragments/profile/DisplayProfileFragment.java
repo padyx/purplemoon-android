@@ -1,17 +1,16 @@
 package ch.defiant.purplesky.fragments.profile;
 
+import android.app.ActionBar;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import java.io.IOException;
 
@@ -35,7 +34,7 @@ import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.StringUtility;
 
 public class DisplayProfileFragment extends AbstractTabbedFragment
-        implements IAlertDialogFragmentResponder, LoaderCallbacks<Holder<DetailedUser>> {
+        implements IAlertDialogFragmentResponder, LoaderManager.LoaderCallbacks<Holder<DetailedUser>> {
 
     private static final String FRAGMENT_TAG_PICTURES = "pictures";
     private static final String FRAGMENT_TAG_STATS = "stats";
@@ -54,7 +53,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        getSherlockActivity().setTitle(R.string.Profile);
+        getActivity().setTitle(R.string.Profile);
         m_userProfileId = getArguments().getString(ArgumentConstants.ARG_USERID);
         if (m_userProfileId == null) {
             Log.w(TAG, "Got no profileId");
@@ -83,7 +82,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
     @Override
     public void onResume() {
         super.onResume();
-        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        ActionBar actionBar = getActivity().getActionBar();
         if (m_userBean != null) {
             actionBar.setTitle(m_userBean.getUsername());
         }
@@ -143,7 +142,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
     // }
 
     private void getOrUpdateData() {
-        getSherlockActivity().getSupportLoaderManager().restartLoader(R.id.loader_profile_main, null, this);
+        getActivity().getLoaderManager().restartLoader(R.id.loader_profile_main, null, this);
     }
 
     /**
@@ -158,11 +157,11 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
         // Notify
         Intent i = new Intent(BroadcastTypes.BROADCAST_USERBEAN_RETRIEVED);
         i.putExtra(ArgumentConstants.ARG_USER, userbean);
-        LocalBroadcastManager.getInstance(getSherlockActivity()).sendBroadcast(i);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(i);
 
         final String username = userbean.getUsername();
         if (userbean instanceof DetailedUser && StringUtility.hasText(username)) {
-            getSherlockActivity().setTitle(username);
+            getActivity().setTitle(username);
         }
     }
 
@@ -184,7 +183,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
                 Bundle args = new Bundle();
                 args.putString(CreatePostitDialogFragment.ARGUMENT_RECIPIENT_PROFILEID_URI, m_userProfileId);
                 fragment.setArguments(args);
-                fragment.show(getSherlockActivity().getSupportFragmentManager(), "GIVEPOSTIT");
+                fragment.show(getActivity().getFragmentManager(), "GIVEPOSTIT");
                 return true;
             }
             default:
@@ -194,9 +193,9 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
 
     @Override
     public Loader<Holder<DetailedUser>> onCreateLoader(int arg0, Bundle params) {
-        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
 
-        return new SimpleAsyncLoader<Holder<DetailedUser>>(getSherlockActivity(), R.id.loader_profile_main) {
+        return new SimpleAsyncLoader<Holder<DetailedUser>>(getActivity(), R.id.loader_profile_main) {
 
             @Override
             public Holder<DetailedUser> loadInBackground() {
@@ -217,7 +216,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
 
     @Override
     public void onLoadFinished(Loader<Holder<DetailedUser>> arg0, Holder<DetailedUser> result) {
-        if (getSherlockActivity() != null) {
+        if (getActivity() != null) {
             if ( result == null || result.getContainedObject() == null  || result.getException() != null) {
                 NullUser nullUser = new NullUser();
                 if (result.getException() instanceof IOException) {
@@ -234,7 +233,7 @@ public class DisplayProfileFragment extends AbstractTabbedFragment
                     updateWithUserBean(user);
                 }
             }
-            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+            getActivity().setProgressBarIndeterminateVisibility(false);
         }
 
     }

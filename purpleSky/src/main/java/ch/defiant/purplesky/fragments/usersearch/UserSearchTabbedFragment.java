@@ -3,11 +3,10 @@ package ch.defiant.purplesky.fragments.usersearch;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
@@ -32,8 +31,8 @@ public class UserSearchTabbedFragment extends AbstractTabbedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.Search);
-        getSherlockActivity().getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        getActivity().getActionBar().setTitle(R.string.Search);
+        getActivity().getActionBar().setIcon(R.drawable.ic_launcher);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class UserSearchTabbedFragment extends AbstractTabbedFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_menu_search:
-                LocalBroadcastManager.getInstance(getSherlockActivity()).sendBroadcast(new Intent(Intent.ACTION_SEARCH));
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(Intent.ACTION_SEARCH));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

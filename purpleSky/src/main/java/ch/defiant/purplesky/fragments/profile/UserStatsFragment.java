@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.fragments.profile;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 import org.apache.commons.io.IOUtils;
 
@@ -44,7 +43,7 @@ import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.UserUtility;
 
-public class UserStatsFragment extends SherlockFragment implements IBroadcastReceiver {
+public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
     public static final String TAG = UserStatsFragment.class.getSimpleName();
 
@@ -127,14 +126,14 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
 
         IntentFilter filter = new IntentFilter(BroadcastTypes.BROADCAST_USERBEAN_RETRIEVED);
         m_localBroadcastReceiver = new LocalBroadcastReceiver(this);
-        LocalBroadcastManager.getInstance(getSherlockActivity()).registerReceiver(m_localBroadcastReceiver, filter);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(m_localBroadcastReceiver, filter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(getSherlockActivity()).unregisterReceiver(m_localBroadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(m_localBroadcastReceiver);
     }
 
     @Override
@@ -253,7 +252,7 @@ public class UserStatsFragment extends SherlockFragment implements IBroadcastRec
             status += " (";
         }
         if (user.getOnlineStatus() != null) {
-            status += user.getOnlineStatus().getLocalizedString(getSherlockActivity());
+            status += user.getOnlineStatus().getLocalizedString(getActivity());
         }
         if (hasCustomStatus) {
             status += ")";

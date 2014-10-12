@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.dialogs;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,8 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import java.io.IOException;
 
@@ -41,7 +40,7 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
     }
 
     private void createUI(View inflated) {
-        SherlockFragmentActivity activity = getSherlockActivity();
+        Activity activity = getActivity();
 
         // Title
         getDialog().setTitle(activity.getResources().getString(R.string.OnlineStatus));
@@ -63,7 +62,7 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
 
             OnlineStatus[] choosableStates = OnlineStatus.getValidChoosableStates();
             for (OnlineStatus stat : choosableStates) {
-                add(stat.getLocalizedString(getSherlockActivity()));
+                add(stat.getLocalizedString(getActivity()));
             }
         }
 
@@ -89,7 +88,7 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
 
         private OnlineStatus getOnlineStatus(String selectedItem) {
             for (OnlineStatus s : OnlineStatus.getValidChoosableStates()) {
-                if (CompareUtility.equals(s.getLocalizedString(getSherlockActivity()), selectedItem)) {
+                if (CompareUtility.equals(s.getLocalizedString(getActivity()), selectedItem)) {
                     return s;
                 }
             }
@@ -106,7 +105,7 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
         protected void onPreExecute() {
             PurpleSkyApplication context = PurpleSkyApplication.get();
             // FIXME L18N missing!
-            m_dialog = ProgressDialog.show(getSherlockActivity(), "Setting status", getString(R.string.PleaseWait), true, false);
+            m_dialog = ProgressDialog.show(getActivity(), "Setting status", getString(R.string.PleaseWait), true, false);
         }
 
         @Override
@@ -136,12 +135,12 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
 
             if (result != null && result.getException() != null) {
                 if (result.getException() instanceof IOException) {
-                    Toast.makeText(getSherlockActivity(), getSherlockActivity().getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_SHORT)
                             .show();
                 }
             } else {
                 // Unknown error
-                Toast.makeText(getSherlockActivity(), R.string.UnknownErrorOccured, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.UnknownErrorOccured, Toast.LENGTH_SHORT).show();
             }
         }
 

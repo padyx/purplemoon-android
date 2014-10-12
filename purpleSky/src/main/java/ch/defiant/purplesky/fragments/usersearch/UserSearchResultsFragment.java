@@ -49,7 +49,7 @@ public class UserSearchResultsFragment extends BaseFragment {
             m_usernameSearch = getArguments().getString(EXTRA_SEARCHNAME);
         }
 
-        m_adapter = new UserSearchResultListAdapter(getSherlockActivity());
+        m_adapter = new UserSearchResultListAdapter(getActivity());
         if(savedInstanceState != null){
             @SuppressWarnings("unchecked")
             List<MinimalUser> data = (List<MinimalUser>) savedInstanceState.getSerializable(SAVEINSTANCE_DATA);
@@ -69,14 +69,14 @@ public class UserSearchResultsFragment extends BaseFragment {
             locationBean.setLongitude(loc.getSecond());
             m_adapter.setOwnLocation(locationBean);
         }
-        m_endlessAdapter = new EndlessResultAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
+        m_endlessAdapter = new EndlessResultAdapter(getActivity(), m_adapter, R.layout.loading_listitem);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ListView v = (ListView) inflater.inflate(R.layout.list_plain, null);
         v.setAdapter(m_endlessAdapter);
-        v.setOnItemClickListener(new OpenUserProfileListener(getSherlockActivity()));
+        v.setOnItemClickListener(new OpenUserProfileListener(getActivity()));
 
         return v;
     }
@@ -96,7 +96,7 @@ public class UserSearchResultsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.Results);
+        getActivity().getActionBar().setTitle(R.string.Results);
     }
 
     private boolean hasOptions() {

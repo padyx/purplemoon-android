@@ -1,7 +1,10 @@
 package ch.defiant.purplesky.dialogs;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -13,8 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,8 +30,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +40,7 @@ import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 
-public class ChooseLocationDialogFragment extends SherlockDialogFragment implements LoaderCallbacks<List<Address>>, Callback {
+public class ChooseLocationDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<List<Address>>, Callback {
 
     private static final String SEARCHTXT = "searchText";
 
@@ -143,7 +142,7 @@ public class ChooseLocationDialogFragment extends SherlockDialogFragment impleme
         }
 
         if (provider == null) {
-            Toast.makeText(getSherlockActivity(), R.string.NoLocationDevices, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.NoLocationDevices, Toast.LENGTH_LONG).show();
             locationFailed(R.string.ErrorUnsupportedDeviceGeneric);
             return;
         }
@@ -213,7 +212,7 @@ public class ChooseLocationDialogFragment extends SherlockDialogFragment impleme
             getDialog().findViewById(R.id.location_choose_dialogfragment_editProgress).setVisibility(View.VISIBLE);
         }
 
-        return new SimpleAsyncLoader<List<Address>>(getSherlockActivity()) {
+        return new SimpleAsyncLoader<List<Address>>(getActivity()) {
 
             @Override
             public List<Address> loadInBackground() {
@@ -238,7 +237,7 @@ public class ChooseLocationDialogFragment extends SherlockDialogFragment impleme
             if (result != null) {
                 l.setAdapter(new Adapter(getDialog().getContext(), 0, 0, result));
             } else {
-                l.setAdapter(new ErrorAdapter(R.string.ErrorNoNetworkGenericShort, getSherlockActivity()));
+                l.setAdapter(new ErrorAdapter(R.string.ErrorNoNetworkGenericShort, getActivity()));
             }
 
             getDialog().findViewById(R.id.location_choose_dialogfragment_editProgress).setVisibility(View.INVISIBLE);
@@ -317,9 +316,9 @@ public class ChooseLocationDialogFragment extends SherlockDialogFragment impleme
         if (text.getText().length() > 3) {
             Bundle b = new Bundle();
             b.putString(SEARCHTXT, text.getText().toString());
-            getSherlockActivity().getSupportLoaderManager().restartLoader(R.id.loader_chooselocation_loadgeocoder, b, this);
+            getActivity().getLoaderManager().restartLoader(R.id.loader_chooselocation_loadgeocoder, b, this);
         } else {
-            getSherlockActivity().getSupportLoaderManager().destroyLoader(R.id.loader_chooselocation_loadgeocoder);
+            getActivity().getLoaderManager().destroyLoader(R.id.loader_chooselocation_loadgeocoder);
         }
 
         return true;

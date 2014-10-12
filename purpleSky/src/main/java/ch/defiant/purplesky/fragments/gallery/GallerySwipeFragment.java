@@ -1,21 +1,21 @@
 package ch.defiant.purplesky.fragments.gallery;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 
-import com.actionbarsherlock.app.SherlockFragment;
 
-public class GallerySwipeFragment extends SherlockFragment {
+public class GallerySwipeFragment extends Fragment {
 
     private PictureFolder m_folder = null;
     private static final String TAG = GallerySwipeFragment.class.getSimpleName();
@@ -35,7 +35,7 @@ public class GallerySwipeFragment extends SherlockFragment {
         int startPos = getArguments().getInt(ARG_START_POSITION, 0);
 
         ViewPager pager = (ViewPager) v.findViewById(R.id.viewpager);
-        pager.setAdapter(new ViewPagerAdapter(getSherlockActivity().getSupportFragmentManager()));
+        pager.setAdapter(new ViewPagerAdapter(getActivity().getFragmentManager()));
         if (startPos < m_folder.getPictureCount()) {
             pager.setCurrentItem(startPos);
         }
@@ -47,13 +47,13 @@ public class GallerySwipeFragment extends SherlockFragment {
     public void onResume() {
         super.onResume();
         // Hide action bar
-        getSherlockActivity().getSupportActionBar().hide();
+        getActivity().getActionBar().hide();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getSherlockActivity().getSupportActionBar().show();
+        getActivity().getActionBar().show();
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {

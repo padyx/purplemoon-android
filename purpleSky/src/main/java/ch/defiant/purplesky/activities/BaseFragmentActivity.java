@@ -1,15 +1,15 @@
 package ch.defiant.purplesky.activities;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.app.Activity;
 
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 
 /**
- * Created by Chakotay on 08.05.2014.
+ * @author Patrick Bänziger
  */
-public abstract class BaseFragmentActivity extends SherlockFragmentActivity {
+public abstract class BaseFragmentActivity extends Activity { // TODO PBN Rename
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
