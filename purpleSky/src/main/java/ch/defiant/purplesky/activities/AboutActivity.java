@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 
 /**
  * @author Chakotay
@@ -18,7 +19,6 @@ public class AboutActivity extends BaseFragmentActivity {
         setContentView(R.layout.webview_full);
 
         ((WebView)findViewById(R.id.webview_full_webview)).loadUrl("file:///android_asset/licence.html");
-
     }
 
 }

@@ -33,6 +33,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.DBHelper;

@@ -2,6 +2,7 @@ package ch.defiant.purplesky.core;
 
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
+import ch.defiant.purplesky.activities.common.ChatlistActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.conversation.internal.ConversationModule;
 import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
@@ -65,6 +66,8 @@ import dagger.Module;
             BaseListFragment.class,
             BaseFragment.class,
             AbstractTabbedFragment.class,
+
+            ChatlistActivity.class,
 
             // Services
             UserService.class,

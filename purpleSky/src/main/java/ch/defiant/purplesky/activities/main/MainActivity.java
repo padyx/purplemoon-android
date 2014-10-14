@@ -22,7 +22,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.BaseFragmentActivity;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
