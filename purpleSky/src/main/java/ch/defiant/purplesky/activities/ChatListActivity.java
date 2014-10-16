@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.activities.common;
+package ch.defiant.purplesky.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 
-public class ChatlistActivity extends BaseFragmentActivity {
+public class ChatListActivity extends BaseFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,11 @@ public class ChatlistActivity extends BaseFragmentActivity {
                 img.startAnimation(anim);
             }
         });
+    }
+
+    @Override
+    public int getSelfNavigationIndex() {
+        return 0;
     }
 
     private static class WeightAnimation extends Animation {

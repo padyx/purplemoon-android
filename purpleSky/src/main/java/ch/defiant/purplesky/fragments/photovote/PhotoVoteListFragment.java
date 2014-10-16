@@ -50,7 +50,9 @@ public class PhotoVoteListFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_showGiven = getArguments().getBoolean(EXTRA_BOOL_SHOWGIVEN, false);
+        if(getArguments() != null) {
+            m_showGiven = getArguments().getBoolean(EXTRA_BOOL_SHOWGIVEN, false);
+        }
     }
 
     @Override

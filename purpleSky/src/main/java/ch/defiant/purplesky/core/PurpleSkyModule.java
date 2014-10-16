@@ -1,8 +1,15 @@
 package ch.defiant.purplesky.core;
 
+import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.LoginActivity;
+import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
+import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
+import ch.defiant.purplesky.activities.PostitTabbedActivity;
+import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
-import ch.defiant.purplesky.activities.common.ChatlistActivity;
+import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
+import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.conversation.internal.ConversationModule;
 import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
@@ -22,6 +29,7 @@ import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
+import ch.defiant.purplesky.fragments.MultiUploadFragment;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.ReportUserFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
@@ -54,12 +62,19 @@ import dagger.Module;
             GalleryModule.class,
             PhotoVoteModule.class,
             VisitModule.class,
-            ConversationModule.class
+            ConversationModule.class,
     },
     injects = {
             PurpleSkyApplication.class,
             MainActivity.class,
             LoginActivity.class,
+            RadarActivity.class,
+            VisitorTabbedActivity.class,
+            PostitTabbedActivity.class,
+            UserSearchTabbedActivity.class,
+            PhotoVoteTabbedActivity.class,
+            MultiUploadPictureActivity.class,
+            FavoritesActivity.class,
             SettingActivity.class,
 
             // Base or abstract classes
@@ -67,7 +82,7 @@ import dagger.Module;
             BaseFragment.class,
             AbstractTabbedFragment.class,
 
-            ChatlistActivity.class,
+            ChatListActivity.class,
 
             // Services
             UserService.class,
@@ -101,7 +116,8 @@ import dagger.Module;
             RadarOptionsDialogFragment.class,
             CreatePostitDialogFragment.class,
             UploadPhotoDialogFragment.class,
-            ReportUserFragment.class
+            ReportUserFragment.class,
+            MultiUploadFragment.class
     }
 )
 public class PurpleSkyModule {

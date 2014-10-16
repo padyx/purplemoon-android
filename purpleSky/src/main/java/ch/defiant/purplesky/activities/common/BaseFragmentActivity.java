@@ -2,7 +2,9 @@ package ch.defiant.purplesky.activities.common;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.Window;
 
 import javax.inject.Inject;
@@ -10,11 +12,12 @@ import javax.inject.Inject;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
+import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 
 /**
  * @author Chakotay
  */
-public class BaseFragmentActivity extends Activity {
+public abstract class BaseFragmentActivity extends Activity {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
@@ -27,6 +30,7 @@ public class BaseFragmentActivity extends Activity {
     private CharSequence m_subTitle;
     private CharSequence m_title;
     private DrawerDelegate m_drawerDelegate;
+    private PurpleSkyApplication.UpdateListener m_listener;
 
     /**
      * Available Entries in the navigation drawer.
@@ -57,11 +61,8 @@ public class BaseFragmentActivity extends Activity {
         }
 
 
-
-
-
         // Number updates for the drawer
-        /*m_listener = new PurpleSkyApplication.UpdateListener() {
+        m_listener = new PurpleSkyApplication.UpdateListener() {
             @Override
             public void update(NavigationDrawerEventType t, int count) {
                 runOnUiThread(new Runnable() {
@@ -71,9 +72,9 @@ public class BaseFragmentActivity extends Activity {
                     }
                 });
             }
-        };*/
+        };
 
-        //PurpleSkyApplication.get().setListener(m_listener);
+        PurpleSkyApplication.get().setListener(m_listener);
         // triggerUpdate();
         // registerLogoutReceiver();
     }
@@ -83,16 +84,6 @@ public class BaseFragmentActivity extends Activity {
         super.onPostCreate(savedInstanceState);
 
         setupDrawer();
-        if (savedInstanceState == null) {
-            Bundle e = getIntent().getExtras();
-            if (e != null && e.containsKey(EXTRA_LAUNCH_OPTION)) {
-                int launchFragment = e.getInt(EXTRA_LAUNCH_OPTION);
-                m_drawerDelegate.selectItem(NavigationDrawerEntries.values()[launchFragment], e.getBundle(EXTRA_LAUNCH_ARGS));
-            } else {
-                m_drawerDelegate.selectFirstItem();
-            }
-        }
-
         // Upgrade actions that don't require blocking stuff
         //getLoaderManager().initLoader(R.id.loader_main_upgradePush, null, this);
     }
@@ -113,11 +104,44 @@ public class BaseFragmentActivity extends Activity {
     }
 
     private void setupDrawer() {
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
+        if(getActionBar() != null) {
+            // enable ActionBar app icon to behave as action to toggle nav drawer
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setHomeButtonEnabled(true);
+        }
         m_drawerDelegate = new DrawerDelegate(this);
+    }
+
+    public void setDrawerEnabled(boolean enabled){
+        m_drawerDelegate.setDrawerEnabled(enabled);
+    }
+
+    public abstract int getSelfNavigationIndex();
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        // WORKAROUND
+        /*
+         * Following code replaces commented version (ABS Incompatibility) Remove when API Target > 11 and no ABS
+         * anymore
+         */
+        // if (mDrawerToggle.onOptionsItemSelected(item)) {
+        // return true;
+        // }
+        if (item.getItemId() == android.R.id.home) {
+            m_drawerDelegate.toggleDrawer();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the delegate
+        m_drawerDelegate.onConfigurationChanged(newConfig);
     }
 
 }

@@ -51,8 +51,9 @@
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
+
         <activity
-            android:name=".activities.common.ChatlistActivity"
+            android:name=".activities.ChatListActivity"
             android:configChanges="orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,6 +66,14 @@
             android:exported="false" >
         </service>
 
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.FavoritesActivity" />
+        <activity android:name=".activities.VisitorTabbedActivity" />
+        <activity android:name=".activities.PostitTabbedActivity" />
+        <activity android:name=".activities.UserSearchTabbedActivity" />
+        <activity android:name=".activities.PhotoVoteTabbedActivity" />
+        <activity android:name=".activities.MultiUploadPictureActivity" />
+        <activity android:name=".activities.RadarActivity" />
         <activity android:name=".activities.SettingActivity" />
         <activity android:name=".activities.AboutActivity" />
         <activity android:name="ch.defiant.purplesky.activities.main.MainActivity" />

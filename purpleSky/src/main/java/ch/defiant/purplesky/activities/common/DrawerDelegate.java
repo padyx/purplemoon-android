@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.activities.common;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,7 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.FavoritesActivity;
+import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
+import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
+import ch.defiant.purplesky.activities.PostitTabbedActivity;
+import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
+import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
+import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.main.DrawerAdapter;
 import ch.defiant.purplesky.activities.main.DrawerItem;
 import ch.defiant.purplesky.beans.UpdateBean;
@@ -33,15 +42,7 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.fragments.ChatListFragment;
-import ch.defiant.purplesky.fragments.FavoritesFragment;
-import ch.defiant.purplesky.fragments.MultiUploadFragment;
-import ch.defiant.purplesky.fragments.RadarGridFragment;
-import ch.defiant.purplesky.fragments.photovote.PhotoVoteTabbedFragment;
-import ch.defiant.purplesky.fragments.postit.PostitTabbedFragment;
 import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
-import ch.defiant.purplesky.fragments.usersearch.UserSearchTabbedFragment;
-import ch.defiant.purplesky.fragments.visits.VisitorTabbedFragment;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -116,6 +117,10 @@ class DrawerDelegate {
         m_drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    public void setDrawerEnabled(boolean enabled){
+        m_drawerToggle.setDrawerIndicatorEnabled(enabled);
+    }
+
     void onConfigurationChanged(Configuration config){
         m_drawerToggle.onConfigurationChanged(config);
     }
@@ -149,51 +154,49 @@ class DrawerDelegate {
     void selectItem(BaseFragmentActivity.NavigationDrawerEntries startFragment, Bundle args) {
         // update the main content by replacing fragments
     
-        Fragment f = null;
+        Class<? extends Activity> f = null;
         switch (startFragment) {
             case LAUNCH_CHATLIST:
-                f = new ChatListFragment();
+                f = ChatListActivity.class;
                 break;
             case LAUNCH_RADAR:
-                f = new RadarGridFragment();
+                f = RadarActivity.class;
             break;
             case LAUNCH_POSTIT:
-                f = new PostitTabbedFragment();
+                f = PostitTabbedActivity.class;
                 break;
             case LAUNCH_VISITORS:
-                f = new VisitorTabbedFragment();
+                f = VisitorTabbedActivity.class;
                 break;
             case LAUNCH_FAVORITES:
-                f = new FavoritesFragment();
+                f = FavoritesActivity.class;
                 break;
             case LAUNCH_USERSEARCH:
-                f = new UserSearchTabbedFragment();
+                f = UserSearchTabbedActivity.class;
                 break;
             case LAUNCH_PHOTOVOTE:
-                f = new PhotoVoteTabbedFragment();
+                f = PhotoVoteTabbedActivity.class;
                 break;
             case LAUNCH_UPLOAD:
-                f = new MultiUploadFragment();
+                f = MultiUploadPictureActivity.class;
                 break;
             case LAUNCH_SETTINGS:
-                m_activity.startActivity(new Intent(m_activity, SettingActivity.class));
-                return;
-                // TODO Replace by fragment implementation
+                f = SettingActivity.class;
+                break;
             default:
                 throw new IllegalArgumentException("Could not find right fragment");
         }
-        // Retaining will give stupid errors with UI stuff, sadly.
-        f.setRetainInstance(false);
-        f.setArguments(args);
         int position = startFragment.ordinal();
         m_drawerList.setItemChecked(position, true);
         m_activity.setActionBarTitle(m_activity.getString(m_drawerTitles.get(position).titleRes), null);
 
         // Hide any progress bar that might be visible in the actionbar
         m_activity.setProgressBarIndeterminateVisibility(false);
-    
+
         // When we select something from the navigation drawer, the back stack is discarded
-        clearBackstackAndLaunch(f);
+        // clearBackstackAndLaunch(f);
+        Intent intent = new Intent(m_activity, f);
+        m_activity.startActivity(intent, args);
     }
 
     void selectFirstItem() {

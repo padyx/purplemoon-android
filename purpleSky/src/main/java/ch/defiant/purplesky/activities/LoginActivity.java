@@ -34,7 +34,6 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
-import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.IMessageService;
@@ -177,6 +176,21 @@ public class LoginActivity extends BaseFragmentActivity {
         checkPlayServices();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setDrawerEnabled(false);
+        if(getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(false);
+            getActionBar().setHomeButtonEnabled(false);
+        }
+    }
+
+    @Override
+    public int getSelfNavigationIndex() {
+        return -1;
+    }
+
     private void runPruning() {
         messageService.cleanupDB();
     }
@@ -226,7 +240,7 @@ public class LoginActivity extends BaseFragmentActivity {
      */
     private void doLoginSuccess() {
         startServices();
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         // Make sure this activity is not available using 'back'

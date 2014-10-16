@@ -68,7 +68,7 @@ public class MainActivity extends BaseFragmentActivity implements LoaderManager.
         LAUNCH_PHOTOVOTE,
         LAUNCH_UPLOAD,
         LAUNCH_SETTINGS
-    };
+    }
 
     /**
      * When used in arguments, determines which fragment is displayed
@@ -329,6 +329,11 @@ public class MainActivity extends BaseFragmentActivity implements LoaderManager.
         getActionBar().setHomeButtonEnabled(true);
 
         m_drawerDelegate = new DrawerDelegate(this);
+    }
+
+    @Override
+    public int getSelfNavigationIndex() {
+        return -1;
     }
 
     private void registerLogoutReceiver() {
