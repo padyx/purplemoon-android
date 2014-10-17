@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.Window;
 
@@ -31,6 +32,7 @@ public abstract class BaseFragmentActivity extends Activity {
     private CharSequence m_title;
     private DrawerDelegate m_drawerDelegate;
     private PurpleSkyApplication.UpdateListener m_listener;
+    private Handler m_handler;
 
     /**
      * Available Entries in the navigation drawer.
@@ -51,6 +53,7 @@ public abstract class BaseFragmentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PurpleSkyApplication.get().inject(this);
+        m_handler = new Handler();
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.fragment_container_layout);
@@ -59,7 +62,6 @@ public abstract class BaseFragmentActivity extends Activity {
             m_title = savedInstanceState.getString(SAVEINSTANCE_TITLE);
             m_subTitle = savedInstanceState.getString(SAVEINSTANCE_SUBTITLE);
         }
-
 
         // Number updates for the drawer
         m_listener = new PurpleSkyApplication.UpdateListener() {
@@ -120,19 +122,8 @@ public abstract class BaseFragmentActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-        // WORKAROUND
-        /*
-         * Following code replaces commented version (ABS Incompatibility) Remove when API Target > 11 and no ABS
-         * anymore
-         */
-        // if (mDrawerToggle.onOptionsItemSelected(item)) {
-        // return true;
-        // }
-        if (item.getItemId() == android.R.id.home) {
-            m_drawerDelegate.toggleDrawer();
-            return true;
+        if (m_drawerDelegate.onOptionsItemSelected(item)) {
+         return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -142,6 +133,14 @@ public abstract class BaseFragmentActivity extends Activity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the delegate
         m_drawerDelegate.onConfigurationChanged(newConfig);
+    }
+
+    Handler getHandler(){
+        return m_handler;
+    }
+
+    void startProfileImageLoad(){
+        //getLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, m_activity); // Restart, if it
     }
 
 }

@@ -37,7 +37,7 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
         actionBar.setDisplayShowTitleEnabled(true);
 
         getActivity().getActionBar().removeAllTabs();
-        View layout = inflater.inflate(R.layout.viewpager, container, false);
+        View layout = inflater.inflate(R.layout.layout_viewpager, container, false);
         m_viewPager = (ViewPager) layout.findViewById(R.id.viewpager);
         m_viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override

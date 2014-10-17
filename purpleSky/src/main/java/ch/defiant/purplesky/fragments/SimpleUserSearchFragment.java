@@ -59,7 +59,7 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inflated = inflater.inflate(R.layout.usersearch_simple_fragment, container, false);
+        View inflated = inflater.inflate(R.layout.layout_usersearch_simple, container, false);
 
         createGUI(inflated);
         return inflated;

@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -52,6 +53,12 @@ import ch.defiant.purplesky.util.StringUtility;
  *
  */
 class DrawerDelegate {
+
+    // delay to launch nav drawer item, to allow close animation to play
+    private static final int NAVDRAWER_LAUNCH_DELAY = 250;
+
+    private static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
+    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     
     private class OwnProfileListener implements OnClickListener {
         @Override
@@ -197,6 +204,7 @@ class DrawerDelegate {
         // clearBackstackAndLaunch(f);
         Intent intent = new Intent(m_activity, f);
         m_activity.startActivity(intent, args);
+        m_activity.finish();
     }
 
     void selectFirstItem() {
@@ -216,9 +224,7 @@ class DrawerDelegate {
         String url = PersistantModel.getInstance().getCachedOwnProfilePictureURLDirectory();
         if (url == null) {
             Picasso.with(m_activity).load(R.drawable.social_person).fit().into(profileImgV);
-            // XXX PBN
-            //m_activity.getLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, m_activity); // Restart, if it
-            // failed once
+            m_activity.startProfileImageLoad();
         } else {
             UserPreviewPictureSize size = UserPreviewPictureSize.getPictureForPx(imgSize);
             Picasso.with(m_activity).load(url + size.getAPIValue()).error(R.drawable.social_person)
@@ -231,6 +237,11 @@ class DrawerDelegate {
      */
     void updateEventCounts(){
         ((DrawerAdapter)m_drawerList.getAdapter()).notifyDataSetChanged();
+    }
+
+
+    boolean onOptionsItemSelected(MenuItem item) {
+        return m_drawerToggle.onOptionsItemSelected(item);
     }
 
     private void initialize() {
@@ -300,13 +311,32 @@ class DrawerDelegate {
         return l;
     }
 
-    private void selectItem(int position) {
-        selectItem(BaseFragmentActivity.NavigationDrawerEntries.values()[position], new Bundle());
+    private void selectItem(final int position) {
+        if (position == m_activity.getSelfNavigationIndex()) {
+            closeDrawer();
+            return;
+        }
+
+        // launch the target Activity after a short delay, to allow the close animation to play
+        m_activity.getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                selectItem(BaseFragmentActivity.NavigationDrawerEntries.values()[position], new Bundle());
+            }
+        }, NAVDRAWER_LAUNCH_DELAY);
+
+        // change the active item on the list so the user can see the item changed
+        // FIXME PBN IMPLEMENT
+        // setSelectedNavDrawerItem(itemId);
+        // fade out the main content
+        View mainContent = m_activity.findViewById(R.id.drawer_layout);
+        if (mainContent != null) {
+            mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEOUT_DURATION);
+        }
+        closeDrawer();
     }
 
     private void clearBackstackAndLaunch(Fragment f) {
-        /*m_activity.getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        m_activity.launchFragment(f);*/
         closeDrawer();
     }
 

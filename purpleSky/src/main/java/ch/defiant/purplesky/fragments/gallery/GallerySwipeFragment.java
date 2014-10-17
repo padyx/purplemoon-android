@@ -23,7 +23,7 @@ public class GallerySwipeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.viewpager, container, false);
+        View v = inflater.inflate(R.layout.layout_viewpager, container, false);
 
         if (getArguments().getSerializable(ArgumentConstants.ARG_FOLDER) instanceof PictureFolder) {
             m_folder = (PictureFolder) getArguments().getSerializable(ArgumentConstants.ARG_FOLDER);

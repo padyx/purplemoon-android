@@ -22,7 +22,7 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.viewpager);
+        setContentView(R.layout.layout_viewpager);
 
         // ViewPager and its adapters use support library
         // fragments, so use getSupportFragmentManager.
