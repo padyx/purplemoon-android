@@ -1,6 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -32,7 +31,6 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.util.MessageHistoryDisplaySorter;
-import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.UIConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -42,7 +40,7 @@ import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
-import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
+import ch.defiant.purplesky.interfaces.IChatListActivity;
 import ch.defiant.purplesky.loaders.conversations.AbstractConversationLoader;
 import ch.defiant.purplesky.loaders.conversations.OfflineConversationLoader;
 import ch.defiant.purplesky.loaders.conversations.OnlineConversationLoader;
@@ -372,16 +370,8 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
      * @param item User bean, if available.
      */
     private void openChatFragment(String profileId, UserMessageHistoryBean item) {
-        // Start fragment
-        ConversationFragment f = new ConversationFragment();
-        Bundle args = new Bundle();
-        args.putString(ArgumentConstants.ARG_USERID, profileId);
-        if (item != null) {
-            args.putSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN, item);
+        if (getActivity() instanceof IChatListActivity) {
+            ((IChatListActivity)getActivity()).conversationSelected(profileId);
         }
-        f.setArguments(args);
-
-        final FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
     }
 }

@@ -66,6 +66,8 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
                         return;
                     }
 
+                    // XXX
+
                     PictureGridViewFragment f = new PictureGridViewFragment();
                     Bundle b = new Bundle();
                     b.putSerializable(ArgumentConstants.ARG_FOLDER, value);

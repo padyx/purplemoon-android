@@ -59,6 +59,7 @@ import ch.defiant.purplesky.loaders.message.OlderMessageDBLoader;
 import ch.defiant.purplesky.loaders.message.OlderMessageOnlineLoader;
 import ch.defiant.purplesky.loaders.message.RefreshMessageLoader;
 import ch.defiant.purplesky.loaders.message.SendMessageLoader;
+import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.NVLUtility;
@@ -213,35 +214,33 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Bundle args = getArguments();
-        m_profileId = args.getString(ArgumentConstants.ARG_USERID);
-        m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
         MinimalUser userBean = null;
-        m_adapter = new MessageAdapter(this);
-        // If actually filled...
-        if(m_conversationState != null){
-            if(m_conversationState.getLastReceived() != null || m_conversationState.getLastSent() != null){
-                userBean = (MinimalUser) args.getSerializable(ArgumentConstants.ARG_USER);
+        if(args != null) {
+            m_profileId = args.getString(ArgumentConstants.ARG_USERID);
+            m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
+            // If actually filled...
+            if(m_conversationState != null){
+                if(m_conversationState.getLastReceived() != null || m_conversationState.getLastSent() != null){
+                    userBean = (MinimalUser) args.getSerializable(ArgumentConstants.ARG_USER);
+                }
             }
         }
+        m_adapter = new MessageAdapter(this);
         if(userBean != null){
             m_title = userBean.getUsername();
         }
-        if (StringUtility.isNullOrEmpty(m_profileId)) {
-            Log.e(TAG, "Tried to open conversation without user id");
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-        }
+//        if (StringUtility.isNullOrEmpty(m_profileId)) {
+//            Log.e(TAG, "Tried to open conversation without user id");
+//            if (getActivity() != null) {
+//                getActivity().finish();
+//            }
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
-        if (m_adapter.isEmpty()) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            getLoaderManager().restartLoader(R.id.loader_message_initial, bundle, this);
-        } else {
-            startRefresh();
+
+        if(m_profileId != null){
+            showConversationWithUser(m_profileId);
         }
     }
 
@@ -312,21 +311,42 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     public void onResume() {
         super.onResume();
         m_previousActionBarTitle = getActivity().getActionBar().getTitle();
-        if(m_imgLoaderCallback == null){
-            m_imgLoaderCallback = new ImageLoaderCallback();
-        }
-        getActivity().getLoaderManager().restartLoader(R.id.loader_message_profileImage, null,
-                m_imgLoaderCallback);
-        if(m_title == null){
-            if(m_usernameCallback == null){
-                m_usernameCallback = new ProfileNameCallback();
+        if(m_profileId != null) {
+            if (m_imgLoaderCallback == null) {
+                m_imgLoaderCallback = new ImageLoaderCallback();
             }
-            getLoaderManager().restartLoader(R.id.loader_username, null, m_usernameCallback);
+            getActivity().getLoaderManager().restartLoader(R.id.loader_message_profileImage, null,
+                    m_imgLoaderCallback);
+            if (m_title == null) {
+                if (m_usernameCallback == null) {
+                    m_usernameCallback = new ProfileNameCallback();
+                }
+                getLoaderManager().restartLoader(R.id.loader_username, null, m_usernameCallback);
+            } else {
+                setTitle(m_title);
+            }
+            updateConversationSubtitle();
         }
-        else {
-            setTitle(m_title);
+    }
+
+    public void showConversationWithUser(String userId){
+        if(CompareUtility.notEquals(userId, m_profileId)) {
+            m_adapter.clear();
+            m_hasNoMoreCached = false;
+            m_hasNoMoreOnline = false;
+
+            m_profileId = userId;
+            if (m_profileId != null) {
+                // TODO PBN Change adapter for easier calculation?
+                if (m_adapter.getCount() - (m_adapter.isShowLoadMore() ? 1 : 0) == 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ArgumentConstants.ARG_USERID, m_profileId);
+                    getLoaderManager().restartLoader(R.id.loader_message_initial, bundle, this);
+                } else {
+                    startRefresh();
+                }
+            }
         }
-        updateConversationSubtitle();
     }
     
     /**

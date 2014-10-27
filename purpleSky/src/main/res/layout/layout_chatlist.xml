@@ -23,12 +23,11 @@
             android:layout_weight="0"/>
 
         <!-- Main layout -->
-        <fragment
-            android:id="@+id/chatlist"
+        <FrameLayout
+            android:id="@+id/fragment_container_frame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:name="ch.defiant.purplesky.fragments.ChatListFragment"
             tools:layout="@layout/list_plain" />
     </LinearLayout>
     <!-- Nav drawer -->

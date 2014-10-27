@@ -1,5 +1,7 @@
 package ch.defiant.purplesky.activities;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -10,13 +12,34 @@ import android.widget.LinearLayout;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
+import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.fragments.ChatListFragment;
+import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
+import ch.defiant.purplesky.interfaces.IChatListActivity;
 
-public class ChatListActivity extends BaseFragmentActivity {
+public class ChatListActivity extends BaseFragmentActivity implements IChatListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.testlayout);
+        setContentView(R.layout.layout_chatlist);
+
+        View containerFrame = findViewById(R.id.fragment_container_frame);
+        // Check whether the activity is using the layout version with the container frame
+        if (containerFrame != null) {
+            // Single layout
+
+            // If we are restored, no need to created the fragment again
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Create the conversation fragment
+            ChatListFragment fragment = new ChatListFragment();
+
+            // Add the fragment
+            getFragmentManager().beginTransaction().add(R.id.fragment_container_frame, fragment).commit();
+        }
     }
 
     @Override
@@ -45,6 +68,24 @@ public class ChatListActivity extends BaseFragmentActivity {
     @Override
     public int getSelfNavigationIndex() {
         return 0;
+    }
+
+    @Override
+    public void conversationSelected(String userId) {
+        final FragmentManager fragmentManager = getFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.conversation_fragment);
+        if(fragment != null){
+            // Two pane layout
+            // Update it with the new conversation
+            ConversationFragment conversationFragment = (ConversationFragment) fragment;
+            conversationFragment.showConversationWithUser(userId);
+        } else {
+            // Not available... One pane layout, so make a transaction
+            fragment = new ConversationFragment();
+            Bundle args = new Bundle();
+            args.putString(ArgumentConstants.ARG_USERID, userId);
+            fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, fragment).addToBackStack(null).commit();
+        }
     }
 
     private static class WeightAnimation extends Animation {

@@ -5,10 +5,10 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,7 +49,7 @@ import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * Delegate handling drawer and navigation-related tasks.
- * @author Chakotay
+ * @author Patrick Bänziger
  *
  */
 class DrawerDelegate {
@@ -259,7 +259,6 @@ class DrawerDelegate {
         m_drawerToggle = new ActionBarDrawerToggle(
                 m_activity, /* host Activity */
                 m_drawerLayout, /* DrawerLayout object */
-                R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
                 R.string.Accessibility_NavigationOpen, /* "open drawer" description for accessibility */
                 R.string.Accessibility_NavigationClose /* "close drawer" description for accessibility */
                 ) {
@@ -269,6 +268,7 @@ class DrawerDelegate {
             public void onDrawerClosed(View view) {
                 m_activity.setActionBarTitlesFromActivity();
                 ActivityCompat.invalidateOptionsMenu(m_activity); // creates call to onPrepareOptionsMenu()
+                m_activity.invalidateOptionsMenu();
             }
 
 
@@ -276,7 +276,7 @@ class DrawerDelegate {
             public void onDrawerOpened(View drawerView) {
                 m_activity.setActionBarTitle(m_drawerTitle, null);
                 // creates call to onPrepareOptionsMenu()
-                ActivityCompat.invalidateOptionsMenu(m_activity); 
+                m_activity.invalidateOptionsMenu();
 
                 // Set up the Non-List Content (which could update)
                 setupOrUpdateDrawerHeader();

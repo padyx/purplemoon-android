@@ -1,6 +1,7 @@
 package ch.defiant.purplesky.core;
 
 import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
@@ -75,6 +76,7 @@ import dagger.Module;
             PhotoVoteTabbedActivity.class,
             MultiUploadPictureActivity.class,
             FavoritesActivity.class,
+            DisplayProfileActivity.class,
             SettingActivity.class,
 
             // Base or abstract classes

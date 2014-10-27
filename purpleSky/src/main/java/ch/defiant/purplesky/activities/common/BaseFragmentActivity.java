@@ -23,6 +23,8 @@ public abstract class BaseFragmentActivity extends Activity {
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
 
+    protected static final int NAVIGATION_INDEX_INVALID = -1;
+
     private static final String SAVEINSTANCE_TITLE = "title";
     private static final String SAVEINSTANCE_SUBTITLE = "subtitle";
     private static final String EXTRA_LAUNCH_OPTION = "launchOption";
