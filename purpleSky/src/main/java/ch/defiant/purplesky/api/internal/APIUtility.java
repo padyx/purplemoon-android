@@ -94,7 +94,7 @@ public final class APIUtility {
 
     public static Sexuality toSexuality(String sexuality){
         if(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE.equals(sexuality)){
-            return Sexuality.HOMOSEXUAL;
+            return Sexuality.HETEROSEXUAL;
         } else if (PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_BISEXUAL_VALUE.equals(sexuality)){
             return Sexuality.BISEXUAL;
         } else if (PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY_HOMOSEXUAL_VALUE.equals(sexuality)){
