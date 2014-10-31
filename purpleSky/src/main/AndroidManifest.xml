@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.defiant.purplesky"
-    android:installLocation="internalOnly"
-    android:versionCode="34"
-    android:versionName="1.1.2" >
+    android:installLocation="internalOnly">
 
-    <!-- Min and Max SDK are defined in GRADLE file! -->
+    <!-- Min and Max SDK as well as VERSION are defined in GRADLE file! -->
 
     <!-- Don't force the hardware features (implied by permissions) -->
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
