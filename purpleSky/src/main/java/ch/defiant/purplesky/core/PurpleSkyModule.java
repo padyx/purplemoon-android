@@ -8,6 +8,7 @@ import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
 import ch.defiant.purplesky.activities.RadarActivity;
+import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
@@ -77,6 +78,7 @@ import dagger.Module;
             MultiUploadPictureActivity.class,
             FavoritesActivity.class,
             DisplayProfileActivity.class,
+            ReportActivity.class,
             SettingActivity.class,
 
             // Base or abstract classes

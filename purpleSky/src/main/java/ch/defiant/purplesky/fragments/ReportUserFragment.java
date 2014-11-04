@@ -1,6 +1,8 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,7 +37,6 @@ import ch.defiant.purplesky.util.Holder;
 public class ReportUserFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<ReportResponse>>{
 
     private static String TAG =  ReportUserFragment.class.getSimpleName();
-    private final String FRAGMENT_TAG_REPORT_PROGRESS = "reportingProgress";
 
     @Inject
     protected IReportAdapter reportAdapter;
@@ -43,6 +44,18 @@ public class ReportUserFragment extends BaseFragment implements LoaderManager.Lo
     private ArrayAdapter<String> spinnerAdapter;
     private EditText explanationField;
     private Spinner reasonSpinner;
+    private String m_profileId;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Intent intent = activity.getIntent();
+        m_profileId = intent.getStringExtra(ArgumentConstants.ARG_USERID);
+
+        if(m_profileId == null){
+            throw new IllegalArgumentException("Missing userId");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,7 +78,6 @@ public class ReportUserFragment extends BaseFragment implements LoaderManager.Lo
 
     @Override
     public Loader<Holder<ReportResponse>> onCreateLoader(int i, Bundle bundle) {
-        String userId = getArguments().getString(ArgumentConstants.ARG_USERID);
 
         getView().findViewById(R.id.fragment_reportuser_sendBtn).setVisibility(View.GONE);
         getView().findViewById(R.id.fragment_reportuser_resultText).setVisibility(View.GONE);
@@ -79,7 +91,7 @@ public class ReportUserFragment extends BaseFragment implements LoaderManager.Lo
             Log.e(TAG, "Unknown position to retrieve reason for");
         }
 
-        return new ReportUserLoader(getActivity(), reportAdapter, userId, reason, explanationField.getText().toString());
+        return new ReportUserLoader(getActivity(), reportAdapter, m_profileId, reason, explanationField.getText().toString());
     }
 
     @Override

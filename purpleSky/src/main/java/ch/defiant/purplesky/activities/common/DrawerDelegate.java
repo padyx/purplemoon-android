@@ -312,7 +312,7 @@ class DrawerDelegate {
     }
 
     private void selectItem(final int position) {
-        if (position == m_activity.getSelfNavigationIndex()) {
+        if (position == m_activity.getSelfNavigationIndex() && !m_activity.isSelfSelectionReloads()) {
             closeDrawer();
             return;
         }

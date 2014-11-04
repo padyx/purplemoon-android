@@ -71,6 +71,12 @@ public class ChatListActivity extends BaseFragmentActivity implements IChatListA
     }
 
     @Override
+    public boolean isSelfSelectionReloads() {
+        // Self selection reloads
+        return true;
+    }
+
+    @Override
     public void conversationSelected(String userId) {
         final FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.conversation_fragment);
@@ -84,6 +90,7 @@ public class ChatListActivity extends BaseFragmentActivity implements IChatListA
             fragment = new ConversationFragment();
             Bundle args = new Bundle();
             args.putString(ArgumentConstants.ARG_USERID, userId);
+            fragment.setArguments(args);
             fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, fragment).addToBackStack(null).commit();
         }
     }

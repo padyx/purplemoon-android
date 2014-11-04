@@ -37,6 +37,15 @@ public abstract class BaseFragmentActivity extends Activity {
     private Handler m_handler;
 
     /**
+     * Whether selecting the same navigation item again will reactivate it.
+     * Default implementation returns false.
+     * @return
+     */
+    public boolean isSelfSelectionReloads() {
+        return false;
+    }
+
+    /**
      * Available Entries in the navigation drawer.
      */
     public enum NavigationDrawerEntries {

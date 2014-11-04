@@ -72,6 +72,7 @@
         <activity android:name=".activities.PhotoVoteTabbedActivity" />
         <activity android:name=".activities.MultiUploadPictureActivity" />
         <activity android:name=".activities.DisplayProfileActivity" />
+        <activity android:name=".activities.ReportActivity" />
 
         <activity android:name=".activities.RadarActivity" />
         <activity android:name=".activities.SettingActivity" />

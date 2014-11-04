@@ -3,10 +3,9 @@ package ch.defiant.purplesky.fragments.conversation;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,6 +31,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
+import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -46,8 +47,6 @@ import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.fragments.ReportUserFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.loaders.CachedUsernameLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.loaders.conversations.ConversationStatusLoader;
@@ -215,8 +214,9 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         setHasOptionsMenu(true);
         Bundle args = getArguments();
         MinimalUser userBean = null;
+        String profileId = null;
         if(args != null) {
-            m_profileId = args.getString(ArgumentConstants.ARG_USERID);
+            profileId = args.getString(ArgumentConstants.ARG_USERID);
             m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
             // If actually filled...
             if(m_conversationState != null){
@@ -239,8 +239,8 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             restoreInstanceState(savedInstanceState);
         }
 
-        if(m_profileId != null){
-            showConversationWithUser(m_profileId);
+        if(profileId != null){
+            showConversationWithUser(profileId);
         }
     }
 
@@ -573,23 +573,15 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     }
 
     private void openProfileFragment() {
-        DisplayProfileFragment f = new DisplayProfileFragment();
-        Bundle b = new Bundle();
-        b.putSerializable(ArgumentConstants.ARG_USERID, m_profileId);
-        f.setArguments(b);
-
-        FragmentManager manager = getActivity().getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+        intent.putExtra(ArgumentConstants.ARG_USERID, m_profileId);
+        getActivity().startActivity(intent);
     }
 
     private void openReportFragment() {
-        ReportUserFragment f = new ReportUserFragment();
-        Bundle b = new Bundle();
-        b.putSerializable(ArgumentConstants.ARG_USERID, m_profileId);
-        f.setArguments(b);
-        FragmentTransaction trans = getFragmentManager().beginTransaction();
-        trans.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), ReportActivity.class);
+        intent.putExtra(ArgumentConstants.ARG_USERID, m_profileId);
+        getActivity().startActivity(intent);
     }
 
     private void sendPreActions() {
