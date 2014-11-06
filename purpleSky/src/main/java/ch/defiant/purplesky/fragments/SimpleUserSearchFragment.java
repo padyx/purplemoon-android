@@ -2,8 +2,6 @@ package ch.defiant.purplesky.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.UserSearchResultsActivity;
 import ch.defiant.purplesky.adapters.SpinnerStateElement;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
@@ -40,7 +39,6 @@ import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
-import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.util.CompareUtility;
@@ -134,14 +132,9 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
     }
 
     private void startSearch(UserSearchOptions bean) {
-        UserSearchResultsFragment f = new UserSearchResultsFragment();
-        Bundle b = new Bundle();
-        b.putSerializable(UserSearchResultsFragment.EXTRA_SEARCHOBJ, bean);
-        f.setArguments(b);
-
-        FragmentManager manager = getActivity().getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), UserSearchResultsActivity.class);
+        intent.putExtra(UserSearchResultsActivity.EXTRA_SEARCHOBJ, bean);
+        getActivity().startActivity(intent);
     }
 
     private void createGUI(View inflated) {

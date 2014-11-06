@@ -2,7 +2,6 @@ package ch.defiant.purplesky.fragments.usersearch;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,20 +35,12 @@ public class UserSearchResultsFragment extends BaseFragment {
     private UserSearchResultListAdapter m_adapter;
 
     private EndlessResultAdapter m_endlessAdapter;
+    private ListView m_listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!hasOptions()) {
-            Log.e(TAG, "Did not get user search objects, or username to search!");
-            return;
-        } else {
-            m_options = (UserSearchOptions) getArguments().getSerializable(EXTRA_SEARCHOBJ);
-            m_usernameSearch = getArguments().getString(EXTRA_SEARCHNAME);
-        }
-
-        m_adapter = new UserSearchResultListAdapter(getActivity());
         if(savedInstanceState != null){
             @SuppressWarnings("unchecked")
             List<MinimalUser> data = (List<MinimalUser>) savedInstanceState.getSerializable(SAVEINSTANCE_DATA);
@@ -60,6 +51,22 @@ public class UserSearchResultsFragment extends BaseFragment {
             }
         }
 
+    }
+
+    public void startUsernameSearch(String searchString) {
+        m_options = null;
+        m_usernameSearch = searchString;
+        // Reset
+
+        resetAdapter();
+    }
+
+    public void startSearch(UserSearchOptions searchOptions) {
+        m_options = searchOptions;
+        m_usernameSearch = null;
+
+        // Reset
+        m_adapter = new UserSearchResultListAdapter(getActivity());
         if (m_options != null && m_options.getLocation() != null) {
             // To show distance, need the preview user for location
             m_options.setUserClass(PreviewUser.class);
@@ -69,16 +76,20 @@ public class UserSearchResultsFragment extends BaseFragment {
             locationBean.setLongitude(loc.getSecond());
             m_adapter.setOwnLocation(locationBean);
         }
+
+        resetAdapter();
+    }
+
+    private void resetAdapter() {
         m_endlessAdapter = new EndlessResultAdapter(getActivity(), m_adapter, R.layout.loading_listitem);
+        m_listView.setAdapter(m_endlessAdapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ListView v = (ListView) inflater.inflate(R.layout.list_plain, null);
-        v.setAdapter(m_endlessAdapter);
-        v.setOnItemClickListener(new OpenUserProfileListener(getActivity()));
-
-        return v;
+        m_listView  = (ListView) inflater.inflate(R.layout.list_plain, container);
+        m_listView.setOnItemClickListener(new OpenUserProfileListener(getActivity()));
+        return m_listView;
     }
     
     @Override
@@ -96,7 +107,6 @@ public class UserSearchResultsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.Results);
     }
 
     private boolean hasOptions() {

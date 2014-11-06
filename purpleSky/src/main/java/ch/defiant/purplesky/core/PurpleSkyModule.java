@@ -10,6 +10,7 @@ import ch.defiant.purplesky.activities.PostitTabbedActivity;
 import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.activities.SettingActivity;
+import ch.defiant.purplesky.activities.UserSearchResultsActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.main.MainActivity;
@@ -68,6 +69,7 @@ import dagger.Module;
     },
     injects = {
             PurpleSkyApplication.class,
+
             MainActivity.class,
             LoginActivity.class,
             RadarActivity.class,
@@ -80,6 +82,7 @@ import dagger.Module;
             DisplayProfileActivity.class,
             ReportActivity.class,
             SettingActivity.class,
+            UserSearchResultsActivity.class,
 
             // Base or abstract classes
             BaseListFragment.class,
