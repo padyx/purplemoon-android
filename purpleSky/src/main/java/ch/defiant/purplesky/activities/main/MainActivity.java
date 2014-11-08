@@ -32,7 +32,6 @@ import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.PurpleSkyApplication.UpdateListener;
-import ch.defiant.purplesky.core.UpdateService;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
@@ -351,8 +350,6 @@ public class MainActivity extends BaseFragmentActivity implements LoaderManager.
     }
 
     private void logoutComplete() {
-        // Deactivate the update service if present
-        UpdateService.unregisterUpdateService();
         // Delete Database
         deleteDatabase(DBHelper.DATABASE_NAME);
         // Delete preferences

@@ -1,5 +1,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:purplesky="http://schemas.android.com/apk/res/ch.defiant.purplesky" >
+    >
 
     <PreferenceCategory android:title="@string/preferences_header_eventNotifications" >
         <CheckBoxPreference
@@ -7,15 +7,6 @@
             android:disableDependentsState="false"
             android:key="ch.defiant.purplesky.preferences.updateEnabled"
             android:title="@string/CheckForNewEvents" />
-
-        <ch.defiant.purplesky.customwidgets.IntegerListPreference
-            android:defaultValue="@integer/ch.defiant.purplesky.preferences.updateIntervalMillis_default"
-            android:dependency="ch.defiant.purplesky.preferences.updateEnabled"
-            android:key="ch.defiant.purplesky.preferences.updateIntervalMillis"
-            android:summary="@string/PreferenceUpdateInterval_Summary"
-            android:title="@string/CheckEvery_"
-            purplesky:entryList="@array/checkEventsUpdateInterval_Strings"
-            purplesky:valueList="@array/checkEventsUpdateInterval_Value" />
 
         <PreferenceScreen
             android:summary="@string/PreferencesNotificationChooseEvents_Expl"

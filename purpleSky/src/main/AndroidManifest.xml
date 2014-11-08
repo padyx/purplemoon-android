@@ -59,11 +59,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".core.UpdateService"
-            android:exported="false" >
-        </service>
-
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.FavoritesActivity" />
         <activity android:name=".activities.VisitorTabbedActivity" />
@@ -76,7 +71,7 @@
         <activity android:name=".activities.UserSearchResultsActivity" />
 
         <activity android:name=".activities.RadarActivity" />
-        <activity android:name=".activities.SettingActivity" />
+        <activity android:name=".activities.SettingFragmentActivity" />
         <activity android:name=".activities.AboutActivity" />
         <activity android:name="ch.defiant.purplesky.activities.main.MainActivity" />
 

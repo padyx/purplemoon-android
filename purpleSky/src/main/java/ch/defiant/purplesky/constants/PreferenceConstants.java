@@ -10,9 +10,7 @@ public class PreferenceConstants {
     
     public static final String lastVersionInt = BASE + "lastVersionInt";
 
-    public static final String updateInterval = BASE + "updateIntervalMillis";
     public static final String updateEnabled = BASE + "updateEnabled";
-    public static final String lastUpdateServiceRun = BASE + "updateServiceRun";
 
     /********************
      * Simple user search

@@ -11,7 +11,7 @@ import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 public class MultiUploadPictureActivity extends BaseFragmentActivity {
     @Override
     public int getSelfNavigationIndex() {
-        return 8;
+        return NavigationDrawerEntries.LAUNCH_UPLOAD.ordinal();
     }
 
     @Override

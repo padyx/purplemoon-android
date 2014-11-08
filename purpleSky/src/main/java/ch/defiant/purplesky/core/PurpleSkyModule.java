@@ -9,7 +9,7 @@ import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
 import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
-import ch.defiant.purplesky.activities.SettingActivity;
+import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchResultsActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
@@ -81,8 +81,9 @@ import dagger.Module;
             FavoritesActivity.class,
             DisplayProfileActivity.class,
             ReportActivity.class,
-            SettingActivity.class,
+            SettingFragmentActivity.class,
             UserSearchResultsActivity.class,
+
 
             // Base or abstract classes
             BaseListFragment.class,
@@ -93,7 +94,6 @@ import dagger.Module;
 
             // Services
             UserService.class,
-            UpdateService.class,
 
             // Fragments
             PostitTabbedFragment.class,

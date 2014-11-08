@@ -103,8 +103,6 @@ public class PersistantModel {
         m_userProfileId = null;
         // Synchronous
         m_preferences.edit().clear().commit();
-
-        UpdateService.unregisterUpdateService();
     }
 
     private static final long EXPIRY_PROFILEPIC = 1000 * 60 * 60 * 24; // A day

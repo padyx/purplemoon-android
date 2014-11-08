@@ -2,7 +2,6 @@ package ch.defiant.purplesky.activities.main;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.SettingActivity;
 import ch.defiant.purplesky.activities.main.MainActivity.NavigationDrawerEntries;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -177,7 +175,6 @@ class DrawerDelegate {
                 f = new MultiUploadFragment();
                 break;
             case LAUNCH_SETTINGS:
-                m_activity.startActivity(new Intent(m_activity, SettingActivity.class));
                 return;
                 // TODO Replace by fragment implementation
             default:

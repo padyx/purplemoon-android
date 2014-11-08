@@ -39,7 +39,6 @@ import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.UpdateService;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -248,7 +247,6 @@ public class LoginActivity extends BaseFragmentActivity {
     }
 
     private void startServices() {
-        UpdateService.registerUpdateService();
     }
 
     private synchronized Fragment showFragmentDialog(int dialogId, AsyncTask<?, ?, ?> task) {
