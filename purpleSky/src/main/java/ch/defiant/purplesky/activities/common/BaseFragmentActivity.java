@@ -5,13 +5,16 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 
@@ -22,6 +25,8 @@ public abstract class BaseFragmentActivity extends Activity {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
+    @Inject
+    protected IConversationAdapter conversationAdapter;
 
     protected static final int NAVIGATION_INDEX_INVALID = -1;
 
@@ -35,6 +40,9 @@ public abstract class BaseFragmentActivity extends Activity {
     private DrawerDelegate m_drawerDelegate;
     private PurpleSkyApplication.UpdateListener m_listener;
     private Handler m_handler;
+
+    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
+    private static final String TAG = BaseFragmentActivity.class.getSimpleName();
 
     /**
      * Whether selecting the same navigation item again will reactivate it.
@@ -97,8 +105,17 @@ public abstract class BaseFragmentActivity extends Activity {
         super.onPostCreate(savedInstanceState);
 
         setupDrawer();
+        m_drawerDelegate.postCreate();
         // Upgrade actions that don't require blocking stuff
         //getLoaderManager().initLoader(R.id.loader_main_upgradePush, null, this);
+
+        View mainContent = findViewById(R.id.main_content);
+        if (mainContent != null) {
+            mainContent.setAlpha(0);
+            mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
+        } else {
+            Log.w(TAG, "No view with ID main_content to fade in.");
+        }
     }
 
     public void setActionBarTitle(CharSequence title, CharSequence subTitle){
@@ -148,10 +165,6 @@ public abstract class BaseFragmentActivity extends Activity {
 
     Handler getHandler(){
         return m_handler;
-    }
-
-    void startProfileImageLoad(){
-        //getLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, m_activity); // Restart, if it
     }
 
 }

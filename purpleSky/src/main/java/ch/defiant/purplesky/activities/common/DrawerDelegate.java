@@ -2,7 +2,9 @@ package ch.defiant.purplesky.activities.common;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -44,6 +46,10 @@ import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
+import ch.defiant.purplesky.loaders.NotificationLoader;
+import ch.defiant.purplesky.loaders.ProfileImageLoader;
+import ch.defiant.purplesky.loaders.StatusLoader;
+import ch.defiant.purplesky.loaders.UpgradeAndPushLoader;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -52,14 +58,14 @@ import ch.defiant.purplesky.util.StringUtility;
  * @author Patrick Bänziger
  *
  */
-class DrawerDelegate {
+class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
 
     // delay to launch nav drawer item, to allow close animation to play
     private static final int NAVDRAWER_LAUNCH_DELAY = 250;
 
     private static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
-    
+
     private class OwnProfileListener implements OnClickListener {
         @Override
         public void onClick(View v) {
@@ -76,7 +82,7 @@ class DrawerDelegate {
             new OnlineStatusDialogFragment().show(m_activity.getFragmentManager(), "status");
         }
     }
-    
+
     /* The click listener for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -90,7 +96,7 @@ class DrawerDelegate {
      */
     private final CharSequence m_drawerTitle;
     private final BaseFragmentActivity m_activity;
-    
+
     private ActionBarDrawerToggle m_drawerToggle;
     private DrawerLayout m_drawerLayout;
     private List<DrawerItem> m_drawerTitles;
@@ -103,11 +109,11 @@ class DrawerDelegate {
         m_drawerTitle = m_activity.getTitle();
         initialize();
     }
-    
+
     public boolean isDrawerOpen(){
         return m_drawerLayout.isDrawerOpen(GravityCompat.START);
     }
-    
+
     public void toggleDrawer(){
         if(isDrawerOpen()){
             closeDrawer();
@@ -115,11 +121,11 @@ class DrawerDelegate {
             openDrawer();
         }
     }
-    
+
     public void openDrawer(){
         m_drawerLayout.openDrawer(GravityCompat.START);
     }
-    
+
     public void closeDrawer(){
         m_drawerLayout.closeDrawer(GravityCompat.START);
     }
@@ -141,7 +147,7 @@ class DrawerDelegate {
             m_activity.setActionBarTitlesFromActivity();
         }
     }
-    
+
     void updateStatus(Pair<OnlineStatus, String> p) {
         if (StringUtility.isNotNullOrEmpty(p.second)) {
             m_onlineStatusLbl.setText(R.string.Custom);
@@ -160,7 +166,7 @@ class DrawerDelegate {
 
     void selectItem(BaseFragmentActivity.NavigationDrawerEntries startFragment, Bundle args) {
         // update the main content by replacing fragments
-    
+
         Class<? extends Activity> f = null;
         switch (startFragment) {
             case LAUNCH_CHATLIST:
@@ -168,7 +174,7 @@ class DrawerDelegate {
                 break;
             case LAUNCH_RADAR:
                 f = RadarActivity.class;
-            break;
+                break;
             case LAUNCH_POSTIT:
                 f = PostitTabbedActivity.class;
                 break;
@@ -201,7 +207,6 @@ class DrawerDelegate {
         m_activity.setProgressBarIndeterminateVisibility(false);
 
         // When we select something from the navigation drawer, the back stack is discarded
-        // clearBackstackAndLaunch(f);
         Intent intent = new Intent(m_activity, f);
         m_activity.startActivity(intent, args);
         m_activity.finish();
@@ -220,18 +225,18 @@ class DrawerDelegate {
         m_activity.findViewById(R.id.drawer_layout_statusLbl).setOnClickListener(new ChangeStatusListener());
         ImageView profileImgV = (ImageView) m_activity.findViewById(R.id.drawer_layout_profileImgV);
         m_onlineStatusLbl = (TextView) m_activity.findViewById(R.id.drawer_layout_statusLbl);
-    
+
         String url = PersistantModel.getInstance().getCachedOwnProfilePictureURLDirectory();
         if (url == null) {
             Picasso.with(m_activity).load(R.drawable.social_person).fit().into(profileImgV);
-            m_activity.startProfileImageLoad();
+            startProfileImageLoad();
         } else {
             UserPreviewPictureSize size = UserPreviewPictureSize.getPictureForPx(imgSize);
             Picasso.with(m_activity).load(url + size.getAPIValue()).error(R.drawable.social_person)
-            .placeholder(R.drawable.social_person).resize(imgSize, imgSize).centerCrop().into(profileImgV);
+                    .placeholder(R.drawable.social_person).resize(imgSize, imgSize).centerCrop().into(profileImgV);
         }
     }
-    
+
     /**
      * Updates the event counters for the navigation drawer entries.
      */
@@ -249,6 +254,8 @@ class DrawerDelegate {
         setupDrawerLayout();
         setupOrUpdateDrawerHeader();
         setupDrawerToggle();
+
+        triggerUpdate();
     }
 
     private void setupDrawerContent() {
@@ -261,7 +268,7 @@ class DrawerDelegate {
                 m_drawerLayout, /* DrawerLayout object */
                 R.string.Accessibility_NavigationOpen, /* "open drawer" description for accessibility */
                 R.string.Accessibility_NavigationClose /* "close drawer" description for accessibility */
-                ) {
+        ) {
 
 
             @Override
@@ -283,7 +290,7 @@ class DrawerDelegate {
             }
 
         };
-        m_drawerLayout.setDrawerListener(m_drawerToggle);        
+        m_drawerLayout.setDrawerListener(m_drawerToggle);
     }
 
     private void setupDrawerLayout(){
@@ -339,5 +346,79 @@ class DrawerDelegate {
     private void clearBackstackAndLaunch(Fragment f) {
         closeDrawer();
     }
+
+    void startProfileImageLoad(){
+        m_activity.getLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, this);
+    }
+
+    private void triggerUpdate() {
+        LoaderManager lm = m_activity.getLoaderManager();
+        lm.initLoader(R.id.loader_drawermenu_notificationCounters, null, this);
+        lm.initLoader(R.id.loader_drawermenu_status, null, this);
+    }
+
+    @Override
+    public Loader<Object> onCreateLoader(int type, Bundle arg1) {
+        switch (type) {
+            case R.id.loader_drawermenu_profileimage:
+                return new ProfileImageLoader(m_activity);
+            case R.id.loader_drawermenu_notificationCounters:
+                return new NotificationLoader(m_activity, m_activity.apiAdapter, m_activity.conversationAdapter);
+            case R.id.loader_drawermenu_status:
+                return new StatusLoader(m_activity, m_activity.apiAdapter);
+            case R.id.loader_main_upgradePush:
+                return new UpgradeAndPushLoader(m_activity, m_activity.apiAdapter);
+            case R.id.loader_main_logout:
+                // FIXME Rremove and add it in the settings
+                // return new LogoutLoader(this, apiAdapter);
+            default:
+                throw new IllegalArgumentException("Loader type not found: " + type);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Object> loader, Object result) {
+        if (result != null) {
+            switch (loader.getId()) {
+                case R.id.loader_drawermenu_profileimage:
+                    PersistantModel.getInstance().setCachedOwnProfilePictureURLDirectory((String) result);
+                    // Refresh
+                    setupOrUpdateDrawerHeader();
+                    return;
+                case R.id.loader_drawermenu_notificationCounters:
+                    updateCounts((UpdateBean) result);
+                    return;
+                case R.id.loader_drawermenu_status:
+                    @SuppressWarnings("unchecked")
+                    Pair<OnlineStatus, String> p = (Pair<OnlineStatus, String>) result;
+                    updateStatus(p);
+                    return;
+                case R.id.loader_main_logout:
+//                    Boolean succeeded = (Boolean) result;
+//                    if (succeeded) {
+//                        logoutComplete();
+//                    } else {
+//                        FragmentManager manager = getFragmentManager();
+//                        Fragment frag = manager.findFragmentByTag(LOGOUT_FRAGMENT_TAG);
+//                        if (frag != null) {
+//                            FragmentTransaction t = manager.beginTransaction();
+//                            t.detach(frag);
+//                            t.commitAllowingStateLoss(); // What the user never saw...
+//                        }
+//                        Toast.makeText(this, "Could not logout. Check your internet connection", Toast.LENGTH_LONG)
+//                                .show();
+//                    }
+                    break;
+                case R.id.loader_main_upgradePush:
+                    // NOP
+                    break;
+                default:
+                    throw new IllegalArgumentException("Loader type not found: " + loader.getId());
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Object> arg0) { }
 
 }

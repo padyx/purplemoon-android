@@ -7,11 +7,9 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 
 /**
- * @author Chakotay
+ * @author Patrick Bänziger
  */
 public class AboutActivity extends BaseFragmentActivity {
-    // TODO This is a workaround until we can use a fragment for preferences to show the about info in a fragment
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

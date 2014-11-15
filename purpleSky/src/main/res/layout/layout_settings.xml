@@ -5,11 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
+    <LinearLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment"
-        android:name="ch.defiant.purplesky.fragments.SettingsFragment"/>
+        android:layout_height="match_parent">
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment"
+            android:name="ch.defiant.purplesky.fragments.SettingsFragment"/>
+
+    </LinearLayout>
 
     <!-- Nav drawer -->
     <include layout="@layout/drawer_layout" />

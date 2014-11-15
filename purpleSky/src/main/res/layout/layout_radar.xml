@@ -8,13 +8,19 @@
     android:layout_height="match_parent"
     tools:context=".activities.RadarActivity">
 
-    <fragment
-        android:id="@+id/fragment"
+    <LinearLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="ch.defiant.purplesky.fragments.RadarGridFragment"
-        tools:layout="@layout/radar_grid_fragment"/>
+        android:layout_height="match_parent">
 
+        <fragment
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="ch.defiant.purplesky.fragments.RadarGridFragment"
+            tools:layout="@layout/radar_grid_fragment"/>
+
+    </LinearLayout>
     <!-- Nav drawer -->
     <include layout="@layout/drawer_layout" />
 </android.support.v4.widget.DrawerLayout>

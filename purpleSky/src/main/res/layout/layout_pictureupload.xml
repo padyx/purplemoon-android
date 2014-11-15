@@ -8,12 +8,19 @@
     android:layout_height="match_parent"
     >
 
-    <fragment
-        android:id="@+id/fragment"
+    <LinearLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="ch.defiant.purplesky.fragments.MultiUploadFragment"
-        tools:layout="@layout/multiupload"/>
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="ch.defiant.purplesky.fragments.MultiUploadFragment"
+            tools:layout="@layout/multiupload"/>
+
+    </LinearLayout>
 
     <!-- Nav drawer -->
     <include layout="@layout/drawer_layout" />
