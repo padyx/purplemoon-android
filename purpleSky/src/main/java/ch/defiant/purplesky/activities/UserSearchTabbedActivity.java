@@ -2,6 +2,7 @@ package ch.defiant.purplesky.activities;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,4 +63,9 @@ public class UserSearchTabbedActivity extends AbstractTabbedActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setActionBarTitle(getString(R.string.Search), null);
+    }
 }

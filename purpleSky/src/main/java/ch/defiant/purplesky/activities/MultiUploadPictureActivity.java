@@ -18,5 +18,6 @@ public class MultiUploadPictureActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_pictureupload);
+        setActionBarTitle(getString(R.string.Upload), null);
     }
 }

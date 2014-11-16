@@ -15,6 +15,7 @@ public class AboutActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_full);
+        setActionBarTitle(getString(R.string.PreferenceAboutApp), null);
 
         ((WebView)findViewById(R.id.webview_full_webview)).loadUrl("file:///android_asset/licence.html");
     }

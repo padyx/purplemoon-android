@@ -23,6 +23,7 @@ public class ChatListActivity extends BaseFragmentActivity implements IChatListA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_chatlist);
+        setActionBarTitle(getString(R.string.Messages), null);
 
         View containerFrame = findViewById(R.id.fragment_container_frame);
         // Check whether the activity is using the layout version with the container frame

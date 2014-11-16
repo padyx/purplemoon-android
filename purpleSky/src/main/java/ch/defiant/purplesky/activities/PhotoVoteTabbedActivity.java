@@ -48,4 +48,10 @@ public class PhotoVoteTabbedActivity extends AbstractTabbedActivity {
     public int getSelfNavigationIndex() {
         return 6;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setActionBarTitle(getString(R.string.PhotoVotes), null);
+    }
 }

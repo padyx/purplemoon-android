@@ -42,4 +42,10 @@ public class PostitTabbedActivity extends AbstractTabbedActivity {
     public int getSelfNavigationIndex() {
         return 2;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setActionBarTitle(getString(R.string.Postits), null);
+    }
 }

@@ -31,6 +31,7 @@ public class SettingFragmentActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_settings);
+        setActionBarTitle(getString(R.string.Settings), null);
 
         m_listener = new PreferenceUpdateListener();
         PreferenceUtility.getPreferences().registerOnSharedPreferenceChangeListener(m_listener);

@@ -42,4 +42,10 @@ public class VisitorTabbedActivity extends AbstractTabbedActivity {
     public int getSelfNavigationIndex() {
         return 3;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setActionBarTitle(getString(R.string.ProfileVisits), null);
+    }
 }

@@ -281,7 +281,8 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                m_activity.setActionBarTitle(m_drawerTitle, null);
+                m_activity.getActionBar().setTitle(m_drawerTitle);
+                m_activity.getActionBar().setSubtitle(null);
                 // creates call to onPrepareOptionsMenu()
                 m_activity.invalidateOptionsMenu();
 
