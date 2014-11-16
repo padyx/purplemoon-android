@@ -124,7 +124,15 @@ public class UploadService extends Service {
             b.setError("File not found");
             return false;
         } finally {
-            IOUtils.closeQuietly(fileDescriptor);
+            if(fileDescriptor != null) {
+                // Cannot use IOUtils.closeQuietly below util minSdk is >= 4.4 (Lvl 19):
+                // Only since then AssetFileDescriptor implements Closable (Bug #100)
+                try {
+                    fileDescriptor.close();
+                } catch (IOException e) {
+                    // Ignore
+                }
+            }
         }
 
         if (length == AssetFileDescriptor.UNKNOWN_LENGTH) {
