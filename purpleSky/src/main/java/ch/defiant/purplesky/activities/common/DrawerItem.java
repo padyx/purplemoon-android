@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.activities.main;
+package ch.defiant.purplesky.activities.common;
 
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 

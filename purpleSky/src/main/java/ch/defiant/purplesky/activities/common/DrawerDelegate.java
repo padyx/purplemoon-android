@@ -35,8 +35,6 @@ import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
-import ch.defiant.purplesky.activities.main.DrawerAdapter;
-import ch.defiant.purplesky.activities.main.DrawerItem;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PersistantModel;

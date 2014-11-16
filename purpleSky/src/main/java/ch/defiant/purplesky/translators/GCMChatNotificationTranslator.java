@@ -28,7 +28,8 @@ import java.util.Map;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -68,10 +69,10 @@ public class GCMChatNotificationTranslator {
 
         Builder b = NotificationUtility.createBasicNotification(c);
 
-        Intent intent = new Intent(c, MainActivity.class);
+        Intent intent = new Intent(c, ChatListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Arguments
-        intent.putExtra(MainActivity.EXTRA_LAUNCH_OPTION, MainActivity.NavigationDrawerEntries.LAUNCH_CHATLIST.ordinal());
+        intent.putExtra(BaseFragmentActivity.EXTRA_LAUNCH_OPTION, BaseFragmentActivity.NavigationDrawerEntries.LAUNCH_CHATLIST.ordinal());
 
         final Resources res = c.getResources();
         if (unreadConversations > 1) {
@@ -114,7 +115,7 @@ public class GCMChatNotificationTranslator {
         // Pass the argument along which chat to open
         Bundle nestedargs = new Bundle();
         nestedargs.putString(ChatListFragment.EXTRA_STRING_GOCHAT, firstConversation.profileId);
-        intent.putExtra(MainActivity.EXTRA_LAUNCH_ARGS, nestedargs);
+        intent.putExtra(BaseFragmentActivity.EXTRA_LAUNCH_ARGS, nestedargs);
     }
 
     private static void processInboxStyle(int unreadConversations, Map<String, MinimalUser> map, List<Conversation> conversations, Builder b,

@@ -32,8 +32,8 @@ public abstract class BaseFragmentActivity extends Activity {
 
     private static final String SAVEINSTANCE_TITLE = "title";
     private static final String SAVEINSTANCE_SUBTITLE = "subtitle";
-    private static final String EXTRA_LAUNCH_OPTION = "launchOption";
-    private static final String EXTRA_LAUNCH_ARGS = "launchArgs";
+    public static final String EXTRA_LAUNCH_OPTION = "launchOption";
+    public static final String EXTRA_LAUNCH_ARGS = "launchArgs";
 
     private CharSequence m_subTitle;
     private CharSequence m_title;

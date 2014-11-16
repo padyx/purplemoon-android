@@ -13,7 +13,6 @@ import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchResultsActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
-import ch.defiant.purplesky.activities.main.MainActivity;
 import ch.defiant.purplesky.api.conversation.internal.ConversationModule;
 import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
 import ch.defiant.purplesky.api.internal.APIModule;
@@ -70,7 +69,6 @@ import dagger.Module;
     injects = {
             PurpleSkyApplication.class,
 
-            MainActivity.class,
             LoginActivity.class,
             RadarActivity.class,
             VisitorTabbedActivity.class,

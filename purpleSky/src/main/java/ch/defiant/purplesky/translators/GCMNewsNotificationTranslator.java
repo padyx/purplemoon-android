@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.translators;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,7 +16,11 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import java.util.Date;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
+import ch.defiant.purplesky.activities.PostitTabbedActivity;
+import ch.defiant.purplesky.activities.VisitorTabbedActivity;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.NotificationConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
@@ -69,6 +74,7 @@ public class GCMNewsNotificationTranslator {
 
         int lines = 0;
         int launchArg = -1;
+        Class<? extends Activity> activity = ChatListActivity.class; // Default
 
         boolean notify = prefs.getBoolean(PreferenceConstants.notifyForPostit, true);
         final Resources res = c.getResources();
@@ -76,8 +82,9 @@ public class GCMNewsNotificationTranslator {
             CharSequence text = res.getQuantityString(R.plurals.XNewPostits, unseenPostits, unseenPostits);
             inbox.addLine(text);
             if (lines == 0) {
+                activity = PostitTabbedActivity.class;
                 b.setContentText(text);
-                launchArg = MainActivity.NavigationDrawerEntries.LAUNCH_POSTIT.ordinal();
+                launchArg = BaseFragmentActivity.NavigationDrawerEntries.LAUNCH_POSTIT.ordinal();
             }
             lines++;
         }
@@ -86,8 +93,9 @@ public class GCMNewsNotificationTranslator {
             CharSequence text = res.getQuantityString(R.plurals.XNewPhotovotes, unseenVotes, unseenVotes);
             inbox.addLine(text);
             if (lines == 0) {
+                activity = PhotoVoteTabbedActivity.class;
                 b.setContentText(text);
-                launchArg = MainActivity.NavigationDrawerEntries.LAUNCH_PHOTOVOTE.ordinal();
+                launchArg = BaseFragmentActivity.NavigationDrawerEntries.LAUNCH_PHOTOVOTE.ordinal();
             }
             lines++;
         }
@@ -96,8 +104,9 @@ public class GCMNewsNotificationTranslator {
             CharSequence text = res.getQuantityString(R.plurals.XNewVisits, unseenVisits, unseenVisits);
             inbox.addLine(text);
             if (lines == 0) {
+                activity = VisitorTabbedActivity.class;
                 b.setContentText(text);
-                launchArg = MainActivity.NavigationDrawerEntries.LAUNCH_VISITORS.ordinal();
+                launchArg = BaseFragmentActivity.NavigationDrawerEntries.LAUNCH_VISITORS.ordinal();
             }
             lines++;
         }
@@ -107,10 +116,11 @@ public class GCMNewsNotificationTranslator {
         }
 
         b.setStyle(inbox);
-        Intent intent = new Intent(c, MainActivity.class);
+
+        Intent intent = new Intent(c, activity);
         if (launchArg != -1 && lines == 1) {
             // Only go to a specific fragment, if it is clear which one
-            intent.putExtra(MainActivity.EXTRA_LAUNCH_OPTION, launchArg);
+            intent.putExtra(BaseFragmentActivity.EXTRA_LAUNCH_OPTION, launchArg);
         }
         PendingIntent pendingIntent = PendingIntent.getActivity(c, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         b.setContentIntent(pendingIntent);

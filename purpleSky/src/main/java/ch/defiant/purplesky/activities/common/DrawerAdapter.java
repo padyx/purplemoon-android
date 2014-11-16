@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.activities.main;
+package ch.defiant.purplesky.activities.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import java.util.List;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
-public class DrawerAdapter extends ArrayAdapter<DrawerItem> {
+class DrawerAdapter extends ArrayAdapter<DrawerItem> {
 
     private static class ViewHolder {
         TextView textV;
