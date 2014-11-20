@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.core;
 
+import ch.defiant.purplesky.activities.AboutActivity;
 import ch.defiant.purplesky.activities.ChatListActivity;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
@@ -81,6 +82,7 @@ import dagger.Module;
             ReportActivity.class,
             SettingFragmentActivity.class,
             UserSearchResultsActivity.class,
+            AboutActivity.class,
 
 
             // Base or abstract classes

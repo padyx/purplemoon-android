@@ -25,4 +25,8 @@ public class AboutActivity extends BaseFragmentActivity {
         return -1;
     }
 
+    @Override
+    protected boolean isShowNavigationDrawer() {
+        return false;
+    }
 }

@@ -19,7 +19,7 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 
 /**
- * @author Chakotay
+ * @author Patrick Bänziger
  */
 public abstract class BaseFragmentActivity extends Activity {
 
@@ -104,8 +104,10 @@ public abstract class BaseFragmentActivity extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        setupDrawer();
-        m_drawerDelegate.postCreate();
+        if(isShowNavigationDrawer()) {
+            setupDrawer();
+            m_drawerDelegate.postCreate();
+        }
         // Upgrade actions that don't require blocking stuff
         //getLoaderManager().initLoader(R.id.loader_main_upgradePush, null, this);
 
@@ -134,7 +136,7 @@ public abstract class BaseFragmentActivity extends Activity {
     }
 
     private void setupDrawer() {
-        if(getActionBar() != null) {
+        if (getActionBar() != null) {
             // enable ActionBar app icon to behave as action to toggle nav drawer
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
@@ -150,8 +152,8 @@ public abstract class BaseFragmentActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (m_drawerDelegate.onOptionsItemSelected(item)) {
-         return true;
+        if (isShowNavigationDrawer() && m_drawerDelegate.onOptionsItemSelected(item)) {
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -159,12 +161,22 @@ public abstract class BaseFragmentActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the delegate
-        m_drawerDelegate.onConfigurationChanged(newConfig);
+        if(isShowNavigationDrawer()) {
+            // Pass any configuration change to the delegate
+            m_drawerDelegate.onConfigurationChanged(newConfig);
+        }
     }
 
     Handler getHandler(){
         return m_handler;
+    }
+
+    /**
+     * Whether the navigation drawer shall be shown
+     * @return
+     */
+    protected boolean isShowNavigationDrawer(){
+        return true;
     }
 
 }
