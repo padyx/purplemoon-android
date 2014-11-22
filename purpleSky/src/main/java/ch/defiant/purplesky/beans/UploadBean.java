@@ -24,7 +24,7 @@ public class UploadBean {
     private final URL m_url;
     private final Collection<NameValuePair> m_formParams;
     private final Collection<NameValuePair> m_headerParams;
-    private State m_state;
+    private State m_state = State.PENDING;
     private String m_error;
 
     /**
