@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -62,7 +64,6 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     private static final int NAVDRAWER_LAUNCH_DELAY = 250;
 
     private static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
-    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
 
     private class OwnProfileListener implements OnClickListener {
         @Override
@@ -97,7 +98,7 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
 
     private ActionBarDrawerToggle m_drawerToggle;
     private DrawerLayout m_drawerLayout;
-    private List<DrawerItem> m_drawerTitles;
+    private List<DrawerItem> m_drawerTitles = new ArrayList<DrawerItem>();
     private ListView m_drawerList;
     private TextView m_onlineStatusLbl;
 
@@ -257,7 +258,7 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     }
 
     private void setupDrawerContent() {
-        m_drawerTitles = populateDrawer();
+        populateDrawer();
     }
 
     private void setupDrawerToggle() {
@@ -302,19 +303,28 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
         m_drawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
-    private List<DrawerItem> populateDrawer() {
-        ArrayList<DrawerItem> l = new ArrayList<DrawerItem>();
-        l.add(new DrawerItem(R.string.Messages, R.drawable.content_email, NavigationDrawerEventType.MESSAGE));
-        l.add(new DrawerItem(R.string.Radar, R.drawable.radar, null)); // TODO Replace icon
-        l.add(new DrawerItem(R.string.Postits, R.drawable.postit_black, NavigationDrawerEventType.POSTIT));
-        l.add(new DrawerItem(R.string.ProfileVisits, R.drawable.visits_1step, NavigationDrawerEventType.VISIT));
-        l.add(new DrawerItem(R.string.Favorites_Online_, R.drawable.rating_important,
-                NavigationDrawerEventType.FAVORITES));
-        l.add(new DrawerItem(R.string.SearchUser_ShortHome, R.drawable.action_search, null));
-        l.add(new DrawerItem(R.string.PhotoVotes, R.drawable.picture_rate, null));
-        l.add(new DrawerItem(R.string.Upload, R.drawable.content_new_picture, null));
-        l.add(new DrawerItem(R.string.Settings, R.drawable.action_settings, null));
-        return l;
+    private void populateDrawer() {
+        int selectedIndex = m_activity.getSelfNavigationIndex();
+
+        addDrawerItem(R.string.Messages, R.drawable.content_email, NavigationDrawerEventType.MESSAGE, selectedIndex , R.drawable.rounded_rect_red);
+        addDrawerItem(R.string.Radar, R.drawable.radar, null, selectedIndex, R.drawable.rounded_button_blue); // TODO Replace icon
+        addDrawerItem(R.string.Postits, R.drawable.postit_black, NavigationDrawerEventType.POSTIT, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.ProfileVisits, R.drawable.visits_1step, NavigationDrawerEventType.VISIT, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Favorites_Online_, R.drawable.rating_important, NavigationDrawerEventType.FAVORITES, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.SearchUser_ShortHome, R.drawable.action_search, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.PhotoVotes, R.drawable.picture_rate, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Upload, R.drawable.content_new_picture, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Settings, R.drawable.action_settings, null, selectedIndex, R.drawable.rounded_button_blue);
+    }
+
+    private void addDrawerItem(
+            @StringRes int title,
+            @DrawableRes int drawableRes,
+            NavigationDrawerEventType eventType,
+            int selectionIndex,
+            @DrawableRes int eventCountRes){
+        boolean selected = selectionIndex == m_drawerTitles.size();
+        m_drawerTitles.add(new DrawerItem(title, drawableRes, eventType, selected, eventCountRes));
     }
 
     private void selectItem(final int position) {

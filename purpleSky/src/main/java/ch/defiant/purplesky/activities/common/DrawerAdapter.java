@@ -27,6 +27,8 @@ class DrawerAdapter extends ArrayAdapter<DrawerItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        DrawerItem item = getItem(position);
+
         View v = convertView;
         ViewHolder holder;
         if (v == null) {
@@ -42,14 +44,13 @@ class DrawerAdapter extends ArrayAdapter<DrawerItem> {
             holder = (ViewHolder) v.getTag();
         }
 
-        if (position == 0) {
-            // Messages
-            holder.notifLbl.setBackgroundResource(R.drawable.rounded_rect_red);
+        holder.notifLbl.setBackgroundResource(item.countBrackgroundResId);
+        if(item.isSelected) {
+            v.setBackgroundColor(getContext().getResources().getColor(R.color.navdrawer_selection));
         } else {
-            holder.notifLbl.setBackgroundResource(R.drawable.rounded_rect_blue);
+            v.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
         }
 
-        DrawerItem item = getItem(position);
         if (item.iconRes == 0) {
             holder.imgV.setImageBitmap(null);
             holder.imgV.setVisibility(View.GONE);
