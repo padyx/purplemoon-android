@@ -4,9 +4,11 @@ import ch.defiant.purplesky.activities.AboutActivity;
 import ch.defiant.purplesky.activities.ChatListActivity;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
+import ch.defiant.purplesky.activities.LightboxActivity;
 import ch.defiant.purplesky.activities.LoginActivity;
 import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
+import ch.defiant.purplesky.activities.PictureGridViewActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
 import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
@@ -70,6 +72,7 @@ import dagger.Module;
     injects = {
             PurpleSkyApplication.class,
 
+            // Activities
             LoginActivity.class,
             RadarActivity.class,
             VisitorTabbedActivity.class,
@@ -83,6 +86,8 @@ import dagger.Module;
             SettingFragmentActivity.class,
             UserSearchResultsActivity.class,
             AboutActivity.class,
+            PictureGridViewActivity.class,
+            LightboxActivity.class,
 
 
             // Base or abstract classes

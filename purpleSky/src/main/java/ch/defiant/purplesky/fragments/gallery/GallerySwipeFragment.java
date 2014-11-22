@@ -25,14 +25,14 @@ public class GallerySwipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.layout_viewpager, container, false);
 
-        if (getArguments().getSerializable(ArgumentConstants.ARG_FOLDER) instanceof PictureFolder) {
-            m_folder = (PictureFolder) getArguments().getSerializable(ArgumentConstants.ARG_FOLDER);
+        if (getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER) instanceof PictureFolder) {
+            m_folder = (PictureFolder) getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER);
         } else {
             Log.e(TAG, "Tried to open conversation without user id");
             throw new IllegalArgumentException("Missing user id");
         }
 
-        int startPos = getArguments().getInt(ARG_START_POSITION, 0);
+        int startPos = getActivity().getIntent().getIntExtra(ARG_START_POSITION, 0);
 
         ViewPager pager = (ViewPager) v.findViewById(R.id.viewpager);
         pager.setAdapter(new ViewPagerAdapter(getActivity().getFragmentManager()));
@@ -47,13 +47,17 @@ public class GallerySwipeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Hide action bar
-        getActivity().getActionBar().hide();
+        if(getActivity().getActionBar() != null) {
+            getActivity().getActionBar().hide();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().getActionBar().show();
+        if(getActivity().getActionBar() != null) {
+            getActivity().getActionBar().show();
+        }
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {

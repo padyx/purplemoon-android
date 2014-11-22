@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.fragments.gallery;
 
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.PictureGridViewActivity;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
@@ -66,14 +67,9 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
                         return;
                     }
 
-                    // XXX
-
-                    PictureGridViewFragment f = new PictureGridViewFragment();
-                    Bundle b = new Bundle();
-                    b.putSerializable(ArgumentConstants.ARG_FOLDER, value);
-                    f.setArguments(b);
-                    FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
-                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                    Intent intent = new Intent(getActivity(), PictureGridViewActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_FOLDER, value);
+                    startActivity(intent);
                 }
             }
         });
@@ -84,7 +80,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(R.id.loader_picturefolders_main, getArguments(), this);
+        getLoaderManager().initLoader(R.id.loader_picturefolders_main, getActivity().getIntent().getExtras(), this);
     }
 
     public class ViewHolder {

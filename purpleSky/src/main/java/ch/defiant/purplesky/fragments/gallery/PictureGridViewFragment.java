@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.fragments.gallery;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.LightboxActivity;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -40,7 +41,7 @@ public class PictureGridViewFragment extends Fragment {
         if (savedInstanceState != null) {
 
         } else {
-            m_folder = (PictureFolder) getArguments().getSerializable(ArgumentConstants.ARG_FOLDER);
+            m_folder = (PictureFolder) getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER);
             m_adapter = new PictureAdapter(m_folder);
             gv.setAdapter(m_adapter);
 
@@ -48,13 +49,10 @@ public class PictureGridViewFragment extends Fragment {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    GallerySwipeFragment f = new GallerySwipeFragment();
-                    Bundle b = new Bundle();
-                    b.putSerializable(ArgumentConstants.ARG_FOLDER, m_folder);
-                    b.putInt(GallerySwipeFragment.ARG_START_POSITION, position);
-                    f.setArguments(b);
-                    FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
-                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                    Intent intent = new Intent(getActivity(), LightboxActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_FOLDER, m_folder);
+                    intent.putExtra(GallerySwipeFragment.ARG_START_POSITION, position);
+                    startActivity(intent);
                 }
             });
         }
