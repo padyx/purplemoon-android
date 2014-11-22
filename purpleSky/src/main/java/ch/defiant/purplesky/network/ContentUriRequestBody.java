@@ -24,13 +24,17 @@ import okio.Source;
  */
 public class ContentUriRequestBody extends RequestBody {
 
+    private static final int SEGMENT_SIZE = 2048; // okio.Segment.SIZE
+    private static final String contentScheme = "content";
+
     private final Uri contentUri;
     private final MediaType type;
     private final ContentResolver resolver;
     private final long contentLength;
-    private final String contentScheme = "content";
 
-    public ContentUriRequestBody(ContentResolver resolver, MediaType type, Uri contentUri) {
+    private ProgressListener listener;
+
+    public ContentUriRequestBody(ContentResolver resolver, MediaType type, Uri contentUri, ProgressListener listener) {
         this.type = type;
         this.contentUri = contentUri;
         this.resolver = resolver;
@@ -48,16 +52,16 @@ public class ContentUriRequestBody extends RequestBody {
                 length = fileDescriptor.getLength();
             }
         } catch (FileNotFoundException e) {
-            length = -0;
+            length = 0;
         } finally {
             IOUtils.closeQuietly(fileDescriptor);
         }
         this.contentLength = length;
-
+        this.listener = listener;
     }
 
-    public static ContentUriRequestBody create(ContentResolver resolver, MediaType type, Uri contentUri){
-        return new ContentUriRequestBody(resolver, type, contentUri);
+    public static ContentUriRequestBody create(ContentResolver resolver, MediaType type, Uri contentUri, ProgressListener listener){
+        return new ContentUriRequestBody(resolver, type, contentUri, listener);
     }
 
     @Override
@@ -71,7 +75,19 @@ public class ContentUriRequestBody extends RequestBody {
         try{
             Source source = Okio.source(resolver.openInputStream(contentUri));
             stream = resolver.openInputStream(contentUri);
-            sink.writeAll(source);
+
+            long total = 0;
+            long read;
+
+            while ((read = source.read(sink.buffer(), SEGMENT_SIZE)) != -1) {
+                total += read;
+                sink.flush();
+                if(listener != null) {
+                    this.listener.transferred(total, contentLength);
+                }
+            }
+            total = contentLength;
+            this.listener.transferred(total, contentLength);
         } finally {
             IOUtils.closeQuietly(stream);
         }
@@ -80,5 +96,9 @@ public class ContentUriRequestBody extends RequestBody {
     @Override
     public long contentLength() {
         return contentLength;
+    }
+
+    public interface ProgressListener {
+        void transferred(long bytesTransferred, long totalBytes);
     }
 }

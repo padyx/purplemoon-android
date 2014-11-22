@@ -7,15 +7,22 @@ import org.apache.http.NameValuePair;
 import java.net.URL;
 import java.util.Collection;
 
-public class UploadBean {
+import ch.defiant.purplesky.network.ContentUriRequestBody;
+
+public class UploadBean implements ContentUriRequestBody.ProgressListener {
 
     public static final long UNKNOWN_LENGTH = -1L;
+
+    @Override
+    public void transferred(long transferred, long total) {
+        setProgressPercentage((int)Math.ceil(100.0d/total*transferred));
+    }
 
     public enum State {
         PENDING,
         IN_PROGRESS,
         COMPLETE,
-        ERROR;
+        ERROR
     }
 
     private int m_progressPercentage;

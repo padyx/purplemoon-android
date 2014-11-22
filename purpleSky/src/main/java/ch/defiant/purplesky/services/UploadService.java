@@ -15,7 +15,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 
 import java.io.FileNotFoundException;
@@ -172,7 +171,7 @@ public class UploadService extends Service {
                             "Content-Disposition", "file; name=\"" + b.getFormName() + "\";filename=\""+fileUri.getLastPathSegment()+"\"",
                             "Content-Transfer-Encoding", "binary"
                             ),
-                    ContentUriRequestBody.create(getContentResolver(), MediaType.parse(mimeType), fileUri)
+                    ContentUriRequestBody.create(getContentResolver(), MediaType.parse(mimeType), fileUri, b)
             );
 
             builder.url(b.getUrl()).post(multipartBuilder.build());
