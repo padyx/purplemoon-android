@@ -152,10 +152,11 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             ArrayList<PictureFolder> all = new ArrayList<PictureFolder>();
             all.add(new NullPictureFolder(getString(R.string.PleaseChoose)));
             all.addAll(result.getContainedObject());
-
-            Spinner spinner = (Spinner) getView().findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
-            m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getActivity(), android.R.layout.simple_spinner_dropdown_item, all);
-            spinner.setAdapter(m_spinnerAdapter);
+            if(getView() != null) {
+                Spinner spinner = (Spinner) getView().findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
+                m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getActivity(), android.R.layout.simple_spinner_dropdown_item, all);
+                spinner.setAdapter(m_spinnerAdapter);
+            }
         } else {
             Toast.makeText(getActivity(), getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_LONG).show();
             FragmentTransaction t = getFragmentManager().beginTransaction();
@@ -208,12 +209,14 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
 
         @Override
         protected void onPostExecute(Holder<Bitmap> result) {
-            ImageView imageview = (ImageView) getView().findViewById(R.id.uploadphoto_dialog_fragment_imgView);
-            if (result != null && result.getContainedObject() != null) {
-                // Set the image
-                imageview.setImageBitmap(result.getContainedObject());
-            } else {
-                imageview.setImageResource(R.drawable.no_image);
+            if(getView() != null) {
+                ImageView imageview = (ImageView) getView().findViewById(R.id.uploadphoto_dialog_fragment_imgView);
+                if (result != null && result.getContainedObject() != null) {
+                    // Set the image
+                    imageview.setImageBitmap(result.getContainedObject());
+                } else {
+                    imageview.setImageResource(R.drawable.no_image);
+                }
             }
         }
 
@@ -224,6 +227,9 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
         @Override
         public void onClick(View v) {
             // Get selected picture folder
+            if (getView() == null){
+                return;
+            }
             Spinner folderSpinner = (Spinner) getView().findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
             int position = folderSpinner.getSelectedItemPosition();
 
