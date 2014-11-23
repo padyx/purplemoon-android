@@ -110,14 +110,12 @@ public class UploadService extends Service {
 
         // Get length and stuff
         AssetFileDescriptor fileDescriptor = null;
-        long length = AssetFileDescriptor.UNKNOWN_LENGTH;
         try {
             fileDescriptor = getContentResolver().openAssetFileDescriptor(fileUri, "r");
             if(fileDescriptor == null) {
                 b.setError(getString(R.string.PictureNotFound));
                 return false;
             }
-            length = fileDescriptor.getLength();
 
         } catch (FileNotFoundException e) {
             b.setError("File not found");
@@ -134,10 +132,6 @@ public class UploadService extends Service {
             }
         }
 
-        if (length == AssetFileDescriptor.UNKNOWN_LENGTH) {
-            length =  UploadBean.UNKNOWN_LENGTH;
-        }
-
         final URL u = b.getUrl();
         final String mimeType = getContentResolver().getType(fileUri);
         if (u == null) {
@@ -145,35 +139,10 @@ public class UploadService extends Service {
             return false;
         }
 
-        Request.Builder builder = new Request.Builder();
+        Request.Builder builder = createRequestBuilder(b);
+        MultipartBuilder multipartBuilder = createMultipartBuilder(b, fileUri, mimeType);
+
         try {
-
-            Collection<NameValuePair> headers = b.getHeaderParams();
-            if(headers != null) {
-                for(NameValuePair header : headers){
-                    builder.header(header.getName(), header.getValue());
-                }
-            }
-
-            MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
-            // Additional params
-            Collection<NameValuePair> additionalParams = b.getFormParams();
-            if(additionalParams != null) {
-                for (NameValuePair pair : additionalParams) {
-                    multipartBuilder.addPart(
-                            Headers.of("Content-Disposition", "form-data; name=\"" + pair.getName() + "\""),
-                            RequestBody.create(null, pair.getValue()));
-                }
-            }
-
-            multipartBuilder.addPart(
-                    Headers.of(
-                            "Content-Disposition", "file; name=\"" + b.getFormName() + "\";filename=\""+fileUri.getLastPathSegment()+"\"",
-                            "Content-Transfer-Encoding", "binary"
-                            ),
-                    ContentUriRequestBody.create(getContentResolver(), MediaType.parse(mimeType), fileUri, b)
-            );
-
             builder.url(b.getUrl()).post(multipartBuilder.build());
             Response response = new OkHttpClient().newCall(builder.build()).execute();
 
@@ -191,7 +160,40 @@ public class UploadService extends Service {
             b.setError(getString(R.string.ErrorNoNetworkGenericShort));
             return false;
         }
+    }
 
+    private Request.Builder createRequestBuilder(UploadBean b) {
+        Request.Builder builder = new Request.Builder();
+
+        Collection<NameValuePair> headers = b.getHeaderParams();
+        if(headers != null) {
+            for(NameValuePair header : headers){
+                builder.header(header.getName(), header.getValue());
+            }
+        }
+        return builder;
+    }
+
+    private MultipartBuilder createMultipartBuilder(UploadBean b, Uri fileUri, String mimeType) {
+        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
+        // Additional params
+        Collection<NameValuePair> additionalParams = b.getFormParams();
+        if(additionalParams != null) {
+            for (NameValuePair pair : additionalParams) {
+                multipartBuilder.addPart(
+                        Headers.of("Content-Disposition", "form-data; name=\"" + pair.getName() + "\""),
+                        RequestBody.create(null, pair.getValue()));
+            }
+        }
+
+        multipartBuilder.addPart(
+                Headers.of(
+                        "Content-Disposition", "file; name=\"" + b.getFormName() + "\";filename=\""+fileUri.getLastPathSegment()+"\"",
+                        "Content-Transfer-Encoding", "binary"
+                ),
+                ContentUriRequestBody.create(getContentResolver(), MediaType.parse(mimeType), fileUri, b)
+        );
+        return multipartBuilder;
     }
 
 }
