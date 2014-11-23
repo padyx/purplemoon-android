@@ -73,8 +73,8 @@ public class ContentUriRequestBody extends RequestBody {
     public void writeTo(BufferedSink sink) throws IOException {
         InputStream stream = null;
         try{
-            Source source = Okio.source(resolver.openInputStream(contentUri));
             stream = resolver.openInputStream(contentUri);
+            Source source = Okio.source(stream);
 
             long total = 0;
             long read;
