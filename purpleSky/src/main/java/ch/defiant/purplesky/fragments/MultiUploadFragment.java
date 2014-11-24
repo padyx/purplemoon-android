@@ -1,14 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,6 +18,21 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.UploadBean;
@@ -37,18 +43,13 @@ import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment.OnDismiss;
 import ch.defiant.purplesky.services.BinderServiceWrapper;
 import ch.defiant.purplesky.services.UploadService;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 public class MultiUploadFragment extends SherlockFragment {
 
     private static final String FRAGMENTTAG_PICTURE_UPLOADER = "fragment_picture_uploader";
     private static final int REQUESTCODE_CHOOSEIMAGE = 0;
     private static final String TAG = MultiUploadFragment.class.getSimpleName();
 
-    private AtomicReference<UploadService> m_service = new AtomicReference<UploadService>();
+    private final AtomicReference<UploadService> m_service = new AtomicReference<UploadService>();
     private PendingAdapter m_adapter;
     private ScheduledExecutorService m_executor;
 
@@ -61,7 +62,7 @@ public class MultiUploadFragment extends SherlockFragment {
 
         @Override
         public void onServiceDisconnected(ComponentName className) {
-            m_service = null;
+            m_service.set(null);
         }
     };
 
@@ -303,7 +304,7 @@ public class MultiUploadFragment extends SherlockFragment {
                         }
                     });
                     fragment.show(fm, FRAGMENTTAG_PICTURE_UPLOADER);
-                };
+                }
             }.execute();
 
         }
