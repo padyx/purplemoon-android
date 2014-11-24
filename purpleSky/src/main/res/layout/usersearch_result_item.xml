@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="4dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp">
 
     <ImageView
         android:id="@+id/usersearch_result_userImgV"
@@ -18,16 +19,16 @@
 
 
         <TextView
-            android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/usersearch_result_userImgV"
-        android:layout_marginLeft="8dp" 
             android:id="@+id/usersearch_result_usernameLbl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Small Text"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/usersearch_result_userImgV"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="AwesomeUser"/>
 
 
     <TextView
@@ -40,7 +41,7 @@
         android:ellipsize="end"
         android:minLines="1"
         android:paddingLeft="8dp"
-        android:text="Small Text"
+        tools:text="27, Male, Gay"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <TextView
@@ -53,7 +54,7 @@
         android:ellipsize="end"
         android:minLines="1"
         android:paddingLeft="8dp"
-        android:text="Small Text"
+        tools:text="Online"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView

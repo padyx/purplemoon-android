@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
     >
 
     <ImageView
@@ -26,7 +27,7 @@
         android:layout_alignTop="@+id/photovotelist_item_imgV"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/photovotelist_item_imgV"
-        android:text="TextView"
+        tools:text="AwesomeUser"
         android:textAppearance="@style/TextAppearance.MediumLarge"
         android:textStyle="bold" />
 
@@ -37,7 +38,7 @@
         android:layout_alignLeft="@+id/photovotelist_item_usernameLbl"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/photovotelist_item_usernameLbl"
-        android:text="TextView" />
+        tools:text="Stunning" />
 
     <ImageView
         android:id="@+id/photovotelist_voteIcon"
@@ -54,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         android:gravity="right"
-        android:text="TextView"
+        tools:text="12/12/2014"
         android:layout_below="@+id/photovotelist_item_voteLbl"
         android:layout_toLeftOf="@+id/photovotelist_voteIcon" />
 

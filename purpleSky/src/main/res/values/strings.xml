@@ -277,5 +277,6 @@
     <string name="ErrorTooManyReports">You have reported too many users in a short time. Try again later.</string>
     <string name="PreferenceAboutApp">About this app</string>
     <string name="PreferenceAboutApp_Summary">Licences of included software</string>
+    <string name="Location_">Location:</string>
 
 </resources>

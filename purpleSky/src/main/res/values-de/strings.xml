@@ -280,5 +280,6 @@
     <string name="ErrorTooManyReports">Du hast zu viele Benutzer in einer kurzen Zeit gemeldet. Versuche es später erneut.</string>
     <string name="PreferenceAboutApp">Über diese App</string>
     <string name="PreferenceAboutApp_Summary">Lizenzinformationen eingeschlossener Software</string>
+    <string name="Location_">Standort:</string>
 
 </resources>
