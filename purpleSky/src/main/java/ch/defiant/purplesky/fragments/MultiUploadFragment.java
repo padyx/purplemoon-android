@@ -47,7 +47,7 @@ public class MultiUploadFragment extends BaseFragment {
     private static final int REQUESTCODE_CHOOSEIMAGE = 0;
     private static final String TAG = MultiUploadFragment.class.getSimpleName();
 
-    private AtomicReference<UploadService> m_service = new AtomicReference<UploadService>();
+    private final AtomicReference<UploadService> m_service = new AtomicReference<UploadService>();
     private PendingAdapter m_adapter;
     private ScheduledExecutorService m_executor;
 
@@ -60,7 +60,7 @@ public class MultiUploadFragment extends BaseFragment {
 
         @Override
         public void onServiceDisconnected(ComponentName className) {
-            m_service = null;
+            m_service.set(null);
         }
     };
 
@@ -302,7 +302,7 @@ public class MultiUploadFragment extends BaseFragment {
                         }
                     });
                     fragment.show(fm, FRAGMENTTAG_PICTURE_UPLOADER);
-                };
+                }
             }.execute();
 
         }
