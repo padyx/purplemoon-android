@@ -197,14 +197,6 @@ class ConversationAdapter implements IConversationAdapter {
 
     @Override
     public int getUnopenedMessagesCount() throws IOException, PurpleSkyException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PurplemoonAPIConstantsV1.BASE_URL);
-        sb.append(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_URL);
-
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM,
-                PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_UNREADONLY));
-
         int count = 0;
         int nextStartIdx = 0;
 
