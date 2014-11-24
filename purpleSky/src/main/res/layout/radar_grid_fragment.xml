@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:ellipsize="end"
-            android:text="Teststreet, 1234 Testplace"
+            tools:text="Teststreet, 1234 Testplace"
             android:id="@+id/radar_grid_fragment_addressText"
             android:layout_marginLeft="8dp"/>
     </LinearLayout>
