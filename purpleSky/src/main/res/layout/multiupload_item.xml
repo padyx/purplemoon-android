@@ -5,7 +5,7 @@
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:padding="8dp" >
 
     <RelativeLayout
         android:id="@+id/multiupload_item_wrap"
@@ -25,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp"
             android:text="@string/Unknown" />
 
     </RelativeLayout>
@@ -35,6 +34,6 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp" />
+        android:paddingTop="8dp" />
 
 </LinearLayout>
