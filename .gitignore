@@ -2,3 +2,5 @@ build/
 .gradle/
 **/Thumbs.db
 local.properties
+.idea/libraries/
+.idea/dictionaries/
