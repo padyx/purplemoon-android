@@ -1,16 +1,11 @@
 package ch.defiant.purplesky.constants;
 
-import android.content.res.AssetManager;
-
-import com.google.android.gms.games.GamesMetadata;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
@@ -20,6 +15,10 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 public class SecureConstants {
 
     private static final String CONFIG_FILE = "purplesky.config";
+
+    public static final String API_CLIENT_ID = "api.id";
+    public static final String API_SECRET = "api.sec";
+    public static final String GCM_ID = "gcm.id";
 
     public static boolean containsValue(String key){
         ensureInitialized();
