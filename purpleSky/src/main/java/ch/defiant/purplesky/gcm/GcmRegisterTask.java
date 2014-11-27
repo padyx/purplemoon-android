@@ -66,7 +66,8 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
         while (tries > 0) {
             tries--;
             try {
-                regId = GoogleCloudMessaging.getInstance(PurpleSkyApplication.get()).register(SecureConstants.get("gcm.id"));
+                regId = GoogleCloudMessaging.getInstance(PurpleSkyApplication.get()).
+                        register(SecureConstants.get(SecureConstants.GCM_ID));
 
                 if (regId != null && !regId.isEmpty()) {
                     break;

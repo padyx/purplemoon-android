@@ -83,8 +83,8 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         builder.url(requestUrl);
 
         FormEncodingBuilder formBuilder = new FormEncodingBuilder();
-        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_ID, SecureConstants.get("api.id"));
-        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_SECRET, SecureConstants.get("api.sec"));
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_ID, SecureConstants.get(SecureConstants.API_CLIENT_ID));
+        formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_CLIENT_SECRET, SecureConstants.get(SecureConstants.API_SECRET));
         formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE,
                 PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_GRANTTYPE_PASSWORD);
         formBuilder.add(PurplemoonAPIConstantsV1.OAUTH_POSTPARAM_USERNAME, username);
