@@ -21,6 +21,7 @@ import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
 import ch.defiant.purplesky.api.internal.APIModule;
 import ch.defiant.purplesky.api.photovotes.internal.PhotoVoteModule;
 import ch.defiant.purplesky.api.postits.internal.PostitModule;
+import ch.defiant.purplesky.api.promotions.internal.PromotionModule;
 import ch.defiant.purplesky.api.report.internal.ReportModule;
 import ch.defiant.purplesky.api.visit.internal.VisitModule;
 import ch.defiant.purplesky.core.internal.CoreModule;
@@ -68,6 +69,7 @@ import dagger.Module;
             PhotoVoteModule.class,
             VisitModule.class,
             ConversationModule.class,
+            PromotionModule.class
     },
     injects = {
             PurpleSkyApplication.class,

@@ -2,22 +2,40 @@ package ch.defiant.purplesky.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
-import android.widget.ImageView;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
+import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
+import ch.defiant.purplesky.beans.promotion.Promotion;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.interfaces.IChatListActivity;
+import ch.defiant.purplesky.loaders.promotions.PromotionLoader;
+import ch.defiant.purplesky.util.CollectionUtil;
+import ch.defiant.purplesky.util.Holder;
 
-public class ChatListActivity extends BaseFragmentActivity implements IChatListActivity {
+public class ChatListActivity extends BaseFragmentActivity
+        implements IChatListActivity, LoaderManager.LoaderCallbacks<Holder<List<Promotion>>> {
+
+    private static final String TAG = ChatListActivity.class.getSimpleName();
+
+    @Inject
+    protected IPromotionAdapter m_promotionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +59,7 @@ public class ChatListActivity extends BaseFragmentActivity implements IChatListA
             // Add the fragment
             getFragmentManager().beginTransaction().add(R.id.fragment_container_frame, fragment).commit();
         }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        final ImageView img = (ImageView) findViewById(R.id.image);
-
-        WeightAnimation anim = new WeightAnimation(0, 1, img);
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.setDuration(1000);
-        anim.setStartOffset(1000);
-        img.startAnimation(anim);
-
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WeightAnimation anim = new WeightAnimation(1, 0, img);
-                anim.setInterpolator(new DecelerateInterpolator());
-                anim.setDuration(1000);
-                img.startAnimation(anim);
-            }
-        });
+        getLoaderManager().restartLoader(R.id.loader_profile_main, null, this);
     }
 
     @Override
@@ -95,6 +91,46 @@ public class ChatListActivity extends BaseFragmentActivity implements IChatListA
             fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, fragment).addToBackStack(null).commit();
         }
     }
+
+    @Override
+    public Loader<Holder<List<Promotion>>> onCreateLoader(int id, Bundle args) {
+        return new PromotionLoader(this, m_promotionAdapter);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Holder<List<Promotion>>> loader, Holder<List<Promotion>> data) {
+        if(data == null) {
+            Log.i(TAG, "No data received for promotions");
+        }
+        else if(data.isException() ) {
+            Log.i(TAG, "Could not retrieve promotions due to exceptions", data.getException());
+            getLoaderManager().destroyLoader(R.id.loader_promotions);
+        }
+        else if (data.getContainedObject() != null && !data.getContainedObject().isEmpty()) {
+            List<Promotion> promos = data.getContainedObject();
+            final WebView view = (WebView) findViewById(R.id.promotionWebView);
+            view.loadData("<html><body>" + CollectionUtil.firstElement(promos) + "</body></html>", "text/html", "UTF-8");
+
+            WeightAnimation anim = new WeightAnimation(0, 1, view);
+            anim.setInterpolator(new DecelerateInterpolator());
+            anim.setDuration(1000);
+            anim.setStartOffset(1000);
+            view.startAnimation(anim);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    WeightAnimation anim = new WeightAnimation(1, 0, view);
+                    anim.setInterpolator(new DecelerateInterpolator());
+                    anim.setDuration(1000);
+                    view.startAnimation(anim);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Holder<List<Promotion>>> loader) { }
 
     private static class WeightAnimation extends Animation {
         private final float mStartWeight;
