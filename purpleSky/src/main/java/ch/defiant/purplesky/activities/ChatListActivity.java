@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -14,6 +15,7 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -107,26 +109,55 @@ public class ChatListActivity extends BaseFragmentActivity
             getLoaderManager().destroyLoader(R.id.loader_promotions);
         }
         else if (data.getContainedObject() != null && !data.getContainedObject().isEmpty()) {
-            List<Promotion> promos = data.getContainedObject();
-            final WebView view = (WebView) findViewById(R.id.promotionWebView);
-            view.loadData("<html><body>" + CollectionUtil.firstElement(promos) + "</body></html>", "text/html", "UTF-8");
-
-            WeightAnimation anim = new WeightAnimation(0, 1, view);
-            anim.setInterpolator(new DecelerateInterpolator());
-            anim.setDuration(1000);
-            anim.setStartOffset(1000);
-            view.startAnimation(anim);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    WeightAnimation anim = new WeightAnimation(1, 0, view);
-                    anim.setInterpolator(new DecelerateInterpolator());
-                    anim.setDuration(1000);
-                    view.startAnimation(anim);
-                }
-            });
+            displayPromotion(data.getContainedObject());
         }
+    }
+
+    private void displayPromotion(@NonNull List<Promotion> promos) {
+        final WebView view = (WebView) findViewById(R.id.promotionWebView);
+        if(view == null){
+            return;
+        }
+        int totalWeights = 0;
+        for (Promotion p : promos){
+            totalWeights += p.getImportance();
+        }
+
+        // Generates an int between 0 and totalWeights-1 (including)
+        final int i = new Random().nextInt(totalWeights);
+        // Find the proper one now...
+        Promotion chosen = null;
+        int curr = 0;
+        for (Promotion p:promos){
+            if (curr + p.getImportance() < i){
+                // Match!
+                chosen = p;
+            }
+        }
+        if(chosen == null){
+            Log.e(TAG, "Random choice of promotion item failed! (total: "+totalWeights + ", chosen: "+i+")");
+            Log.d(TAG, "Promotions were: " + promos);
+        }
+
+        // Choose - at random - from the promotions
+
+        view.loadData("<html><body>" + CollectionUtil.firstElement(promos) + "</body></html>", "text/html", "UTF-8");
+
+        WeightAnimation anim = new WeightAnimation(0, 1, view);
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(1000);
+        anim.setStartOffset(1000);
+        view.startAnimation(anim);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WeightAnimation anim = new WeightAnimation(1, 0, view);
+                anim.setInterpolator(new DecelerateInterpolator());
+                anim.setDuration(1000);
+                view.startAnimation(anim);
+            }
+        });
     }
 
     @Override

@@ -14,8 +14,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import ch.defiant.purplesky.beans.promotion.Event;
 import ch.defiant.purplesky.beans.promotion.Promotion;
 import ch.defiant.purplesky.beans.promotion.PromotionBuilder;
+import ch.defiant.purplesky.util.CompareUtility;
 
 /**
  * @author Patrick Bänziger
@@ -48,17 +50,17 @@ class PromotionJSONTranslator {
             return null;
         }
 
-        Long validFrom = obj.optLong(PromotionAPIConstants.JSON_VALIDFROM);
-        Long validTo = obj.optLong(PromotionAPIConstants.JSON_VALIDTO);
-        String pictureUrl = obj.optString(PromotionAPIConstants.JSON_PICTURE);
-        String eventUrl = obj.optString(PromotionAPIConstants.JSON_PROMOURL);
+        Long validFrom = obj.optLong(PromotionAPIConstants.Promotion.JSON_VALIDFROM);
+        Long validTo = obj.optLong(PromotionAPIConstants.Promotion.JSON_VALIDTO);
+        String pictureUrl = obj.optString(PromotionAPIConstants.Promotion.JSON_PICTURE);
+        String eventUrl = obj.optString(PromotionAPIConstants.Promotion.JSON_PROMOURL);
 
         PromotionBuilder builder = new PromotionBuilder().
-                setId(obj.optInt(PromotionAPIConstants.JSON_ID)).
-                setTitle(obj.optString(PromotionAPIConstants.JSON_TITLE)).
-                setText(obj.optString(PromotionAPIConstants.JSON_TEXT)).
-                setEventId(obj.optInt(PromotionAPIConstants.JSON_EVENTID)).
-                setImportance(obj.optInt(PromotionAPIConstants.JSON_IMPORTANCE));
+                setId(obj.optInt(PromotionAPIConstants.Promotion.JSON_ID)).
+                setTitle(obj.optString(PromotionAPIConstants.Promotion.JSON_TITLE)).
+                setText(obj.optString(PromotionAPIConstants.Promotion.JSON_TEXT)).
+                setEventId(obj.optInt(PromotionAPIConstants.Promotion.JSON_EVENTID)).
+                setImportance(obj.optInt(PromotionAPIConstants.Promotion.JSON_IMPORTANCE));
 
         if (pictureUrl != null) {
             builder.setPictureUri(Uri.parse(pictureUrl));
@@ -75,4 +77,45 @@ class PromotionJSONTranslator {
         return builder.build();
     }
 
+    public static @Nullable Event translateEvent(JSONObject object) {
+        if(object == null){
+            return null;
+        }
+
+        Event event = new Event();
+        event.setEventId(object.optInt(PromotionAPIConstants.Event.JSON_ID));
+        event.setEventName(object.optString(PromotionAPIConstants.Event.JSON_NAME));
+        event.setDescriptionHtml(object.optString(PromotionAPIConstants.Event.JSON_DESCRIPTION));
+        event.setAdmissionPriceHtml(object.optString(PromotionAPIConstants.Event.JSON_ADMISSION));
+
+        event.setMinAge(object.optInt(PromotionAPIConstants.Event.JSON_AGEMIN));
+        int maxAge = object.optInt(PromotionAPIConstants.Event.JSON_AGEMAX, 250);
+        event.setMaxAge(maxAge != PromotionAPIConstants.Event.MAX_AGE_NULL_VALUE ? maxAge : null);
+
+        event.setPreliminary(object.optBoolean(PromotionAPIConstants.Event.JSON_PRELIMINARY));
+        event.setRegistrations(object.optInt(PromotionAPIConstants.Event.JSON_REGISTRATIONS));
+
+        String status = object.optString(PromotionAPIConstants.Event.JSON_STATUS);
+        if(CompareUtility.equals(status, PromotionAPIConstants.Event.JSON_STATUS_PRIVATE)){
+            event.setPrivate(true);
+        } else if (CompareUtility.equals(status, PromotionAPIConstants.Event.JSON_STATUS_PUBLIC)){
+            event.setPrivate(false);
+        } else {
+            // OOPS
+            event.setPrivate(true);
+            Log.e(TAG, "API delivered unknown status value for event (" + event.getEventId() + "): " + status);
+        }
+        long startDate = object.optLong(PromotionAPIConstants.Event.JSON_DATEFROM);
+        if (startDate != 0L){
+            event.setStart(new Date(startDate));
+        }
+        long endDate = object.optLong(PromotionAPIConstants.Event.JSON_DATEUNTIL);
+        if (endDate != 0L){
+            event.setEnd(new Date(endDate));
+        }
+
+        // TODO IMPLEMENT MORE: Flyer, location, organizer etc.
+
+        return event;
+    }
 }

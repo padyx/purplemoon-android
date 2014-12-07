@@ -3,6 +3,7 @@
     
     <string name="profile_relationship">Beziehung</string>
     <string name="profile_date_last24h">In den letzten 24 Stunden</string>
+    <string name="profile_header_events">Events</string>
     <string name="profile_header_locations">Locations</string>
     <string name="profile_locations_current">Aktuell</string>
     <string name="profile_locations_home">Wohnort</string>

@@ -51,7 +51,6 @@ import ch.defiant.purplesky.util.StringUtility;
 public class UploadPhotoDialogFragment extends BaseDialogFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>> {
 
     public static final String ARGUMENT_PICTURE_URI = "picture";
-    public static final int INVALID_POSITION = -1;
 
     @Inject
     protected IGalleryAdapter galleryAdapter;

@@ -64,6 +64,7 @@ public abstract class BaseFragmentActivity extends Activity {
         LAUNCH_FAVORITES,
         LAUNCH_USERSEARCH,
         LAUNCH_PHOTOVOTE,
+        LAUNCH_EVENTS,
         LAUNCH_UPLOAD,
         LAUNCH_SETTINGS
     }

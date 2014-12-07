@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.apache.commons.io.IOUtils;
@@ -25,6 +27,7 @@ import java.util.Map.Entry;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.EventActivity;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
@@ -73,11 +76,35 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
     private LocalBroadcastReceiver m_localBroadcastReceiver;
 
+    private static class EventInterface {
+        private final Context context;
+
+        public EventInterface(Context c){
+            this.context = c;
+        }
+
+        @JavascriptInterface
+        public void go(String eventString){
+            int eventId;
+            try{
+                eventId = Integer.parseInt(eventString);
+            } catch (NumberFormatException nfe){
+                Log.e(TAG, "Event Id not a number:"+eventString);
+                return;
+            }
+
+            Intent intent = new Intent(context, EventActivity.class);
+            intent.putExtra(ArgumentConstants.ARG_ID, eventId);
+            context.startActivity(intent);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         // TODO Add loading include
         View inflated = inflater.inflate(R.layout.webview_full, container, false);
+        setupWebView((WebView) inflated.findViewById(R.id.webview_full_webview));
 
         Bundle arguments = getArguments();
         if (savedInstanceState != null) {
@@ -109,6 +136,12 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         }
 
         return inflated;
+    }
+
+    private void setupWebView(WebView webView) {
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new EventInterface(getActivity()), "ppmoonEvent");
     }
 
     @Override
@@ -263,13 +296,35 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         StringBuilder overviewTable = createOverviewTable(user);
         StringUtility.replace(sb, PLACEHOLDER_OVERVIEWTBL, overviewTable.toString());
 
-        StringBuilder allTables = createLocationsTable(user);
+        StringBuilder allTables = createEventTable(user);
+        StringBuilder locationsTable = createLocationsTable(user);
         StringBuilder details = createDetailsTable(user);
+        allTables.append(locationsTable);
         allTables.append(details);
         StringUtility.replace(sb, PLACEHOLDER_TABLES_ALL, allTables.toString());
 
         return sb.toString();
     }
+
+    private StringBuilder createEventTable(DetailedUser user){
+        Map<Integer, String> eventsTmp = user.getEventsTmp();
+
+        StringBuilder builder = new StringBuilder();
+        if (eventsTmp == null || eventsTmp.isEmpty()){
+           return builder;
+        }
+
+        builder.append("<table class='content_tables'>");
+        builder.append(createHeader(getResources(), R.string.profile_header_events));
+        for(Entry<Integer, String> e : eventsTmp.entrySet()){
+            String link = "<a onClick='ppmoonEvent.go("+e.getKey()+"); return false;' href='#'>"+e.getValue()+"</a>";
+            createAndAddSpanningTableRow(builder, link);
+        }
+        builder.append("</table>");
+
+        return builder;
+    }
+
 
     private StringBuilder createLocationsTable(DetailedUser user) {
         LocationBean home = user.getHomeLocation();

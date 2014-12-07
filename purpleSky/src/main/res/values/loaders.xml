@@ -30,4 +30,5 @@
     <item type="id" name="loader_profilePositionRetrieval" />
     <item type="id" name="loader_reportUser" />
     <item type="id" name="loader_promotions" />
+    <item type="id" name="loader_event" />
 </resources>
