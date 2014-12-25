@@ -90,7 +90,9 @@ public abstract class BaseFragmentActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        m_drawerDelegate.updateEventCounts();
+                        if(m_drawerDelegate != null) {
+                            m_drawerDelegate.updateEventCounts();
+                        }
                     }
                 });
             }
