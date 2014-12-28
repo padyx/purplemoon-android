@@ -1,12 +1,13 @@
 package ch.defiant.purplesky.util;
 
+import android.text.format.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.text.format.DateFormat;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 public class DateUtility {
@@ -98,5 +99,16 @@ public class DateUtility {
         } catch (ParseException e) {
             return null;
         }
+    }
+
+    public static boolean isSameDay(Date a, Date b){
+        Calendar aDate = Calendar.getInstance();
+        aDate.setTime(a);
+
+        Calendar bDate = Calendar.getInstance();
+        bDate.setTime(b);
+
+        return aDate.get(Calendar.YEAR) == bDate.get(Calendar.YEAR) &&
+                aDate.get(Calendar.DAY_OF_YEAR) == bDate.get(Calendar.DAY_OF_YEAR);
     }
 }
