@@ -278,5 +278,11 @@
     <string name="PreferenceAboutApp">About this app</string>
     <string name="PreferenceAboutApp_Summary">Licences of included software</string>
     <string name="Location_">Location:</string>
+    <string name="Dismiss">Dismiss</string>
+    <string name="ActionOpen">Open</string>
+    <string name="Admission">Admission</string>
+    <string name="RegisterForEvent">Register for event</string>
+    <string name="RegisterForEvent_Condensed_">Register</string>
+    <string name="Event">Event</string>
 
 </resources>

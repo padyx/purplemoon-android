@@ -12,6 +12,9 @@ class PromotionAPIConstants {
         public static final String JSON_TITLE = "title";
         public static final String JSON_TEXT = "text";
         public static final String JSON_PICTURE = "picture";
+        public static final String JSON_PICTURE_URL = "url";
+        public static final String JSON_PICTURE_WIDTH = "width";
+        public static final String JSON_PICTURE_HEIGHT = "height";
         public static final String JSON_PROMOURL = "url";
         public static final String JSON_EVENTID = "event_id";
         public static final String JSON_VALIDFROM = "valid_from";
@@ -19,14 +22,22 @@ class PromotionAPIConstants {
         public static final String JSON_IMPORTANCE = "importance";
     }
 
-    public static final String EVENT_URL = "/eventstmp/details";
+    public static final String EVENT_URL = "/events/data/";
+    public static final String EVENT_TYPE_EVENT = "event";
+    public static final String EVENT_TYPE_LOCATION = "location";
+    public static final String EVENT_TYPE_ORGANIZER = "organizer";
+    public static final String EVENT_TYPE_REGISTRATION = "registration";
+    public static final String EVENT_TYPE_JOURNEY = "journey";
+    public static final String EVENT_TYPE_FLYERS = "flyers";
+
+    public static final String EVENT_TYPE_CONCAT = "+";
 
     public static class Event {
 
         public static final String JSON_ID = "event_id";
-        public static final String JSON_STATUS = "status";
+        public static final String JSON_PRIVATE = "private";
         public static final String JSON_PRELIMINARY = "preliminary";
-        public static final String JSON_NAME = "name";
+        public static final String JSON_NAME = "event_name";
         public static final String JSON_ADMISSION = "admission";
         public static final String JSON_DESCRIPTION = "description";
         public static final String JSON_DATEFROM = "date_from";
@@ -36,9 +47,13 @@ class PromotionAPIConstants {
         public static final String JSON_AGEMAX = "age_max";
         public static final String JSON_REGISTRATIONS = "registrations";
         public static final String JSON_JOURNEYS = "journeys";
-
-        public static final String JSON_STATUS_PRIVATE = "private";
-        public static final String JSON_STATUS_PUBLIC = "public";
+        public static final String JSON_REGISTRATION = "registration";
+        public static final String JSON_REGISTRATION_VISIBILITY = "visible_for";
+        public static final String JSON_REGISTRATION_VISiBILITY_ALL = "all";
+        public static final String JSON_REGISTRATION_VISiBILITY_FRIENDS_AND_KNOWN = "friends_known";
+        public static final String JSON_REGISTRATION_VISiBILITY_FRIENDS = "friends";
+        public static final String JSON_REGISTRATION_VISiBILITY_KNOWN = "known";
+        public static final String JSON_REGISTRATION_VISiBILITY_NONE = "nobody";
 
         public static final int MAX_AGE_NULL_VALUE = 250;
     }

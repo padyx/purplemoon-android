@@ -10,6 +10,8 @@ public class Event {
     private int m_eventId;
     private boolean m_private;
     private boolean m_preliminary;
+    private boolean m_isRegistered;
+    private RegistrationVisibility m_registrationVisibility;
     private String m_eventName;
     private String m_admissionPriceHtml;
     private String m_descriptionHtml;
@@ -115,13 +117,35 @@ public class Event {
         m_registrations = registrations;
     }
 
+    public RegistrationVisibility getRegistrationVisibility() {
+        return m_registrationVisibility;
+    }
+
+    public void setRegistrationVisibility(RegistrationVisibility registrationVisibility) {
+        m_registrationVisibility = registrationVisibility;
+    }
+
+    public boolean isRegistered() {
+        return m_isRegistered;
+    }
+
+    public void setRegistered(boolean isRegistered) {
+        m_isRegistered = isRegistered;
+    }
+
+    public enum RegistrationVisibility {
+        ALL, FRIENDS_AND_KNOWN, FRIENDS, KNOWN, NONE
+    }
+
     @Override
     public String toString() {
         return "Event{" +
                 "m_eventId=" + m_eventId +
-                ", m_eventName='" + m_eventName +
                 ", m_private=" + m_private +
                 ", m_preliminary=" + m_preliminary +
+                ", m_isRegistered=" + m_isRegistered +
+                ", m_registrationVisibility=" + m_registrationVisibility +
+                ", m_eventName='" + m_eventName + '\'' +
                 ", m_start=" + m_start +
                 ", m_end=" + m_end +
                 ", m_minAge=" + m_minAge +

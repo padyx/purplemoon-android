@@ -3,6 +3,7 @@ package ch.defiant.purplesky.core;
 import ch.defiant.purplesky.activities.AboutActivity;
 import ch.defiant.purplesky.activities.ChatListActivity;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
+import ch.defiant.purplesky.activities.EventActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.LightboxActivity;
 import ch.defiant.purplesky.activities.LoginActivity;
@@ -34,6 +35,7 @@ import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
+import ch.defiant.purplesky.fragments.EventFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
@@ -90,6 +92,7 @@ import dagger.Module;
             AboutActivity.class,
             PictureGridViewActivity.class,
             LightboxActivity.class,
+            EventActivity.class,
 
 
             // Base or abstract classes
@@ -131,7 +134,8 @@ import dagger.Module;
             CreatePostitDialogFragment.class,
             UploadPhotoDialogFragment.class,
             ReportUserFragment.class,
-            MultiUploadFragment.class
+            MultiUploadFragment.class,
+            EventFragment.class
     }
 )
 public class PurpleSkyModule {

@@ -281,5 +281,11 @@
     <string name="PreferenceAboutApp">Über diese App</string>
     <string name="PreferenceAboutApp_Summary">Lizenzinformationen eingeschlossener Software</string>
     <string name="Location_">Standort:</string>
+    <string name="Dismiss">Schliessen</string>
+    <string name="ActionOpen">Öffnen</string>
+    <string name="Admission">Eintritt</string>
+    <string name="RegisterForEvent">Anmelden</string>
+    <string name="RegisterForEvent_Condensed_">Für Veranstaltung anmelden</string>
+    <string name="Event">Veranstaltung</string>
 
 </resources>

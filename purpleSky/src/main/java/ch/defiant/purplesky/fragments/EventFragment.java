@@ -1,11 +1,16 @@
 package ch.defiant.purplesky.fragments;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -16,7 +21,9 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
 import ch.defiant.purplesky.beans.promotion.Event;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.loaders.promotions.EventLoader;
+import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
 
 /**
@@ -28,10 +35,12 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
     protected IPromotionAdapter m_promotionAdapter;
     private int eventId;
     private WebView m_webview;
+    private MenuItem m_registerMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         Intent intent = getActivity().getIntent();
         if(!intent.hasExtra(ArgumentConstants.ARG_ID)){
@@ -78,15 +87,82 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         getLoaderManager().destroyLoader(R.id.loader_event);
 
         if(data.isException()){
-
+            // FIXME Implement
         } else {
-            // FIXME Implement translation of event to html
-           m_webview.loadData(data.getContainedObject().toString(), "text/html", "UTF-8");
+            Event event = data.getContainedObject();
+            m_webview.loadData(promoToHtml(getActivity(), event), "text/html; charset=utf-8", "UTF-8");
+
+            m_registerMenu.setEnabled(canRegister(event));
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<Holder<Event>> loader) {
+    private boolean canRegister(@NonNull Event event) {
+        return !event.isPreliminary() && !event.isRegistered();
+    }
 
+    @Override
+    public void onLoaderReset(Loader<Holder<Event>> loader) {}
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.event_menu, menu);
+        m_registerMenu = menu.findItem(R.id.register);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item); // FIXME Implement
+    }
+
+    private static String promoToHtml(Context c, Event event) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
+        sb.append("<style>td {padding: 8px} tr:nth-child(odd) {background-color:#BBE4FA;} " +
+                "tr:nth-child(even) {background-color:#AFD1E3;}</style>");
+        sb.append("</head>\n");
+        sb.append("<body><h2>");
+        sb.append(event.getEventName());
+        sb.append("</h2><p style='font-face: Verdana,Arial,sans-serif;'>");
+        sb.append(event.getDescriptionHtml());
+        sb.append("</p>\n");
+
+        sb.append("<p>");
+        String date = DateUtility.getMediumDateTimeString(event.getStart());
+        if(event.getEnd() != null){
+            date += " - ";
+            if (DateUtility.isSameDay(event.getStart(), event.getEnd())){
+                date += android.text.format.DateFormat.getTimeFormat(PurpleSkyApplication.get()).format(event.getEnd());
+            } else {
+                date += DateUtility.getMediumDateTimeString(event.getEnd());
+            }
+        }
+        sb.append(date);
+        sb.append("</p><h3>");
+
+        sb.append(c.getString(R.string.Admission));
+        sb.append("</h3><table style='border:0'>");
+        if(event.isPrivate()){
+            // FIXME Other admission stuff such as gender
+            addRow(sb, c.getString(R.string.Admission), "Limited: Private Event");
+        }
+        if(event.getMinAge() != null) {
+            addRow(sb, c.getString(R.string.MinimumAge), String.valueOf(event.getMinAge()));
+        }
+        if(event.getMaxAge() != null) {
+            addRow(sb, c.getString(R.string.MaximumAge), String.valueOf(event.getMaxAge()));
+        }
+        addRow(sb, "Registrations", String.valueOf(event.getRegistrations()));
+        sb.append("</table></body></html>");
+
+        return sb.toString();
+    }
+
+    private static void addRow(StringBuilder sb, String firstCol, String secondCol) {
+        sb.append("<tr><td>");
+        sb.append(firstCol);
+        sb.append("</td><td>");
+        sb.append(secondCol);
+        sb.append("</td></tr>\n");
     }
 }

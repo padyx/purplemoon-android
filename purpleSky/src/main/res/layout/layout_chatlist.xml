@@ -14,12 +14,52 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <WebView
-            android:id="@+id/promotionWebView"
-            android:visibility="visible"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/promotionContainer"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0"/>
+            android:layout_weight="0"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            tools:layout_weight="1"
+            android:background="@color/purple_faint"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+                android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+                android:gravity="center_vertical"
+                android:text="@string/Dismiss"
+                android:id="@+id/dismissLabel"/>
+
+            <WebView
+                android:layout_below="@id/dismissLabel"
+                android:id="@+id/promotionWebView"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/openLabel"/>
+
+            <TextView
+                android:id="@+id/openLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/ActionOpen"
+                android:drawableLeft="@android:drawable/ic_menu_set_as"
+                android:drawableStart="@android:drawable/ic_menu_set_as"
+                android:gravity="center_vertical"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
 
         <!-- Main layout -->
         <FrameLayout

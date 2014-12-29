@@ -9,12 +9,13 @@ public class EventActivity extends BaseFragmentActivity {
 
     @Override
     public int getSelfNavigationIndex() {
-        return NavigationDrawerEntries.LAUNCH_EVENTS.ordinal();
+        return NAVIGATION_INDEX_INVALID;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_event);
+        setActionBarTitle(getString(R.string.Event), null);
     }
 }

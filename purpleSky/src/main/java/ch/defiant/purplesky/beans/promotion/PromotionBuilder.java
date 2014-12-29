@@ -3,12 +3,13 @@ package ch.defiant.purplesky.beans.promotion;
 import android.net.Uri;
 
 import java.util.Date;
+import java.util.List;
 
 public class PromotionBuilder {
     private int m_id;
     private String m_title;
     private String m_text;
-    private Uri m_pictureUri = null;
+    private List<PromotionPicture> m_pictureUri = null;
     private Uri m_eventUri;
     private Date m_validFrom;
     private Date m_validTo = null;
@@ -30,8 +31,8 @@ public class PromotionBuilder {
         return this;
     }
 
-    public PromotionBuilder setPictureUri(Uri pictureUri) {
-        m_pictureUri = pictureUri;
+    public PromotionBuilder setPromotionPictures(List<PromotionPicture> pictures) {
+        m_pictureUri = pictures;
         return this;
     }
 

@@ -3,6 +3,7 @@ package ch.defiant.purplesky.beans.promotion;
 import android.net.Uri;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Patrick Bänziger
@@ -14,7 +15,7 @@ public class Promotion {
     private final String m_title;
     private final String m_text;
 
-    private final Uri m_pictureUri;
+    private final List<PromotionPicture> m_promotionPictures;
     private final Uri m_eventUri;
     private final  int m_eventId;
 
@@ -23,11 +24,11 @@ public class Promotion {
 
     private final int m_importance;
 
-    public Promotion(int id, String title, String text, Uri pictureUri, Uri eventUri, Date validFrom, Date validTo, int eventId, int importance){
+    public Promotion(int id, String title, String text, List<PromotionPicture> promotionPictures, Uri eventUri, Date validFrom, Date validTo, int eventId, int importance){
         m_id=id;
         m_title=title;
         m_text=text;
-        m_pictureUri=pictureUri;
+        m_promotionPictures = promotionPictures;
         m_eventUri=eventUri;
         m_validFrom=validFrom;
         m_validTo=validTo;
@@ -43,8 +44,8 @@ public class Promotion {
         return m_text;
     }
 
-    public Uri getPictureUri() {
-        return m_pictureUri;
+    public List<PromotionPicture> getPromotionPictures() {
+        return m_promotionPictures;
     }
 
     public Uri getEventUri() {
@@ -77,7 +78,7 @@ public class Promotion {
                 "m_id=" + m_id +
                 ", m_title='" + m_title + '\'' +
                 ", m_text='" + m_text + '\'' +
-                ", m_pictureUri=" + m_pictureUri +
+                ", m_promotionPictures=" + m_promotionPictures +
                 ", m_eventUri=" + m_eventUri +
                 ", m_eventId=" + m_eventId +
                 ", m_validFrom=" + m_validFrom +

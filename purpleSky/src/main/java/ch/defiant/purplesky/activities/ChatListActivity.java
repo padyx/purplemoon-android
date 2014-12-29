@@ -3,27 +3,33 @@ package ch.defiant.purplesky.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Transformation;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
 
 import java.util.List;
 import java.util.Random;
 
 import javax.inject.Inject;
 
+import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
+import ch.defiant.purplesky.animation.WeightAnimation;
 import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
 import ch.defiant.purplesky.beans.promotion.Promotion;
+import ch.defiant.purplesky.beans.promotion.PromotionPicture;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.constants.PreferenceConstants;
+import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.interfaces.IChatListActivity;
@@ -35,6 +41,10 @@ public class ChatListActivity extends BaseFragmentActivity
         implements IChatListActivity, LoaderManager.LoaderCallbacks<Holder<List<Promotion>>> {
 
     private static final String TAG = ChatListActivity.class.getSimpleName();
+    /**
+     * Interval in which the promotions should be shown
+     */
+    private static final long PROMO_SHOW_INTERVAL = 12*60*60*1000;
 
     @Inject
     protected IPromotionAdapter m_promotionAdapter;
@@ -57,11 +67,20 @@ public class ChatListActivity extends BaseFragmentActivity
 
             // Create the conversation fragment
             ChatListFragment fragment = new ChatListFragment();
-
             // Add the fragment
             getFragmentManager().beginTransaction().add(R.id.fragment_container_frame, fragment).commit();
         }
-        getLoaderManager().restartLoader(R.id.loader_profile_main, null, this);
+        startPromotionLoading();
+    }
+
+    private void startPromotionLoading() {
+        SharedPreferences preferences = PreferenceUtility.getPreferences();
+        if(preferences.getBoolean(PreferenceConstants.promotionEnabled, true)){
+            long lastSeen = preferences.getLong(PreferenceConstants.promotionLastShown, 0);
+            if(BuildConfig.DEBUG || System.currentTimeMillis() - lastSeen > PROMO_SHOW_INTERVAL) {
+                getLoaderManager().restartLoader(R.id.loader_promotions, null, this);
+            }
+        }
     }
 
     @Override
@@ -71,7 +90,6 @@ public class ChatListActivity extends BaseFragmentActivity
 
     @Override
     public boolean isSelfSelectionReloads() {
-        // Self selection reloads
         return true;
     }
 
@@ -106,18 +124,15 @@ public class ChatListActivity extends BaseFragmentActivity
         }
         else if(data.isException() ) {
             Log.i(TAG, "Could not retrieve promotions due to exceptions", data.getException());
-            getLoaderManager().destroyLoader(R.id.loader_promotions);
         }
         else if (data.getContainedObject() != null && !data.getContainedObject().isEmpty()) {
-            displayPromotion(data.getContainedObject());
+            selectAndShowPromotion(data.getContainedObject());
         }
+
+        getLoaderManager().destroyLoader(R.id.loader_promotions);
     }
 
-    private void displayPromotion(@NonNull List<Promotion> promos) {
-        final WebView view = (WebView) findViewById(R.id.promotionWebView);
-        if(view == null){
-            return;
-        }
+    private void selectAndShowPromotion(@NonNull List<Promotion> promos) {
         int totalWeights = 0;
         for (Promotion p : promos){
             totalWeights += p.getImportance();
@@ -129,61 +144,97 @@ public class ChatListActivity extends BaseFragmentActivity
         Promotion chosen = null;
         int curr = 0;
         for (Promotion p:promos){
-            if (curr + p.getImportance() < i){
+            if (curr + p.getImportance() > i){
                 // Match!
                 chosen = p;
+                break;
             }
+            curr += p.getImportance();
         }
         if(chosen == null){
             Log.e(TAG, "Random choice of promotion item failed! (total: "+totalWeights + ", chosen: "+i+")");
             Log.d(TAG, "Promotions were: " + promos);
+            return;
         }
 
-        // Choose - at random - from the promotions
+        showPromotion(chosen);
+    }
 
-        view.loadData("<html><body>" + CollectionUtil.firstElement(promos) + "</body></html>", "text/html", "UTF-8");
+    private void showPromotion(@NonNull final Promotion promo) {
+        final WebView webview = (WebView) findViewById(R.id.promotionWebView);
+        final View container = findViewById(R.id.promotionContainer);
+        if(webview == null || container == null){
+            return;
+        }
 
-        WeightAnimation anim = new WeightAnimation(0, 1, view);
+        String data = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>\n" +
+                "<body>" + promoToHtml(promo) + "</body></html>";
+        webview.loadData(data, "text/html; charset=utf-8", "UTF-8");
+
+
+        final View dismissButton = findViewById(R.id.dismissLabel);
+
+        final int eventId = promo.getEventId();
+        final View openLabel = findViewById(R.id.openLabel);
+        if(eventId == 0 && promo.getEventUri() == null){
+            openLabel.setVisibility(View.GONE);
+        }
+        openLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (eventId != 0) {
+                    Intent intent = new Intent(ChatListActivity.this, EventActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_ID, eventId);
+                    startActivity(intent);
+                } else if (promo.getEventUri() != null) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(promo.getEventUri());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        PreferenceUtility.getPreferences().edit().
+                putLong(PreferenceConstants.promotionLastShown, System.currentTimeMillis()).
+                apply();
+        dismissButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WeightAnimation anim = new WeightAnimation(1, 0, container);
+                anim.setInterpolator(new AccelerateInterpolator());
+                anim.setDuration(1000);
+                container.startAnimation(anim);
+            }
+        });
+
+        WeightAnimation anim = new WeightAnimation(0, 1, container);
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setDuration(1000);
         anim.setStartOffset(1000);
-        view.startAnimation(anim);
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WeightAnimation anim = new WeightAnimation(1, 0, view);
-                anim.setInterpolator(new DecelerateInterpolator());
-                anim.setDuration(1000);
-                view.startAnimation(anim);
-            }
-        });
+        container.startAnimation(anim);
     }
 
     @Override
     public void onLoaderReset(Loader<Holder<List<Promotion>>> loader) { }
 
-    private static class WeightAnimation extends Animation {
-        private final float mStartWeight;
-        private final float mDeltaWeight;
-        private final View mContent;
 
-        public WeightAnimation(float startWeight, float endWeight, View v) {
-            mStartWeight = startWeight;
-            mDeltaWeight = endWeight - startWeight;
-            mContent = v;
+    @NonNull
+    private CharSequence promoToHtml(@NonNull Promotion p){
+        StringBuilder sb = new StringBuilder();
+        // FIXME Choose properly
+        PromotionPicture promotionPicture = CollectionUtil.firstElement(p.getPromotionPictures());
+        sb.append("<div style='font-family:Arial,Verdana,sans-serif; font-size:larger; font-weight:bold; margin-bottom: 8px'>");
+        sb.append(TextUtils.htmlEncode(p.getTitle()));
+        sb.append("</div>");
+        if(promotionPicture != null){
+            sb.append("<img style='float:left; margin-right: 8px;' src='");
+            sb.append(promotionPicture.getUri().toString());
+            sb.append("' width='20%'/>");
         }
+        sb.append("<p>");
+        sb.append(TextUtils.htmlEncode(p.getText()));
+        sb.append("</p>");
 
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mContent.getLayoutParams();
-            lp.weight = (mStartWeight + (mDeltaWeight * interpolatedTime));
-            mContent.setLayoutParams(lp);
-        }
-
-        @Override
-        public boolean willChangeBounds() {
-            return true;
-        }
+        return sb;
     }
 }
