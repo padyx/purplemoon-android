@@ -1,13 +1,14 @@
 package ch.defiant.purplesky.core;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import dagger.ObjectGraph;
@@ -108,7 +109,7 @@ public class PurpleSkyApplication extends android.app.Application {
     }
 
     private void initObjectGraph() {
-        objectGraph = ObjectGraph.create(new PurpleSkyModule(this));
+        objectGraph = ObjectGraph.create(ch.defiant.purplesky.core.Modules.list(this));
         objectGraph.inject(this);
     }
 
