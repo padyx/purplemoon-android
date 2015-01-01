@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.defiant.purplesky.beans.promotion.Event;
+import ch.defiant.purplesky.beans.promotion.EventLocation;
 import ch.defiant.purplesky.beans.promotion.Promotion;
 import ch.defiant.purplesky.beans.promotion.PromotionBuilder;
 import ch.defiant.purplesky.beans.promotion.PromotionPicture;
@@ -87,6 +88,7 @@ class PromotionJSONTranslator {
         if (eventUrl != null){
             builder.setEventUri(Uri.parse(eventUrl));
         }
+
         return builder.build();
     }
 
@@ -125,9 +127,34 @@ class PromotionJSONTranslator {
             event.setEnd(DateUtility.getFromUnixTime(endDate));
         }
 
-        // TODO IMPLEMENT MORE: Flyer, location, organizer etc.
+        if (object.has(PromotionAPIConstants.Event.JSON_LOCATION)){
+            event.setLocation(translateEventLocation(object.optJSONObject(PromotionAPIConstants.Event.JSON_LOCATION)));
+        }
+        // TODO IMPLEMENT MORE: Flyer, organizer etc.
 
         return event;
+    }
+
+    private static EventLocation translateEventLocation(JSONObject jsonObject) {
+        if(jsonObject == null){
+            return null;
+        }
+
+        EventLocation location = new EventLocation();
+        location.setLocationId(jsonObject.optInt(PromotionAPIConstants.EventLocation.JSON_ID));
+        location.setLocationName(jsonObject.optString(PromotionAPIConstants.EventLocation.JSON_LOCATIONNAME));
+        location.setAddress(jsonObject.optString(PromotionAPIConstants.EventLocation.JSON_ADDRESS));
+        location.setCountryCode(jsonObject.optString(PromotionAPIConstants.EventLocation.JSON_COUNTRYCODE));
+        location.setRegionCode(jsonObject.optString(PromotionAPIConstants.EventLocation.JSON_REGIONCODE));
+        location.setVillage(jsonObject.optString(PromotionAPIConstants.EventLocation.JSON_VILLAGE));
+        location.setLatitude(jsonObject.optDouble(PromotionAPIConstants.EventLocation.JSON_LATITUDE));
+        location.setLongitude(jsonObject.optDouble(PromotionAPIConstants.EventLocation.JSON_LONGITUDE));
+
+        if(jsonObject.has(PromotionAPIConstants.EventLocation.JSON_WEBSITE)){
+            location.setWebsite(Uri.parse(jsonObject.optString(PromotionAPIConstants.EventLocation.JSON_WEBSITE)));
+        }
+
+        return location;
     }
 
     public static Event.RegistrationVisibility translateVisibility(String visibility){

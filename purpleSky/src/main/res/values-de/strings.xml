@@ -287,5 +287,9 @@
     <string name="RegisterForEvent">Anmelden</string>
     <string name="RegisterForEvent_Condensed_">Für Veranstaltung anmelden</string>
     <string name="Event">Veranstaltung</string>
+    <string name="ShowAttendance">Zeige deine Anmeldung für</string>
+    <string name="Everyone">Jeden</string>
+    <string name="Nobody">Niemand</string>
+    <string name="PreliminaryEventNoRegistration">Vorläufige Information - Du kannst dich für diese Veranstatltung noch nicht anmelden.</string>
 
 </resources>

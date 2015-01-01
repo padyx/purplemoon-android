@@ -17,6 +17,16 @@ public class Event {
     private String m_descriptionHtml;
     private Date m_start;
     private Date m_end;
+
+    public EventLocation getLocation() {
+        return m_location;
+    }
+
+    public void setLocation(EventLocation location) {
+        m_location = location;
+    }
+
+    private EventLocation m_location;
     // TODO Implement more fields
     // - Timezone
     // - Genders

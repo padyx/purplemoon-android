@@ -1,7 +1,12 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -14,15 +19,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Toast;
+
+import java.util.Collections;
+import java.util.Set;
 
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
 import ch.defiant.purplesky.beans.promotion.Event;
+import ch.defiant.purplesky.beans.promotion.EventLocation;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.loaders.promotions.EventLoader;
+import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
 
@@ -48,8 +59,6 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         }
 
         eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
-
-        loadData();
     }
 
     private void loadData() {
@@ -62,13 +71,9 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         View view = inflater.inflate(R.layout.webview_full, container);
 
         m_webview = (WebView) view.findViewById(R.id.webview_full_webview);
-        setUpWebview(m_webview);
+        loadData();
 
         return view;
-    }
-
-    private void setUpWebview(WebView webview) {
-
     }
 
     @Override
@@ -97,7 +102,8 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     private boolean canRegister(@NonNull Event event) {
-        return !event.isPreliminary() && !event.isRegistered();
+        return true; // FIXME Hardcoded
+        // return !event.isPreliminary() && !event.isRegistered();
     }
 
     @Override
@@ -112,7 +118,13 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item); // FIXME Implement
+        if(item.getItemId() == R.id.register){
+            ChooserDialog fragm = new ChooserDialog();
+            fragm.show(getFragmentManager(), "registerDialog");
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private static String promoToHtml(Context c, Event event) {
@@ -126,6 +138,12 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         sb.append("</h2><p style='font-face: Verdana,Arial,sans-serif;'>");
         sb.append(event.getDescriptionHtml());
         sb.append("</p>\n");
+
+        if(event.isPreliminary()) {
+            sb.append("<p><em>");
+            sb.append(c.getString(R.string.PreliminaryEventNoRegistration));
+            sb.append("</em></p>");
+        }
 
         sb.append("<p>");
         String date = DateUtility.getMediumDateTimeString(event.getStart());
@@ -153,7 +171,25 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
             addRow(sb, c.getString(R.string.MaximumAge), String.valueOf(event.getMaxAge()));
         }
         addRow(sb, "Registrations", String.valueOf(event.getRegistrations()));
-        sb.append("</table></body></html>");
+        sb.append("</table>");
+
+
+
+        if(event.getLocation() != null) {
+            EventLocation location = event.getLocation();
+            sb.append("<h3>");
+            sb.append("Location");
+            sb.append("</h3><table style='border:0'>");
+
+            addRow(sb, "Location", location.getLocationName());
+            addRow(sb, "Address", location.getAddress());
+            if(location.getWebsite() != null) {
+                addRow(sb, "Location website", "<a href='"+location.getWebsite()+"'>Link</a>");
+            }
+
+            sb.append("</table>");
+        }
+        sb.append("</body></html>");
 
         return sb.toString();
     }
@@ -164,5 +200,29 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         sb.append("</td><td>");
         sb.append(secondCol);
         sb.append("</td></tr>\n");
+    }
+
+
+    public static class ChooserDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.ShowAttendance);
+            CharSequence[] values = {getString(R.string.Everyone), getString(R.string.Nobody)};
+            return builder.setItems(values, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment);
+                    if(fragment instanceof EventFragment){
+                        ((EventFragment) fragment).sendRegistration(Collections.singleton(which));
+                    }
+                }
+            }).create();
+        }
+    }
+
+    private void sendRegistration(Set<Integer> singleton) {
+        Toast.makeText(getActivity(), "Chosen index: "+ CollectionUtil.firstElement(singleton), Toast.LENGTH_SHORT).show();
     }
 }

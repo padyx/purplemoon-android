@@ -349,6 +349,7 @@ public class PurplemoonAPIConstantsV1 {
 
     public static class Errors {
         public static final String JSON_ERROR_TYPE = "error";
+        public static final String JSON_ERROR_DESCRIPTION = "error_description";
 
         /**
          * Indicates that the application user is blocking the user that he is trying to contact.

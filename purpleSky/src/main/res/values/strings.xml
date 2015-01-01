@@ -284,5 +284,9 @@
     <string name="RegisterForEvent">Register for event</string>
     <string name="RegisterForEvent_Condensed_">Register</string>
     <string name="Event">Event</string>
+    <string name="ShowAttendance">Show your attendance to</string>
+    <string name="Everyone">Everyone</string>
+    <string name="Nobody">Nobody</string>
+    <string name="PreliminaryEventNoRegistration">Preliminary information - you cannot register for this event yet.</string>
 
 </resources>

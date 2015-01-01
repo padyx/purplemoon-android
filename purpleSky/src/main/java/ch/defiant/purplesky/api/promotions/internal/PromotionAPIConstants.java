@@ -7,7 +7,7 @@ class PromotionAPIConstants {
 
     public static final String PROMOTION_URL = "/notifications/promos";
 
-    public static class Promotion {
+    public abstract static class Promotion {
         public static final String JSON_ID = "id";
         public static final String JSON_TITLE = "title";
         public static final String JSON_TEXT = "text";
@@ -32,7 +32,7 @@ class PromotionAPIConstants {
 
     public static final String EVENT_TYPE_CONCAT = "+";
 
-    public static class Event {
+    public abstract static class Event {
 
         public static final String JSON_ID = "event_id";
         public static final String JSON_PRIVATE = "private";
@@ -54,10 +54,30 @@ class PromotionAPIConstants {
         public static final String JSON_REGISTRATION_VISiBILITY_FRIENDS = "friends";
         public static final String JSON_REGISTRATION_VISiBILITY_KNOWN = "known";
         public static final String JSON_REGISTRATION_VISiBILITY_NONE = "nobody";
+        public static final String JSON_LOCATION = "location";
 
         public static final int MAX_AGE_NULL_VALUE = 250;
     }
 
+    public abstract static class EventLocation {
+        public static final String JSON_ID = "location_id";
+        public static final String JSON_COUNTRYCODE = "country";
+        public static final String JSON_REGIONCODE = "region";
+        public static final String JSON_VILLAGE = "village";
+        public static final String JSON_LOCATIONNAME = "name";
+        public static final String JSON_ADDRESS = "address";
+        public static final String JSON_LATITUDE = "lat";
+        public static final String JSON_LONGITUDE = "lng";
+        public static final String JSON_WEBSITE = "website";
+    }
+
+    public static final String REGISTER_URL = "/events/register/";
+
+    public static final String REGISTER_ERROR_NOTFOUND = "not_found";
+    public static final String REGISTER_ERROR_PRELIMINARY = "preliminary";
+    public static final String REGISTER_ERROR_TOOYOUNG = "too_young";
+    public static final String REGISTER_ERROR_TOOOLD = "too_old";
+    public static final String REGISTER_ERROR_WRONGGENDER = "wrong_gender";
 }
 
 
