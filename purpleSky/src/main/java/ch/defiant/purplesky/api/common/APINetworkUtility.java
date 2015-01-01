@@ -126,6 +126,63 @@ public class APINetworkUtility {
         }
     }
 
+    public static ApiResponse<String> getString(URL resource) throws IOException, PurpleSkyException {
+        OkHttpClient httpClient = new OkHttpClient();
+        Request.Builder builder = new Request.Builder();
+
+        addLanguageHeader(builder);
+        addAuthenticationHeader(builder, resource);
+
+        Request request = builder.url(resource).build();
+        Response response = httpClient.newCall(request).execute();
+        int responseCode = response.code();
+        if(response.isSuccessful()){
+            return new ApiResponse<String>(responseCode, response.body().string());
+        } else {
+            String body = response.body().string();
+            ErrorTranslator.throwIfGenericException(PurpleSkyApplication.get(), responseCode, body, resource.toString());
+            try{
+                JSONObject obj = new JSONObject(body);
+                return new ApiResponse<String>(
+                        responseCode,
+                        obj.optString(PurplemoonAPIConstantsV1.Errors.JSON_ERROR_TYPE),
+                        obj.optString(PurplemoonAPIConstantsV1.Errors.JSON_ERROR_DESCRIPTION));
+            } catch (JSONException e){
+                return new ApiResponse<String>(responseCode, "", "");
+            }
+        }
+    }
+
+    public static ApiResponse<JSONArray> getJSONArray(URL resource) throws IOException, PurpleSkyException {
+        ApiResponse<String> response = getString(resource);
+        try{
+            if(response.isError()) {
+                return new ApiResponse<JSONArray>(response.getResponseCode(), response.getError(), response.getErrorDescription());
+            } else {
+                JSONArray array = new JSONArray(response.getResult());
+                return new ApiResponse<JSONArray>(response.getResponseCode(), array);
+            }
+        } catch(JSONException e){
+            // Could not translate...
+            return new ApiResponse<JSONArray>(response.getResponseCode(), new JSONArray());
+        }
+    }
+
+    public static ApiResponse<JSONObject> getJSONObject(URL resource) throws IOException, PurpleSkyException {
+        ApiResponse<String> response = getString(resource);
+        try{
+            if(response.isError()) {
+                return new ApiResponse<JSONObject>(response.getResponseCode(), response.getError(), response.getErrorDescription());
+            } else {
+                JSONObject array = new JSONObject(response.getResult());
+                return new ApiResponse<JSONObject>(response.getResponseCode(), array);
+            }
+        } catch(JSONException e){
+            // Could not translate...
+            return new ApiResponse<JSONObject>(response.getResponseCode(), new JSONObject());
+        }
+    }
+
     public static HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
             throws IOException, PurpleSkyException {
         Request.Builder builder = new Request.Builder();
