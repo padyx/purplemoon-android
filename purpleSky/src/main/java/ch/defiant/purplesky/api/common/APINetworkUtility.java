@@ -83,13 +83,16 @@ public class APINetworkUtility {
         addLanguageHeader(builder);
         addAuthenticationHeader(builder, resource);
 
-        FormEncodingBuilder formBuilder = new FormEncodingBuilder();
-        if(postBody != null){
-            for(NameValuePair pair : postBody){
+        if(postBody != null && !postBody.isEmpty()) {
+            FormEncodingBuilder formBuilder = new FormEncodingBuilder();
+            for (NameValuePair pair : postBody) {
                 formBuilder.add(pair.getName(), pair.getValue());
             }
+            builder.post(formBuilder.build());
+        } else {
+            // No actual content
+            builder.post(null);
         }
-        builder.post(formBuilder.build());
         Response response = new OkHttpClient().newCall(builder.build()).execute();
 
         return createStringApiResponse(resource, response);
@@ -244,13 +247,15 @@ public class APINetworkUtility {
         addLanguageHeader(builder);
         addAuthenticationHeader(builder, resource);
 
-        FormEncodingBuilder formBuilder = new FormEncodingBuilder();
-        if(postBody != null){
-            for(NameValuePair pair : postBody){
+        if(postBody != null && !postBody.isEmpty()) {
+            FormEncodingBuilder formBuilder = new FormEncodingBuilder();
+            for (NameValuePair pair : postBody) {
                 formBuilder.add(pair.getName(), pair.getValue());
             }
+            builder.post(formBuilder.build());
+        } else {
+            builder.post(null);
         }
-        builder.post(formBuilder.build());
         Response response = new OkHttpClient().newCall(builder.build()).execute();
 
         HTTPURLResponseHolder holder = new HTTPURLResponseHolder();
