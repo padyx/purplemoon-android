@@ -35,7 +35,7 @@ public class RegisterUnregisterLoader extends SimpleAsyncLoader<Holder<EventRegi
     public Holder<EventRegistrationResult> loadInBackground() {
         try {
             if (m_isUnregister) {
-                return Holder.of(null);
+                return Holder.of(m_adapter.unregister(m_eventId));
             } else {
                 return Holder.of(m_adapter.register(m_eventId, m_visibility));
             }

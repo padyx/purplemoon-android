@@ -9,9 +9,9 @@
 
     <item android:id="@+id/unregister"
           android:title="@string/UnregisterFromEvent"
-          android:titleCondensed="@string/RegisterForEvent_Condensed_"
+          android:titleCondensed="@string/UnregisterForEvent_Condensed_"
           android:showAsAction="ifRoom"
-          android:enabled="false"
+          android:enabled="true"
           android:visible="false"
         />
 </menu>

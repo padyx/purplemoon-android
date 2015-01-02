@@ -50,7 +50,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Inject
     protected IPromotionAdapter m_promotionAdapter;
-    private int m_eventId = 35;
+    private int m_eventId;
     private WebView m_webview;
     private MenuItem m_registerMenu;
     private MenuItem m_unregisterMenu;
@@ -80,7 +80,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
             throw new IllegalArgumentException("Missing event id");
         }
 
-        m_eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
+        //m_eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
     }
 
     private void loadData() {
@@ -126,8 +126,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     private boolean canRegister(@NonNull Event event) {
-        return true; // FIXME Hardcoded
-        // return !event.isPreliminary() && !event.isRegistered();
+        return !event.isPreliminary() && !event.isRegistered();
     }
 
     @Override
@@ -330,6 +329,8 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         public void onLoaderReset(Loader<Holder<EventRegistrationResult>> loader) {}
     }
 
-    private void registerUnregisterFinished(Holder<EventRegistrationResult> data) {}
+    private void registerUnregisterFinished(Holder<EventRegistrationResult> data) {
+
+    }
 
 }

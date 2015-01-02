@@ -3,7 +3,6 @@ package ch.defiant.purplesky.api.promotions.internal;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,7 +56,7 @@ public class PromotionAdapter implements IPromotionAdapter {
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PromotionAPIConstants.REGISTER_URL + eventId);
         ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
         body.add(new BasicNameValuePair(PromotionAPIConstants.Event.REGISTRATION_VISIBILITY_ARG, PromotionJSONTranslator.translate(visibility)));
-        ApiResponse<JSONObject> response = APINetworkUtility.postForJSONObject(url, body, Collections.<NameValuePair>emptyList());
+        ApiResponse<String> response = APINetworkUtility.postForString(url, body, Collections.<NameValuePair>emptyList());
 
         if (response.isError()) {
             String error = response.getError();
@@ -71,6 +70,26 @@ public class PromotionAdapter implements IPromotionAdapter {
                 return EventRegistrationResult.ERROR_TOO_YOUNG;
             } else if (PromotionAPIConstants.REGISTER_ERROR_WRONGGENDER.equals(error)) {
                 return EventRegistrationResult.ERROR_WRONG_GENDER;
+            } else {
+                return EventRegistrationResult.ERROR_GENERIC;
+            }
+        } else {
+            return EventRegistrationResult.SUCCESS;
+        }
+    }
+
+    @Override
+    public EventRegistrationResult unregister(int eventId) throws IOException, PurpleSkyException {
+        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PromotionAPIConstants.UNREGISTER_URL + eventId);
+        ApiResponse<String> response = APINetworkUtility.postForString(url,
+                Collections.<NameValuePair>emptyList(), Collections.<NameValuePair>emptyList());
+
+        if (response.isError()) {
+            String error = response.getError();
+            if (PromotionAPIConstants.REGISTER_ERROR_NOTFOUND.equals(error)) {
+                return EventRegistrationResult.ERROR_NOT_FOUND;
+            } else if (PromotionAPIConstants.REGISTER_ERROR_PRELIMINARY.equals(error)) {
+                return EventRegistrationResult.ERROR_PRELIMINARY;
             } else {
                 return EventRegistrationResult.ERROR_GENERIC;
             }

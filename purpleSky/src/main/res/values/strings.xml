@@ -302,5 +302,6 @@
     <string name="Address">Address</string>
     <string name="EventLocation">Event location</string>
     <string name="UnregisterFromEvent">Unregister from event</string>
+    <string name="UnregisterForEvent_Condensed_">Unregister</string>
 
 </resources>

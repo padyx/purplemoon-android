@@ -107,7 +107,7 @@ class PromotionJSONTranslator {
         boolean registered = object.has(PromotionAPIConstants.Event.JSON_REGISTRATION);
         event.setRegistered(registered);
         if (registered) {
-            event.setRegistrationVisibility(translateVisibility(object.optString(PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY)));
+            event.setRegistrationVisibility(translateVisibility(object.optJSONObject(PromotionAPIConstants.Event.JSON_REGISTRATION)));
         }
 
         event.setMinAge(object.optInt(PromotionAPIConstants.Event.JSON_AGEMIN));
@@ -160,7 +160,12 @@ class PromotionJSONTranslator {
         return location;
     }
 
-    public static Event.RegistrationVisibility translateVisibility(String visibility){
+    public static Event.RegistrationVisibility translateVisibility(JSONObject visibilityObj){
+        if(visibilityObj == null){
+            return Event.RegistrationVisibility.NONE;
+        }
+
+        String visibility = visibilityObj.optString(PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY);
         if(visibility == null){
             return Event.RegistrationVisibility.NONE;
         } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_ALL.equals(visibility)){
@@ -226,7 +231,7 @@ class PromotionJSONTranslator {
             case NONE:
                 return PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_NONE;
             default:
-                throw new IllegalArgumentException("Missing translation for visibility");
+                throw new IllegalArgumentException("Missing translation for visibility" + visibility);
         }
     }
 }

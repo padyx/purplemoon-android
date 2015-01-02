@@ -80,6 +80,8 @@ class PromotionAPIConstants {
     }
 
     public static final String REGISTER_URL = "/events/register/";
+    public static final String UNREGISTER_URL = "/events/unregister/";
+
 
     public static final String REGISTER_ERROR_NOTFOUND = "not_found";
     public static final String REGISTER_ERROR_PRELIMINARY = "preliminary";

@@ -20,4 +20,6 @@ public interface IPromotionAdapter {
 
     EventRegistrationResult register(int eventId, Event.RegistrationVisibility visibility)  throws IOException, PurpleSkyException;
 
- }
+    EventRegistrationResult unregister(int eventId)  throws IOException, PurpleSkyException;
+
+}
