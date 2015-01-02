@@ -291,5 +291,18 @@
     <string name="Everyone">Jeden</string>
     <string name="Nobody">Niemand</string>
     <string name="PreliminaryEventNoRegistration">Vorläufige Information - Du kannst dich für diese Veranstatltung noch nicht anmelden.</string>
+    <string name="MenOnly">Nur Männer</string>
+    <string name="WomenOnly">Women only</string>
+    <string name="MostlyMen">Hauptsächlich Männer</string>
+    <string name="MostlyWomen">Hauptsächlich Frauen</string>
+    <string name="Audience">Publikum</string>
+    <string name="EntranceOnlyFor">Zutritt nur für</string>
+    <string name="Limited_PrivateEvent">Beschränkter Einlass: Private Veranstaltung</string>
+    <string name="Address">Adresse</string>
+    <string name="Information">Information</string>
+    <string name="Name">Name</string>
+    <string name="Registrations">Anmeldungen</string>
+    <string name="Website">Website</string>
+    <string name="EventLocation">Veranstaltungsort</string>
 
 </resources>

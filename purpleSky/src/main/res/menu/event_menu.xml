@@ -6,4 +6,12 @@
           android:showAsAction="ifRoom"
           android:enabled="false"
         />
+
+    <item android:id="@+id/unregister"
+          android:title="@string/UnregisterFromEvent"
+          android:titleCondensed="@string/RegisterForEvent_Condensed_"
+          android:showAsAction="ifRoom"
+          android:enabled="false"
+          android:visible="false"
+        />
 </menu>

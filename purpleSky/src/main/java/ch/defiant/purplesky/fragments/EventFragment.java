@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,21 +20,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import java.util.Collections;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.api.promotions.EventRegistrationResult;
 import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
 import ch.defiant.purplesky.beans.promotion.Event;
 import ch.defiant.purplesky.beans.promotion.EventLocation;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.loaders.promotions.EventLoader;
-import ch.defiant.purplesky.util.CollectionUtil;
+import ch.defiant.purplesky.loaders.promotions.RegisterUnregisterLoader;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
 
@@ -42,11 +44,31 @@ import ch.defiant.purplesky.util.Holder;
  */
 public class EventFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<Event>> {
 
+    private static final String LOADER_ISUNREGISTER = "isUnregister";
+    private static final String LOADER_EVENTID = "m_eventId";
+    private static final String LOADER_VISIBILITY_INDEX = "visibility";
+
     @Inject
     protected IPromotionAdapter m_promotionAdapter;
-    private int eventId;
+    private int m_eventId = 35;
     private WebView m_webview;
     private MenuItem m_registerMenu;
+    private MenuItem m_unregisterMenu;
+    private EventRegistrationListener m_registerUnregisterHandler;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        m_registerUnregisterHandler = new EventRegistrationListener(m_promotionAdapter);
+        m_registerUnregisterHandler.setFragment(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        m_registerUnregisterHandler.setFragment(null);
+        m_registerUnregisterHandler = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +80,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
             throw new IllegalArgumentException("Missing event id");
         }
 
-        eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
+        m_eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
     }
 
     private void loadData() {
@@ -79,8 +101,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
     @Override
     public Loader<Holder<Event>> onCreateLoader(int id, Bundle args) {
         getActivity().setProgressBarIndeterminateVisibility(true);
-
-        return new EventLoader(eventId, m_promotionAdapter, getActivity());
+                return new EventLoader(m_eventId, m_promotionAdapter, getActivity());
     }
 
     @Override
@@ -93,11 +114,14 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
 
         if(data.isException()){
             // FIXME Implement
+            m_registerMenu.setEnabled(false);
         } else {
             Event event = data.getContainedObject();
             m_webview.loadData(promoToHtml(getActivity(), event), "text/html; charset=utf-8", "UTF-8");
 
             m_registerMenu.setEnabled(canRegister(event));
+            m_registerMenu.setVisible(!event.isRegistered());
+            m_unregisterMenu.setVisible(event.isRegistered());
         }
     }
 
@@ -114,6 +138,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.event_menu, menu);
         m_registerMenu = menu.findItem(R.id.register);
+        m_unregisterMenu = menu.findItem(R.id.unregister);
     }
 
     @Override
@@ -121,6 +146,9 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         if(item.getItemId() == R.id.register){
             ChooserDialog fragm = new ChooserDialog();
             fragm.show(getFragmentManager(), "registerDialog");
+            return true;
+        } else if (item.getItemId() == R.id.unregister) {
+            unregister();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -161,8 +189,17 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         sb.append(c.getString(R.string.Admission));
         sb.append("</h3><table style='border:0'>");
         if(event.isPrivate()){
-            // FIXME Other admission stuff such as gender
-            addRow(sb, c.getString(R.string.Admission), "Limited: Private Event");
+            addRow(sb, c.getString(R.string.Admission), c.getString(R.string.Limited_PrivateEvent));
+        }
+        if(event.getGenders() != null){
+            Event.Genders genders = event.getGenders();
+            if(Arrays.asList(Event.Genders.MEN_ONLY, Event.Genders.WOMEN_ONLY).contains(genders)){
+                addRow(sb, c.getString(R.string.EntranceOnlyFor), c.getString(genders.resourceId));
+            }
+            else if (genders != Event.Genders.ALL) {
+                // We don't care about all
+                addRow(sb, c.getString(R.string.Audience), c.getString(genders.resourceId));
+            }
         }
         if(event.getMinAge() != null) {
             addRow(sb, c.getString(R.string.MinimumAge), String.valueOf(event.getMinAge()));
@@ -170,7 +207,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         if(event.getMaxAge() != null) {
             addRow(sb, c.getString(R.string.MaximumAge), String.valueOf(event.getMaxAge()));
         }
-        addRow(sb, "Registrations", String.valueOf(event.getRegistrations()));
+        addRow(sb, c.getString(R.string.Registrations), String.valueOf(event.getRegistrations()));
         sb.append("</table>");
 
 
@@ -178,13 +215,17 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         if(event.getLocation() != null) {
             EventLocation location = event.getLocation();
             sb.append("<h3>");
-            sb.append("Location");
+            sb.append(c.getString(R.string.EventLocation));
             sb.append("</h3><table style='border:0'>");
 
-            addRow(sb, "Location", location.getLocationName());
-            addRow(sb, "Address", location.getAddress());
+            addRow(sb, c.getString(R.string.Name), location.getLocationName());
+            addRow(sb, c.getString(R.string.Address), location.getAddress());
+            addRow(sb, c.getString(R.string.Country), new Locale("", location.getCountryCode().toUpperCase()).getDisplayCountry());
+
             if(location.getWebsite() != null) {
-                addRow(sb, "Location website", "<a href='"+location.getWebsite()+"'>Link</a>");
+                addRow(sb,
+                        c.getString(R.string.Information),
+                        "<a href='"+location.getWebsite()+"'>"+c.getString(R.string.Website)+"</a>");
             }
 
             sb.append("</table>");
@@ -215,14 +256,80 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
                 public void onClick(DialogInterface dialog, int which) {
                     Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment);
                     if(fragment instanceof EventFragment){
-                        ((EventFragment) fragment).sendRegistration(Collections.singleton(which));
+                        ((EventFragment) fragment).register(which);
                     }
                 }
             }).create();
         }
+
     }
 
-    private void sendRegistration(Set<Integer> singleton) {
-        Toast.makeText(getActivity(), "Chosen index: "+ CollectionUtil.firstElement(singleton), Toast.LENGTH_SHORT).show();
+    private void register(int index) {
+        Event.RegistrationVisibility visibility;
+        if(index == 0){
+            // Everybody
+            visibility = Event.RegistrationVisibility.ALL;
+        } else {
+            // Nobody
+            visibility = Event.RegistrationVisibility.NONE;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(LOADER_EVENTID, m_eventId);
+        bundle.putInt(LOADER_VISIBILITY_INDEX, visibility.ordinal());
+        bundle.putBoolean(LOADER_ISUNREGISTER, false);
+
+        getLoaderManager().restartLoader(R.id.loader_eventRegisterUnregister, bundle, m_registerUnregisterHandler);
     }
+
+    private void unregister() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(LOADER_EVENTID, m_eventId);
+        bundle.putBoolean(LOADER_ISUNREGISTER, true);
+
+        getLoaderManager().restartLoader(R.id.loader_eventRegisterUnregister, bundle, m_registerUnregisterHandler);
+    }
+
+
+    private static class EventRegistrationListener implements Serializable, LoaderManager.LoaderCallbacks<Holder<EventRegistrationResult>> {
+
+        public EventRegistrationListener(IPromotionAdapter adapter){
+            m_promotionAdapter = adapter;
+        }
+
+        private final IPromotionAdapter m_promotionAdapter;
+        private EventFragment m_fragment;
+
+        public void setFragment(EventFragment fragment) {
+            m_fragment = fragment;
+        }
+
+        @Override
+        public Loader<Holder<EventRegistrationResult>> onCreateLoader(int id, Bundle args) {
+            m_fragment.getActivity().setProgressBarIndeterminateVisibility(true);
+            return new RegisterUnregisterLoader(
+                    m_fragment.getActivity(),
+                    m_promotionAdapter,
+                    args.getBoolean(LOADER_ISUNREGISTER),
+                    args.getInt(LOADER_EVENTID),
+                    Event.RegistrationVisibility.values()[args.getInt(LOADER_VISIBILITY_INDEX)]
+            );
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Holder<EventRegistrationResult>> loader, Holder<EventRegistrationResult> data) {
+            if (m_fragment == null || m_fragment.getActivity().isFinishing()){
+                return;
+            }
+            m_fragment.getActivity().setProgressBarIndeterminateVisibility(false);
+            m_fragment.getLoaderManager().destroyLoader(R.id.loader_eventRegisterUnregister);
+            m_fragment.registerUnregisterFinished(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Holder<EventRegistrationResult>> loader) {}
+    }
+
+    private void registerUnregisterFinished(Holder<EventRegistrationResult> data) {}
+
 }

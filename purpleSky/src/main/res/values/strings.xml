@@ -288,5 +288,19 @@
     <string name="Everyone">Everyone</string>
     <string name="Nobody">Nobody</string>
     <string name="PreliminaryEventNoRegistration">Preliminary information - you cannot register for this event yet.</string>
+    <string name="MenOnly">Only men</string>
+    <string name="WomenOnly">Only women</string>
+    <string name="MostlyMen">Mostly men</string>
+    <string name="MostlyWomen">Mostly women</string>
+    <string name="Registrations">Registrations</string>
+    <string name="Audience">Audience</string>
+    <string name="EntranceOnlyFor">Entrance only for</string>
+    <string name="Limited_PrivateEvent">Limited: Private Event</string>
+    <string name="Information">Information</string>
+    <string name="Website">website</string>
+    <string name="Name">Name</string>
+    <string name="Address">Address</string>
+    <string name="EventLocation">Event location</string>
+    <string name="UnregisterFromEvent">Unregister from event</string>
 
 </resources>

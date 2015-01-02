@@ -1,6 +1,10 @@
 package ch.defiant.purplesky.beans.promotion;
 
+import android.support.annotation.StringRes;
+
 import java.util.Date;
+
+import ch.defiant.purplesky.R;
 
 /**
  * @author Patrick Bänziger
@@ -18,13 +22,7 @@ public class Event {
     private Date m_start;
     private Date m_end;
 
-    public EventLocation getLocation() {
-        return m_location;
-    }
 
-    public void setLocation(EventLocation location) {
-        m_location = location;
-    }
 
     private EventLocation m_location;
     // TODO Implement more fields
@@ -33,10 +31,10 @@ public class Event {
     // - Flyer
     // - Preview flyer id
     // - Journey
-    // - Event Location
     private Integer m_minAge;
     private Integer m_maxAge;
     private int m_registrations;
+    private Genders m_genders;
 
 
     public int getEventId() {
@@ -143,8 +141,39 @@ public class Event {
         m_isRegistered = isRegistered;
     }
 
+    public EventLocation getLocation() {
+        return m_location;
+    }
+
+    public void setLocation(EventLocation location) {
+        m_location = location;
+    }
+
+    public Genders getGenders() {
+        return m_genders;
+    }
+
+    public void setGenders(Genders genders) {
+        m_genders = genders;
+    }
+
     public enum RegistrationVisibility {
         ALL, FRIENDS_AND_KNOWN, FRIENDS, KNOWN, NONE
+    }
+
+    public enum Genders {
+        ALL(R.string.All),
+        MEN_ONLY(R.string.MenOnly),
+        WOMEN_ONLY(R.string.WomenOnly),
+        MOSTLY_MEN(R.string.MostlyMen),
+        MOSTLY_WOMEN(R.string.MostlyWomen);
+
+        @StringRes
+        public final int resourceId;
+
+        Genders(@StringRes int resourceId) {
+            this.resourceId = resourceId;
+        }
     }
 
     @Override

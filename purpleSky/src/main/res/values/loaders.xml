@@ -31,4 +31,5 @@
     <item type="id" name="loader_reportUser" />
     <item type="id" name="loader_promotions" />
     <item type="id" name="loader_event" />
+    <item type="id" name="loader_eventRegisterUnregister" />
 </resources>

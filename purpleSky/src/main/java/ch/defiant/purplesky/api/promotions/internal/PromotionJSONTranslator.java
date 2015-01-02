@@ -102,6 +102,7 @@ class PromotionJSONTranslator {
         event.setEventName(object.optString(PromotionAPIConstants.Event.JSON_NAME));
         event.setDescriptionHtml(object.optString(PromotionAPIConstants.Event.JSON_DESCRIPTION));
         event.setAdmissionPriceHtml(object.optString(PromotionAPIConstants.Event.JSON_ADMISSION));
+        event.setGenders(translateEventGender(object.optString(PromotionAPIConstants.Event.JSON_GENDERS)));
 
         boolean registered = object.has(PromotionAPIConstants.Event.JSON_REGISTRATION);
         event.setRegistered(registered);
@@ -130,6 +131,8 @@ class PromotionJSONTranslator {
         if (object.has(PromotionAPIConstants.Event.JSON_LOCATION)){
             event.setLocation(translateEventLocation(object.optJSONObject(PromotionAPIConstants.Event.JSON_LOCATION)));
         }
+
+
         // TODO IMPLEMENT MORE: Flyer, organizer etc.
 
         return event;
@@ -160,15 +163,15 @@ class PromotionJSONTranslator {
     public static Event.RegistrationVisibility translateVisibility(String visibility){
         if(visibility == null){
             return Event.RegistrationVisibility.NONE;
-        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISiBILITY_ALL.equals(visibility)){
+        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_ALL.equals(visibility)){
             return Event.RegistrationVisibility.ALL;
-        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISiBILITY_FRIENDS_AND_KNOWN.equals(visibility)){
+        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_FRIENDS_AND_KNOWN.equals(visibility)){
             return Event.RegistrationVisibility.FRIENDS_AND_KNOWN;
-        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISiBILITY_FRIENDS.equals(visibility)){
+        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_FRIENDS.equals(visibility)){
             return Event.RegistrationVisibility.FRIENDS;
-        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISiBILITY_KNOWN.equals(visibility)){
+        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_KNOWN.equals(visibility)){
             return Event.RegistrationVisibility.KNOWN;
-        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISiBILITY_NONE.equals(visibility)){
+        } else if (PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_NONE.equals(visibility)){
             return Event.RegistrationVisibility.NONE;
         } else {
             throw new IllegalStateException("Could not translate registration visibility: "+visibility);
@@ -189,5 +192,41 @@ class PromotionJSONTranslator {
         }
 
         return list;
+    }
+
+    private static Event.Genders translateEventGender(String gender){
+        if(PromotionAPIConstants.Event.JSON_GENDERS_ALL.equals(gender)){
+            return Event.Genders.ALL;
+        } else if (PromotionAPIConstants.Event.JSON_GENDERS_MEN_ONLY.equals(gender)){
+            return Event.Genders.MEN_ONLY;
+        } else if (PromotionAPIConstants.Event.JSON_GENDERS_WOMEN_ONLY.equals(gender)){
+            return Event.Genders.WOMEN_ONLY;
+        } else if (PromotionAPIConstants.Event.JSON_GENDERS_MOSTLY_MEN.equals(gender)){
+            return Event.Genders.MOSTLY_MEN;
+        } else if (PromotionAPIConstants.Event.JSON_GENDERS_MOSTLY_WOMEN.equals(gender)){
+            return Event.Genders.MOSTLY_WOMEN;
+        } else {
+            throw new IllegalArgumentException("Unknown JSON gender: " + gender);
+        }
+    }
+
+    public static String translate(Event.RegistrationVisibility visibility) {
+        if(visibility == null){
+            return "";
+        }
+        switch (visibility){
+            case ALL:
+                return PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_ALL;
+            case FRIENDS_AND_KNOWN:
+                return PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_FRIENDS_AND_KNOWN;
+            case FRIENDS:
+                return PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_FRIENDS;
+            case KNOWN:
+                return PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_KNOWN;
+            case NONE:
+                return PromotionAPIConstants.Event.JSON_REGISTRATION_VISIBILITY_NONE;
+            default:
+                throw new IllegalArgumentException("Missing translation for visibility");
+        }
     }
 }

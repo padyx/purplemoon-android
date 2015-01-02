@@ -1,10 +1,13 @@
 package ch.defiant.purplesky.api.promotions.internal;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,19 +55,21 @@ public class PromotionAdapter implements IPromotionAdapter {
     @Override
     public EventRegistrationResult register(int eventId, Event.RegistrationVisibility visibility) throws IOException, PurpleSkyException {
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PromotionAPIConstants.REGISTER_URL + eventId);
+        ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
+        body.add(new BasicNameValuePair(PromotionAPIConstants.Event.REGISTRATION_VISIBILITY_ARG, PromotionJSONTranslator.translate(visibility)));
+        ApiResponse<JSONObject> response = APINetworkUtility.postForJSONObject(url, body, Collections.<NameValuePair>emptyList());
 
-        ApiResponse<JSONObject> response = APINetworkUtility.getJSONObject(url);
         if (response.isError()) {
             String error = response.getError();
-            if (PromotionAPIConstants.REGISTER_ERROR_NOTFOUND.equals(response.getError())) {
+            if (PromotionAPIConstants.REGISTER_ERROR_NOTFOUND.equals(error)) {
                 return EventRegistrationResult.ERROR_NOT_FOUND;
-            } else if (PromotionAPIConstants.REGISTER_ERROR_PRELIMINARY.equals(response.getError())) {
+            } else if (PromotionAPIConstants.REGISTER_ERROR_PRELIMINARY.equals(error)) {
                 return EventRegistrationResult.ERROR_PRELIMINARY;
-            } else if (PromotionAPIConstants.REGISTER_ERROR_TOOOLD.equals(response.getError())) {
+            } else if (PromotionAPIConstants.REGISTER_ERROR_TOOOLD.equals(error)) {
                 return EventRegistrationResult.ERROR_TOO_OLD;
-            } else if (PromotionAPIConstants.REGISTER_ERROR_TOOYOUNG.equals(response.getError())) {
+            } else if (PromotionAPIConstants.REGISTER_ERROR_TOOYOUNG.equals(error)) {
                 return EventRegistrationResult.ERROR_TOO_YOUNG;
-            } else if (PromotionAPIConstants.REGISTER_ERROR_WRONGGENDER.equals(response.getError())) {
+            } else if (PromotionAPIConstants.REGISTER_ERROR_WRONGGENDER.equals(error)) {
                 return EventRegistrationResult.ERROR_WRONG_GENDER;
             } else {
                 return EventRegistrationResult.ERROR_GENERIC;

@@ -42,21 +42,29 @@ class PromotionAPIConstants {
         public static final String JSON_DESCRIPTION = "description";
         public static final String JSON_DATEFROM = "date_from";
         public static final String JSON_DATEUNTIL = "date_till";
-        public static final String JSON_ALLOWEDGENERS = "genders_allowed";
+        public static final String JSON_GENDERS = "genders";
         public static final String JSON_AGEMIN = "age_min";
         public static final String JSON_AGEMAX = "age_max";
         public static final String JSON_REGISTRATIONS = "registrations";
         public static final String JSON_JOURNEYS = "journeys";
         public static final String JSON_REGISTRATION = "registration";
         public static final String JSON_REGISTRATION_VISIBILITY = "visible_for";
-        public static final String JSON_REGISTRATION_VISiBILITY_ALL = "all";
-        public static final String JSON_REGISTRATION_VISiBILITY_FRIENDS_AND_KNOWN = "friends_known";
-        public static final String JSON_REGISTRATION_VISiBILITY_FRIENDS = "friends";
-        public static final String JSON_REGISTRATION_VISiBILITY_KNOWN = "known";
-        public static final String JSON_REGISTRATION_VISiBILITY_NONE = "nobody";
+        public static final String JSON_REGISTRATION_VISIBILITY_ALL = "all";
+        public static final String JSON_REGISTRATION_VISIBILITY_FRIENDS_AND_KNOWN = "friends_known";
+        public static final String JSON_REGISTRATION_VISIBILITY_FRIENDS = "friends";
+        public static final String JSON_REGISTRATION_VISIBILITY_KNOWN = "known";
+        public static final String JSON_REGISTRATION_VISIBILITY_NONE = "nobody";
         public static final String JSON_LOCATION = "location";
 
+        public static final String JSON_GENDERS_MEN_ONLY = "men_only";
+        public static final String JSON_GENDERS_WOMEN_ONLY = "women_only";
+        public static final String JSON_GENDERS_MOSTLY_MEN= "mostly_men";
+        public static final String JSON_GENDERS_MOSTLY_WOMEN = "mostly_women";
+        public static final String JSON_GENDERS_ALL = "all";
+
         public static final int MAX_AGE_NULL_VALUE = 250;
+
+        public static final String REGISTRATION_VISIBILITY_ARG = "visible_for";
     }
 
     public abstract static class EventLocation {
