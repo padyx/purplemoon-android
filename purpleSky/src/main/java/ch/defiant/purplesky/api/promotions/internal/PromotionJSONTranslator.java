@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.defiant.purplesky.beans.promotion.Event;
+import ch.defiant.purplesky.beans.promotion.EventFlyer;
 import ch.defiant.purplesky.beans.promotion.EventLocation;
 import ch.defiant.purplesky.beans.promotion.Promotion;
 import ch.defiant.purplesky.beans.promotion.PromotionBuilder;
@@ -80,7 +81,7 @@ class PromotionJSONTranslator {
             builder.setPromotionPictures(list);
         }
         if (validFrom != 0L){
-            builder.setValidFrom(DateUtility.getFromUnixTime(validFrom)); // FIXME Wrong date translated
+            builder.setValidFrom(DateUtility.getFromUnixTime(validFrom));
         }
         if (validTo != 0L){
             builder.setValidTo(DateUtility.getFromUnixTime(validTo));
@@ -132,13 +133,46 @@ class PromotionJSONTranslator {
             event.setLocation(translateEventLocation(object.optJSONObject(PromotionAPIConstants.Event.JSON_LOCATION)));
         }
 
+        event.setPreviewFlyerId(object.optInt(PromotionAPIConstants.Event.JSON_PREVIEW_FLYER_ID));
+        if(object.has(PromotionAPIConstants.Event.JSON_FLYERS)){
+            event.setEventFlyers(translateEventFlyers(object.optJSONArray(PromotionAPIConstants.Event.JSON_FLYERS)));
+        }
 
-        // TODO IMPLEMENT MORE: Flyer, organizer etc.
+        // TODO IMPLEMENT MORE: Organizer etc.
 
         return event;
     }
 
-    private static EventLocation translateEventLocation(JSONObject jsonObject) {
+    private static @NonNull List<EventFlyer> translateEventFlyers(JSONArray jsonArray) {
+        if(jsonArray == null){
+            return Collections.emptyList();
+        }
+        List<EventFlyer> flyers = new ArrayList<>();
+        for(int i=0; i<jsonArray.length(); i++){
+            JSONObject obj = jsonArray.optJSONObject(i);
+            if(obj != null){
+                EventFlyer flyer = translateEventFlyer(obj);
+                if(flyer != null){
+                    flyers.add(flyer);
+                }
+            }
+        }
+        return flyers;
+    }
+
+    private static @Nullable EventFlyer translateEventFlyer(JSONObject obj) {
+        if(obj == null){
+            return null;
+        }
+        return new EventFlyer(
+                obj.optInt(PromotionAPIConstants.EventFlyer.JSON_ID),
+                Uri.parse(obj.optString(PromotionAPIConstants.EventFlyer.JSON_PICTURE_URL)),
+                obj.optInt(PromotionAPIConstants.EventFlyer.JSON_MAXHEIGHT),
+                obj.optInt(PromotionAPIConstants.EventFlyer.JSON_MAXWIDTH)
+        );
+    }
+
+    private static @Nullable EventLocation translateEventLocation(JSONObject jsonObject) {
         if(jsonObject == null){
             return null;
         }
@@ -160,7 +194,7 @@ class PromotionJSONTranslator {
         return location;
     }
 
-    public static Event.RegistrationVisibility translateVisibility(JSONObject visibilityObj){
+    public static @NonNull Event.RegistrationVisibility translateVisibility(JSONObject visibilityObj){
         if(visibilityObj == null){
             return Event.RegistrationVisibility.NONE;
         }
@@ -183,7 +217,7 @@ class PromotionJSONTranslator {
         }
     }
 
-    public static List<Event> translateEvents(JSONArray object) {
+    public static @NonNull List<Event> translateEvents(JSONArray object) {
         if(object == null){
             return Collections.emptyList();
         }
@@ -199,7 +233,7 @@ class PromotionJSONTranslator {
         return list;
     }
 
-    private static Event.Genders translateEventGender(String gender){
+    private static @NonNull Event.Genders translateEventGender(String gender){
         if(PromotionAPIConstants.Event.JSON_GENDERS_ALL.equals(gender)){
             return Event.Genders.ALL;
         } else if (PromotionAPIConstants.Event.JSON_GENDERS_MEN_ONLY.equals(gender)){

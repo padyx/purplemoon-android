@@ -22,7 +22,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             tools:layout_weight="1"
-            android:background="@color/purple_faint"
             >
 
             <TextView
@@ -36,7 +35,8 @@
                 android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
                 android:gravity="center_vertical"
                 android:text="@string/Dismiss"
-                android:id="@+id/dismissLabel"/>
+                android:id="@+id/dismissLabel"
+                android:minHeight="48dp"/>
 
             <WebView
                 android:layout_below="@id/dismissLabel"
@@ -57,7 +57,8 @@
                 android:gravity="center_vertical"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:minHeight="48dp"/>
 
         </RelativeLayout>
 

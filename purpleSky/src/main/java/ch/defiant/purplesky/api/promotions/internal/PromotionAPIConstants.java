@@ -47,6 +47,8 @@ class PromotionAPIConstants {
         public static final String JSON_AGEMAX = "age_max";
         public static final String JSON_REGISTRATIONS = "registrations";
         public static final String JSON_JOURNEYS = "journeys";
+        public static final String JSON_FLYERS = "flyers";
+        public static final String JSON_PREVIEW_FLYER_ID = "preview_flyer_id";
         public static final String JSON_REGISTRATION = "registration";
         public static final String JSON_REGISTRATION_VISIBILITY = "visible_for";
         public static final String JSON_REGISTRATION_VISIBILITY_ALL = "all";
@@ -77,6 +79,13 @@ class PromotionAPIConstants {
         public static final String JSON_LATITUDE = "lat";
         public static final String JSON_LONGITUDE = "lng";
         public static final String JSON_WEBSITE = "website";
+    }
+
+    public abstract static class EventFlyer {
+        public static final String JSON_ID = "pic_id";
+        public static final String JSON_PICTURE_URL = "url";
+        public static final String JSON_MAXHEIGHT = "height";
+        public static final String JSON_MAXWIDTH = "width";
     }
 
     public static final String REGISTER_URL = "/events/register/";

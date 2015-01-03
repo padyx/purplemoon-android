@@ -167,10 +167,8 @@ public class ChatListActivity extends BaseFragmentActivity
             return;
         }
 
-        String data = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>\n" +
-                "<body>" + promoToHtml(promo) + "</body></html>";
+        String data = promoToHtml(promo).toString();
         webview.loadData(data, "text/html; charset=utf-8", "UTF-8");
-
 
         final View dismissButton = findViewById(R.id.dismissLabel);
 
@@ -219,22 +217,25 @@ public class ChatListActivity extends BaseFragmentActivity
 
 
     @NonNull
-    private CharSequence promoToHtml(@NonNull Promotion p){
+    private static CharSequence promoToHtml(@NonNull Promotion p){
         StringBuilder sb = new StringBuilder();
+        sb.append("<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>\n");
+        sb.append("<body style='font-family: Arial, Verdana, sans-serif;'>");
         // FIXME Choose properly
         PromotionPicture promotionPicture = CollectionUtil.firstElement(p.getPromotionPictures());
-        sb.append("<div style='font-family:Arial,Verdana,sans-serif; font-size:larger; font-weight:bold; margin-bottom: 8px'>");
+        sb.append("<h3>");
         sb.append(TextUtils.htmlEncode(p.getTitle()));
-        sb.append("</div>");
+        sb.append("</h3>");
         if(promotionPicture != null){
-            sb.append("<img style='float:left; margin-right: 8px;' src='");
+            // TODO Add link to largest picture
+            sb.append("<img style='float:left; margin-right: 8px; margin-bottom: 8px;' src='");
             sb.append(promotionPicture.getUri().toString());
-            sb.append("' width='20%'/>");
+            sb.append("' width='25%'/>");
         }
         sb.append("<p>");
         sb.append(TextUtils.htmlEncode(p.getText()));
         sb.append("</p>");
-
+        sb.append("</body></html>");
         return sb;
     }
 }

@@ -3,6 +3,7 @@ package ch.defiant.purplesky.beans.promotion;
 import android.support.annotation.StringRes;
 
 import java.util.Date;
+import java.util.List;
 
 import ch.defiant.purplesky.R;
 
@@ -22,20 +23,16 @@ public class Event {
     private Date m_start;
     private Date m_end;
 
-
-
     private EventLocation m_location;
     // TODO Implement more fields
     // - Timezone
-    // - Genders
-    // - Flyer
-    // - Preview flyer id
     // - Journey
     private Integer m_minAge;
     private Integer m_maxAge;
     private int m_registrations;
     private Genders m_genders;
-
+    private List<EventFlyer> m_eventFlyers;
+    private int m_previewFlyerId;
 
     public int getEventId() {
         return m_eventId;
@@ -157,6 +154,45 @@ public class Event {
         m_genders = genders;
     }
 
+    public List<EventFlyer> getEventFlyers() {
+        return m_eventFlyers;
+    }
+
+    public void setEventFlyers(List<EventFlyer> eventFlyers) {
+        m_eventFlyers = eventFlyers;
+    }
+
+    public int getPreviewFlyerId() {
+        return m_previewFlyerId;
+    }
+
+    public void setPreviewFlyerId(int previewFlyerId) {
+        m_previewFlyerId = previewFlyerId;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "m_eventId=" + m_eventId +
+                ", m_private=" + m_private +
+                ", m_preliminary=" + m_preliminary +
+                ", m_isRegistered=" + m_isRegistered +
+                ", m_registrationVisibility=" + m_registrationVisibility +
+                ", m_eventName='" + m_eventName + '\'' +
+                ", m_admissionPriceHtml='" + m_admissionPriceHtml + '\'' +
+                ", m_descriptionHtml='" + m_descriptionHtml + '\'' +
+                ", m_start=" + m_start +
+                ", m_end=" + m_end +
+                ", m_location=" + m_location +
+                ", m_minAge=" + m_minAge +
+                ", m_maxAge=" + m_maxAge +
+                ", m_registrations=" + m_registrations +
+                ", m_genders=" + m_genders +
+                ", m_previewFlyerId=" + m_previewFlyerId +
+                ", m_eventFlyers=" + m_eventFlyers +
+                '}';
+    }
+
     public enum RegistrationVisibility {
         ALL, FRIENDS_AND_KNOWN, FRIENDS, KNOWN, NONE
     }
@@ -176,20 +212,4 @@ public class Event {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "m_eventId=" + m_eventId +
-                ", m_private=" + m_private +
-                ", m_preliminary=" + m_preliminary +
-                ", m_isRegistered=" + m_isRegistered +
-                ", m_registrationVisibility=" + m_registrationVisibility +
-                ", m_eventName='" + m_eventName + '\'' +
-                ", m_start=" + m_start +
-                ", m_end=" + m_end +
-                ", m_minAge=" + m_minAge +
-                ", m_maxAge=" + m_maxAge +
-                ", m_registrations=" + m_registrations +
-                '}';
-    }
 }

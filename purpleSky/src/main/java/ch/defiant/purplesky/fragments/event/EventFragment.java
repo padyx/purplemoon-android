@@ -75,7 +75,7 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
             throw new IllegalArgumentException("Missing event id");
         }
 
-        //m_eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
+        m_eventId = intent.getIntExtra(ArgumentConstants.ARG_ID, 0);
     }
 
     private void loadData() {

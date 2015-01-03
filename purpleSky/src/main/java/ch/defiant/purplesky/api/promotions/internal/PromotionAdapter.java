@@ -44,6 +44,7 @@ public class PromotionAdapter implements IPromotionAdapter {
                 PromotionAPIConstants.EVENT_URL +
                 PromotionAPIConstants.EVENT_TYPE_EVENT + "+" +
                 PromotionAPIConstants.EVENT_TYPE_REGISTRATION  + "+" +
+                PromotionAPIConstants.EVENT_TYPE_FLYERS + "+" +
                 PromotionAPIConstants.EVENT_TYPE_LOCATION +
                 "/" + eventId);
         JSONArray object = APINetworkUtility.performGETRequestForJSONArray(url);
