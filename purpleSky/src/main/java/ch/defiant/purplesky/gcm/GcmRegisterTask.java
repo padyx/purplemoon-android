@@ -17,10 +17,10 @@ import ch.defiant.purplesky.exceptions.PurpleSkyException;
 public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
     private static final String TAG = GcmRegisterTask.class.getSimpleName();
 
-    private final IPurplemoonAPIAdapter adapter;
+    private final IPurplemoonAPIAdapter m_adapter;
 
     public GcmRegisterTask(IPurplemoonAPIAdapter apiAdapter) {
-        this.adapter = apiAdapter;
+        m_adapter = apiAdapter;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
             try {
                 String oldRegId = PreferenceUtility.getPreferences().getString(PreferenceConstants.gcmToken, null);
                 if (oldRegId != null) {
-                    boolean stillActive = adapter.unregisterPush(oldRegId);
+                    boolean stillActive = m_adapter.unregisterPush(oldRegId);
                     if (!stillActive) {
                         return null;
                     }
@@ -54,7 +54,7 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
             } catch (IOException e) {
                 Log.i(TAG, "Sending push registration to server failed with IOException. Remaining retries: " + tries);
             } catch (PurpleSkyException e) {
-                Log.i(TAG, "Sending push registration to server failed with IOException. Remaining retries: " + tries);
+                Log.i(TAG, "Sending push registration to server failed with PurpleskyException. Remaining retries: " + tries);
             }
         }
         return null;
@@ -89,12 +89,12 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
 
             try {
                 if (oldRegId != null && !oldRegId.equals(regId)) {
-                    if(adapter.unregisterPush(oldRegId)){
+                    if(m_adapter.unregisterPush(oldRegId)){
                         oldRegId = null; // Unregistering once is enough
                     }
                     
                 }
-                if (adapter.registerPush(regId)) {
+                if (m_adapter.registerPush(regId)) {
                     PreferenceUtility.getPreferences().edit().putString(PreferenceConstants.gcmToken, regId).commit();
                     Log.i(TAG, "Registering for push messages successful.");
                     return null;
@@ -102,7 +102,7 @@ public class GcmRegisterTask extends AsyncTask<Boolean, Void, Void> {
             } catch (IOException e) {
                 Log.i(TAG, "Sending push registration to server failed with IOException. Remaining retries: " + tries);
             } catch (PurpleSkyException e) {
-                Log.i(TAG, "Sending push registration to server failed with IOException. Remaining retries: " + tries);
+                Log.i(TAG, "Sending push registration to server failed with PurpleskyException. Remaining retries: " + tries);
             }
         }
         return null;
