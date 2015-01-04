@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
@@ -39,6 +41,7 @@ public class SettingActivity extends SherlockPreferenceActivity {
     private PreferenceUpdateListener m_listener;
     private boolean m_playServicesAvailable;
 
+    @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
 
     @Override
