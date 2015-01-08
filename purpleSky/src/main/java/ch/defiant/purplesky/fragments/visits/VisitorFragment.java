@@ -258,17 +258,19 @@ public class VisitorFragment extends BaseListFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            AbstractVisitBean pos = (AbstractVisitBean) parent.getItemAtPosition(position);
-            String profileId = pos.getProfileId();
-            if (profileId != null) {
-                Bundle args = new Bundle();
-                args.putString(ArgumentConstants.ARG_USERID, profileId);
-                DisplayProfileFragment f = new DisplayProfileFragment();
-                f.setArguments(args);
-                FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-                t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
-            } else {
-                Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+            AbstractVisitBean bean = (AbstractVisitBean) parent.getItemAtPosition(position);
+            if(bean != null) {
+                String profileId = bean.getProfileId();
+                if (profileId != null) {
+                    Bundle args = new Bundle();
+                    args.putString(ArgumentConstants.ARG_USERID, profileId);
+                    DisplayProfileFragment f = new DisplayProfileFragment();
+                    f.setArguments(args);
+                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                } else {
+                    Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

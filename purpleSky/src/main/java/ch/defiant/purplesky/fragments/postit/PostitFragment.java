@@ -215,18 +215,20 @@ public class PostitFragment extends BaseListFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            PostIt pos = (PostIt) parent.getItemAtPosition(position);
-            MinimalUser user = pos.getSender();
-            if (user != null && StringUtility.isNotNullOrEmpty(user.getUserId())) {
-                DisplayProfileFragment f = new DisplayProfileFragment();
-                Bundle args = new Bundle();
-                args.putString(ArgumentConstants.ARG_USERID, user.getUserId());
-                f.setArguments(args);
+            PostIt bean = (PostIt) parent.getItemAtPosition(position);
+            if (bean != null) {
+                MinimalUser user = bean.getSender();
+                if (user != null && StringUtility.isNotNullOrEmpty(user.getUserId())) {
+                    DisplayProfileFragment f = new DisplayProfileFragment();
+                    Bundle args = new Bundle();
+                    args.putString(ArgumentConstants.ARG_USERID, user.getUserId());
+                    f.setArguments(args);
 
-                FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-                t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
-            } else {
-                Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                } else {
+                    Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
