@@ -33,16 +33,17 @@ public class NotificationLoader extends SimpleAsyncLoader<Object> {
     public Object loadInBackground() {
         UpdateBean updateBean = new UpdateBean();
         try {
-            AlertBean alertBean = adapter.getAlertBean();
-
             int onlineFavoritCount = adapter.getOnlineFavoritesCount();
             updateBean.setFavoritesCount(onlineFavoritCount);
 
             int unopenedMessagesCount = conversationAdapter.getUnopenedMessagesCount();
             updateBean.setMessagesCount(unopenedMessagesCount);
 
-            updateBean.setPostItCount(alertBean.getUnseenPostits());
-            updateBean.setVisitCount(alertBean.getUnseenVisits());
+            AlertBean alertBean = adapter.getAlertBean();
+            if(alertBean != null) {
+                updateBean.setPostItCount(alertBean.getUnseenPostits());
+                updateBean.setVisitCount(alertBean.getUnseenVisits());
+            }
 
             Pair<OnlineStatus, String> onlineStatus = adapter.getOwnOnlineStatus();
             if (onlineStatus != null) {
