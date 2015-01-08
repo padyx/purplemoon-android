@@ -215,15 +215,17 @@ public class PostitFragment extends BaseListFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            PostIt pos = (PostIt) parent.getItemAtPosition(position);
-            MinimalUser user = pos.getSender();
-            if (user != null && StringUtility.isNotNullOrEmpty(user.getUserId())) {
-                Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
-                intent.putExtra(ArgumentConstants.ARG_USERID, user.getUserId());
+            PostIt bean = (PostIt) parent.getItemAtPosition(position);
+            if (bean != null) {
+                MinimalUser user = bean.getSender();
+                if (user != null && StringUtility.isNotNullOrEmpty(user.getUserId())) {
+                    Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_USERID, user.getUserId());
 
-                getActivity().startActivity(intent);
-            } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                    getActivity().startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

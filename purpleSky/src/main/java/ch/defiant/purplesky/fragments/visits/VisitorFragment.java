@@ -258,16 +258,18 @@ public class VisitorFragment extends BaseListFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            AbstractVisitBean pos = (AbstractVisitBean) parent.getItemAtPosition(position);
-            String profileId = pos.getProfileId();
-            if (profileId != null) {
-                Bundle args = new Bundle();
-                args.putString(ArgumentConstants.ARG_USERID, profileId);
-                Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
-                intent.putExtra(ArgumentConstants.ARG_USERID, profileId);
-                getActivity().startActivity(intent);
-            } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+            AbstractVisitBean bean = (AbstractVisitBean) parent.getItemAtPosition(position);
+            if(bean != null) {
+                String profileId = bean.getProfileId();
+                if (profileId != null) {
+                    Bundle args = new Bundle();
+                    args.putString(ArgumentConstants.ARG_USERID, profileId);
+                    Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_USERID, profileId);
+                    getActivity().startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
