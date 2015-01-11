@@ -4,3 +4,6 @@ build/
 local.properties
 .idea/libraries/
 .idea/dictionaries/
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
