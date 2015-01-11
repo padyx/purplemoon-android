@@ -28,10 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -66,8 +66,8 @@ import ch.defiant.purplesky.util.StringUtility;
  */
 public class RadarGridFragment extends BaseFragment implements
         LoaderManager.LoaderCallbacks<Holder<List<MinimalUser>>>,
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
         LocationListener
 {
     // TODO Handling that google play services are not available?
@@ -154,7 +154,7 @@ public class RadarGridFragment extends BaseFragment implements
     // Logic
     private UserSearchOptions options;
     private boolean useLocation;
-    private LocationClient locationClient;
+    private GoogleApiClient locationClient;
     private Location currentLocation;
     private Address currentAddress;
 
@@ -239,14 +239,18 @@ public class RadarGridFragment extends BaseFragment implements
             getActivity().setProgressBarIndeterminateVisibility(true);
         }
         if(locationClient == null) {
-            locationClient = new LocationClient(getActivity(), this, this);
+            locationClient =  new GoogleApiClient.Builder(getActivity())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
         }
         locationClient.connect();
     }
 
     private void removeLocationListener() {
         if(locationClient != null && locationClient.isConnected()) {
-            locationClient.removeLocationUpdates(this);
+            LocationServices.FusedLocationApi.removeLocationUpdates(locationClient, this);
             locationClient.disconnect();
         }
         if(getActivity() != null){
@@ -388,12 +392,13 @@ public class RadarGridFragment extends BaseFragment implements
         // Set the fastest update interval to 0.25 second
         locationRequest.setFastestInterval(250);
 
-        locationClient.requestLocationUpdates(locationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(locationClient, locationRequest, this);
     }
 
     @Override
-    public void onDisconnected() {
-        locationClient = null;
+    public void onConnectionSuspended(int cause) {
+        Log.i(TAG, "Connection suspended");
+        locationClient.connect();
     }
 
     @Override
