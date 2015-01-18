@@ -101,7 +101,11 @@ class PromotionJSONTranslator {
         Event event = new Event();
         event.setEventId(object.optInt(PromotionAPIConstants.Event.JSON_ID));
         event.setEventName(object.optString(PromotionAPIConstants.Event.JSON_NAME));
-        event.setDescriptionHtml(object.optString(PromotionAPIConstants.Event.JSON_DESCRIPTION));
+        String description = object.optString(PromotionAPIConstants.Event.JSON_DESCRIPTION);
+        if(description != null){
+            description = description.replaceAll("\n", "<br/>");
+        }
+        event.setDescriptionHtml(description);
         event.setAdmissionPriceHtml(object.optString(PromotionAPIConstants.Event.JSON_ADMISSION));
         event.setGenders(translateEventGender(object.optString(PromotionAPIConstants.Event.JSON_GENDERS)));
 
