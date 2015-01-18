@@ -46,6 +46,7 @@ import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.fragments.BaseDialogFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
+import ch.defiant.purplesky.util.ImageUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
 public class UploadPhotoDialogFragment extends BaseDialogFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
@@ -62,6 +63,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
     private Uri m_imageURI;
 
     public static final String TAG = UploadPhotoDialogFragment.class.getSimpleName();
+    private ImageView m_imgV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,17 +100,17 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             }
         });
 
-        final ImageView imgV = (ImageView) inflatedView.findViewById(R.id.uploadphoto_dialog_fragment_imgView);
-        imgV.setImageResource(R.drawable.picture_placeholder);
-        final ViewTreeObserver vto = imgV.getViewTreeObserver();
+        m_imgV = (ImageView) inflatedView.findViewById(R.id.uploadphoto_dialog_fragment_imgView);
+        m_imgV.setImageResource(R.drawable.picture_placeholder);
+        final ViewTreeObserver vto = m_imgV.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                int finalHeight = imgV.getMeasuredHeight();
-                int finalWidth = imgV.getMeasuredWidth();
+                int finalHeight = m_imgV.getMeasuredHeight();
+                int finalWidth = m_imgV.getMeasuredWidth();
                 if (finalHeight != 0 && finalWidth != 0) {
                     new PictureLoaderTask().execute(finalHeight, finalWidth);
-                    imgV.getViewTreeObserver().removeOnPreDrawListener(this);
+                    m_imgV.getViewTreeObserver().removeOnPreDrawListener(this);
                 }
                 return true;
             }
@@ -185,8 +187,8 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             if (params == null || params.length != 2) {
                 throw new IllegalArgumentException("No height/width");
             }
-            Integer width = (Integer) params[1];
             Integer height = (Integer) params[0];
+            Integer width = (Integer) params[1];
 
             Bitmap b = null;
             InputStream stream = null;
@@ -195,27 +197,36 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
                 // Read image size
                 Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
-                b = BitmapFactory.decodeStream(stream); // Will return null anyway because we set flag above
-
+                BitmapFactory.decodeStream(stream, null, options); // Will return null anyway because we set flag above
                 stream.close();
-                return new Holder<Bitmap>(Bitmap.createScaledBitmap(b, width, height, false));
+                options.inJustDecodeBounds = false;
+                options.inSampleSize = ImageUtility.calculateInsampleSize(options, height, width);
+                stream = getSherlockActivity().getContentResolver().openInputStream(m_imageURI);
+                return new Holder<Bitmap>(BitmapFactory.decodeStream(stream, null, options));
             } catch (FileNotFoundException e) {
                 return new Holder<Bitmap>(e);
             } catch (IOException e) {
                 Log.w(TAG, "Could not close stream after reading");
                 return new Holder<Bitmap>(e);
+            } finally {
+                if (stream != null) {
+                    try {
+                        stream.close();
+                    } catch (IOException e) {
+                        // NOP
+                    }
+                }
             }
         }
 
         @Override
         protected void onPostExecute(Holder<Bitmap> result) {
-            if(getView() != null) {
-                ImageView imageview = (ImageView) getView().findViewById(R.id.uploadphoto_dialog_fragment_imgView);
+            if(getActivity() != null) {
                 if (result != null && result.getContainedObject() != null) {
                     // Set the image
-                    imageview.setImageBitmap(result.getContainedObject());
+                    m_imgV.setImageBitmap(result.getContainedObject());
                 } else {
-                    imageview.setImageResource(R.drawable.no_image);
+                    m_imgV.setImageResource(R.drawable.no_image);
                 }
             }
         }
