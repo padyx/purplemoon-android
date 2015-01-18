@@ -262,8 +262,6 @@ public class VisitorFragment extends BaseListFragment {
             if(bean != null) {
                 String profileId = bean.getProfileId();
                 if (profileId != null) {
-                    Bundle args = new Bundle();
-                    args.putString(ArgumentConstants.ARG_USERID, profileId);
                     Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
                     intent.putExtra(ArgumentConstants.ARG_USERID, profileId);
                     getActivity().startActivity(intent);

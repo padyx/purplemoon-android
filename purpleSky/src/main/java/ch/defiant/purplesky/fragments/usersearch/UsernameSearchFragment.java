@@ -31,6 +31,7 @@ import java.util.List;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.adapters.NullAdapter;
 import ch.defiant.purplesky.adapters.UserSearchResultListAdapter;
@@ -43,7 +44,6 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
@@ -169,13 +169,10 @@ public class UsernameSearchFragment extends BaseFragment
             }
             MinimalUser user = (MinimalUser) item;
             if (user.getUserId() != null) {
-                DisplayProfileFragment f = new DisplayProfileFragment();
-                Bundle b = new Bundle();
-                b.putString(ArgumentConstants.ARG_USERID, user.getUserId());
-                f.setArguments(b);
+                Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                intent.putExtra(ArgumentConstants.ARG_USERID, user.getUserId());
 
-                FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                getActivity().startActivity(intent);
             }
         }
 
