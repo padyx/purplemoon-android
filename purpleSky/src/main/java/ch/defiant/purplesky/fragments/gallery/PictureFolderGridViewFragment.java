@@ -18,10 +18,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -185,8 +183,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             @Override
             public Holder<List<PictureFolder>> loadInBackground() {
                 try {
-                    Map<String, PictureFolder> foldersWithPictures = galleryAdapter.getFoldersWithPictures(userid, null);
-                    return new Holder<List<PictureFolder>>(new ArrayList<PictureFolder>(foldersWithPictures.values()));
+                    return new Holder<List<PictureFolder>>(galleryAdapter.getFoldersWithPictures(userid, null));
                 } catch (IOException e) {
                     return new Holder<List<PictureFolder>>(e);
                 } catch (PurpleSkyException e) {

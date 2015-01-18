@@ -2,7 +2,6 @@ package ch.defiant.purplesky.api.gallery;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -16,8 +15,8 @@ public interface IGalleryAdapter {
     /**
      * Returns the picture folders for the specified user.
      *
-     * @param profileId
-     * @return
+     * @param profileId Id of the user
+     * @return List of picture folders, without contents.
      * @throws java.io.IOException
      * @throws ch.defiant.purplesky.exceptions.PurpleSkyException
      * @throws IllegalArgumentException
@@ -38,6 +37,6 @@ public interface IGalleryAdapter {
      * @throws IOException
      * @throws PurpleSkyException
      */
-    public Map<String, PictureFolder> getFoldersWithPictures(String profileId, List<String> folders)
+    public List<PictureFolder> getFoldersWithPictures(String profileId, List<String> folders)
             throws IOException, PurpleSkyException;
 }

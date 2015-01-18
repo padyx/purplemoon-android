@@ -5,9 +5,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import ch.defiant.purplesky.api.common.APINetworkUtility;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
@@ -47,8 +46,8 @@ class GalleryAdapter implements IGalleryAdapter {
     }
 
     @Override
-    public Map<String, PictureFolder> getFoldersWithPictures(String profileId, List<String> folders) throws IOException, PurpleSkyException {
-        HashMap<String, PictureFolder> map = new HashMap<String, PictureFolder>();
+    public List<PictureFolder> getFoldersWithPictures(String profileId, List<String> folders) throws IOException, PurpleSkyException {
+        List<PictureFolder> list = new ArrayList<PictureFolder>();
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
@@ -68,17 +67,17 @@ class GalleryAdapter implements IGalleryAdapter {
 
         JSONObject obj = APINetworkUtility.performGETRequestForJSONObject(new URL(sb.toString()));
         if (obj == null) {
-            return map;
+            return list;
         }
         List<PictureFolder> translatedFolders = GalleryJSONTranslator.translateToPictureFolders(obj);
         if (translatedFolders != null) {
             for (PictureFolder f : translatedFolders) {
                 if (f == null)
                     continue;
-                map.put(f.getFolderId(), f);
+                list.add(f);
             }
         }
-        return map;
+        return list;
     }
 
 }
