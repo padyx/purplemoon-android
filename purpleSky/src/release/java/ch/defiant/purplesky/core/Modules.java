@@ -5,7 +5,7 @@ package ch.defiant.purplesky.core;
  */
 final class Modules {
 
-    public Object[] list(PurpleSkyApplication appContext){
+    public static Object[] list(PurpleSkyApplication appContext){
         return new Object[] {
             new PurpleSkyModule(appContext)
         };
