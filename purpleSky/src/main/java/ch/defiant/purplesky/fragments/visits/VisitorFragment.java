@@ -239,7 +239,7 @@ public class VisitorFragment extends BaseListFragment {
                         Entry<Date, Boolean> next = iterator.next();
                         sb.append(DateUtility.getMediumDateTimeString(next.getKey()));
                         if (item instanceof VisitsReceivedBean && ((VisitsReceivedBean) item).isUnseen()) {
-                            sb.append("\t" + "<b>NEW</b>");
+                            sb.append("\t<b>").append(getString(R.string.New).toUpperCase()).append("</b>");
                         }
                         if (iterator.hasNext() && visCnt != MAXVISITS) {
                             sb.append("\n");
