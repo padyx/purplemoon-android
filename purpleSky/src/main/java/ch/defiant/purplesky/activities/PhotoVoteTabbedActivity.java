@@ -9,7 +9,7 @@ import ch.defiant.purplesky.fragments.photovote.PhotoVoteFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
 
 /**
- * @author Chakotay
+ * @author Patrick Bänziger
  */
 public class PhotoVoteTabbedActivity extends AbstractTabbedActivity {
 
@@ -24,13 +24,13 @@ public class PhotoVoteTabbedActivity extends AbstractTabbedActivity {
         if(i==0){
             return new PhotoVoteFragment();
         } else if (i==1) {
-            return new PhotoVoteListFragment();
-        } else {
             PhotoVoteListFragment fragment = new PhotoVoteListFragment();
             Bundle args = new Bundle();
             args.putBoolean(PhotoVoteListFragment.EXTRA_BOOL_SHOWGIVEN,true);
             fragment.setArguments(args);
             return fragment;
+        } else {
+            return new PhotoVoteListFragment();
         }
     }
 
