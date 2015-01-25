@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -21,8 +21,7 @@
             android:layout_weight="0"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            tools:layout_weight="1"
-            >
+            tools:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,27 +37,32 @@
                 android:id="@+id/dismissLabel"
                 android:minHeight="48dp"/>
 
-            <WebView
-                android:layout_below="@id/dismissLabel"
-                android:id="@+id/promotionWebView"
-                android:visibility="visible"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/openLabel"/>
+                android:layout_below="@+id/dismissLabel">
 
-            <TextView
-                android:id="@+id/openLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/ActionOpen"
-                android:drawableLeft="@android:drawable/ic_menu_set_as"
-                android:drawableStart="@android:drawable/ic_menu_set_as"
-                android:gravity="center_vertical"
+                <WebView
+                    android:id="@+id/promotionWebView"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:id="@+id/webview_clickOverlay"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                />
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black_transparent50perc"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:minHeight="48dp"/>
+                />
 
         </RelativeLayout>
 

@@ -169,6 +169,7 @@ public class ChatListActivity extends BaseFragmentActivity
 
     private void showPromotion(@NonNull final Promotion promo) {
         final WebView webview = (WebView) findViewById(R.id.promotionWebView);
+        final View clickOverlay = findViewById(R.id.webview_clickOverlay);
         final View container = findViewById(R.id.promotionContainer);
         if(webview == null || container == null){
             return;
@@ -178,15 +179,15 @@ public class ChatListActivity extends BaseFragmentActivity
         webview.loadData(data, "text/html; charset=utf-8", "UTF-8");
 
         final View dismissButton = findViewById(R.id.dismissLabel);
-
         final int eventId = promo.getEventId();
-        final View openLabel = findViewById(R.id.openLabel);
-        if(eventId == 0 && promo.getEventUri() == null){
-            openLabel.setVisibility(View.GONE);
-        }
-        openLabel.setOnClickListener(new View.OnClickListener() {
+        clickOverlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Check that the view is fully extended - ignore accidental click
+                if ( ((LinearLayout.LayoutParams) container.getLayoutParams()).weight != 1 ){
+                    return;
+                }
+
                 if (eventId != 0) {
                     Intent intent = new Intent(ChatListActivity.this, EventActivity.class);
                     intent.putExtra(ArgumentConstants.ARG_ID, eventId);
@@ -228,7 +229,7 @@ public class ChatListActivity extends BaseFragmentActivity
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head>\n");
         sb.append("<body style='font-family: Arial, Verdana, sans-serif;'>");
-        // FIXME Choose properly
+        // TODO Choose properly
         PromotionPicture promotionPicture = CollectionUtil.firstElement(p.getPromotionPictures());
         sb.append("<h3>");
         sb.append(TextUtils.htmlEncode(p.getTitle()));
