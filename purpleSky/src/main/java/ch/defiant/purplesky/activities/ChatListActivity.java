@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 
 import java.util.List;
 import java.util.Random;
@@ -97,6 +98,12 @@ public class ChatListActivity extends BaseFragmentActivity
     public void conversationSelected(String userId) {
         final FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.conversation_fragment);
+        final View container = findViewById(R.id.promotionContainer);
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) container.getLayoutParams();
+        lp.weight = 0;
+        container.setLayoutParams(lp);
+
         if(fragment != null){
             // Two pane layout
             // Update it with the new conversation
