@@ -61,6 +61,7 @@ import ch.defiant.purplesky.loaders.message.SendMessageLoader;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
+import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -70,6 +71,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     protected IMessageService messageService;
     @Inject
     protected IConversationAdapter conversationAdapter;
+    private ViewGroup m_chatGroupBox;
 
     private final class NotifyAdapter implements Runnable {
         @Override
@@ -86,6 +88,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             final EditText messageField = (EditText) getView().findViewById(R.id.conversation_fragment_messageEditText);
             if (messageField.length() == 0 || messageField.toString().trim().length() == 0) {
                 Toast.makeText(getActivity(), R.string.MustEnterTextMessage, Toast.LENGTH_LONG).show();
+                return;
             }
 
             Long lastReceivedTS = messageService.getLatestReceivedMessageTimestamp(m_profileId);
@@ -229,11 +232,6 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         if(userBean != null){
             m_title = userBean.getUsername();
         }
-//        if (StringUtility.isNullOrEmpty(m_profileId)) {
-//            Log.e(TAG, "Tried to open conversation without user id");
-//            if (getActivity() != null) {
-//                getActivity().finish();
-//            }
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
@@ -256,6 +254,8 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         ImageView sendBtn = (ImageView) inflated.findViewById(R.id.conversation_fragment_sendImgV);
         EditText messageField = (EditText) inflated.findViewById(R.id.conversation_fragment_messageEditText);
         messageField.addTextChangedListener(new MessageWatcher(sendBtn));
+        m_chatGroupBox = (ViewGroup) inflated.findViewById(R.id.conversation_fragment_chatGroupBox);
+        LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(m_profileId));
 
         getActivity().getActionBar().setIcon(R.drawable.social_person);
         return inflated;
@@ -330,6 +330,9 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     }
 
     public void showConversationWithUser(String userId){
+        if(m_chatGroupBox != null){
+            LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(userId));
+        }
         if(CompareUtility.notEquals(userId, m_profileId)) {
             m_adapter.clear();
             m_hasNoMoreCached = false;

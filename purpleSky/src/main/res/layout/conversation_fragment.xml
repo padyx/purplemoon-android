@@ -38,7 +38,7 @@
         android:background="#BBBBFF" />
     
     <LinearLayout
-        android:id="@+id/conversation_fragment_lowerGrpInner"
+        android:id="@+id/conversation_fragment_chatGroupBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
