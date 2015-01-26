@@ -1,8 +1,7 @@
 package ch.defiant.purplesky.fragments;
 
 import android.app.Activity;
-
-import com.actionbarsherlock.app.SherlockListFragment;
+import android.app.ListFragment;
 
 import javax.inject.Inject;
 
@@ -12,7 +11,7 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 /**
  * Created by Chakotay on 08.05.2014.
  */
-public class BaseListFragment extends SherlockListFragment {
+public class BaseListFragment extends ListFragment {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.defiant.purplesky"
-    android:installLocation="internalOnly">
+    android:installLocation="internalOnly" >
 
     <!-- Min and Max SDK as well as VERSION are defined in GRADLE file! -->
 
@@ -19,10 +19,8 @@
     <!-- External cache directory -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <!-- 
-    ### BEGIN GCM ### 
-    -->
-    
+<!--     ### BEGIN GCM ###  -->
+
     <!-- Drop this when minSdkVersion >= 16 -->
     <permission
         android:name="ch.defiant.purplesky.permission.C2D_MESSAGE"
@@ -35,37 +33,44 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- Keeps the processor from sleeping when a message is received. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    
-    <!-- 
-    ### END GCM ### 
-    -->
 
+    <!--
+    ### END GCM ###
+    -->
     <application
         android:name=".core.PurpleSkyApplication"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Purplesky" >
-
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.ChatListActivity"
             android:configChanges="orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".core.UpdateService"
-            android:exported="false" >
-        </service>
-
-        <activity android:name=".activities.SettingActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.FavoritesActivity" />
+        <activity android:name=".activities.VisitorTabbedActivity" />
+        <activity android:name=".activities.PostitTabbedActivity" />
+        <activity android:name=".activities.UserSearchTabbedActivity" />
+        <activity android:name=".activities.PhotoVoteTabbedActivity" />
+        <activity android:name=".activities.MultiUploadPictureActivity" />
+        <activity android:name=".activities.DisplayProfileActivity" />
+        <activity android:name=".activities.ReportActivity" />
+        <activity android:name=".activities.UserSearchResultsActivity" />
+        <activity android:name=".activities.RadarActivity" />
+        <activity android:name=".activities.SettingFragmentActivity" />
         <activity android:name=".activities.AboutActivity" />
-        <activity android:name="ch.defiant.purplesky.activities.main.MainActivity" />
+        <activity android:name=".activities.PictureGridViewActivity" />
+        <activity android:name=".activities.LightboxActivity" />
+        <activity android:name=".activities.EventActivity" />
 
         <service
             android:name=".services.UploadService"
@@ -95,6 +100,7 @@
             android:name=".gcm.GCMIntentService"
             android:enabled="true"
             android:exported="false" />
+
     </application>
 
 </manifest>

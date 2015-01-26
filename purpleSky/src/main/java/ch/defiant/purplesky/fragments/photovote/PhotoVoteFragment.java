@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments.photovote;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +37,7 @@ import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<Holder<PhotoVoteBean>> {
+public class PhotoVoteFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<PhotoVoteBean>> {
 
     public static final String TAG = PhotoVoteFragment.class.getSimpleName();
 
@@ -111,10 +111,10 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
     public Loader<Holder<PhotoVoteBean>> onCreateLoader(int loaderId, final Bundle args) {
         // Deactivate UI
         m_box.setVisibility(View.INVISIBLE);
-        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
 
         final boolean needsCount = m_remaining == null;
-        return new SimpleAsyncLoader<Holder<PhotoVoteBean>>(this.getSherlockActivity()) {
+        return new SimpleAsyncLoader<Holder<PhotoVoteBean>>(getActivity()) {
 
             @Override
             public Holder<PhotoVoteBean> loadInBackground() {
@@ -157,7 +157,7 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
             getView().findViewById(R.id.photovote_overlay_nomore).setVisibility(View.VISIBLE);
         }
         if (getView() != null) {
-            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+            getActivity().setProgressBarIndeterminateVisibility(false);
             m_box.setVisibility(success ? View.VISIBLE : View.INVISIBLE);
 
             if (success) {
@@ -178,11 +178,11 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderCallbacks<H
             } else {
                 Exception e = result.getException();
                 if (e instanceof WrongCredentialsException) {
-                    PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+                    PersistantModel.getInstance().handleWrongCredentials(getActivity());
                 } else if (e instanceof IOException) {
-                    Toast.makeText(getSherlockActivity(), R.string.ErrorOccurred_NoNetwork, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.ErrorOccurred_NoNetwork, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getSherlockActivity(), R.string.AnErrorOccurred, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.AnErrorOccurred, Toast.LENGTH_SHORT).show();
                 }
             }
         }

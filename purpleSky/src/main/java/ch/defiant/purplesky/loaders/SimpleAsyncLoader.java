@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.loaders;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.support.annotation.IdRes;
-import android.support.v4.content.AsyncTaskLoader;
 
 /**
  * A custom loader that provides basic implementation for starting, cancelling and stopping the loading.

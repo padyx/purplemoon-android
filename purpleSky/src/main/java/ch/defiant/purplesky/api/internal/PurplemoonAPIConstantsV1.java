@@ -323,6 +323,10 @@ public class PurplemoonAPIConstantsV1 {
         public static final String TARGET_PARTNER_RELATIONSHIPSTATUS = "status";
         public static final String TARGET_FRIENDS = "target_friends";
 
+        public static final String EVENTS_TMP = "events_tmp";
+        public static final String EVENT_ID = "event_id";
+        public static final String EVENT_TEXT = "event_text";
+
         public static final String PROFILE_CREATION_DATE = "create_date";
         public static final String PROFILE_LASTUPDATE_DATE = "last_update";
         public static final String PROFILE_LASTONLINE_DATE = "last_online";
@@ -345,6 +349,7 @@ public class PurplemoonAPIConstantsV1 {
 
     public static class Errors {
         public static final String JSON_ERROR_TYPE = "error";
+        public static final String JSON_ERROR_DESCRIPTION = "error_description";
 
         /**
          * Indicates that the application user is blocking the user that he is trying to contact.

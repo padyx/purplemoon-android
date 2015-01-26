@@ -1,6 +1,7 @@
 package ch.defiant.purplesky.customwidgets;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -8,9 +9,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-
-public class ProgressFragmentDialog extends SherlockDialogFragment {
+public class ProgressFragmentDialog extends DialogFragment {
     private String m_title;
     private int m_titleResource = 0;
     private String m_message;

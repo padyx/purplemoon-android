@@ -1,17 +1,15 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,19 +32,19 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         m_tabPagerAdapter = new TabPagerAdapter(getChildFragmentManager());
         // setup action bar for tabs
-        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(true);
 
-        getSherlockActivity().getSupportActionBar().removeAllTabs();
-        View layout = inflater.inflate(R.layout.viewpager, container, false);
+        getActivity().getActionBar().removeAllTabs();
+        View layout = inflater.inflate(R.layout.layout_viewpager, container, false);
         m_viewPager = (ViewPager) layout.findViewById(R.id.viewpager);
         m_viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 // When swiping between pages, select the
                 // corresponding tab.
-                getSherlockActivity().getSupportActionBar().setSelectedNavigationItem(position);
+                getActivity().getActionBar().setSelectedNavigationItem(position);
             }
         });
         m_viewPager.setAdapter(m_tabPagerAdapter);
@@ -56,23 +54,23 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
 
     @Override
     public void onDetach() {
-        getSherlockActivity().getSupportActionBar().removeAllTabs();
-        getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+        getActivity().getActionBar().removeAllTabs();
+        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        getActivity().setProgressBarIndeterminateVisibility(false);
         super.onDetach();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(TABSELECTION, getSherlockActivity().getSupportActionBar().getSelectedNavigationIndex());
+        outState.putInt(TABSELECTION, getActivity().getActionBar().getSelectedNavigationIndex());
     }
 
     @Override
@@ -82,7 +80,7 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
             // Make sure to select the right tab
             int position = savedInstanceState.getInt(TABSELECTION);
             if(position >= 0){
-                getSherlockActivity().getSupportActionBar().setSelectedNavigationItem(position);
+                getActivity().getActionBar().setSelectedNavigationItem(position);
             }
         }
     }
@@ -100,11 +98,11 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
     protected <T extends Fragment> void addTab(int textResource, String tag, Class<T> fragmentclazz) {
         m_fragmentClasses.put(tag, fragmentclazz);
 
-        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        ActionBar actionBar = getActivity().getActionBar();
         TabListener<T> listener = new TabListener<T>();
 
         m_tabPagerAdapter.addFragment(tag);
-        Tab tab = actionBar.newTab().setText(textResource).setTabListener(listener);
+        ActionBar.Tab tab = actionBar.newTab().setText(textResource).setTabListener(listener);
         actionBar.addTab(tab);
     }
 
@@ -118,7 +116,7 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
     private Fragment createFragmentForTag(String tag) {
         Class<? extends Fragment> clazz = m_fragmentClasses.get(tag);
         String clazzName = clazz.getName();
-        return Fragment.instantiate(getSherlockActivity(), clazzName, createFragmentArgumentBundle(tag));
+        return Fragment.instantiate(getActivity(), clazzName, createFragmentArgumentBundle(tag));
     }
 
     protected TabPagerAdapter getPagerAdapter() {
@@ -136,7 +134,7 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
     public class TabListener<T extends Fragment> implements ActionBar.TabListener {
 
         @Override
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
             int pos = tab.getPosition();
             m_viewPager.setCurrentItem(pos);
 
@@ -144,11 +142,11 @@ public abstract class AbstractTabbedFragment extends BaseFragment {
         }
 
         @Override
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
         }
 
         @Override
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
         }
 
     }

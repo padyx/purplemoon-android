@@ -2,6 +2,7 @@ package ch.defiant.purplesky.fragments.photovote;
 
 import android.os.Bundle;
 import android.view.View;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 
@@ -30,6 +31,6 @@ public class PhotoVoteTabbedFragment extends AbstractTabbedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.PhotoVotes);
+        getActivity().getActionBar().setTitle(R.string.PhotoVotes);
     }
 }

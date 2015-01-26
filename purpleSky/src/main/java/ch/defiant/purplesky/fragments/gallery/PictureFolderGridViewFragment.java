@@ -1,9 +1,9 @@
 package ch.defiant.purplesky.fragments.gallery;
 
+import android.app.LoaderManager;
+import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.PictureGridViewActivity;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
@@ -35,7 +36,7 @@ import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-public class PictureFolderGridViewFragment extends BaseFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
+public class PictureFolderGridViewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>> {
 
     @Inject
     protected IGalleryAdapter galleryAdapter;
@@ -60,16 +61,13 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
                     PictureFolder value = data.get(position);
 
                     if (!value.isAccessGranted() && value.isPasswordProtected()) {
-                        Toast.makeText(getSherlockActivity(), getString(R.string.FolderRequiresPassword), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getString(R.string.FolderRequiresPassword), Toast.LENGTH_LONG).show();
                         return;
                     }
 
-                    PictureGridViewFragment f = new PictureGridViewFragment();
-                    Bundle b = new Bundle();
-                    b.putSerializable(ArgumentConstants.ARG_FOLDER, value);
-                    f.setArguments(b);
-                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                    Intent intent = new Intent(getActivity(), PictureGridViewActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_FOLDER, value);
+                    startActivity(intent);
                 }
             }
         });
@@ -80,7 +78,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(R.id.loader_picturefolders_main, getArguments(), this);
+        getLoaderManager().initLoader(R.id.loader_picturefolders_main, getActivity().getIntent().getExtras(), this);
     }
 
     public class ViewHolder {
@@ -131,7 +129,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             View v = convertView;
             ViewHolder holder = null;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getSherlockActivity());
+                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getActivity());
                 v = vi.inflate(R.layout.picturefoldergrid_item, null);
                 holder = new ViewHolder();
                 holder.lblTextView = (TextView) v.findViewById(R.id.picturefoldergrid_item_textView);
@@ -178,7 +176,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
 
         final String userid = arg1.getString(ArgumentConstants.ARG_USERID);
 
-        return new SimpleAsyncLoader<Holder<List<PictureFolder>>>(getSherlockActivity()) {
+        return new SimpleAsyncLoader<Holder<List<PictureFolder>>>(getActivity()) {
 
             @Override
             public Holder<List<PictureFolder>> loadInBackground() {

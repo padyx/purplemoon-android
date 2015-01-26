@@ -1,15 +1,19 @@
 package ch.defiant.purplesky.fragments.conversation;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.Loader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -19,12 +23,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
@@ -33,6 +31,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
+import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -47,8 +47,6 @@ import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.fragments.ReportUserFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.loaders.CachedUsernameLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.loaders.conversations.ConversationStatusLoader;
@@ -60,17 +58,20 @@ import ch.defiant.purplesky.loaders.message.OlderMessageDBLoader;
 import ch.defiant.purplesky.loaders.message.OlderMessageOnlineLoader;
 import ch.defiant.purplesky.loaders.message.RefreshMessageLoader;
 import ch.defiant.purplesky.loaders.message.SendMessageLoader;
+import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.Holder;
+import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-public class ConversationFragment extends BaseFragment implements LoaderCallbacks<Holder<MessageResult>> {
+public class ConversationFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<MessageResult>> {
 
     @Inject
     protected IMessageService messageService;
     @Inject
     protected IConversationAdapter conversationAdapter;
+    private ViewGroup m_chatGroupBox;
 
     private final class NotifyAdapter implements Runnable {
         @Override
@@ -86,7 +87,8 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
 
             final EditText messageField = (EditText) getView().findViewById(R.id.conversation_fragment_messageEditText);
             if (messageField.length() == 0 || messageField.toString().trim().length() == 0) {
-                Toast.makeText(getSherlockActivity(), R.string.MustEnterTextMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.MustEnterTextMessage, Toast.LENGTH_LONG).show();
+                return;
             }
 
             Long lastReceivedTS = messageService.getLatestReceivedMessageTimestamp(m_profileId);
@@ -109,25 +111,25 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
 
             getLoaderManager().restartLoader(R.id.loader_message_send, bundle, ConversationFragment.this);
 
-            InputMethodManager imm = (InputMethodManager) getSherlockActivity().getSystemService(
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(messageField.getWindowToken(), 0);
         }
     }
 
-    private class ImageLoaderCallback implements LoaderCallbacks<Drawable> {
+    private class ImageLoaderCallback implements LoaderManager.LoaderCallbacks<Drawable> {
 
         @Override
         public Loader<Drawable> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new ActionBarImageLoader(getSherlockActivity(), b, apiAdapter);
+            return new ActionBarImageLoader(getActivity(), b, apiAdapter);
         }
 
         @Override
         public void onLoadFinished(Loader<Drawable> arg0, Drawable result) {
-            if (getSherlockActivity() != null && result != null) {
-                getSherlockActivity().getSupportActionBar().setIcon(result);
+            if (getActivity() != null && result != null) {
+                getActivity().getActionBar().setIcon(result);
             }
         }
 
@@ -136,13 +138,13 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
 
     }
 
-    private class ProfileNameCallback implements LoaderCallbacks<String>{
+    private class ProfileNameCallback implements LoaderManager.LoaderCallbacks<String> {
 
         @Override
         public Loader<String> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new CachedUsernameLoader(getSherlockActivity(), b, messageService);
+            return new CachedUsernameLoader(getActivity(), b, messageService);
         }
 
         @Override
@@ -154,12 +156,12 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         public void onLoaderReset(Loader<String> arg0) { }
     }
 
-    private class ConversationStatusCallback implements LoaderCallbacks<Holder<UserMessageHistoryBean>>{
+    private class ConversationStatusCallback implements LoaderManager.LoaderCallbacks<Holder<UserMessageHistoryBean>> {
         @Override
         public Loader<Holder<UserMessageHistoryBean>> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new ConversationStatusLoader(getSherlockActivity(), b, conversationAdapter);
+            return new ConversationStatusLoader(getActivity(), b, conversationAdapter);
         }
 
         @Override
@@ -214,35 +216,29 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Bundle args = getArguments();
-        m_profileId = args.getString(ArgumentConstants.ARG_USERID);
-        m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
         MinimalUser userBean = null;
-        m_adapter = new MessageAdapter(this);
-        // If actually filled...
-        if(m_conversationState != null){
-            if(m_conversationState.getLastReceived() != null || m_conversationState.getLastSent() != null){
-                userBean = (MinimalUser) args.getSerializable(ArgumentConstants.ARG_USER);
+        String profileId = null;
+        if(args != null) {
+            profileId = args.getString(ArgumentConstants.ARG_USERID);
+            m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
+            // If actually filled...
+            if(m_conversationState != null){
+                if(m_conversationState.getLastReceived() != null || m_conversationState.getLastSent() != null){
+                    userBean = (MinimalUser) args.getSerializable(ArgumentConstants.ARG_USER);
+                }
             }
         }
+        m_adapter = new MessageAdapter(this);
         if(userBean != null){
             m_title = userBean.getUsername();
-        }
-        if (StringUtility.isNullOrEmpty(m_profileId)) {
-            Log.e(TAG, "Tried to open conversation without user id");
-            if (getSherlockActivity() != null) {
-                getSherlockActivity().finish();
-            }
         }
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
-        if (m_adapter.isEmpty()) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            getLoaderManager().restartLoader(R.id.loader_message_initial, bundle, this);
-        } else {
-            startRefresh();
+
+        if(profileId != null){
+            showConversationWithUser(profileId);
         }
     }
 
@@ -258,8 +254,10 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         ImageView sendBtn = (ImageView) inflated.findViewById(R.id.conversation_fragment_sendImgV);
         EditText messageField = (EditText) inflated.findViewById(R.id.conversation_fragment_messageEditText);
         messageField.addTextChangedListener(new MessageWatcher(sendBtn));
+        m_chatGroupBox = (ViewGroup) inflated.findViewById(R.id.conversation_fragment_chatGroupBox);
+        LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(m_profileId));
 
-        getSherlockActivity().getSupportActionBar().setIcon(R.drawable.social_person);
+        getActivity().getActionBar().setIcon(R.drawable.social_person);
         return inflated;
     }
 
@@ -303,7 +301,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
     public void onPause() {
         super.onPause();
         // Restore (because it is not done by stack)
-        ActionBar actionbar = getSherlockActivity().getSupportActionBar();
+        ActionBar actionbar = getActivity().getActionBar();
         actionbar.setIcon(R.drawable.ic_launcher);
         actionbar.setTitle(m_previousActionBarTitle);
         actionbar.setSubtitle(null);
@@ -312,22 +310,46 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
     @Override
     public void onResume() {
         super.onResume();
-        m_previousActionBarTitle = getSherlockActivity().getSupportActionBar().getTitle();
-        if(m_imgLoaderCallback == null){
-            m_imgLoaderCallback = new ImageLoaderCallback();
-        }
-        getSherlockActivity().getSupportLoaderManager().restartLoader(R.id.loader_message_profileImage, null,
-                m_imgLoaderCallback);
-        if(m_title == null){
-            if(m_usernameCallback == null){
-                m_usernameCallback = new ProfileNameCallback();
+        m_previousActionBarTitle = getActivity().getActionBar().getTitle();
+        if(m_profileId != null) {
+            if (m_imgLoaderCallback == null) {
+                m_imgLoaderCallback = new ImageLoaderCallback();
             }
-            getLoaderManager().restartLoader(R.id.loader_username, null, m_usernameCallback);
+            getActivity().getLoaderManager().restartLoader(R.id.loader_message_profileImage, null,
+                    m_imgLoaderCallback);
+            if (m_title == null) {
+                if (m_usernameCallback == null) {
+                    m_usernameCallback = new ProfileNameCallback();
+                }
+                getLoaderManager().restartLoader(R.id.loader_username, null, m_usernameCallback);
+            } else {
+                setTitle(m_title);
+            }
+            updateConversationSubtitle();
         }
-        else {
-            setTitle(m_title);
+    }
+
+    public void showConversationWithUser(String userId){
+        if(m_chatGroupBox != null){
+            LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(userId));
         }
-        updateConversationSubtitle();
+        if(CompareUtility.notEquals(userId, m_profileId)) {
+            m_adapter.clear();
+            m_hasNoMoreCached = false;
+            m_hasNoMoreOnline = false;
+
+            m_profileId = userId;
+            if (m_profileId != null) {
+                // TODO PBN Change adapter for easier calculation?
+                if (m_adapter.getCount() - (m_adapter.isShowLoadMore() ? 1 : 0) == 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ArgumentConstants.ARG_USERID, m_profileId);
+                    getLoaderManager().restartLoader(R.id.loader_message_initial, bundle, this);
+                } else {
+                    startRefresh();
+                }
+            }
+        }
     }
     
     /**
@@ -355,7 +377,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
 
     @Override
     public AbstractMessageLoader onCreateLoader(final int type, final Bundle bundle) {
-        final SherlockFragmentActivity context = getSherlockActivity();
+        final Activity context = getActivity();
         context.setProgressBarIndeterminateVisibility(true);
         switch (type) {
             case R.id.loader_message_empty:
@@ -378,8 +400,8 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
 
     @Override
     public void onLoadFinished(Loader<Holder<MessageResult>> loader, Holder<MessageResult> holder) {
-        if (getSherlockActivity() != null) {
-            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+        if (getActivity() != null) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
         }
 
         int type = ((SimpleAsyncLoader<?>) loader).getType();
@@ -480,7 +502,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
                 throw new IllegalArgumentException("Unknown loader type " + type);
         }
         updateAdapterButtonState();
-        getSherlockActivity().runOnUiThread(new NotifyAdapter());
+        getActivity().runOnUiThread(new NotifyAdapter());
     }
 
     @Override
@@ -513,8 +535,8 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
     }
 
     private void setTitle(String result) {
-        if(getSherlockActivity() != null && result != null){
-            getSherlockActivity().getSupportActionBar().setTitle(result);
+        if(getActivity() != null && result != null){
+            getActivity().getActionBar().setTitle(result);
         }
     }
 
@@ -542,9 +564,9 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
             sb.append(getString(R.string.ReadOn));
             sb.append(StringUtility.WHITE_SPACE);
             sb.append(DateUtility.getTimeOrDateString(m_conversationState.getOtherUserLastRead()));
-            getSherlockActivity().getSupportActionBar().setSubtitle(sb.toString());
+            getActivity().getActionBar().setSubtitle(sb.toString());
         } else {
-            getSherlockActivity().getSupportActionBar().setSubtitle(null);
+            getActivity().getActionBar().setSubtitle(null);
         }
     }
 
@@ -554,23 +576,15 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
     }
 
     private void openProfileFragment() {
-        DisplayProfileFragment f = new DisplayProfileFragment();
-        Bundle b = new Bundle();
-        b.putSerializable(ArgumentConstants.ARG_USERID, m_profileId);
-        f.setArguments(b);
-
-        FragmentManager manager = getSherlockActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+        intent.putExtra(ArgumentConstants.ARG_USERID, m_profileId);
+        getActivity().startActivity(intent);
     }
 
     private void openReportFragment() {
-        ReportUserFragment f = new ReportUserFragment();
-        Bundle b = new Bundle();
-        b.putSerializable(ArgumentConstants.ARG_USERID, m_profileId);
-        f.setArguments(b);
-        FragmentTransaction trans = getFragmentManager().beginTransaction();
-        trans.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+        Intent intent = new Intent(getActivity(), ReportActivity.class);
+        intent.putExtra(ArgumentConstants.ARG_USERID, m_profileId);
+        getActivity().startActivity(intent);
     }
 
     private void sendPreActions() {
@@ -582,7 +596,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
             dialog.setCancelable(false); // TODO
             f = dialog;
         }
-        f.show(getSherlockActivity().getSupportFragmentManager(), FRAGMENT_TAG);
+        f.show(getActivity().getFragmentManager(), FRAGMENT_TAG);
     }
 
     private void handleExceptionPostLoad(Loader<?> loader, int type, Exception e) {
@@ -593,7 +607,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
             case R.id.loader_message_initial: 
             case R.id.loader_message_moreoldDB: {
                 Log.w(TAG, "Offline loader " + loader.getClass().getSimpleName() + "  failed with exception", e);
-                Toast.makeText(getSherlockActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
             }
             // Online loaders: Anything else than an IOException should be logged and is bad.
             case R.id.loader_message_empty:{
@@ -624,7 +638,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
             showToastNetworkError(e);
         } else {
             Log.w(TAG, "Loader " + loader.getClass().getSimpleName() + "  failed with exception", e);
-            Toast.makeText(getSherlockActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -637,7 +651,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
         // FIXME Remove debugging info
         string = string + "\n(" + e.getClass().getSimpleName() + "\n" + e.getMessage() +")";
         
-        Toast.makeText(getSherlockActivity(), string, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), string, Toast.LENGTH_LONG).show();
     }
 
     private void startEmpty() {
@@ -682,7 +696,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
     }
 
     private void showToastError() {
-        Toast.makeText(getSherlockActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
     }
 
     private void doSendPostActions(MessageResult res) {
@@ -705,7 +719,7 @@ public class ConversationFragment extends BaseFragment implements LoaderCallback
     }
 
     private void dismissSendingDialog() {
-        DialogFragment dialog = (DialogFragment) getSherlockActivity().getSupportFragmentManager().findFragmentByTag(
+        DialogFragment dialog = (DialogFragment) getActivity().getFragmentManager().findFragmentByTag(
                 FRAGMENT_TAG);
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();

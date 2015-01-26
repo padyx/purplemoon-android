@@ -1,12 +1,12 @@
 package ch.defiant.purplesky.dialogs;
 
+import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Loader;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -43,7 +43,7 @@ import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-public class CreatePostitDialogFragment extends BaseDialogFragment implements LoaderCallbacks<Holder<List<Pair<Integer, String>>>> {
+public class CreatePostitDialogFragment extends BaseDialogFragment implements LoaderManager.LoaderCallbacks<Holder<List<Pair<Integer, String>>>> {
 
     public static final String TAG = CreatePostitDialogFragment.class.getSimpleName();
     public static final String ARGUMENT_RECIPIENT_PROFILEID_URI = "profileId";
@@ -121,13 +121,13 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
                 int selectedItem = m_spinner.getSelectedItemPosition();
                 if (selectedItem == Spinner.INVALID_POSITION
                         || (adapter.getItem(selectedItem) != null && adapter.getItem(selectedItem).first == Spinner.INVALID_POSITION)) {
-                    Toast.makeText(getSherlockActivity(), "Must select a valid post-it", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Must select a valid post-it", Toast.LENGTH_SHORT).show();
                 } else {
                     Pair<Integer, String> item = adapter.getItem(selectedItem);
                     if (item != null) {
                         if (CompareUtility.equals(CUSTOM_POSTIT, item.first)) {
                             if (StringUtility.isNullOrEmpty(text.getText().toString())) {
-                                Toast.makeText(getSherlockActivity(), R.string.ErrorNoTextCustomPostit, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.ErrorNoTextCustomPostit, Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } else {
@@ -231,7 +231,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
 
         @Override
         protected void onPreExecute() {
-            m_uploadDialog = ProgressDialog.show(getSherlockActivity(), getString(R.string.CreatingPostit), getString(R.string.PleaseWait), true,
+            m_uploadDialog = ProgressDialog.show(getActivity(), getString(R.string.CreatingPostit), getString(R.string.PleaseWait), true,
                     false);
         }
 
@@ -252,20 +252,20 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
             if (result == null // No result
                     // Fail result but no exception
                     || (result.getException() == null && CompareUtility.equals(false, result.getContainedObject()))) {
-                Toast.makeText(getSherlockActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_SHORT).show();
                 // Unknown error
 
             } else if (CompareUtility.equals(true, result.getContainedObject())) {
                 // All ok, dismiss fragment
-                Toast.makeText(getSherlockActivity(), getString(R.string.PostitCreated), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.PostitCreated), Toast.LENGTH_SHORT).show();
                 CreatePostitDialogFragment.this.dismiss();
             } else {
                 // Must have exception
                 Exception e = result.getException();
                 if (e instanceof IOException) {
-                    Toast.makeText(getSherlockActivity(), getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_SHORT).show();
                 } else if (e instanceof WrongCredentialsException) {
-                    PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+                    PersistantModel.getInstance().handleWrongCredentials(getActivity());
                 } else if (e instanceof PoweruserException) {
                     AlertDialogFragment f = AlertDialogFragment.newOKDialog(R.string.Error_NoPowerUserTitle, R.string.ErrorPoweruserCustomPostits,
                             ERRORDIALOG);
@@ -277,7 +277,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
                     f.show(getFragmentManager(), "errorPostit");
                 } else {
                     // Unknown
-                    Toast.makeText(getSherlockActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -285,7 +285,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
 
     @Override
     public Loader<Holder<List<Pair<Integer, String>>>> onCreateLoader(int arg0, Bundle arg1) {
-        return new SimpleAsyncLoader<Holder<List<Pair<Integer, String>>>>(getSherlockActivity()) {
+        return new SimpleAsyncLoader<Holder<List<Pair<Integer, String>>>>(getActivity()) {
 
             @Override
             public Holder<List<Pair<Integer, String>>> loadInBackground() {
@@ -315,14 +315,14 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
                 if (excp instanceof IOException) {
                     invalid = Arrays.asList(Pair.create(Spinner.INVALID_POSITION, getResources().getString(R.string.ErrorNoNetworkGenericShort)));
                 } else if (excp instanceof WrongCredentialsException) {
-                    PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+                    PersistantModel.getInstance().handleWrongCredentials(getActivity());
                     invalid = Arrays.asList(Pair.create(Spinner.INVALID_POSITION, getResources().getString(R.string.ErrorWrongCredentials)));
                 } else if (excp instanceof PurpleSkyException) {
                     invalid = Arrays.asList(Pair.create(Spinner.INVALID_POSITION, excp.getMessage()));
                 } else {
                     invalid = Arrays.asList(Pair.create(Spinner.INVALID_POSITION, getResources().getString(R.string.ErrorGeneric)));
                 }
-                spinner.setAdapter(new PostitAdapter(getSherlockActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, invalid));
+                spinner.setAdapter(new PostitAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, invalid));
             } else {
                 ArrayList<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
 
@@ -333,7 +333,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
                 if (m_cachedPowerUser) {
                     list.add(Pair.create(CUSTOM_POSTIT, getResources().getString(R.string.CustomPostit)));
                 }
-                spinner.setAdapter(new PostitAdapter(getSherlockActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, list));
+                spinner.setAdapter(new PostitAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, list));
             }
         }
 

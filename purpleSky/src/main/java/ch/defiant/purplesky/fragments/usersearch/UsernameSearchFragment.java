@@ -1,17 +1,17 @@
 package ch.defiant.purplesky.fragments.usersearch;
 
+import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +31,7 @@ import java.util.List;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.adapters.NullAdapter;
 import ch.defiant.purplesky.adapters.UserSearchResultListAdapter;
@@ -43,13 +44,12 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.exceptions.WrongCredentialsException;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 
 public class UsernameSearchFragment extends BaseFragment
-        implements LoaderCallbacks<Holder<List<MinimalUser>>>, IBroadcastReceiver, Callback {
+        implements LoaderManager.LoaderCallbacks<Holder<List<MinimalUser>>>, IBroadcastReceiver, Callback {
 
     public static final String TAG = UsernameSearchFragment.class.getSimpleName();
     private static final int MINCHARACTERS = 3;
@@ -80,9 +80,9 @@ public class UsernameSearchFragment extends BaseFragment
 
     @Override
     public Loader<Holder<List<MinimalUser>>> onCreateLoader(int loaderId, Bundle arg1) {
-        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
         final String username = arg1.getString(EXTRA_SEARCHSTRING);
-        return new SimpleAsyncLoader<Holder<List<MinimalUser>>>(this.getSherlockActivity()) {
+        return new SimpleAsyncLoader<Holder<List<MinimalUser>>>(this.getActivity()) {
 
             @Override
             public Holder<List<MinimalUser>> loadInBackground() {
@@ -96,7 +96,7 @@ public class UsernameSearchFragment extends BaseFragment
                 } catch (IOException e) {
                     return new Holder<List<MinimalUser>>(e);
                 } catch (WrongCredentialsException e) {
-                    PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+                    PersistantModel.getInstance().handleWrongCredentials(getActivity());
                     return new Holder<List<MinimalUser>>(e);
                 } catch (PurpleSkyException e) {
                     return new Holder<List<MinimalUser>>(e);
@@ -109,22 +109,22 @@ public class UsernameSearchFragment extends BaseFragment
     @Override
     public void onLoadFinished(Loader<Holder<List<MinimalUser>>> arg0, Holder<List<MinimalUser>> holder) {
         if (getView() != null) {
-            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+            getActivity().setProgressBarIndeterminateVisibility(false);
             if (holder.getException() != null) {
                 // OOPS. Error
                 Exception e = holder.getException();
                 if (e instanceof WrongCredentialsException) {
-                    PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+                    PersistantModel.getInstance().handleWrongCredentials(getActivity());
                 } else if (e instanceof PurpleSkyException) {
                     Log.w(TAG, "Unknown exception occurred at searching by name", e);
                 }
-                replaceAdapter(new ErrorAdapter(getSherlockActivity()));
+                replaceAdapter(new ErrorAdapter(getActivity()));
             } else {
                 List<MinimalUser> result = holder.getContainedObject();
                 if(result.isEmpty()){
-                    replaceAdapter(new NullAdapter<NullUser>(getSherlockActivity(), new NullUser(), R.string.NoResultsFound));
+                    replaceAdapter(new NullAdapter<NullUser>(getActivity(), new NullUser(), R.string.NoResultsFound));
                 } else {
-                    replaceAdapter(new UserSearchResultListAdapter(getSherlockActivity(), result));
+                    replaceAdapter(new UserSearchResultListAdapter(getActivity(), result));
                 }
             }
         }
@@ -132,7 +132,7 @@ public class UsernameSearchFragment extends BaseFragment
 
     @Override
     public void onLoaderReset(Loader<Holder<List<MinimalUser>>> loader) {
-        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     private class UsernameTextChangeListener implements TextWatcher {
@@ -169,13 +169,10 @@ public class UsernameSearchFragment extends BaseFragment
             }
             MinimalUser user = (MinimalUser) item;
             if (user.getUserId() != null) {
-                DisplayProfileFragment f = new DisplayProfileFragment();
-                Bundle b = new Bundle();
-                b.putString(ArgumentConstants.ARG_USERID, user.getUserId());
-                f.setArguments(b);
+                Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                intent.putExtra(ArgumentConstants.ARG_USERID, user.getUserId());
 
-                FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                getActivity().startActivity(intent);
             }
         }
 
@@ -191,7 +188,7 @@ public class UsernameSearchFragment extends BaseFragment
     // @Override
     // public void run() {
     // view.requestFocus();
-    // InputMethodManager ime = (InputMethodManager) getSherlockActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    // InputMethodManager ime = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     // ime.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     // }
     //
@@ -207,7 +204,7 @@ public class UsernameSearchFragment extends BaseFragment
     //
     // @Override
     // public void run() {
-    // InputMethodManager ime = (InputMethodManager) getSherlockActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    // InputMethodManager ime = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     // ime.hideSoftInputFromWindow(findViewById.getWindowToken(), 0);
     // }
     //
@@ -225,13 +222,13 @@ public class UsernameSearchFragment extends BaseFragment
         super.onResume();
         m_broadcastReceiver = new LocalBroadcastReceiver(this);
         IntentFilter filter = new IntentFilter(Intent.ACTION_SEARCH);
-        LocalBroadcastManager.getInstance(getSherlockActivity()).registerReceiver(m_broadcastReceiver, filter);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(m_broadcastReceiver, filter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getSherlockActivity()).unregisterReceiver(m_broadcastReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(m_broadcastReceiver);
     }
 
     @Override
@@ -244,14 +241,14 @@ public class UsernameSearchFragment extends BaseFragment
             b.putString(UserSearchResultsFragment.EXTRA_SEARCHNAME, s);
             f.setArguments(b);
 
-            FragmentTransaction transaction = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
         }
     }
 
     @Override
     public boolean handleMessage(Message msg) {
-        if(getSherlockActivity() != null){
+        if(getActivity() != null){
             Bundle b = new Bundle();
             b.putString(EXTRA_SEARCHSTRING, m_searchField.getText().toString());
             getLoaderManager().restartLoader(R.id.loader_usernamesearch_main, b, UsernameSearchFragment.this);

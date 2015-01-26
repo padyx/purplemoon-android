@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments.visits;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.api.visit.IVisitAdapter;
 import ch.defiant.purplesky.beans.AbstractVisitBean;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -38,7 +39,6 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.fragments.BaseListFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.UserUtility;
@@ -71,7 +71,7 @@ public class VisitorFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_adapter = new VisitorListAdapter(getSherlockActivity(), R.layout.uservisit_item);
+        m_adapter = new VisitorListAdapter(getActivity(), R.layout.uservisit_item);
         if (savedInstanceState != null) {
             // Try to restore the data
             @SuppressWarnings("unchecked")
@@ -83,7 +83,7 @@ public class VisitorFragment extends BaseListFragment {
             }
         }
         // Make sure to wrap normal apiAdapter in the endlessadapter AFTER restoring state
-        m_endlessAdapter = new EndlessVisitorAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
+        m_endlessAdapter = new EndlessVisitorAdapter(getActivity(), m_adapter, R.layout.loading_listitem);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class VisitorFragment extends BaseListFragment {
                         Entry<Date, Boolean> next = iterator.next();
                         sb.append(DateUtility.getMediumDateTimeString(next.getKey()));
                         if (item instanceof VisitsReceivedBean && ((VisitsReceivedBean) item).isUnseen()) {
-                            sb.append("\t" + "<b>NEW</b>");
+                            sb.append("\t<b>").append(getString(R.string.New).toUpperCase()).append("</b>");
                         }
                         if (iterator.hasNext() && visCnt != MAXVISITS) {
                             sb.append("\n");
@@ -262,14 +262,11 @@ public class VisitorFragment extends BaseListFragment {
             if(bean != null) {
                 String profileId = bean.getProfileId();
                 if (profileId != null) {
-                    Bundle args = new Bundle();
-                    args.putString(ArgumentConstants.ARG_USERID, profileId);
-                    DisplayProfileFragment f = new DisplayProfileFragment();
-                    f.setArguments(args);
-                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                    Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_USERID, profileId);
+                    getActivity().startActivity(intent);
                 } else {
-                    Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
                 }
             }
         }

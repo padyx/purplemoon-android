@@ -34,7 +34,7 @@ public class VisitorTabbedFragment extends AbstractTabbedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.ProfileVisits);
+        getActivity().getActionBar().setTitle(R.string.ProfileVisits);
     }
 
 }

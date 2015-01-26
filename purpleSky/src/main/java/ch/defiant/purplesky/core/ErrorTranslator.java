@@ -19,6 +19,24 @@ public class ErrorTranslator {
 
     public static final String TAG = ErrorTranslator.class.getSimpleName();
 
+    public static void throwIfGenericException(Context c, int responseCode, String errorOut, String request) throws PurpleSkyException {
+        if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+            // General server difficulty
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "Internal server error reported. Request was: '" + request + "'. Response was: " + errorOut);
+                throwGenericException(c);
+            }
+        } else if (responseCode == 501) {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, "Server indicated that API part does not exist! Request was: '" + request + "'. Response was: " + errorOut);
+                throwGenericException(c);
+            }
+        }
+        else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            throw new WrongCredentialsException();
+        }
+    }
+
     public static void translateHttpError(Context c, int responseCode, String errorOut, String request) throws PurpleSkyException {
         if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
             // General server difficulty

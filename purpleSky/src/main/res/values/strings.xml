@@ -278,5 +278,30 @@
     <string name="PreferenceAboutApp">About this app</string>
     <string name="PreferenceAboutApp_Summary">Licences of included software</string>
     <string name="Location_">Location:</string>
+    <string name="Dismiss">Dismiss</string>
+    <string name="ActionOpen">Open</string>
+    <string name="Admission">Admission</string>
+    <string name="RegisterForEvent">Register for event</string>
+    <string name="RegisterForEvent_Condensed_">Register</string>
+    <string name="Event">Event</string>
+    <string name="ShowAttendance">Show your attendance to</string>
+    <string name="Everyone">Everyone</string>
+    <string name="Nobody">Nobody</string>
+    <string name="PreliminaryEventNoRegistration">Preliminary information - you cannot register for this event yet.</string>
+    <string name="MenOnly">Only men</string>
+    <string name="WomenOnly">Only women</string>
+    <string name="MostlyMen">Mostly men</string>
+    <string name="MostlyWomen">Mostly women</string>
+    <string name="Registrations">Registrations</string>
+    <string name="Audience">Audience</string>
+    <string name="EntranceOnlyFor">Entrance only for</string>
+    <string name="Limited_PrivateEvent">Limited: Private Event</string>
+    <string name="Information">Information</string>
+    <string name="Website">Website</string>
+    <string name="Name">Name</string>
+    <string name="Address">Address</string>
+    <string name="EventLocation">Event location</string>
+    <string name="UnregisterFromEvent">Unregister from event</string>
+    <string name="UnregisterForEvent_Condensed_">Unregister</string>
 
 </resources>

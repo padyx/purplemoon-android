@@ -1,18 +1,23 @@
 package ch.defiant.purplesky.fragments;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -22,16 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -66,8 +66,8 @@ import ch.defiant.purplesky.util.StringUtility;
  */
 public class RadarGridFragment extends BaseFragment implements
         LoaderManager.LoaderCallbacks<Holder<List<MinimalUser>>>,
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
         LocationListener
 {
     // TODO Handling that google play services are not available?
@@ -76,15 +76,15 @@ public class RadarGridFragment extends BaseFragment implements
 
         @Override
         public Loader<Address> onCreateLoader(int id, Bundle args) {
-            getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+            getActivity().setProgressBarIndeterminateVisibility(true);
 
             return new GetAndUpdateProfilePositionLoader(getActivity(), apiAdapter, currentLocation);
         }
 
         @Override
         public void onLoadFinished(Loader<Address> loader, Address data) {
-            if(getSherlockActivity() != null) {
-                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+            if(getActivity() != null) {
+                getActivity().setProgressBarIndeterminateVisibility(false);
 
                 if (data == null) {
                     addressTextView.setText(getString(R.string.LocationNotFound));
@@ -109,7 +109,7 @@ public class RadarGridFragment extends BaseFragment implements
 
         @Override
         public Loader<Address> onCreateLoader(int i, Bundle bundle) {
-            return new GetCurrentPurplemoonAddress(getSherlockActivity(), apiAdapter);
+            return new GetCurrentPurplemoonAddress(getActivity(), apiAdapter);
         }
 
         @Override
@@ -117,7 +117,7 @@ public class RadarGridFragment extends BaseFragment implements
             if(address != null) {
                 currentAddress = address;
             }
-            if(getSherlockActivity() != null){
+            if(getActivity() != null){
                 String s;
                 if(address != null && address.getMaxAddressLineIndex()>=0){
                     s = address.getAddressLine(0);
@@ -154,7 +154,7 @@ public class RadarGridFragment extends BaseFragment implements
     // Logic
     private UserSearchOptions options;
     private boolean useLocation;
-    private LocationClient locationClient;
+    private GoogleApiClient locationClient;
     private Location currentLocation;
     private Address currentAddress;
 
@@ -166,7 +166,7 @@ public class RadarGridFragment extends BaseFragment implements
         addressTextView = (TextView) view.findViewById(R.id.radar_grid_fragment_addressText);
         GridView gridview = (GridView) view.findViewById(R.id.gridview);
         gridview.setAdapter(this.adapter);
-        gridview.setOnItemClickListener(new OpenUserProfileListener(getSherlockActivity()));
+        gridview.setOnItemClickListener(new OpenUserProfileListener(getActivity()));
         return view;
     }
 
@@ -200,7 +200,7 @@ public class RadarGridFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().setTitle(R.string.Radar);
+        getActivity().setTitle(R.string.Radar);
         restoreSearchSelections();
         updateLocationDisplay();
         checkLocationPermission();
@@ -235,22 +235,26 @@ public class RadarGridFragment extends BaseFragment implements
     }
 
     private void attachLocationListener() {
-        if(getSherlockActivity() != null){
-            getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+        if(getActivity() != null){
+            getActivity().setProgressBarIndeterminateVisibility(true);
         }
         if(locationClient == null) {
-            locationClient = new LocationClient(getActivity(), this, this);
+            locationClient =  new GoogleApiClient.Builder(getActivity())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
         }
         locationClient.connect();
     }
 
     private void removeLocationListener() {
         if(locationClient != null && locationClient.isConnected()) {
-            locationClient.removeLocationUpdates(this);
+            LocationServices.FusedLocationApi.removeLocationUpdates(locationClient, this);
             locationClient.disconnect();
         }
-        if(getSherlockActivity() != null){
-            getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+        if(getActivity() != null){
+            getActivity().setProgressBarIndeterminateVisibility(false);
         }
     }
 
@@ -272,9 +276,9 @@ public class RadarGridFragment extends BaseFragment implements
 
     @Override
     public void onDetach() {
-        getSherlockActivity().getSupportActionBar().removeAllTabs();
-        getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+        getActivity().getActionBar().removeAllTabs();
+        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        getActivity().setProgressBarIndeterminateVisibility(false);
         super.onDetach();
     }
 
@@ -356,13 +360,13 @@ public class RadarGridFragment extends BaseFragment implements
 
     @Override
     public Loader<Holder<List<MinimalUser>>> onCreateLoader(int id, Bundle arg1) {
-        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
-        return new RadarResultLoader(getSherlockActivity(), apiAdapter, options);
+        getActivity().setProgressBarIndeterminateVisibility(true);
+        return new RadarResultLoader(getActivity(), apiAdapter, options);
     }
 
     @Override
     public void onLoadFinished(Loader<Holder<List<MinimalUser>>> loader, Holder<List<MinimalUser>> data) {
-        SherlockFragmentActivity sherlockActivity = getSherlockActivity();
+        Activity sherlockActivity = getActivity();
         if(sherlockActivity != null) {
             sherlockActivity.setProgressBarIndeterminateVisibility(false);
         }
@@ -388,18 +392,19 @@ public class RadarGridFragment extends BaseFragment implements
         // Set the fastest update interval to 0.25 second
         locationRequest.setFastestInterval(250);
 
-        locationClient.requestLocationUpdates(locationRequest, this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(locationClient, locationRequest, this);
     }
 
     @Override
-    public void onDisconnected() {
-        locationClient = null;
+    public void onConnectionSuspended(int cause) {
+        Log.i(TAG, "Connection suspended");
+        locationClient.connect();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.w(TAG, "Could not connect to retrieve location. Result "+connectionResult);
-        Toast.makeText(getSherlockActivity(), getString(R.string.LocationNotFound), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.LocationNotFound), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -411,7 +416,7 @@ public class RadarGridFragment extends BaseFragment implements
             }
             // Accurate enough
             removeLocationListener();
-            if(getSherlockActivity() != null) {
+            if(getActivity() != null) {
                 getLoaderManager().restartLoader(R.id.loader_profilePositionUpdate, null, new GeocoderLoaderCallback());
             }
         }

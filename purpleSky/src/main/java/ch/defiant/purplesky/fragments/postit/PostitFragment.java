@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments.postit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.api.postits.IPostitAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PostIt;
@@ -33,7 +34,6 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.fragments.BaseListFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
@@ -56,7 +56,7 @@ public class PostitFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_adapter = new PostitAdapter(getSherlockActivity(), R.layout.displaypostit_item);
+        m_adapter = new PostitAdapter(getActivity(), R.layout.displaypostit_item);
         if (savedInstanceState != null) {
             // Try to restore the data
             @SuppressWarnings("unchecked")
@@ -68,7 +68,7 @@ public class PostitFragment extends BaseListFragment {
             }
         }
         // Make sure to wrap normal apiAdapter in the endlessadapter AFTER restoring state
-        m_endlessAdapter = new PostitEndlessAdapter(getSherlockActivity(), m_adapter, R.layout.loading_listitem);
+        m_endlessAdapter = new PostitEndlessAdapter(getActivity(), m_adapter, R.layout.loading_listitem);
     }
 
     @Override
@@ -219,15 +219,12 @@ public class PostitFragment extends BaseListFragment {
             if (bean != null) {
                 MinimalUser user = bean.getSender();
                 if (user != null && StringUtility.isNotNullOrEmpty(user.getUserId())) {
-                    DisplayProfileFragment f = new DisplayProfileFragment();
-                    Bundle args = new Bundle();
-                    args.putString(ArgumentConstants.ARG_USERID, user.getUserId());
-                    f.setArguments(args);
+                    Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_USERID, user.getUserId());
 
-                    FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
-                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                    getActivity().startActivity(intent);
                 } else {
-                    Toast.makeText(getSherlockActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.ErrorCouldNotFindUser), Toast.LENGTH_SHORT).show();
                 }
             }
         }

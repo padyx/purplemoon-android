@@ -18,6 +18,7 @@ import java.util.Map;
 import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.BasicUser;
+import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PreviewUser;
@@ -168,6 +169,21 @@ public class CommonJSONTranslator {
                 Map<String, ProfileTriplet> details = translateToUserDetails(jsonUserObject);
                 addUserLocation(jsonUserObject, previewUser);
                 previewUser.setProfileDetails(details);
+            }
+
+            if(DetailedUser.class.isAssignableFrom(clazz)){
+                DetailedUser detailedUser = (DetailedUser) user;
+                if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP)){
+                    Map<Integer, String> map = new HashMap<Integer, String>();
+                    JSONArray array = jsonUserObject.getJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP);
+                    for(int i=0; i<array.length(); i++){
+                        JSONObject obj = array.getJSONObject(i);
+                        int eventId = obj.getInt(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_ID);
+                        String eventText = obj.getString(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_TEXT);
+                        map.put(eventId, eventText);
+                    }
+                    detailedUser.setEventTmp(map);
+                }
             }
 
         } catch (JSONException e) {

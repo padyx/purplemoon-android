@@ -55,14 +55,14 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = getSherlockActivity().getLayoutInflater().inflate(R.layout.dialog_radar_options, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_radar_options, null);
 
         createView(view);
         if(savedInstanceState == null) {
             restoreSelections();
         }
 
-        return new AlertDialog.Builder(getSherlockActivity()).
+        return new AlertDialog.Builder(getActivity()).
             setTitle("Show only").
             setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                 @Override

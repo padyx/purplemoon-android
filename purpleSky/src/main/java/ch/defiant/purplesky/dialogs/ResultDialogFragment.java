@@ -1,9 +1,10 @@
 package ch.defiant.purplesky.dialogs;
 
+import android.app.Fragment;
+import android.content.Intent;
+
 import java.io.Serializable;
 
-import android.content.Intent;
-import android.support.v4.app.Fragment;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 
 public class ResultDialogFragment<T extends Serializable> extends AlertDialogFragment {

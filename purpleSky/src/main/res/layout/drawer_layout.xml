@@ -4,12 +4,12 @@
     android:layout_width="240dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
+    android:background="@color/navdrawer_background"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_faint"
         android:orientation="horizontal" >
 
         <ImageView
@@ -27,6 +27,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical|start"
             android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/Loading_"
             android:textAppearance="@style/TextAppearance.MediumLarge" />
 
@@ -42,7 +43,6 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/purple_faint"
         android:choiceMode="singleChoice"
         android:divider="#CCC"
         android:dividerHeight="1dp" />

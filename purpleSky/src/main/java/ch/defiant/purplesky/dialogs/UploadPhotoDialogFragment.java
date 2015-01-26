@@ -1,14 +1,14 @@
 package ch.defiant.purplesky.dialogs;
 
+import android.app.FragmentTransaction;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,10 +49,9 @@ import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.ImageUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
-public class UploadPhotoDialogFragment extends BaseDialogFragment implements LoaderCallbacks<Holder<List<PictureFolder>>> {
+public class UploadPhotoDialogFragment extends BaseDialogFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>> {
 
     public static final String ARGUMENT_PICTURE_URI = "picture";
-    public static final int INVALID_POSITION = -1;
 
     @Inject
     protected IGalleryAdapter galleryAdapter;
@@ -70,7 +69,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
         super.onCreate(savedInstanceState);
 
         if (getArguments() == null || getArguments().get(ARGUMENT_PICTURE_URI) == null) {
-            Toast.makeText(getSherlockActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Missing image for upload");
             dismiss();
         }
@@ -120,7 +119,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
         Spinner spinner = (Spinner) inflatedView.findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
 
         List<PictureFolder> list = Collections.<PictureFolder> singletonList(new NullPictureFolder(getString(R.string.Loading_)));
-        m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getSherlockActivity(), android.R.layout.simple_spinner_dropdown_item, list);
+        m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getActivity(), android.R.layout.simple_spinner_dropdown_item, list);
         spinner.setAdapter(m_spinnerAdapter);
 
         return inflatedView;
@@ -133,7 +132,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
 
     @Override
     public Loader<Holder<List<PictureFolder>>> onCreateLoader(int arg0, Bundle arg1) {
-        return new SimpleAsyncLoader<Holder<List<PictureFolder>>>(getSherlockActivity()) {
+        return new SimpleAsyncLoader<Holder<List<PictureFolder>>>(getActivity()) {
             @Override
             public Holder<List<PictureFolder>> loadInBackground() {
                 List<PictureFolder> folders = null;
@@ -156,11 +155,11 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             all.addAll(result.getContainedObject());
             if(getView() != null) {
                 Spinner spinner = (Spinner) getView().findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
-                m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getSherlockActivity(), android.R.layout.simple_spinner_dropdown_item, all);
+                m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getActivity(), android.R.layout.simple_spinner_dropdown_item, all);
                 spinner.setAdapter(m_spinnerAdapter);
             }
         } else {
-            Toast.makeText(getSherlockActivity(), getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.ErrorOccurred_NoNetwork), Toast.LENGTH_LONG).show();
             FragmentTransaction t = getFragmentManager().beginTransaction();
             t.detach(this);
             t.commitAllowingStateLoss();
@@ -193,7 +192,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             Bitmap b = null;
             InputStream stream = null;
             try {
-                stream = getSherlockActivity().getContentResolver().openInputStream(m_imageURI);
+                stream = getActivity().getContentResolver().openInputStream(m_imageURI);
                 // Read image size
                 Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
@@ -201,7 +200,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
                 stream.close();
                 options.inJustDecodeBounds = false;
                 options.inSampleSize = ImageUtility.calculateInsampleSize(options, height, width);
-                stream = getSherlockActivity().getContentResolver().openInputStream(m_imageURI);
+                stream = getActivity().getContentResolver().openInputStream(m_imageURI);
                 return new Holder<Bitmap>(BitmapFactory.decodeStream(stream, null, options));
             } catch (FileNotFoundException e) {
                 return new Holder<Bitmap>(e);
@@ -245,7 +244,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             int position = folderSpinner.getSelectedItemPosition();
 
             if (position == Spinner.INVALID_POSITION || m_spinnerAdapter.getItem(position) instanceof NullPictureFolder) {
-                Toast.makeText(getSherlockActivity(), "Must select a folder", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Must select a folder", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -259,11 +258,11 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
             try {
                 u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PICTURE_UPLOAD_URL);
                 if (StringUtility.isNullOrEmpty(accessToken)) {
-                    PersistantModel.getInstance().handleWrongCredentials(getSherlockActivity());
+                    PersistantModel.getInstance().handleWrongCredentials(getActivity());
                 }
             } catch (MalformedURLException e) {
                 Log.e(TAG, "Malformed url exception on upload", e);
-                Toast.makeText(getSherlockActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.UnknownErrorOccured), Toast.LENGTH_LONG).show();
                 return;
             }
 

@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.fragments.gallery;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -7,15 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.util.LayoutUtility;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.squareup.picasso.Picasso;
-
-public class GalleryPictureFragment extends SherlockFragment {
+public class GalleryPictureFragment extends Fragment {
 
     public static final String ARGUMENT_PICTURE = "picture";
     public static final String TAG = GalleryPictureFragment.class.getSimpleName();
@@ -61,7 +62,7 @@ public class GalleryPictureFragment extends SherlockFragment {
 
     public void loadImage() {
         DisplayMetrics metrics = new DisplayMetrics();
-        getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         // Must measure view first
         ImageView imgView = (ImageView) getView().findViewById(R.id.picturefragment_image);

@@ -36,7 +36,7 @@ public class PostitTabbedFragment extends AbstractTabbedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.Postits);
+        getActivity().getActionBar().setTitle(R.string.Postits);
     }
 
 }

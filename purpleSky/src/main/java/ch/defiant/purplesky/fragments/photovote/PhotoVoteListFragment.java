@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments.photovote;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,14 +50,16 @@ public class PhotoVoteListFragment extends BaseListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_showGiven = getArguments().getBoolean(EXTRA_BOOL_SHOWGIVEN, false);
+        if(getArguments() != null) {
+            m_showGiven = getArguments().getBoolean(EXTRA_BOOL_SHOWGIVEN, false);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        m_innerAdapter = new PhotoVoteAdapter(getSherlockActivity(), 0);
-        m_endlessAdapter = new PhotoVoteEndlessAdapter(getSherlockActivity(), m_innerAdapter, R.layout.loading_listitem);
+        m_innerAdapter = new PhotoVoteAdapter(getActivity(), 0);
+        m_endlessAdapter = new PhotoVoteEndlessAdapter(getActivity(), m_innerAdapter, R.layout.loading_listitem);
         setListAdapter(m_endlessAdapter);
         return v;
     }
@@ -82,12 +84,12 @@ public class PhotoVoteListFragment extends BaseListFragment {
                 args.putString(ArgumentConstants.ARG_USERID, bean.getUser().getUserId());
                 f.setArguments(args);
 
-                FragmentTransaction t = getSherlockActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
                 t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
             } else if (bean.getUser() != null) {
                 // Status is not ok
                 String status = bean.getUser().getProfileStatus().getLocalizedString();
-                Toast.makeText(getSherlockActivity(), status, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), status, Toast.LENGTH_SHORT).show();
             }
         }
     }

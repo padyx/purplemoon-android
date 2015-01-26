@@ -1,6 +1,9 @@
 package ch.defiant.purplesky.activities;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -33,13 +33,12 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.main.MainActivity;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
-import ch.defiant.purplesky.core.UpdateService;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -176,6 +175,21 @@ public class LoginActivity extends BaseFragmentActivity {
         checkPlayServices();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setDrawerEnabled(false);
+        if(getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(false);
+            getActionBar().setHomeButtonEnabled(false);
+        }
+    }
+
+    @Override
+    public int getSelfNavigationIndex() {
+        return -1;
+    }
+
     private void runPruning() {
         messageService.cleanupDB();
     }
@@ -225,7 +239,7 @@ public class LoginActivity extends BaseFragmentActivity {
      */
     private void doLoginSuccess() {
         startServices();
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, ChatListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         // Make sure this activity is not available using 'back'
@@ -233,12 +247,11 @@ public class LoginActivity extends BaseFragmentActivity {
     }
 
     private void startServices() {
-        UpdateService.registerUpdateService();
     }
 
     private synchronized Fragment showFragmentDialog(int dialogId, AsyncTask<?, ?, ?> task) {
         // Don't show if already present
-        if (getSupportFragmentManager().findFragmentByTag(String.valueOf(dialogId)) != null) {
+        if (getFragmentManager().findFragmentByTag(String.valueOf(dialogId)) != null) {
             return null;
         }
 
@@ -269,12 +282,12 @@ public class LoginActivity extends BaseFragmentActivity {
             }
         }
         f.setRetainInstance(true);
-        f.show(getSupportFragmentManager(), String.valueOf(dialogId));
+        f.show(getFragmentManager(), String.valueOf(dialogId));
         return f;
     }
 
     private synchronized void dismissFragmentDialog(int dialogId) {
-        final FragmentManager manager = getSupportFragmentManager();
+        final FragmentManager manager = getFragmentManager();
         Fragment frag = manager.findFragmentByTag(String.valueOf(dialogId));
         if (frag instanceof DialogFragment) {
             ((DialogFragment) frag).dismissAllowingStateLoss();
@@ -293,7 +306,7 @@ public class LoginActivity extends BaseFragmentActivity {
             } else {
                 AlertDialogFragment dialog = AlertDialogFragment.newOKDialog(R.string.PushNotifications,
                         R.string.ErrorPushNotificationsUnavailableExpl, 0);
-                dialog.show(getSupportFragmentManager(), "PUSH_NOTIFICATIONS");
+                dialog.show(getFragmentManager(), "PUSH_NOTIFICATIONS");
                 Log.i(TAG, "Push notifications unavailable. Result code " + resultCode);
             }
             return false;

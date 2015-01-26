@@ -10,9 +10,7 @@ public class PreferenceConstants {
     
     public static final String lastVersionInt = BASE + "lastVersionInt";
 
-    public static final String updateInterval = BASE + "updateIntervalMillis";
     public static final String updateEnabled = BASE + "updateEnabled";
-    public static final String lastUpdateServiceRun = BASE + "updateServiceRun";
 
     /********************
      * Simple user search
@@ -61,4 +59,14 @@ public class PreferenceConstants {
     public static final String radarLocationUpdateDialogShown = radaroptionsBase + "radarLocationUpdateDialogShown";
     public static final String radarAutomaticLocationUpdateEnabled = radaroptionsBase + "autoLocationUpdate";
     public static final String radarLastLocationUpdate = radaroptionsBase + "lastLocationUpdate";
+
+
+    /*
+     * Promotions
+     */
+
+    private static final String promotionBase = BASE + "promotion.";
+    public static final String promotionEnabled = promotionBase + "enabled";
+    public static final String promotionLastShown = promotionBase + "lastShown";
+
 }
