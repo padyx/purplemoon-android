@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <!-- FIXME This should not be turned off -->
+    <issue id="AppCompatResource" severity="normal" />
 </lint>
