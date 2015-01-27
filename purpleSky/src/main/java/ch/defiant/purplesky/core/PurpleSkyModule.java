@@ -31,7 +31,6 @@ import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment;
-import ch.defiant.purplesky.fragments.AbstractTabbedFragment;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
@@ -44,16 +43,11 @@ import ch.defiant.purplesky.fragments.event.EventFragment;
 import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteFragment;
 import ch.defiant.purplesky.fragments.photovote.PhotoVoteListFragment;
-import ch.defiant.purplesky.fragments.photovote.PhotoVoteTabbedFragment;
 import ch.defiant.purplesky.fragments.postit.PostitFragment;
-import ch.defiant.purplesky.fragments.postit.PostitTabbedFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.fragments.profile.UserStatsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
-import ch.defiant.purplesky.fragments.usersearch.UserSearchTabbedFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import ch.defiant.purplesky.fragments.visits.VisitorFragment;
-import ch.defiant.purplesky.fragments.visits.VisitorTabbedFragment;
 import dagger.Module;
 
 /**
@@ -98,7 +92,6 @@ import dagger.Module;
             // Base or abstract classes
             BaseListFragment.class,
             BaseFragment.class,
-            AbstractTabbedFragment.class,
 
             ChatListActivity.class,
 
@@ -106,28 +99,21 @@ import dagger.Module;
             UserService.class,
 
             // Fragments
-            PostitTabbedFragment.class,
             PostitFragment.class,
-
-            VisitorTabbedFragment.class,
             VisitorFragment.class,
-
-            UserSearchTabbedFragment.class,
             UsernameSearchFragment.class,
 
-            DisplayProfileFragment.class,
             UserStatsFragment.class,
+            PictureFolderGridViewFragment.class,
 
-            PhotoVoteTabbedFragment.class,
             PhotoVoteFragment.class,
             PhotoVoteListFragment.class,
+            ChatListFragment.class,
 
             FavoritesFragment.class,
             ConversationFragment.class,
             UserSearchResultsFragment.class,
 
-            PictureFolderGridViewFragment.class,
-            ChatListFragment.class,
             OnlineStatusDialogFragment.class,
             RadarGridFragment.class,
             RadarOptionsDialogFragment.class,

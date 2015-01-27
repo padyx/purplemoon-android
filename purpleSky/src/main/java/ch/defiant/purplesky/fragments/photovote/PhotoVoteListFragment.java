@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.fragments.photovote;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.api.photovotes.IPhotoVoteAdapter;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -33,7 +34,6 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.ProfileStatus;
 import ch.defiant.purplesky.fragments.BaseListFragment;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LayoutUtility;
 
@@ -79,13 +79,9 @@ public class PhotoVoteListFragment extends BaseListFragment {
                 return;
             }
             if (bean.getUser() != null && ProfileStatus.OK == bean.getUser().getProfileStatus()) {
-                DisplayProfileFragment f = new DisplayProfileFragment();
-                Bundle args = new Bundle();
-                args.putString(ArgumentConstants.ARG_USERID, bean.getUser().getUserId());
-                f.setArguments(args);
-
-                FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
-                t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                intent.putExtra(ArgumentConstants.ARG_USERID, bean.getUser().getUserId());
+                startActivity(intent);
             } else if (bean.getUser() != null) {
                 // Status is not ok
                 String status = bean.getUser().getProfileStatus().getLocalizedString();

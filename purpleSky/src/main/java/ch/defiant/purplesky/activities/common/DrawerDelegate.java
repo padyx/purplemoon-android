@@ -29,6 +29,7 @@ import java.util.List;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
@@ -45,7 +46,6 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.loaders.NotificationLoader;
 import ch.defiant.purplesky.loaders.ProfileImageLoader;
 import ch.defiant.purplesky.loaders.StatusLoader;
@@ -68,11 +68,9 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     private class OwnProfileListener implements OnClickListener {
         @Override
         public void onClick(View v) {
-            DisplayProfileFragment f = new DisplayProfileFragment();
-            Bundle b = new Bundle();
-            b.putString(ArgumentConstants.ARG_USERID, PersistantModel.getInstance().getUserProfileId());
-            f.setArguments(b);
-            clearBackstackAndLaunch(f);
+            Intent intent = new Intent(m_activity, DisplayProfileActivity.class);
+            intent.putExtra(ArgumentConstants.ARG_USERID, PersistantModel.getInstance().getUserProfileId());
+            m_activity.startActivity(intent);
         }
     }
     private class ChangeStatusListener implements OnClickListener {
@@ -205,8 +203,9 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
         // Hide any progress bar that might be visible in the actionbar
         m_activity.setProgressBarIndeterminateVisibility(false);
 
-        // When we select something from the navigation drawer, the back stack is discarded
+        // When we select something from the navigation drawer, clear the task (discard any deep navigation done here)
         Intent intent = new Intent(m_activity, f);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         m_activity.startActivity(intent, args);
         m_activity.finish();
     }

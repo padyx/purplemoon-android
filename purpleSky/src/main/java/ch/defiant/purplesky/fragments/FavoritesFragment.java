@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.fragments;
 
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +26,7 @@ import java.util.List;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -34,7 +35,6 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
-import ch.defiant.purplesky.fragments.profile.DisplayProfileFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
@@ -62,13 +62,9 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OnlineBean item = (OnlineBean) m_adapter.getItem(position);
                 if (item != null && StringUtility.isNotNullOrEmpty(item.getProfileId())) {
-                    DisplayProfileFragment f = new DisplayProfileFragment();
-                    Bundle args = new Bundle();
-                    args.putString(ArgumentConstants.ARG_USERID, item.getProfileId());
-                    f.setArguments(args);
-
-                    FragmentTransaction t = getActivity().getFragmentManager().beginTransaction();
-                    t.replace(R.id.fragment_container_frame, f).addToBackStack(null).commit();
+                    Intent intent = new Intent(getActivity(), DisplayProfileActivity.class);
+                    intent.putExtra(ArgumentConstants.ARG_USERID, item.getProfileId());
+                    startActivity(intent);
                 }
             }
 
