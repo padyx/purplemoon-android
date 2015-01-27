@@ -50,6 +50,15 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
                 // probably ignore this event
             }
         };
+        m_viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between pages, select the
+                // corresponding tab.
+                getActionBar().setSelectedNavigationItem(position);
+            }
+        });
+
 
         // Add 3 tabs, specifying the tab's text and TabListener
         int fragmentCount = getFragmentCount();
