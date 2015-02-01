@@ -8,6 +8,7 @@ import java.util.List;
 
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.util.CollectionUtil;
+import ch.defiant.purplesky.util.NVLUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
 /**
@@ -40,8 +41,8 @@ public class PurplemoonLocation {
             }
             streetAddress = StringUtility.join(", ", list);
 
-            // Location name
-            this.locationName = CollectionUtil.lastElement(list);
+            // Location name -- use locality (usually: town/city) if available. Otherwise last element of address
+            this.locationName = NVLUtility.nvl(address.getLocality(), CollectionUtil.lastElement(list));
         }
     }
 
