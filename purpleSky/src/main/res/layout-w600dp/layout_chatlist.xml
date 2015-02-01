@@ -73,14 +73,19 @@
             android:gravity="center_horizontal"
             android:weightSum="1"
             android:baselineAligned="false"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            >
 
             <fragment
                 android:id="@+id/chatlist_fragment"
-                android:layout_width="250dp"
+                android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:name="ch.defiant.purplesky.fragments.ChatListFragment"
                 tools:layout="@layout/list_plain" />
+
+            <View android:background="#BBBBFF"
+                  android:layout_height="match_parent"
+                  android:layout_width="1dp" />
 
             <fragment
                 android:id="@+id/conversation_fragment"

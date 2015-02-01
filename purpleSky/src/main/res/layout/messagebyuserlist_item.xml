@@ -24,6 +24,8 @@
         android:layout_toLeftOf="@+id/messagebyuserlist_item_lastContectDateLbl"
         android:layout_toRightOf="@+id/messagebyuserlist_item_userImageView"
         android:paddingLeft="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="@string/Unknown"
         android:textAppearance="@style/TextAppearance.MediumLarge"
         android:textStyle="bold" >
