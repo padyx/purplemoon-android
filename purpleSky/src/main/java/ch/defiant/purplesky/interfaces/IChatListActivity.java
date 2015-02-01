@@ -5,6 +5,6 @@ package ch.defiant.purplesky.interfaces;
  */
 public interface IChatListActivity {
 
-    void conversationSelected(String userId);
+    void conversationSelected(String userId, String username);
 
 }

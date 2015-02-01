@@ -35,7 +35,6 @@ import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
-import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -47,7 +46,6 @@ import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.BaseFragment;
-import ch.defiant.purplesky.loaders.CachedUsernameLoader;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.loaders.conversations.ConversationStatusLoader;
 import ch.defiant.purplesky.loaders.message.AbstractMessageLoader;
@@ -128,32 +126,19 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
 
         @Override
         public void onLoadFinished(Loader<Drawable> arg0, Drawable result) {
-            if (getActivity() != null && result != null) {
-                getActivity().getActionBar().setIcon(result);
+            if (getActivity() != null) {
+                if(result != null) {
+                    getActivity().getActionBar().setIcon(result);
+                } else {
+                    getActivity().getActionBar().setIcon(R.drawable.ic_launcher);
+                }
             }
+            getLoaderManager().destroyLoader(R.id.loader_message_profileImage);
         }
 
         @Override
         public void onLoaderReset(Loader<Drawable> arg0) { }
 
-    }
-
-    private class ProfileNameCallback implements LoaderManager.LoaderCallbacks<String> {
-
-        @Override
-        public Loader<String> onCreateLoader(int arg0, Bundle arg1) {
-            Bundle b = new Bundle();
-            b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new CachedUsernameLoader(getActivity(), b, messageService);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<String> arg0, String result) {
-            setTitle(result);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<String> arg0) { }
     }
 
     private class ConversationStatusCallback implements LoaderManager.LoaderCallbacks<Holder<UserMessageHistoryBean>> {
@@ -206,8 +191,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     private boolean m_hasNoMoreOnline = false;
 
     private ImageLoaderCallback m_imgLoaderCallback;
-    private ProfileNameCallback m_usernameCallback;
-    private final ConversationStatusCallback m_conversationStatusCallback = new ConversationStatusCallback(); 
+    private final ConversationStatusCallback m_conversationStatusCallback = new ConversationStatusCallback();
 
     private CharSequence m_previousActionBarTitle;
 
@@ -216,29 +200,24 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Bundle args = getArguments();
-        MinimalUser userBean = null;
         String profileId = null;
+        String title = null;
         if(args != null) {
+            title = args.getString(ArgumentConstants.ARG_NAME);
+            if(title == null){
+                Log.e(TAG, "Missing username!");
+            }
             profileId = args.getString(ArgumentConstants.ARG_USERID);
             m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
-            // If actually filled...
-            if(m_conversationState != null){
-                if(m_conversationState.getLastReceived() != null || m_conversationState.getLastSent() != null){
-                    userBean = (MinimalUser) args.getSerializable(ArgumentConstants.ARG_USER);
-                }
-            }
         }
         m_adapter = new MessageAdapter(this);
-        if(userBean != null){
-            m_title = userBean.getUsername();
-        }
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
         }
 
         if(profileId != null){
-            showConversationWithUser(profileId);
+            showConversationWithUser(profileId, title);
         }
     }
 
@@ -310,26 +289,17 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     @Override
     public void onResume() {
         super.onResume();
-        m_previousActionBarTitle = getActivity().getActionBar().getTitle();
         if(m_profileId != null) {
             if (m_imgLoaderCallback == null) {
                 m_imgLoaderCallback = new ImageLoaderCallback();
             }
             getActivity().getLoaderManager().restartLoader(R.id.loader_message_profileImage, null,
                     m_imgLoaderCallback);
-            if (m_title == null) {
-                if (m_usernameCallback == null) {
-                    m_usernameCallback = new ProfileNameCallback();
-                }
-                getLoaderManager().restartLoader(R.id.loader_username, null, m_usernameCallback);
-            } else {
-                setTitle(m_title);
-            }
-            updateConversationSubtitle();
         }
+        setTitle(m_title);
     }
 
-    public void showConversationWithUser(String userId){
+    public void showConversationWithUser(String userId, String username){
         if(m_chatGroupBox != null){
             LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(userId));
         }
@@ -339,15 +309,25 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             m_hasNoMoreOnline = false;
 
             m_profileId = userId;
+            m_title = username;
+            setTitle(m_title);
+            Bundle args = new Bundle();
+            args.putString(ArgumentConstants.ARG_USERID, m_profileId);
             if (m_profileId != null) {
                 // TODO PBN Change adapter for easier calculation?
                 if (m_adapter.getCount() - (m_adapter.isShowLoadMore() ? 1 : 0) == 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(ArgumentConstants.ARG_USERID, m_profileId);
-                    getLoaderManager().restartLoader(R.id.loader_message_initial, bundle, this);
+                    getLoaderManager().restartLoader(R.id.loader_message_initial, args, this);
                 } else {
                     startRefresh();
                 }
+            }
+
+            if(m_profileId != null) {
+                if (m_imgLoaderCallback == null) {
+                    m_imgLoaderCallback = new ImageLoaderCallback();
+                }
+
+                updateConversationSubtitle();
             }
         }
     }
@@ -535,7 +515,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     }
 
     private void setTitle(String result) {
-        if(getActivity() != null && result != null){
+        if(getActivity() != null && getActivity().getActionBar() != null && result != null){
             getActivity().getActionBar().setTitle(result);
         }
     }

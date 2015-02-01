@@ -370,8 +370,14 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
      * @param item User bean, if available.
      */
     private void openChatFragment(String profileId, UserMessageHistoryBean item) {
+        String username = null;
+        if(item.getUserBean() != null){
+            username = item.getUserBean().getUsername();
+        } else {
+            username = item.getCachedUsername();
+        }
         if (getActivity() instanceof IChatListActivity) {
-            ((IChatListActivity)getActivity()).conversationSelected(profileId);
+            ((IChatListActivity)getActivity()).conversationSelected(profileId, username);
         }
     }
 }

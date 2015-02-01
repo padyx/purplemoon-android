@@ -28,4 +28,6 @@ public class ArgumentConstants {
 
     public static final String STRING_1 = "string1";
 
+    public static final String ARG_NAME = "name";
+
 }

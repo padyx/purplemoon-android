@@ -55,6 +55,9 @@ public class ChatListActivity extends BaseFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_chatlist);
         setActionBarTitle(getString(R.string.Messages), null);
+        if(getActionBar() != null) {
+            getActionBar().setIcon(R.drawable.ic_launcher);
+        }
 
         View containerFrame = findViewById(R.id.fragment_container_frame);
         // Check whether the activity is using the layout version with the container frame
@@ -95,7 +98,7 @@ public class ChatListActivity extends BaseFragmentActivity
     }
 
     @Override
-    public void conversationSelected(String userId) {
+    public void conversationSelected(String userId, String username) {
         final FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.conversation_fragment);
         final View container = findViewById(R.id.promotionContainer);
@@ -108,12 +111,13 @@ public class ChatListActivity extends BaseFragmentActivity
             // Two pane layout
             // Update it with the new conversation
             ConversationFragment conversationFragment = (ConversationFragment) fragment;
-            conversationFragment.showConversationWithUser(userId);
+            conversationFragment.showConversationWithUser(userId, username);
         } else {
             // Not available... One pane layout, so make a transaction
             fragment = new ConversationFragment();
             Bundle args = new Bundle();
             args.putString(ArgumentConstants.ARG_USERID, userId);
+            args.putString(ArgumentConstants.ARG_NAME, username);
             fragment.setArguments(args);
             fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, fragment).addToBackStack(null).commit();
         }
