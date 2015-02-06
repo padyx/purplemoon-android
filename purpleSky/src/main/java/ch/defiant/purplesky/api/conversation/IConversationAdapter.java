@@ -41,8 +41,6 @@ public interface IConversationAdapter {
      *            At which user to start (paging). Starts at first, if null
      * @param restrict
      *            Determine order of the retrieved beans. Default is {@link ch.defiant.purplesky.enums.MessageRetrievalRestrictionType#LAST_CONTACT}
-     * @param since_date
-     *            Restricts to contacts updated this date. Null: No restriction
      * @return List of Beans, recent contacts come first
      * @throws IOException
      * @throws PurpleSkyException
@@ -68,9 +66,9 @@ public interface IConversationAdapter {
      * @param profileId
      *            The id of the other user
      * @param options
-     *            Supports the {@link ch.defiant.purplesky.core.AdapterOptions#setUptoId(String)}, {@link ch.defiant.purplesky.core.AdapterOptions#setSinceId(String)},
+     *            Supports the {@link ch.defiant.purplesky.core.AdapterOptions#setUptoId(Long)}, {@link ch.defiant.purplesky.core.AdapterOptions#setSinceId(Long)},
      *            {@link ch.defiant.purplesky.core.AdapterOptions#setNumber(Integer)}
-     * @return
+     * @return List of messages
      * @throws IOException
      * @throws PurpleSkyException
      */
