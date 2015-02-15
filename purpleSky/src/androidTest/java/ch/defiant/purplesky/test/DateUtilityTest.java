@@ -1,6 +1,7 @@
 package ch.defiant.purplesky.test;
 
 import junit.framework.Assert;
+import junit.framework.TestCase;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -10,7 +11,7 @@ import ch.defiant.purplesky.util.DateUtility;
 /**
  * @author Patrick Bänziger
  */
-public class DateUtilityTest {
+public class DateUtilityTest extends TestCase {
 
     /**
      * Testmethod for {@link ch.defiant.purplesky.util.DateUtility#isSameDay(java.util.Date, java.util.Date)}
