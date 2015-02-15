@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.ChatListActivity;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
@@ -38,6 +37,7 @@ import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
+import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PersistantModel;

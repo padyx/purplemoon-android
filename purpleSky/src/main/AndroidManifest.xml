@@ -48,7 +48,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.ChatListActivity"
+            android:name=".activities.chatlist.ChatListActivity"
             android:configChanges="orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,10 +5,12 @@ import android.net.Uri;
 import java.util.Date;
 import java.util.List;
 
+import ch.defiant.purplesky.interfaces.ITemporary;
+
 /**
  * @author Patrick Bänziger
  */
-public class Promotion {
+public class Promotion implements ITemporary{
 
     private final int m_id;
 
@@ -56,10 +58,12 @@ public class Promotion {
         return m_eventId;
     }
 
+    @Override
     public Date getValidFrom() {
         return m_validFrom;
     }
 
+    @Override
     public Date getValidTo() {
         return m_validTo;
     }

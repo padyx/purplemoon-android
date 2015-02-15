@@ -1,7 +1,6 @@
 package ch.defiant.purplesky.core;
 
 import ch.defiant.purplesky.activities.AboutActivity;
-import ch.defiant.purplesky.activities.ChatListActivity;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.EventActivity;
 import ch.defiant.purplesky.activities.FavoritesActivity;
@@ -17,6 +16,7 @@ import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchResultsActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
+import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
 import ch.defiant.purplesky.api.conversation.internal.ConversationModule;
 import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
 import ch.defiant.purplesky.api.internal.APIModule;

@@ -1,6 +1,7 @@
 package ch.defiant.purplesky.util;
 
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,11 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 public class DateUtility {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd", Locale.US);;
+    private static String TAG = DateUtility.class.getSimpleName();
+
+    // FIXME Is this missing a 'y'?
+    private static SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyy-MM-dd", Locale.US);
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
     private static java.text.DateFormat DATEFORMAT_SHORT = DateFormat.getDateFormat(PurpleSkyApplication.get());
     private static java.text.DateFormat TIMEFORMAT = DateFormat.getTimeFormat(PurpleSkyApplication.get());
 
@@ -95,8 +100,9 @@ public class DateUtility {
             return null;
         }
         try {
-            return dateFormat.parse(s);
+            return jsonDateFormat.parse(s);
         } catch (ParseException e) {
+            Log.e(TAG, "Error while parsing date: " + s, e);
             return null;
         }
     }
@@ -111,4 +117,21 @@ public class DateUtility {
         return aDate.get(Calendar.YEAR) == bDate.get(Calendar.YEAR) &&
                 aDate.get(Calendar.DAY_OF_YEAR) == bDate.get(Calendar.DAY_OF_YEAR);
     }
+
+    /**
+     * Parse a format in the form of <tt>yyyy-MM-dd</tt> from a string and return a date.
+     *
+     * @param s
+     *            String to parse
+     * @return The parsed date, or <tt>null</tt> if unparseable.
+     */
+    public static Date parseSimpleDate(String s){
+        try {
+            return simpleDateFormat.parse(s);
+        } catch (ParseException e) {
+            Log.e(TAG, "Error while parsing date: " + s, e);
+            return null;
+        }
+    }
+
 }

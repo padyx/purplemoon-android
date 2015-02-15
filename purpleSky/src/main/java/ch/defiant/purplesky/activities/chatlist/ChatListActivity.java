@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.activities;
+package ch.defiant.purplesky.activities.chatlist;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,6 +16,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.activities.EventActivity;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.animation.WeightAnimation;
 import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
@@ -34,9 +36,11 @@ import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.interfaces.IChatListActivity;
+import ch.defiant.purplesky.interfaces.IDateProvider;
 import ch.defiant.purplesky.loaders.promotions.PromotionLoader;
 import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.Holder;
+import ch.defiant.purplesky.util.TemporaryUtility;
 
 public class ChatListActivity extends BaseFragmentActivity
         implements IChatListActivity, LoaderManager.LoaderCallbacks<Holder<List<Promotion>>> {
@@ -49,6 +53,8 @@ public class ChatListActivity extends BaseFragmentActivity
 
     @Inject
     protected IPromotionAdapter m_promotionAdapter;
+    @Inject
+    protected IDateProvider m_dateProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,8 +150,11 @@ public class ChatListActivity extends BaseFragmentActivity
     }
 
     private void selectAndShowPromotion(@NonNull List<Promotion> promos) {
+        List<Promotion> list = filterPromotions(promos, m_dateProvider);
+        if (CollectionUtil.safeSize(list) == 0) return;
+
         int totalWeights = 0;
-        for (Promotion p : promos){
+        for (Promotion p : list){
             totalWeights += p.getImportance();
         }
 
@@ -154,7 +163,7 @@ public class ChatListActivity extends BaseFragmentActivity
         // Find the proper one now...
         Promotion chosen = null;
         int curr = 0;
-        for (Promotion p:promos){
+        for (Promotion p:list){
             if (curr + p.getImportance() > i){
                 // Match!
                 chosen = p;
@@ -169,6 +178,16 @@ public class ChatListActivity extends BaseFragmentActivity
         }
 
         showPromotion(chosen);
+    }
+
+    private static List<Promotion> filterPromotions(List<Promotion> promos, IDateProvider dateProvider) {
+        ArrayList<Promotion> list = new ArrayList<>();
+        for(Promotion p : promos){
+            if(TemporaryUtility.isValid(p, dateProvider)){
+                list.add(p);
+            }
+        }
+        return list;
     }
 
     private void showPromotion(@NonNull final Promotion promo) {

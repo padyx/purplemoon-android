@@ -16,10 +16,10 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import java.util.Date;
 
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.ChatListActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
+import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.constants.NotificationConstants;

@@ -28,7 +28,7 @@ import java.util.Map;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
-import ch.defiant.purplesky.activities.ChatListActivity;
+import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
