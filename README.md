@@ -11,4 +11,4 @@ Under the Apache 2 licence (http://www.apache.org/licenses/LICENSE-2.0):
 
 With permission:
 
-* Photo Vote icons, adapted from the "Kuikshow" icon from Nuvola icon set, by David Vignoni.
+* Photo Vote icons, adapted from the "Kuikshow" icon from Nuvola icon set, by [David Vignoni](http://www.icon-king.com/).
