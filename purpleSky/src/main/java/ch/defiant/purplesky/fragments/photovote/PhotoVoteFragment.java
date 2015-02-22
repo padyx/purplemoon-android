@@ -1,8 +1,10 @@
 package ch.defiant.purplesky.fragments.photovote;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.photovotes.IPhotoVoteAdapter;
 import ch.defiant.purplesky.beans.NoMorePhotoVoteBean;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
+import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.enums.PhotoVoteVerdict;
 import ch.defiant.purplesky.enums.UserPictureSize;
@@ -120,7 +123,13 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderManager.Loa
             public Holder<PhotoVoteBean> loadInBackground() {
                 m_loadFinished.set(false);
                 if (m_currentBean != null && args.containsKey(VERDICT)) {
-                    m_currentBean.setVerdict(PhotoVoteVerdict.values()[args.getInt(VERDICT)]);
+                    PhotoVoteVerdict verdict = PhotoVoteVerdict.values()[args.getInt(VERDICT)];
+                    m_currentBean.setVerdict(verdict);
+                    if(verdict != PhotoVoteVerdict.NEUTRAL_NEGATIVE) {
+                        // Notify that the user voted - need to reload
+                        Intent i = new Intent(BroadcastTypes.BROADCAST_PHOTOVOTE);
+                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(i);
+                    }
                 }
                 try {
                     int remaining = 0;

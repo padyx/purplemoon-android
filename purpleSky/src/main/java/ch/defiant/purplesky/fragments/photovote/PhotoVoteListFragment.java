@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
+import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.api.photovotes.IPhotoVoteAdapter;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
@@ -65,6 +66,24 @@ public class PhotoVoteListFragment extends BaseListFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(m_showGiven) {
+            if (getActivity() instanceof PhotoVoteTabbedActivity) {
+                if (((PhotoVoteTabbedActivity) getActivity()).checkAndResetGivenPhotoVote()) {
+                    reloadData();
+                }
+            }
+        }
+    }
+
+    public void reloadData() {
+        m_innerAdapter.clear();
+        m_innerAdapter.notifyDataSetChanged();
+        m_endlessAdapter.reset();
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getListView().setOnItemClickListener(new ClickListener());
@@ -98,6 +117,11 @@ public class PhotoVoteListFragment extends BaseListFragment {
 
         private final AtomicInteger m_currentCount = new AtomicInteger(0);
         private List<PhotoVoteBean> m_data;
+
+
+        public void reset(){
+            m_currentCount.set(0);
+        }
 
         @Override
         protected void appendCachedData() {

@@ -39,7 +39,9 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // show the given tab
-                m_viewPager.setCurrentItem(tab.getPosition());
+                final int position = tab.getPosition();
+                tabChanging(position);
+                m_viewPager.setCurrentItem(position);
             }
 
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -94,5 +96,7 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
             return getTitleAtPosition(i);
         }
     }
+
+    protected void tabChanging(int position){}
 
 }
