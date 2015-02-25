@@ -54,7 +54,13 @@ public class ContentUriRequestBody extends RequestBody {
         } catch (FileNotFoundException e) {
             length = 0;
         } finally {
-            IOUtils.closeQuietly(fileDescriptor);
+            try{
+                if(fileDescriptor != null){
+                    fileDescriptor.close();
+                }
+            }catch (IOException e){
+                // Ignore
+            }
         }
         this.contentLength = length;
         this.listener = listener;
