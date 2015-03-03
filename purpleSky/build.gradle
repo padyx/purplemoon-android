@@ -6,8 +6,13 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        versionCode 39
-        versionName "1.1.6"
+        // Format according: http://developer.android.com/google/play/publishing/multiple-apks.html
+        // Versioncode: XXYYYYYZZZ
+        // First two digits (0 prefix not allowed - octal!) - MinSdkVersion
+        // Middle five digits: Reserved
+        // Last three digits: Build / Versionname
+        versionCode 900000117
+        versionName "1.1.7"
 
         minSdkVersion 9
         targetSdkVersion 18
