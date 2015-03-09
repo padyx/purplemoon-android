@@ -11,8 +11,8 @@ android {
         // First two digits (0 prefix not allowed - octal!) - MinSdkVersion
         // Middle five digits: Reserved
         // Last three digits: Build / Versionname
-        versionCode 1600000122
-        versionName "1.2.2"
+        versionCode 1600000123
+        versionName "1.2.3"
 
         minSdkVersion 16
         targetSdkVersion 18
