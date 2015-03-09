@@ -34,6 +34,15 @@ public class CollectionUtil {
     }
 
     /**
+     * Returns whether the collection is empty (or <tt>null</tt>).
+     * @param c The collection to check
+     * @return whether the collection is empty (or <tt>null</tt>).
+     */
+    public static boolean isEmpty(Collection<?> c){
+        return c == null || c.isEmpty();
+    }
+
+    /**
      * Returns the size of the collection or zero, if null.
      * @param c
      * @return size of collection, or zero if <tt>null</tt>

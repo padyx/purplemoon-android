@@ -2,15 +2,20 @@ package ch.defiant.purplesky.loaders;
 
 import android.content.Context;
 
+import java.util.Collections;
+import java.util.List;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.gallery.EnterPasswordResponse;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
+import ch.defiant.purplesky.beans.PictureFolder;
+import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.Holder;
 
 /**
- * @author Chakotay
+ * @author Patrick Bänziger
  */
-public class EnterPasswordLoader extends SimpleAsyncLoader<Holder<EnterPasswordResponse>> {
+public class EnterPasswordLoader extends SimpleAsyncLoader<Holder<EnterPasswordResponseComposite>> {
 
     private final IGalleryAdapter galleryAdapter;
     private final String profileId;
@@ -26,11 +31,18 @@ public class EnterPasswordLoader extends SimpleAsyncLoader<Holder<EnterPasswordR
     }
 
     @Override
-    public Holder<EnterPasswordResponse> loadInBackground() {
+    public Holder<EnterPasswordResponseComposite> loadInBackground() {
         try {
-            return Holder.of(galleryAdapter.enterPassword(profileId, folderId, password));
+            EnterPasswordResponse response = galleryAdapter.enterPassword(profileId, folderId, password);
+            List<PictureFolder> folder = galleryAdapter.getFoldersWithPictures(profileId, Collections.singletonList(folderId));
+            if(CollectionUtil.isEmpty(folder)){
+                return Holder.of(new EnterPasswordResponseComposite(EnterPasswordResponse.FOLDER_UNAVAILABLE, null));
+            } else {
+                return Holder.of(new EnterPasswordResponseComposite(response, CollectionUtil.firstElement(folder)));
+            }
         } catch (Exception e) {
-            return new Holder<EnterPasswordResponse>(e);
+            return new Holder<EnterPasswordResponseComposite>(e);
         }
     }
+
 }

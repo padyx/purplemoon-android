@@ -25,7 +25,6 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.PictureGridViewActivity;
-import ch.defiant.purplesky.api.gallery.EnterPasswordResponse;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
@@ -35,6 +34,7 @@ import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.loaders.EnterPasswordLoader;
+import ch.defiant.purplesky.loaders.EnterPasswordResponseComposite;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
@@ -82,14 +82,18 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
                         return;
                     }
 
-                    Intent intent = new Intent(getActivity(), PictureGridViewActivity.class);
-                    intent.putExtra(ArgumentConstants.ARG_FOLDER, value);
-                    startActivity(intent);
+                    openFolder(value);
                 }
             }
         });
 
         return v;
+    }
+
+    private void openFolder(PictureFolder value) {
+        Intent intent = new Intent(getActivity(), PictureGridViewActivity.class);
+        intent.putExtra(ArgumentConstants.ARG_FOLDER, value);
+        startActivity(intent);
     }
 
     @Override
@@ -101,22 +105,22 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
     @Override
     public void onResult(final String password) {
         Bundle bundle = new Bundle();
-        getLoaderManager().restartLoader(R.id.loader_picturefolder_enterpassword, bundle, new LoaderCallbacks<Holder<EnterPasswordResponse>>() {
+        getLoaderManager().restartLoader(R.id.loader_picturefolder_enterpassword, bundle, new LoaderManager.LoaderCallbacks<Holder<EnterPasswordResponseComposite>>() {
             @Override
-            public Loader<Holder<EnterPasswordResponse>> onCreateLoader(int i, Bundle bundle) {
+            public Loader<Holder<EnterPasswordResponseComposite>> onCreateLoader(int i, Bundle bundle) {
                 final String userid = getArguments().getString(ArgumentConstants.ARG_USERID);
                 return new EnterPasswordLoader(galleryAdapter, getActivity(), userid, clickedFolder.getFolderId(), password);
             }
 
             @Override
-            public void onLoadFinished(Loader<Holder<EnterPasswordResponse>> objectLoader, Holder<EnterPasswordResponse> resp) {
-                if(getSherlockActivity() != null){
+            public void onLoadFinished(Loader<Holder<EnterPasswordResponseComposite>> objectLoader, Holder<EnterPasswordResponseComposite> resp) {
+                if(getActivity() != null){
                     getLoaderManager().destroyLoader(R.id.loader_picturefolder_enterpassword);
                     int errorString = 0;
                     if (resp.isObject()) {
-                        switch (resp.getContainedObject()) {
+                        switch (resp.getContainedObject().getResponse()) {
                             case OK:
-                                startFragmentForFolder(clickedFolder); // FIXME Cannot start that here
+                                openFolder(clickedFolder); // FIXME Cannot start that here
                                 break;
                             case ERROR:
                                 errorString = R.string.ErrorGeneric;
@@ -149,7 +153,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             }
 
             @Override
-            public void onLoaderReset(Loader<Holder<EnterPasswordResponse>> objectLoader) {
+            public void onLoaderReset(Loader<Holder<EnterPasswordResponseComposite>> objectLoader) {
             }
         });
     }
@@ -200,9 +204,9 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             final PictureFolder pictureFolder = m_data.get(position);
 
             View v = convertView;
-            ViewHolder holder = null;
+            ViewHolder holder;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getActivity());
+                LayoutInflater vi = LayoutInflater.from(getActivity());
                 v = vi.inflate(R.layout.picturefoldergrid_item, null);
                 holder = new ViewHolder();
                 holder.lblTextView = (TextView) v.findViewById(R.id.picturefoldergrid_item_textView);
