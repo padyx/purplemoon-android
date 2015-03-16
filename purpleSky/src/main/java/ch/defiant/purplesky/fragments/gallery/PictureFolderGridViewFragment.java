@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.loaders.EnterPasswordLoader;
 import ch.defiant.purplesky.loaders.EnterPasswordResponseComposite;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
+import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
 
@@ -120,7 +122,9 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
                     if (resp.isObject()) {
                         switch (resp.getContainedObject().getResponse()) {
                             case OK:
-                                openFolder(clickedFolder); // FIXME Cannot start that here
+                                PictureFolder folder = resp.getContainedObject().getFolder();
+                                updateAdapter(folder);
+                                openFolder(folder);
                                 break;
                             case ERROR:
                                 errorString = R.string.ErrorGeneric;
@@ -158,6 +162,20 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
         });
     }
 
+    private void updateAdapter(@NonNull PictureFolder clickedFolder) {
+        List<PictureFolder> data = m_adapter.getData();
+        if(data != null){
+            int idx = -1;
+            for(PictureFolder p : data){
+                idx++;
+                if(CompareUtility.equals(p.getFolderId(), clickedFolder.getFolderId())){
+                    m_adapter.replace(idx, clickedFolder);
+                    break;
+                }
+            }
+        }
+    }
+
     public class ViewHolder {
         TextView lblTextView;
         TextView countTextView;
@@ -182,6 +200,11 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
 
         public List<PictureFolder> getData() {
             return Collections.unmodifiableList(m_data);
+        }
+
+        public void replace(int index, PictureFolder folder ){
+            m_data.set(index, folder);
+            notifyDataSetChanged();
         }
 
         @Override
@@ -256,11 +279,11 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             @Override
             public Holder<List<PictureFolder>> loadInBackground() {
                 try {
-                    return new Holder<List<PictureFolder>>(galleryAdapter.getFoldersWithPictures(userid, null));
+                    return new Holder<>(galleryAdapter.getFoldersWithPictures(userid, null));
                 } catch (IOException e) {
-                    return new Holder<List<PictureFolder>>(e);
+                    return new Holder<>(e);
                 } catch (PurpleSkyException e) {
-                    return new Holder<List<PictureFolder>>(e);
+                    return new Holder<>(e);
                 }
             }
         };
