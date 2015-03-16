@@ -92,14 +92,14 @@ public class UsernameSearchFragment extends BaseFragment
 
                 try {
                     List<MinimalUser> list = apiAdapter.searchUserByName(username, options);
-                    return new Holder<List<MinimalUser>>(list);
+                    return new Holder<>(list);
                 } catch (IOException e) {
-                    return new Holder<List<MinimalUser>>(e);
+                    return new Holder<>(e);
                 } catch (WrongCredentialsException e) {
                     PersistantModel.getInstance().handleWrongCredentials(getActivity());
-                    return new Holder<List<MinimalUser>>(e);
+                    return new Holder<>(e);
                 } catch (PurpleSkyException e) {
-                    return new Holder<List<MinimalUser>>(e);
+                    return new Holder<>(e);
                 }
             }
         };
@@ -122,7 +122,7 @@ public class UsernameSearchFragment extends BaseFragment
             } else {
                 List<MinimalUser> result = holder.getContainedObject();
                 if(result.isEmpty()){
-                    replaceAdapter(new NullAdapter<NullUser>(getActivity(), new NullUser(), R.string.NoResultsFound));
+                    replaceAdapter(new NullAdapter<>(getActivity(), new NullUser(), R.string.NoResultsFound));
                 } else {
                     replaceAdapter(new UserSearchResultListAdapter(getActivity(), result));
                 }
@@ -177,39 +177,6 @@ public class UsernameSearchFragment extends BaseFragment
         }
 
     }
-
-    // @Override
-    // public void onResume() {
-    // super.onResume();
-    // final View view = getView().findViewById(R.id.usersearch_byname_editText);
-    // // Do this delayed - animation of tab switching otherwise choppy
-    // new Handler().postDelayed(new Runnable() {
-    //
-    // @Override
-    // public void run() {
-    // view.requestFocus();
-    // InputMethodManager ime = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-    // ime.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-    // }
-    //
-    // }, 100);
-    // }
-    //
-    // @Override
-    // public void onPause() {
-    // super.onPause();
-    // final View findViewById = getView().findViewById(R.id.usersearch_byname_editText);
-    // // Do this delayed - animation of tab switching otherwise choppy
-    // new Handler().postDelayed(new Runnable() {
-    //
-    // @Override
-    // public void run() {
-    // InputMethodManager ime = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-    // ime.hideSoftInputFromWindow(findViewById.getWindowToken(), 0);
-    // }
-    //
-    // }, 100);
-    // }
 
     @Override
     public void setMenuVisibility(boolean menuVisible) {
