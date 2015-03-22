@@ -308,4 +308,5 @@
     <string name="WrongPassword">Wrong password</string>
     <string name="TooManyWrongAttempts">Too many incorret password attempts. You need to wait some time to retry.</string>
     <string name="ErrorFolderNotFound">The folder was not found.</string>
+    <string name="CheckingPassword">Checking password</string>
 </resources>

@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.fragments.gallery;
 
+import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -30,6 +31,7 @@ import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
+import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -43,6 +45,7 @@ import ch.defiant.purplesky.util.LayoutUtility;
 
 public class PictureFolderGridViewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>>, EnterPasswordDialogFragment.PasswordResult {
 
+    private static final String FRAGMENT_TAG = "PASSWORD_CHECK_PROGRESS";
     private final String STATE_CHOSENFOLDER = "STATE_CHOSENFOLDER";
 
     @Inject
@@ -106,6 +109,8 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
 
     @Override
     public void onResult(final String password) {
+        showPasswordProgressDialog();
+
         Bundle bundle = new Bundle();
         getLoaderManager().restartLoader(R.id.loader_picturefolder_enterpassword, bundle, new LoaderManager.LoaderCallbacks<Holder<EnterPasswordResponseComposite>>() {
             @Override
@@ -116,6 +121,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
 
             @Override
             public void onLoadFinished(Loader<Holder<EnterPasswordResponseComposite>> objectLoader, Holder<EnterPasswordResponseComposite> resp) {
+                dismissPasswordProgressDialog();
                 if(getActivity() != null){
                     getLoaderManager().destroyLoader(R.id.loader_picturefolder_enterpassword);
                     int errorString = 0;
@@ -269,6 +275,26 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             return v;
         }
     }
+
+    private void showPasswordProgressDialog(){
+        ProgressFragmentDialog f = (ProgressFragmentDialog) getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (f == null) {
+            ProgressFragmentDialog dialog = new ProgressFragmentDialog();
+            dialog.setMessageResource(R.string.CheckingPassword);
+            dialog.setRetainInstance(true);
+            dialog.setCancelable(false); // TODO
+            f = dialog;
+        }
+        f.show(getActivity().getFragmentManager(), FRAGMENT_TAG);
+    }
+
+    private void dismissPasswordProgressDialog(){
+        DialogFragment dialog = (DialogFragment) getActivity().getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (dialog != null) {
+            dialog.dismissAllowingStateLoss();
+        }
+    }
+
 
     @Override
     public SimpleAsyncLoader<Holder<List<PictureFolder>>> onCreateLoader(int arg0, Bundle arg1) {

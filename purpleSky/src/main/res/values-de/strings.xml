@@ -310,5 +310,6 @@
     <string name="EventLocation">Veranstaltungsort</string>
     <string name="UnregisterForEvent_Condensed_">Abmelden</string>
     <string name="UnregisterFromEvent">Von Veranstaltung abmelden</string>
+    <string name="CheckingPassword">Password wird geprüft</string>
 
 </resources>
