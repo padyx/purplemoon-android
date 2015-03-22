@@ -236,7 +236,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             ViewHolder holder;
             if (v == null) {
                 LayoutInflater vi = LayoutInflater.from(getActivity());
-                v = vi.inflate(R.layout.picturefoldergrid_item, null);
+                v = vi.inflate(R.layout.picturefoldergrid_item, parent, false);
                 holder = new ViewHolder();
                 holder.lblTextView = (TextView) v.findViewById(R.id.picturefoldergrid_item_textView);
                 holder.countTextView = (TextView) v.findViewById(R.id.picturefoldergrid_item_count);
