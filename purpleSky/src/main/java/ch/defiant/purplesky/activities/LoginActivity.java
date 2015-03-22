@@ -132,6 +132,11 @@ public class LoginActivity extends BaseFragmentActivity {
     private static final int DIALOG_LOGINFAILED_UNKNOWNERROR = 3;
 
     @Override
+    protected boolean isShowNavigationDrawer() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PurpleSkyApplication.get().inject(this);
