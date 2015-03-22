@@ -34,11 +34,15 @@ public class EnterPasswordLoader extends SimpleAsyncLoader<Holder<EnterPasswordR
     public Holder<EnterPasswordResponseComposite> loadInBackground() {
         try {
             EnterPasswordResponse response = galleryAdapter.enterPassword(profileId, folderId, password);
-            List<PictureFolder> folder = galleryAdapter.getFoldersWithPictures(profileId, Collections.singletonList(folderId));
-            if(CollectionUtil.isEmpty(folder)){
-                return Holder.of(new EnterPasswordResponseComposite(EnterPasswordResponse.FOLDER_UNAVAILABLE, null));
+            if(response == EnterPasswordResponse.OK){
+                List<PictureFolder> folder = galleryAdapter.getFoldersWithPictures(profileId, Collections.singletonList(folderId));
+                if(CollectionUtil.isEmpty(folder)){
+                    return Holder.of(new EnterPasswordResponseComposite(EnterPasswordResponse.FOLDER_UNAVAILABLE, null));
+                } else {
+                    return Holder.of(new EnterPasswordResponseComposite(response, CollectionUtil.firstElement(folder)));
+                }
             } else {
-                return Holder.of(new EnterPasswordResponseComposite(response, CollectionUtil.firstElement(folder)));
+                return Holder.of(new EnterPasswordResponseComposite(response, null));
             }
         } catch (Exception e) {
             return new Holder<EnterPasswordResponseComposite>(e);
