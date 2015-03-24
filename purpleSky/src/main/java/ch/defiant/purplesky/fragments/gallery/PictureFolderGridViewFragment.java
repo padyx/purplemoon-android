@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
 
     private static final String FRAGMENT_TAG = "PASSWORD_CHECK_PROGRESS";
     private final String STATE_CHOSENFOLDER = "STATE_CHOSENFOLDER";
+
+    private static final String TAG = PictureFolderGridViewFragment.class.getSimpleName();
 
     @Inject
     protected IGalleryAdapter galleryAdapter;
@@ -155,8 +158,8 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
                         if (resp.getException() instanceof IOException) {
                             Toast.makeText(getActivity(), R.string.ErrorNoNetworkGenericShort, Toast.LENGTH_SHORT).show();
                         } else {
-                            // TODO Handle
-
+                            Toast.makeText(getActivity(), R.string.ErrorGeneric, Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Unknown error occurred when entering password", resp.getException());
                         }
                     }
                 }
