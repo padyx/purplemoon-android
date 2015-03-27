@@ -46,8 +46,9 @@ import ch.defiant.purplesky.util.LayoutUtility;
 
 public class PictureFolderGridViewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>>, EnterPasswordDialogFragment.PasswordResult {
 
-    private static final String FRAGMENT_TAG = "PASSWORD_CHECK_PROGRESS";
-    private final String STATE_CHOSENFOLDER = "STATE_CHOSENFOLDER";
+    private static final String PASSWORD_CHECK_FRAGMENT_TAG = "PASSWORD_CHECK_PROGRESS";
+    private static final String PASSWORD_ENTER_FRAMENT_TAG = "PASSWORD_ENTER";
+    private static final String STATE_CHOSENFOLDER = "STATE_CHOSENFOLDER";
 
     private static final String TAG = PictureFolderGridViewFragment.class.getSimpleName();
 
@@ -280,7 +281,7 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
     }
 
     private void showPasswordProgressDialog(){
-        ProgressFragmentDialog f = (ProgressFragmentDialog) getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        ProgressFragmentDialog f = (ProgressFragmentDialog) getFragmentManager().findFragmentByTag(PASSWORD_CHECK_FRAGMENT_TAG);
         if (f == null) {
             ProgressFragmentDialog dialog = new ProgressFragmentDialog();
             dialog.setMessageResource(R.string.CheckingPassword);
@@ -288,11 +289,11 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             dialog.setCancelable(false); // TODO
             f = dialog;
         }
-        f.show(getActivity().getFragmentManager(), FRAGMENT_TAG);
+        f.show(getActivity().getFragmentManager(), PASSWORD_CHECK_FRAGMENT_TAG);
     }
 
     private void dismissPasswordProgressDialog(){
-        DialogFragment dialog = (DialogFragment) getActivity().getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        DialogFragment dialog = (DialogFragment) getFragmentManager().findFragmentByTag(PASSWORD_CHECK_FRAGMENT_TAG);
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
         }
@@ -333,7 +334,8 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
     private void startEnterPassword() {
         EnterPasswordDialogFragment f = new EnterPasswordDialogFragment();
         f.setTargetFragment(this, 0);
-        f.show(getFragmentManager(), "password");
+        f.setRetainInstance(true); // Must retain it so that the loader can find it again
+        f.show(getFragmentManager(), PASSWORD_ENTER_FRAMENT_TAG);
     }
 
 }
