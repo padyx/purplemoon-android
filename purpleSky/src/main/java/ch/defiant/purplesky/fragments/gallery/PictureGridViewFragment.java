@@ -38,24 +38,20 @@ public class PictureGridViewFragment extends Fragment {
 
         GridView gv = (GridView) v.findViewById(R.id.grid_view);
 
-        if (savedInstanceState != null) {
+        m_folder = (PictureFolder) getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER);
+        m_adapter = new PictureAdapter(m_folder);
+        gv.setAdapter(m_adapter);
 
-        } else {
-            m_folder = (PictureFolder) getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER);
-            m_adapter = new PictureAdapter(m_folder);
-            gv.setAdapter(m_adapter);
+        gv.setOnItemClickListener(new OnItemClickListener() {
 
-            gv.setOnItemClickListener(new OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), LightboxActivity.class);
-                    intent.putExtra(ArgumentConstants.ARG_FOLDER, m_folder);
-                    intent.putExtra(GallerySwipeFragment.ARG_START_POSITION, position);
-                    startActivity(intent);
-                }
-            });
-        }
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), LightboxActivity.class);
+                intent.putExtra(ArgumentConstants.ARG_FOLDER, m_folder);
+                intent.putExtra(GallerySwipeFragment.ARG_START_POSITION, position);
+                startActivity(intent);
+            }
+        });
 
         return v;
     }
