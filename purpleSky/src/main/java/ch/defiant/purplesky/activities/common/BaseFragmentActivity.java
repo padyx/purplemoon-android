@@ -70,11 +70,11 @@ public abstract class BaseFragmentActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         PurpleSkyApplication.get().inject(this);
         m_handler = new Handler();
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.fragment_container_layout);
 
         if (savedInstanceState != null) {
