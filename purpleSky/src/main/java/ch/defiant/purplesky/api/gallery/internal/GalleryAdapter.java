@@ -1,20 +1,27 @@
 package ch.defiant.purplesky.api.gallery.internal;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ch.defiant.purplesky.api.common.APINetworkUtility;
+import ch.defiant.purplesky.api.common.ErrorJSONTranslator;
+import ch.defiant.purplesky.api.gallery.EnterPasswordResponse;
 import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
+import ch.defiant.purplesky.util.HTTPURLResponseHolder;
+import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * @author Patrick Bänziger
@@ -78,6 +85,24 @@ class GalleryAdapter implements IGalleryAdapter {
             }
         }
         return list;
+    }
+
+    @Override
+    public EnterPasswordResponse enterPassword(String profileId, String folderId, String password) throws IOException, PurpleSkyException {
+        URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + GalleryAPIConstants.ENTERPASSWORD_URL + profileId + "/" + folderId);
+        List<NameValuePair> body = Collections.<NameValuePair>singletonList(new BasicNameValuePair(GalleryAPIConstants.ENTERPASSWORD_PASSWORD_PARAM, password));
+        HTTPURLResponseHolder response = APINetworkUtility.postForResponseHolderNoThrow(url, body, null);
+
+        if(response.isSuccessful()){
+            return EnterPasswordResponse.OK;
+        } else {
+            String errorString = new ErrorJSONTranslator().translate(response.getError());
+            if(StringUtility.isNullOrEmpty(errorString)){
+                return EnterPasswordResponse.ERROR;
+            } else {
+                return new EnterPasswordResponseTranslator().translate(errorString);
+            }
+        }
     }
 
 }

@@ -29,6 +29,7 @@ import ch.defiant.purplesky.api.visit.internal.VisitModule;
 import ch.defiant.purplesky.core.internal.CoreModule;
 import ch.defiant.purplesky.db.internal.DatabaseModule;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
+import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment;
@@ -122,6 +123,7 @@ import dagger.Module;
             CreatePostitDialogFragment.class,
             UploadPhotoDialogFragment.class,
             ReportUserFragment.class,
+            EnterPasswordDialogFragment.class,
             MultiUploadFragment.class,
             EventFragment.class
     }

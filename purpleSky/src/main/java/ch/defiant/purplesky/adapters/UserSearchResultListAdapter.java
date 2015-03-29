@@ -1,9 +1,5 @@
 package ch.defiant.purplesky.adapters;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -19,8 +22,6 @@ import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.UserUtility;
-
-import com.squareup.picasso.Picasso;
 
 public class UserSearchResultListAdapter extends ArrayAdapter<MinimalUser> {
 
@@ -55,10 +56,10 @@ public class UserSearchResultListAdapter extends ArrayAdapter<MinimalUser> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (v == null) {
-            LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.usersearch_result_item, null);
+            LayoutInflater vi = LayoutInflater.from(getContext());
+            v = vi.inflate(R.layout.usersearch_result_item, parent, false);
 
             holder = createViewHolder(v);
             if (getOwnLocation() != null) {

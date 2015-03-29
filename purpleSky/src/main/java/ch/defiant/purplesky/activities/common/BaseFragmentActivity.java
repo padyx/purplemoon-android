@@ -70,6 +70,7 @@ public abstract class BaseFragmentActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Call request window feature _before_
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         PurpleSkyApplication.get().inject(this);
