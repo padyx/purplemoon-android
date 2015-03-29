@@ -123,9 +123,8 @@ public final class UserUtility {
 
     public static CharSequence createDescription(Context c, MinimalUser item) {
         StringBuilder sb = new StringBuilder();
-        if (item.getAge() != null) {
-            sb.append(String.valueOf(item.getAge()));
-        }
+        sb.append(String.valueOf(item.getAge()));
+
         if (item.getGender() != null) {
             if (sb.length() > 0) {
                 sb.append(DESCRIPTION_DIVIDER);

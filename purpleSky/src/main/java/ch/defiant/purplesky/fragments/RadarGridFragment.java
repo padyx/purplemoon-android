@@ -460,7 +460,7 @@ public class RadarGridFragment extends BaseFragment implements
                     ));
 
             holder.usernameView.setText(user.getUsername());
-            holder.ageView.setText(user.getAge().toString());
+            holder.ageView.setText(String.valueOf(user.getAge()));
 
             URL url = UserService.getUserPreviewPictureUrl(user, UserService.UserPreviewPictureSize.getPictureSizeForDpi(100, getResources()));
 

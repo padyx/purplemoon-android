@@ -17,7 +17,7 @@ public class MinimalUser implements Serializable {
 
 	private String m_userId; // Primary identifier
 	private String m_username;
-	private Integer m_age;
+	private int m_age;
 	private Gender m_gender;
 	private Sexuality m_sexuality;
 	private boolean m_ageVerified;
@@ -42,11 +42,11 @@ public class MinimalUser implements Serializable {
 		m_username = username;
 	}
 
-	public Integer getAge() {
+	public int getAge() {
 		return m_age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(int age) {
 		m_age = age;
 	}
 
