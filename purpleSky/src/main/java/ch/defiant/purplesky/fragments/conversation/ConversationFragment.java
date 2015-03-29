@@ -193,15 +193,13 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     private ImageLoaderCallback m_imgLoaderCallback;
     private final ConversationStatusCallback m_conversationStatusCallback = new ConversationStatusCallback();
 
-    private CharSequence m_previousActionBarTitle;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Bundle args = getArguments();
         String profileId = null;
         String title = null;
+        Bundle args = getArguments();
         if(args != null) {
             title = args.getString(ArgumentConstants.ARG_NAME);
             if(title == null){
@@ -282,8 +280,6 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         // Restore (because it is not done by stack)
         ActionBar actionbar = getActivity().getActionBar();
         actionbar.setIcon(R.drawable.ic_launcher);
-        actionbar.setTitle(m_previousActionBarTitle);
-        actionbar.setSubtitle(null);
     }
 
     @Override
