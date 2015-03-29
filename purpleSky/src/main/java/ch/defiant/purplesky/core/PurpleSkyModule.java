@@ -17,6 +17,7 @@ import ch.defiant.purplesky.activities.UserSearchResultsActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
+import ch.defiant.purplesky.activities.chatlist.ConversationActivity;
 import ch.defiant.purplesky.api.conversation.internal.ConversationModule;
 import ch.defiant.purplesky.api.gallery.internal.GalleryModule;
 import ch.defiant.purplesky.api.internal.APIModule;
@@ -94,6 +95,7 @@ import dagger.Module;
             BaseFragment.class,
 
             ChatListActivity.class,
+            ConversationActivity.class,
 
             // Services
             UserService.class,

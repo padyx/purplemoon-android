@@ -33,7 +33,6 @@ import ch.defiant.purplesky.beans.promotion.PromotionPicture;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
-import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.interfaces.IChatListActivity;
 import ch.defiant.purplesky.interfaces.IDateProvider;
@@ -65,21 +64,6 @@ public class ChatListActivity extends BaseFragmentActivity
             getActionBar().setIcon(R.drawable.ic_launcher);
         }
 
-        View containerFrame = findViewById(R.id.fragment_container_frame);
-        // Check whether the activity is using the layout version with the container frame
-        if (containerFrame != null) {
-            // Single layout
-
-            // If we are restored, no need to created the fragment again
-            if (savedInstanceState != null) {
-                return;
-            }
-
-            // Create the conversation fragment
-            ChatListFragment fragment = new ChatListFragment();
-            // Add the fragment
-            getFragmentManager().beginTransaction().add(R.id.fragment_container_frame, fragment).commit();
-        }
         startPromotionLoading();
     }
 
@@ -106,26 +90,24 @@ public class ChatListActivity extends BaseFragmentActivity
     @Override
     public void conversationSelected(String userId, String username) {
         final FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.conversation_fragment);
         final View container = findViewById(R.id.promotionContainer);
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) container.getLayoutParams();
         lp.weight = 0;
         container.setLayoutParams(lp);
 
-        if(fragment != null){
+        Fragment f = fragmentManager.findFragmentById(R.id.conversation_fragment);
+        if(f != null && f.isInLayout()){
             // Two pane layout
             // Update it with the new conversation
-            ConversationFragment conversationFragment = (ConversationFragment) fragment;
+            ConversationFragment conversationFragment = (ConversationFragment) f;
             conversationFragment.showConversationWithUser(userId, username);
         } else {
-            // Not available... One pane layout, so make a transaction
-            fragment = new ConversationFragment();
-            Bundle args = new Bundle();
-            args.putString(ArgumentConstants.ARG_USERID, userId);
-            args.putString(ArgumentConstants.ARG_NAME, username);
-            fragment.setArguments(args);
-            fragmentManager.beginTransaction().replace(R.id.fragment_container_frame, fragment).addToBackStack(null).commit();
+            // Not available... Open activity
+            Intent intent = new Intent(this, ConversationActivity.class);
+            intent.putExtra(ArgumentConstants.ARG_USERID, userId);
+            intent.putExtra(ArgumentConstants.ARG_NAME, username);
+            startActivity(intent);
         }
     }
 
