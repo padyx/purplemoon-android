@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="UnusedResources">
     
     <string name="profile_relationship">Relationship</string>
     <string name="profile_date_last24h">Within the last 24 hours</string>
