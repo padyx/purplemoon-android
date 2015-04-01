@@ -111,7 +111,7 @@ public class LoginActivity extends BaseFragmentActivity {
         @Override
         protected void onCancelled(Holder<Boolean> result) {
             dismissFragmentDialog(DIALOG_LOGGING_IN);
-        };
+        }
     
     }
 
@@ -184,7 +184,6 @@ public class LoginActivity extends BaseFragmentActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        setDrawerEnabled(false);
         if(getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(false);
             getActionBar().setHomeButtonEnabled(false);
