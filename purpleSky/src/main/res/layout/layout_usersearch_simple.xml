@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
+    android:padding="16dp"
     tools:context=".activities.DisplayUserProfileActivity" >
 
     <LinearLayout
@@ -14,17 +14,24 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/IAmLookingFor"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:drawableBottom="@drawable/line"
+            android:drawablePadding="2dp"
+            />
 
         <Spinner
             android:id="@+id/usersearch_simple_targetpersonSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -32,14 +39,18 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:text="@string/search_composite_forA"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"/>
 
         <Spinner
             android:id="@+id/usersearch_simple_targetSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -47,14 +58,18 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:text="@string/search_composite_withinAgesOf"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"/>
 
         <RelativeLayout
             android:id="@+id/cont2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:paddingTop="8dp" >
+            android:paddingTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp">
 
             <ch.defiant.purplesky.customwidgets.IntegerSpinner
                 android:id="@+id/usersearch_simple_ageFromSpinner"
@@ -95,7 +110,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:minHeight="48dp"
-            android:paddingTop="8dp" >
+            android:paddingTop="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
 
             <Spinner
                 android:id="@+id/usersearch_simple_countrySpinner"
@@ -128,7 +145,9 @@
             android:id="@+id/usersearch_simple_bylocation_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp" >
+            android:paddingTop="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <CheckBox
                 android:id="@+id/usersearch_simple_distance"
