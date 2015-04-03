@@ -173,8 +173,16 @@ public class CommonJSONTranslator {
 
             if(DetailedUser.class.isAssignableFrom(clazz)){
                 DetailedUser detailedUser = (DetailedUser) user;
+
+
+                JSONObject partnerInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_PARTNER);
+                if(partnerInformation != null){
+                    DetailedUser.RelationshipStatus status = ch.defiant.purplesky.api.common.APIUtility.translateToRelationshipStatus(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS, null));
+                    detailedUser.setRelationshipStatus(status);
+                }
+
                 if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP)){
-                    Map<Integer, String> map = new HashMap<Integer, String>();
+                    Map<Integer, String> map = new HashMap<>();
                     JSONArray array = jsonUserObject.getJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP);
                     for(int i=0; i<array.length(); i++){
                         JSONObject obj = array.getJSONObject(i);
@@ -269,7 +277,7 @@ public class CommonJSONTranslator {
 
     private static ArrayList<Map<String, ProfileTriplet>> translateToUserDetails(JSONArray jsonArray) {
         // These must be ordered
-        ArrayList<Map<String, ProfileTriplet>> list = new ArrayList<Map<String, ProfileTriplet>>();
+        ArrayList<Map<String, ProfileTriplet>> list = new ArrayList<>();
         for (int i = 0, count = jsonArray.length(); i < count; i++) {
             JSONObject obj = jsonArray.optJSONObject(i);
             if (obj == null) {
@@ -282,4 +290,5 @@ public class CommonJSONTranslator {
 
         return list;
     }
+
 }

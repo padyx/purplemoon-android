@@ -309,4 +309,10 @@
     <string name="TooManyWrongAttempts">Too many incorret password attempts. You need to wait some time to retry.</string>
     <string name="ErrorFolderNotFound">The folder was not found.</string>
     <string name="CheckingPassword">Checking password</string>
+
+    <string name="RelationshipSingle">Single</string>
+    <string name="RelationshipLongTerm">Long-term relationship</string>
+    <string name="RelationshipEngaged">Engaged</string>
+    <string name="RelationshipMarried">Married</string>
+    <string name="RelationshipOpen">Open relationship</string>
 </resources>

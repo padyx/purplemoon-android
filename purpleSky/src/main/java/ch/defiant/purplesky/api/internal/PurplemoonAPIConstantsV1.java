@@ -99,6 +99,16 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_USER_SEXUALITY_HETEROSEXUAL_VALUE = "straight";
     public static final String JSON_USER_SEXUALITY_BISEXUAL_VALUE = "bi";
 
+    //Detailed Attributes
+
+    // Relationship status
+    public static final String JSON_USER_RELATIONSHIP_STATUS = "status";
+    public static final String JSON_USER_RELATIONSHIP_STATUS_SINGLE = "single";
+    public static final String JSON_USER_RELATIONSHIP_STATUS_LONGTERM = "long-term";
+    public static final String JSON_USER_RELATIONSHIP_STATUS_ENGANGED = "engaged";
+    public static final String JSON_USER_RELATIONSHIP_STATUS_MARRIED = "married";
+    public static final String JSON_USER_RELATIONSHIP_STATUS_OPEN = "open";
+
     /*
      * Favorite related
      */
@@ -320,7 +330,6 @@ public class PurplemoonAPIConstantsV1 {
         public static final String HOMEPAGE = "homepage";
 
         public static final String TARGET_PARTNER = "target_partner";
-        public static final String TARGET_PARTNER_RELATIONSHIPSTATUS = "status";
         public static final String TARGET_FRIENDS = "target_friends";
 
         public static final String EVENTS_TMP = "events_tmp";

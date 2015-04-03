@@ -311,5 +311,10 @@
     <string name="UnregisterForEvent_Condensed_">Abmelden</string>
     <string name="UnregisterFromEvent">Von Veranstaltung abmelden</string>
     <string name="CheckingPassword">Password wird geprüft</string>
+    <string name="RelationshipEngaged">Verlobt</string>
+    <string name="RelationshipMarried">Verheiratet</string>
+    <string name="RelationshipOpen">Offene Beziehung</string>
+    <string name="RelationshipSingle">Single</string>
+    <string name="RelationshipLongTerm">Feste Beziehung</string>
 
 </resources>

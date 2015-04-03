@@ -28,7 +28,6 @@ import java.util.Map.Entry;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.EventActivity;
-import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -44,7 +43,6 @@ import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
-import ch.defiant.purplesky.util.UserUtility;
 
 public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
@@ -381,14 +379,11 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
     private StringBuilder createOverviewTable(DetailedUser user) {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class='overview_text'>");
-        ProfileTriplet detail = UserUtility.getDetail(ProfileDetails.TARGET_PARTNER, user);
+
+        DetailedUser.RelationshipStatus status = user.getRelationshipStatus();
         String relStatus = null;
-        if (detail != null) {
-            // Try to get the status...
-            ProfileTriplet relationship = UserUtility.getDetailRecursive(ProfileDetails.TARGET_PARTNER_RELATIONSHIPSTATUS, detail);
-            if(relationship != null){
-                relStatus = relationship.getDisplayValue();
-            }
+        if(status != null){
+            relStatus = getString(status.getStringResource());
         }
 
         sb.append( StringUtility.join(", ", 
