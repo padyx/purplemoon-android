@@ -7,6 +7,10 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import ch.defiant.purplesky.R;
 
@@ -15,8 +19,6 @@ import ch.defiant.purplesky.R;
  */
 public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
 
-    // When requested, this adapter returns a DemoObjectFragment,
-    // representing an object in the collection.
     StatePagerAdapter m_pagerAdapter;
     ViewPager m_viewPager;
 
@@ -58,6 +60,7 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
                 // When swiping between pages, select the
                 // corresponding tab.
                 getActionBar().setSelectedNavigationItem(position);
+                tabChanging(position);
             }
         });
 
@@ -77,13 +80,34 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
     public abstract int getFragmentCount();
 
     public class StatePagerAdapter extends FragmentStatePagerAdapter {
+
+        private final Map<Integer, Fragment> m_fragmentCache = new HashMap<>();
+
         public StatePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        /**
+         * Do not call this method to obtain the fragment. Call {@link #getCachedItem}
+         * @param pos position
+         * @return
+         */
         @Override
-        public Fragment getItem(int i) {
-            return createItemAtPosition(i);
+        @Deprecated
+        public Fragment getItem(int pos) {
+            Fragment f = createItemAtPosition(pos);
+            m_fragmentCache.put(pos, f);
+            return f;
+        }
+
+        public Fragment getCachedItem(int i){
+            return m_fragmentCache.get(i);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            m_fragmentCache.remove(position);
+            super.destroyItem(container, position, object);
         }
 
         @Override
@@ -95,6 +119,10 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
         public CharSequence getPageTitle(int i) {
             return getTitleAtPosition(i);
         }
+    }
+
+    public Fragment getCurrentTabFragment() {
+        return m_pagerAdapter.getCachedItem(m_viewPager.getCurrentItem());
     }
 
     protected void tabChanging(int position){}

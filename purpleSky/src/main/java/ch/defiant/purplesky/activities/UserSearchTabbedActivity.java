@@ -1,9 +1,7 @@
 package ch.defiant.purplesky.activities;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -50,7 +48,10 @@ public class UserSearchTabbedActivity extends AbstractTabbedActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_menu_search:
-                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Intent.ACTION_SEARCH));
+                Fragment f = getCurrentTabFragment();
+                if(f instanceof ISearchUserFragment){
+                    ((ISearchUserFragment) f).startSearch();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -67,5 +68,14 @@ public class UserSearchTabbedActivity extends AbstractTabbedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActionBarTitle(getString(R.string.Search), null);
+    }
+
+    @Override
+    protected void tabChanging(int position) {
+        super.tabChanging(position);
+    }
+
+    public static interface ISearchUserFragment {
+        void startSearch();
     }
 }

@@ -28,7 +28,7 @@ public class UserSearchResultsActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.Results);
+        setActionBarTitle(getString(R.string.Results), null);
         setContentView(R.layout.layout_usersearchresult);
         if (!hasOptions()) {
             Log.e(TAG, "Did not get user search objects, or username to search!");

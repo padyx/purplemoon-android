@@ -40,6 +40,7 @@ public class UserSearchResultsFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        m_adapter = new UserSearchResultListAdapter(getActivity());
 
         if(savedInstanceState != null){
             @SuppressWarnings("unchecked")
@@ -66,7 +67,6 @@ public class UserSearchResultsFragment extends BaseFragment {
         m_usernameSearch = null;
 
         // Reset
-        m_adapter = new UserSearchResultListAdapter(getActivity());
         if (m_options != null && m_options.getLocation() != null) {
             // To show distance, need the preview user for location
             m_options.setUserClass(PreviewUser.class);
@@ -104,10 +104,6 @@ public class UserSearchResultsFragment extends BaseFragment {
         outState.putSerializable(SAVEINSTANCE_DATA, storedData);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     private boolean hasOptions() {
         return getArguments() != null && (getArguments().containsKey(EXTRA_SEARCHNAME) || getArguments().containsKey(EXTRA_SEARCHOBJ));

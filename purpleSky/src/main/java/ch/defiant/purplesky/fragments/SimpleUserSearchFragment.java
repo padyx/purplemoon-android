@@ -1,15 +1,11 @@
 package ch.defiant.purplesky.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +20,9 @@ import java.util.List;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.UserSearchResultsActivity;
+import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.adapters.SpinnerStateElement;
 import ch.defiant.purplesky.beans.util.Pair;
-import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
 import ch.defiant.purplesky.core.UserSearchOptions;
@@ -39,11 +35,10 @@ import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.enums.UserSearchOrder;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
-import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.util.CompareUtility;
 
-public class SimpleUserSearchFragment extends Fragment implements IBroadcastReceiver {
+public class SimpleUserSearchFragment extends Fragment implements UserSearchTabbedActivity.ISearchUserFragment {
 
     private static final String TAG_PROGRESS_DIALOG = "locationProgressDialog";
 
@@ -52,13 +47,9 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
         FRIENDSHIP
     }
 
-    private LocalBroadcastReceiver m_broadcastReceiver;
-    private boolean m_menuVisible;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflated = inflater.inflate(R.layout.layout_usersearch_simple, container, false);
-
         createGUI(inflated);
         return inflated;
     }
@@ -67,24 +58,13 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
     public void onResume() {
         super.onResume();
         restoreViewSelections();
-
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SEARCH);
-        m_broadcastReceiver = new LocalBroadcastReceiver(this);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(m_broadcastReceiver, filter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(m_broadcastReceiver);
         View v = getView();
         saveViewSelections(v);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(m_broadcastReceiver);
     }
 
     private void saveViewSelections(View v) {
@@ -113,7 +93,9 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
         ((CheckBox) v.findViewById(R.id.usersearch_simple_onlineOnly)).setChecked(pref.getBoolean(PreferenceConstants.searchOnlineOnly, false));
     }
 
-    private void doSearch() {
+    @Override
+    public void startSearch() {
+        // Synchronized to ensure thread sync
         UserSearchOptions bean = createSearchBean();
         try {
             verify(bean);
@@ -148,7 +130,7 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
     }
 
     private void createTargetPersonSpinner(View inflated) {
-        ArrayList<SpinnerStateElement<Pair<Gender, Sexuality>>> list = new ArrayList<SpinnerStateElement<Pair<Gender, Sexuality>>>();
+        ArrayList<SpinnerStateElement<Pair<Gender, Sexuality>>> list = new ArrayList<>();
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(null, null), getString(R.string.targetperson_any)));
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, null),
                 getString(R.string.targetperson_man)));
@@ -167,17 +149,17 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
         list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.HETEROSEXUAL),
                 getString(R.string.targetperson_heterowoman)));
 
-        ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>> adapter = new ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>>(
+        ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>> adapter = new ArrayAdapter<>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, list);
         ((Spinner) inflated.findViewById(R.id.usersearch_simple_targetpersonSpinner)).setAdapter(adapter);
     }
 
     private void createTargetSpinner(View inflated) {
-        ArrayList<SpinnerStateElement<TARGET>> list = new ArrayList<SpinnerStateElement<TARGET>>();
-        list.add(new SpinnerStateElement<TARGET>(TARGET.FRIENDSHIP, getString(R.string.target_friendship)));
-        list.add(new SpinnerStateElement<TARGET>(TARGET.RELATIONSHIP, getString(R.string.target_relationship)));
+        ArrayList<SpinnerStateElement<TARGET>> list = new ArrayList<>();
+        list.add(new SpinnerStateElement<>(TARGET.FRIENDSHIP, getString(R.string.target_friendship)));
+        list.add(new SpinnerStateElement<>(TARGET.RELATIONSHIP, getString(R.string.target_relationship)));
 
-        ArrayAdapter<SpinnerStateElement<TARGET>> adapter = new ArrayAdapter<SpinnerStateElement<TARGET>>(this.getActivity(),
+        ArrayAdapter<SpinnerStateElement<TARGET>> adapter = new ArrayAdapter<>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, list);
         ((Spinner) inflated.findViewById(R.id.usersearch_simple_targetSpinner)).setAdapter(adapter);
     }
@@ -276,7 +258,7 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
 
     private void locationObtained(Location l, UserSearchOptions bean) {
         dismissProgressLocation();
-        bean.setLocation(new Pair<Double, Double>(l.getLatitude(), l.getLongitude()));
+        bean.setLocation(new Pair<>(l.getLatitude(), l.getLongitude()));
         startSearch(bean);
     }
 
@@ -285,29 +267,6 @@ public class SimpleUserSearchFragment extends Fragment implements IBroadcastRece
         if (fragm != null) {
             fragm.dismiss();
         }
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        if (m_menuVisible) {
-            Activity fragCtx = SimpleUserSearchFragment.this.getActivity();
-            if (fragCtx != null) {
-                fragCtx.runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                doSearch();
-                            }
-
-                        });
-            }
-        }
-    }
-
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
-        super.setMenuVisibility(menuVisible);
-        m_menuVisible = menuVisible;
     }
 
 }
