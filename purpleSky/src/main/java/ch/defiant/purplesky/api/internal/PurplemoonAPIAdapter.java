@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
-import ch.defiant.purplesky.api.common.CommonJSONTranslator;
+import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.MinimalUser;
@@ -176,7 +176,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             if (object == null) {
                 continue;
             }
-            MinimalUser translatedUser = CommonJSONTranslator.translateToUser(object, MinimalUser.class);
+            MinimalUser translatedUser = UserJSONTranslator.translateToUser(object, MinimalUser.class);
             if (translatedUser != null && StringUtility.isNotNullOrEmpty(translatedUser.getUserId())) {
                 result.put(translatedUser.getUserId(), translatedUser);
             }
@@ -228,7 +228,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             if (object == null) {
                 continue;
             }
-            PreviewUser translatedUser = CommonJSONTranslator.translateToUser(object, PreviewUser.class);
+            PreviewUser translatedUser = UserJSONTranslator.translateToUser(object, PreviewUser.class);
             if (translatedUser != null && StringUtility.isNotNullOrEmpty(translatedUser.getUserId())) {
                 result.put(translatedUser.getUserId(), translatedUser);
             }
@@ -256,7 +256,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
 
         // Convert user into bean
-        DetailedUser translatedUser = CommonJSONTranslator.translateToUser(jsonUser, DetailedUser.class);
+        DetailedUser translatedUser = UserJSONTranslator.translateToUser(jsonUser, DetailedUser.class);
         if (translatedUser != null && StringUtility.isNotNullOrEmpty(translatedUser.getUserId())) {
             return translatedUser;
         } else {
@@ -290,7 +290,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             return null;
         }
 
-        DetailedUser translatedUser = CommonJSONTranslator.translateToUser(user, DetailedUser.class);
+        DetailedUser translatedUser = UserJSONTranslator.translateToUser(user, DetailedUser.class);
         return translatedUser;
     }
 
@@ -400,7 +400,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             for (int i = 0, size = array.length(); i < size; i++) {
                 JSONObject object = array.optJSONObject(i);
                 if (object != null) {
-                    MinimalUser user = CommonJSONTranslator.translateToUser(object, PreviewUser.class);
+                    MinimalUser user = UserJSONTranslator.translateToUser(object, PreviewUser.class);
                     if (user != null) {
                         list.add(user);
                     }
@@ -577,7 +577,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         ArrayList<MinimalUser> result = new ArrayList<MinimalUser>();
         for (int i = 0, size = array.length(); i < size; i++) {
-            PreviewUser translated = CommonJSONTranslator.translateToUser(array.optJSONObject(i), PreviewUser.class);
+            PreviewUser translated = UserJSONTranslator.translateToUser(array.optJSONObject(i), PreviewUser.class);
             if (translated == null) {
                 continue;
             }

@@ -17,10 +17,10 @@ import java.util.Map;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.common.APINetworkUtility;
-import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -151,7 +151,7 @@ class ConversationAdapter implements IConversationAdapter {
         // Parse Users first to associate them with messages
         Map<String, MinimalUser> map = null;
         if (users != null) {
-            map = CommonJSONTranslator.translateToUsers(users, MinimalUser.class);
+            map = UserJSONTranslator.translateToUsers(users, MinimalUser.class);
         }
 
         if (beans != null) {

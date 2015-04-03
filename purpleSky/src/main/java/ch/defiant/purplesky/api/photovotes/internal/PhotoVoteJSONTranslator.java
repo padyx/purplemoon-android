@@ -2,7 +2,7 @@ package ch.defiant.purplesky.api.photovotes.internal;
 
 import org.json.JSONObject;
 
-import ch.defiant.purplesky.api.common.CommonJSONTranslator;
+import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PhotoVoteBean;
 import ch.defiant.purplesky.util.DateUtility;
@@ -37,7 +37,7 @@ class PhotoVoteJSONTranslator {
         b.setTimestamp(DateUtility.getFromUnixTime(obj.optLong(PhotoVoteAPIConstants.JSON_PHOTOVOTE_CREATED)));
         b.setVerdict(PhotoVoteAPIUtility.toPhotoVoteVerdict(obj.optInt(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VERDICT)));
         if (userclazz != null && obj.has(PhotoVoteAPIConstants.JSON_PHOTOVOTE_USER)) {
-            b.setUser(CommonJSONTranslator.translateToUser(obj.optJSONObject(PhotoVoteAPIConstants.JSON_PHOTOVOTE_USER), userclazz));
+            b.setUser(UserJSONTranslator.translateToUser(obj.optJSONObject(PhotoVoteAPIConstants.JSON_PHOTOVOTE_USER), userclazz));
         }
         if (obj.has(PhotoVoteAPIConstants.JSON_PHOTOVOTE_PREVIOUS)) {
             b.setPreviousVote(translateToPhotoVoteBean(obj.optJSONObject(PhotoVoteAPIConstants.JSON_PHOTOVOTE_PREVIOUS), userclazz));

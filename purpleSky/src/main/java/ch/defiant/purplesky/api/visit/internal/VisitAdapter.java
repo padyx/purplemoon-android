@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import ch.defiant.purplesky.api.common.APINetworkUtility;
-import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.api.visit.IVisitAdapter;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.VisitsMadeBean;
@@ -69,7 +69,7 @@ class VisitAdapter implements IVisitAdapter {
         }
 
         JSONArray users = obj.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
-        Map<String, MinimalUser> userMap = CommonJSONTranslator.translateToUsers(users, MinimalUser.class);
+        Map<String, MinimalUser> userMap = UserJSONTranslator.translateToUsers(users, MinimalUser.class);
         if (userMap != null) { // Add to cache
             UserService service = PurpleSkyApplication.get().getUserService();
             for (MinimalUser u : userMap.values()) {
@@ -124,7 +124,7 @@ class VisitAdapter implements IVisitAdapter {
         }
 
         JSONArray users = obj.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
-        Map<String, MinimalUser> userMap = CommonJSONTranslator.translateToUsers(users, MinimalUser.class);
+        Map<String, MinimalUser> userMap = UserJSONTranslator.translateToUsers(users, MinimalUser.class);
         if (userMap != null) { // Add to cache
             UserService service = PurpleSkyApplication.get().getUserService();
             for (MinimalUser u : userMap.values()) {

@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.api.common;
+package ch.defiant.purplesky.api.users;
 
 import android.util.Log;
 
@@ -35,9 +35,9 @@ import ch.defiant.purplesky.util.UserUtility;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-public class CommonJSONTranslator {
+public class UserJSONTranslator {
 
-    private static String TAG = CommonJSONTranslator.class.getSimpleName();
+    private static String TAG = UserJSONTranslator.class.getSimpleName();
 
     public static <T extends MinimalUser> Map<String, T> translateToUsers(JSONArray array, Class<T> clazz) {
         // Translate users
@@ -177,7 +177,7 @@ public class CommonJSONTranslator {
 
                 JSONObject partnerInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_PARTNER);
                 if(partnerInformation != null){
-                    DetailedUser.RelationshipStatus status = ch.defiant.purplesky.api.common.APIUtility.translateToRelationshipStatus(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS, null));
+                    DetailedUser.RelationshipStatus status = ch.defiant.purplesky.api.users.APIUtility.translateToRelationshipStatus(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS, null));
                     detailedUser.setRelationshipStatus(status);
                 }
 

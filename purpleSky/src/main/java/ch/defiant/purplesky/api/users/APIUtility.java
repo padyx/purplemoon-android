@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.api.common;
+package ch.defiant.purplesky.api.users;
 
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.DetailedUser;

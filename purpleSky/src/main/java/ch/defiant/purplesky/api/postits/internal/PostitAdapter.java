@@ -17,9 +17,9 @@ import java.util.Map;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.api.common.APINetworkUtility;
-import ch.defiant.purplesky.api.common.CommonJSONTranslator;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.api.postits.IPostitAdapter;
+import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PostIt;
 import ch.defiant.purplesky.core.AdapterOptions;
@@ -82,7 +82,7 @@ class PostitAdapter implements IPostitAdapter {
         JSONArray postits = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_POSTIT_ARRAY);
         JSONArray users = result.optJSONArray(PurplemoonAPIConstantsV1.JSON_USER_ARRAY);
 
-        Map<String, MinimalUser> userMap = CommonJSONTranslator.translateToUsers(users, MinimalUser.class);
+        Map<String, MinimalUser> userMap = UserJSONTranslator.translateToUsers(users, MinimalUser.class);
 
         if (userMap != null) { // Add to cache
             UserService service = PurpleSkyApplication.get().getUserService();
