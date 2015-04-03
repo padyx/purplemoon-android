@@ -9,6 +9,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
@@ -25,6 +27,7 @@ public class SettingFragmentActivity extends BaseFragmentActivity {
 
     private GcmRegisterTask m_asyncTask = null;
     private PreferenceUpdateListener m_listener;
+    @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
 
     @Override
