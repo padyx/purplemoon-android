@@ -3,10 +3,10 @@ package ch.defiant.purplesky.beans;
 import java.io.Serializable;
 import java.net.URL;
 
-import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.enums.ProfileStatus;
-import ch.defiant.purplesky.enums.Sexuality;
+import ch.defiant.purplesky.enums.profile.Gender;
+import ch.defiant.purplesky.enums.profile.ProfileStatus;
+import ch.defiant.purplesky.enums.profile.Sexuality;
 
 public class MinimalUser implements Serializable {
 

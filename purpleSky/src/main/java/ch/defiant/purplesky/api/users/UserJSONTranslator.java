@@ -24,9 +24,9 @@ import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.ProfileTriplet;
-import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.enums.ProfileStatus;
+import ch.defiant.purplesky.enums.profile.Gender;
+import ch.defiant.purplesky.enums.profile.ProfileStatus;
 import ch.defiant.purplesky.translators.ProfileTranslator;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.StringUtility;
@@ -190,7 +190,8 @@ public class UserJSONTranslator {
     private static void translatePreviewUserProperties(JSONObject jsonUserObject, PreviewUser previewUser) {
         previewUser.setHeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.HEIGHT, null));
         previewUser.setWeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.WEIGHT, null));
-//        previewUser.setHairColor();
+        previewUser.setPhysique(APIUtility.translateToPhysique(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE)));
+        //        previewUser.setHairColor();
 //        previewUser.setHairLength();
         previewUser.setEyeColor(APIUtility.translateToEyeColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR)));
 //        previewUser.setFacialHair();

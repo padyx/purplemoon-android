@@ -317,5 +317,6 @@
     <string name="RelationshipOpen">Open relationship</string>
     <string name="bodyHeight">Height (cm)</string>
     <string name="bodyWeight">Weight (kg)</string>
+    <string name="MaxDistance">Max. distance (km)</string>
 
 </resources>

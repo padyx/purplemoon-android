@@ -23,7 +23,7 @@ import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
-import ch.defiant.purplesky.enums.ProfileStatus;
+import ch.defiant.purplesky.enums.profile.ProfileStatus;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
 import ch.defiant.purplesky.fragments.gallery.PictureFolderGridViewFragment;
 import ch.defiant.purplesky.fragments.profile.UserStatsFragment;

@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.enums;
+package ch.defiant.purplesky.enums.profile;
 
 import android.content.res.Resources;
 

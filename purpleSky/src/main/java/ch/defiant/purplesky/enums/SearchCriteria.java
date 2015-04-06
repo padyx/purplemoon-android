@@ -13,7 +13,7 @@ public enum SearchCriteria {
     HEIGHT(SearchCriteriaType.MIN_MAX_INT, true, R.string.bodyHeight),
     WEIGHT(SearchCriteriaType.MIN_MAX_INT, true, R.string.bodyWeight),
     BMI(SearchCriteriaType.MIN_MAX_INT, true, 0), //XXX
-    PHYSIQUE(SearchCriteriaType.LIST, true, R.string.profileKeyText_physique),
+    PHYSIQUE(SearchCriteriaType.LIST, true, R.string.profile_physique),
     EYE_COLOR(SearchCriteriaType.LIST, true, R.string.profile_eye_color),
     HAIR_COLOR(SearchCriteriaType.LIST, true, R.string.profileKeyText_hair_color),
     HAIR_LENGTH(SearchCriteriaType.LIST, true, R.string.profileKeyText_hair_length),

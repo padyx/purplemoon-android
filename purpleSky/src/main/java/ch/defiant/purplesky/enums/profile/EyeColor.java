@@ -1,4 +1,4 @@
-package ch.defiant.purplesky.enums;
+package ch.defiant.purplesky.enums.profile;
 
 import android.support.annotation.StringRes;
 
@@ -30,6 +30,7 @@ public enum EyeColor {
         m_stringRes = stringRes;
     }
 
+    @StringRes
     public int getStringResource() {
         return m_stringRes;
     }

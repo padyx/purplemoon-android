@@ -313,7 +313,15 @@ public class PurplemoonAPIConstantsV1 {
 
         public static final String HEIGHT = "height";
         public static final String WEIGHT = "weight";
+
         public static final String PHYSIQUE = "physique";
+        public static final String PHYSIQUE_SLIM = "slim";
+        public static final String PHYSIQUE_NORMAL = "normal";
+        public static final String PHYSIQUE_ATHLETIC = "athletic";
+        public static final String PHYSIQUE_BODYBUILDER = "bodybuilder";
+        public static final String PHYSIQUE_STURDY = "sturdy";
+        public static final String PHYSIQUE_LITTLE_TUMMY = "littletummy";
+        public static final String PHYSIQUE_CHUBBY = "chubby";
 
         public static final String EYE_COLOR = "eye_color";
         public static final String EYE_COLOR_LIGHTBROWN = "light-brown";

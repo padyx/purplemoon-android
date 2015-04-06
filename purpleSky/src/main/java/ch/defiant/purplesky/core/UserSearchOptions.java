@@ -9,9 +9,9 @@ import java.util.List;
 
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.util.Pair;
-import ch.defiant.purplesky.enums.Gender;
-import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.enums.UserSearchOrder;
+import ch.defiant.purplesky.enums.profile.Gender;
+import ch.defiant.purplesky.enums.profile.Sexuality;
 import ch.defiant.purplesky.util.BundleUtil;
 import ch.defiant.purplesky.util.EnumUtility;
 import ch.defiant.purplesky.util.StringUtility;

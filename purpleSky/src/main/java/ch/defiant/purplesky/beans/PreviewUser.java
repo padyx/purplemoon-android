@@ -2,7 +2,8 @@ package ch.defiant.purplesky.beans;
 
 import java.util.Map;
 
-import ch.defiant.purplesky.enums.EyeColor;
+import ch.defiant.purplesky.enums.profile.EyeColor;
+import ch.defiant.purplesky.enums.profile.Physique;
 
 public class PreviewUser extends BasicUser {
 
@@ -15,7 +16,7 @@ public class PreviewUser extends BasicUser {
     private Integer m_height;
     private Integer m_weight;
 
-    private String m_physique; // FIXME Enum
+    private Physique m_physique; // FIXME Enum
     private EyeColor m_eyeColor; // FIXME Enum
     private String m_hairColor; // FIXME Enum
     private String m_hairLength; // FIXME Enum
@@ -98,11 +99,11 @@ public class PreviewUser extends BasicUser {
     }
 
 
-    public String getPhysique() {
+    public Physique getPhysique() {
         return m_physique;
     }
 
-    public void setPhysique(String physique) {
+    public void setPhysique(Physique physique) {
         m_physique = physique;
     }
 

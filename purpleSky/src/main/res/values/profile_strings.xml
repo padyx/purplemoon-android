@@ -22,6 +22,14 @@
 	<string name="profile_eye_color_greengrey">Green-grey</string>
 	<string name="profile_eye_color_grey">Grey</string>
 
+	<string name="profile_physique">Physique</string>
+	<string name="profile_physique_slim">Slim</string>
+	<string name="profile_physique_normal">Normal</string>
+	<string name="profile_physique_athletic">Athletic</string>
+	<string name="profile_physique_bodybuilder">Bodybuilder</string>
+	<string name="profile_physique_sturdy">Sturdy</string>
+	<string name="profile_physique_littletummy">Little tummy</string>
+	<string name="profile_physique_chubby">Chubby</string>
 
 	<string name="profile_relationship">Relationship</string>
     <string name="profile_date_last24h">Within the last 24 hours</string>
@@ -48,15 +56,6 @@
 	<string name="profileGroup_GetToKnowAsPartner">Who I want as a partner</string>
 	<string name="profileGroup_Occupation">Occupation</string>
 	<string name="profileGroup_AboutProfile">About profile</string>
-
-    <string name="profileKeyText_physique">Physique</string>
-    <string name="profileValueText_physique_slim">Slim</string>
-    <string name="profileValueText_physique_normal">Normal</string>
-    <string name="profileValueText_physique_athletic">Athletic</string>
-    <string name="profileValueText_physique_bodybuilder">Bodybuilder</string>
-    <string name="profileValueText_physique_sturdy">Sturdy</string>
-    <string name="profileValueText_physique_littletummy">Little tummy</string>
-    <string name="profileValueText_physique_chubby">Chubby</string>
     
     <string name="profileKeyText_hair_color">Hair color</string>
     <string name="profileValueText_hair_color_lightbrown">Light-brown</string>

@@ -40,7 +40,7 @@ import ch.defiant.purplesky.constants.ProfileListMap;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.enums.RelationshipStatus;
+import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
@@ -366,7 +366,11 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         final boolean shouldCreateLink = bean.getLatitude() != null && bean.getLongitude() != null;
 
         if (shouldCreateLink) {
-            url.append("<a href='geo:" + bean.getLatitude() + "," + bean.getLongitude() + "' target='_blank'>");
+            url.append("<a href='geo:").
+                    append(bean.getLatitude()).
+                    append(",").
+                    append(bean.getLongitude()).
+                    append("' target='_blank'>");
         }
         url.append(bean.getLocationDescription());
         if (country != null) {
@@ -401,7 +405,9 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         sb.append("</div>");
 
         if (user.isAgeVerified()) {
-            sb.append("<div class='overview_text'><div id='verifieduser'>" + getString(R.string.VerifiedUser) + "</div></div>");
+            sb.append("<div class='overview_text'><div id='verifieduser'>").
+                    append(getString(R.string.VerifiedUser)).
+                    append("</div></div>");
         }
         return sb;
     }
@@ -436,6 +442,9 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         if(user.getWeight() != null){
             createAndAddTableRow(sb, R.string.bodyWeight, String.valueOf(user.getWeight()));
         }
+        if(user.getPhysique() != null){
+            createAndAddTableRow(sb, R.string.profile_physique, getString(user.getPhysique().getStringRes()));
+        }
         if(user.getEyeColor() != null){
             createAndAddTableRow(sb, R.string.profile_eye_color, getString(user.getEyeColor().getStringResource()));
         }
@@ -454,6 +463,15 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             if (relationshipInfo.getRelationshipStatus() != null){
                 createAndAddTableRow(sb, R.string.RelationshipStatus, getString(relationshipInfo.getRelationshipStatus().getStringResource()));
             }
+            if (relationshipInfo.getDesiredPartnerAgeFrom() != null){
+                createAndAddTableRow(sb, R.string.MinimumAge, String.valueOf(relationshipInfo.getDesiredPartnerAgeFrom()));
+            }
+            if (relationshipInfo.getDesiredPartnerAgeTo() != null){
+                createAndAddTableRow(sb, R.string.MaximumAge, String.valueOf(relationshipInfo.getDesiredPartnerAgeTo()));
+            }
+            if (relationshipInfo.getMaximumDistance() != null){
+                createAndAddTableRow(sb, R.string.MaxDistance, String.valueOf(relationshipInfo.getMaximumDistance()));
+            }
             if(StringUtility.isNotNullOrEmpty(relationshipInfo.getText())){
                 createAndAddSpanningTableRow(sb, relationshipInfo.getText());
             }
@@ -468,17 +486,9 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
     private StringBuilder createFriendshipTable(DetailedUser user){
         StringBuilder sb = new StringBuilder();
-        if(user.getHeight() != null) {
-            createAndAddTableRow(sb, R.string.bodyHeight, String.valueOf(user.getHeight()));
-        }
-        if(user.getWeight() != null){
-            createAndAddTableRow(sb, R.string.bodyWeight, String.valueOf(user.getWeight()));
-        }
-        if(sb.length() > 0){
-            sb.insert(0, createHeader(getResources(), R.string.profile_subsectionHeader_getToKnowFriend));
-            sb.insert(0,"<table class='content_tables'>");
-            sb.append("</table>\n");
-        }
+
+        // FIXME IMPLEMENT
+
         return sb;
     }
 

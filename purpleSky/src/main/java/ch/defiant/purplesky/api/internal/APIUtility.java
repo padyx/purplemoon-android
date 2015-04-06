@@ -11,13 +11,14 @@ import java.util.List;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
-import ch.defiant.purplesky.enums.EyeColor;
-import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
-import ch.defiant.purplesky.enums.RelationshipStatus;
-import ch.defiant.purplesky.enums.Sexuality;
+import ch.defiant.purplesky.enums.profile.EyeColor;
+import ch.defiant.purplesky.enums.profile.Gender;
+import ch.defiant.purplesky.enums.profile.Physique;
+import ch.defiant.purplesky.enums.profile.RelationshipStatus;
+import ch.defiant.purplesky.enums.profile.Sexuality;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -284,6 +285,30 @@ public final class APIUtility {
             return EyeColor.GREY;
         } else {
             throw new IllegalArgumentException("Unknown value for eye color "+jsonString);
+        }
+    }
+
+    @Nullable
+    public static Physique translateToPhysique(@Nullable String jsonString){
+        if(jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_ATHLETIC.equals(jsonString)){
+            return Physique.ATHLETIC;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_BODYBUILDER.equals(jsonString)){
+            return Physique.BODYBUILDER;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_CHUBBY.equals(jsonString)){
+            return Physique.CHUBBY;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_LITTLE_TUMMY.equals(jsonString)){
+            return Physique.LITTLE_TUMMY;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_NORMAL.equals(jsonString)){
+            return Physique.NORMAL;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_SLIM.equals(jsonString)){
+            return Physique.SLIM;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE_STURDY.equals(jsonString)){
+            return Physique.STURDY;
+        } else {
+            throw new IllegalArgumentException("Unknown value for physique " + jsonString);
         }
     }
 }

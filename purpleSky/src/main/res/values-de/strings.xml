@@ -318,5 +318,6 @@
     <string name="RelationshipLongTerm">Feste Beziehung</string>
     <string name="bodyHeight">Grösse</string>
     <string name="bodyWeight">Gewicht</string>
+    <string name="MaxDistance">Max. Distanz (km)</string>
 
 </resources>

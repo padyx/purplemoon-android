@@ -1,10 +1,11 @@
 package ch.defiant.purplesky.beans;
 
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 
-import ch.defiant.purplesky.enums.RelationshipStatus;
+import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 
 public class DetailedUser extends PreviewUser {
 
@@ -43,7 +44,9 @@ public class DetailedUser extends PreviewUser {
         m_friendshipInformation = info;
     }
 
-    public static class FriendshipInformation {
+    public static class FriendshipInformation implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         private String m_text;
         private Integer m_desiredPartnerAgeFrom;
         private Integer m_desiredPartnerAgeTo;
@@ -86,7 +89,8 @@ public class DetailedUser extends PreviewUser {
         }
     }
 
-    public static class RelationshipInformation extends FriendshipInformation{
+    public static class RelationshipInformation extends FriendshipInformation {
+        private static final long serialVersionUID = 2L;
 
         private RelationshipStatus m_relationshipStatus;
 
