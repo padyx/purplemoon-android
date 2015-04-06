@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
            tools:ignore="UnusedResources">
-    
-    <string name="profile_relationship">Relationship</string>
+
+	<string name="profile_sectionHeader_getToKnow">Who I want to get to know</string>
+	<string name="profile_subsectionHeader_getToKnowPartner">As partner</string>
+	<string name="profile_subsectionHeader_getToKnowFriend">As friends</string>
+	<string name="profile_sectionHeader_body">Body</string>
+
+	<string name="profile_eye_color">Eye color</string>
+	<string name="profile_eye_color_lightbrown">Light-brown</string>
+	<string name="profile_eye_color_darkbrown">Dark-brown</string>
+	<string name="profile_eye_color_brown">Brown</string>
+	<string name="profile_eye_color_lightblue">Light-blue</string>
+	<string name="profile_eye_color_darkblue">Dark-blue</string>
+	<string name="profile_eye_color_blue">Blue</string>
+	<string name="profile_eye_color_black">Black</string>
+	<string name="profile_eye_color_green">Green</string>
+	<string name="profile_eye_color_bluegrey">Blue-grey</string>
+	<string name="profile_eye_color_bluegreen">Blue-green</string>
+	<string name="profile_eye_color_greenbrown">Green-brown</string>
+	<string name="profile_eye_color_greengrey">Green-grey</string>
+	<string name="profile_eye_color_grey">Grey</string>
+
+
+	<string name="profile_relationship">Relationship</string>
     <string name="profile_date_last24h">Within the last 24 hours</string>
     <string name="profile_header_events">Events</string>
     <string name="profile_header_locations">Locations</string>
@@ -27,10 +48,7 @@
 	<string name="profileGroup_GetToKnowAsPartner">Who I want as a partner</string>
 	<string name="profileGroup_Occupation">Occupation</string>
 	<string name="profileGroup_AboutProfile">About profile</string>
-    
-    <string name="profileKeyText_height">Height (cm)</string>
-    <string name="profileKeyText_weight">Weight (kg)</string>
-    
+
     <string name="profileKeyText_physique">Physique</string>
     <string name="profileValueText_physique_slim">Slim</string>
     <string name="profileValueText_physique_normal">Normal</string>
@@ -39,21 +57,6 @@
     <string name="profileValueText_physique_sturdy">Sturdy</string>
     <string name="profileValueText_physique_littletummy">Little tummy</string>
     <string name="profileValueText_physique_chubby">Chubby</string>
-    
-    <string name="profileKeyText_eye_color">Eye color</string>
-    <string name="profileValueText_eye_color_lightbrown">Light-brown</string>
-    <string name="profileValueText_eye_color_darkbrown">Dark-brown</string>
-    <string name="profileValueText_eye_color_brown">Brown</string>
-    <string name="profileValueText_eye_color_lightblue">Light-blue</string>
-    <string name="profileValueText_eye_color_darkblue">Dark-blue</string>
-    <string name="profileValueText_eye_color_blue">Blue</string>
-    <string name="profileValueText_eye_color_black">Black</string>
-    <string name="profileValueText_eye_color_green">Green</string>
-    <string name="profileValueText_eye_color_bluegrey">Blue-grey</string>
-    <string name="profileValueText_eye_color_bluegreen">Blue-green</string>
-    <string name="profileValueText_eye_color_greenbrown">Green-brown</string>
-    <string name="profileValueText_eye_color_greengrey">Green-grey</string>
-    <string name="profileValueText_eye_color_grey">Grey</string>
     
     <string name="profileKeyText_hair_color">Hair color</string>
     <string name="profileValueText_hair_color_lightbrown">Light-brown</string>

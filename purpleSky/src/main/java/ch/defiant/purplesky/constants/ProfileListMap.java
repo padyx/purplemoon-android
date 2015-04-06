@@ -1,5 +1,8 @@
 package ch.defiant.purplesky.constants;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,8 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
@@ -68,10 +69,7 @@ public final class ProfileListMap {
         // Group: Body
         ArrayList<String> bodyList = new ArrayList<String>();
         GROUP_LIST_APIKEYS.add(bodyList);
-        bodyList.add(ProfileDetails.HEIGHT);
-        bodyList.add(ProfileDetails.WEIGHT);
         bodyList.add(ProfileDetails.PHYSIQUE);
-        bodyList.add(ProfileDetails.EYE_COLOR);
         bodyList.add(ProfileDetails.HAIR_COLOR);
         bodyList.add(ProfileDetails.HAIR_LENGTH);
         bodyList.add(ProfileDetails.FACIAL_HAIR);

@@ -1,5 +1,7 @@
 package ch.defiant.purplesky.api.internal;
 
+import android.support.annotation.Nullable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,10 +11,12 @@ import java.util.List;
 import ch.defiant.purplesky.beans.util.Pair;
 import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.UserSearchOptions;
+import ch.defiant.purplesky.enums.EyeColor;
 import ch.defiant.purplesky.enums.Gender;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
+import ch.defiant.purplesky.enums.RelationshipStatus;
 import ch.defiant.purplesky.enums.Sexuality;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.StringUtility;
@@ -224,6 +228,62 @@ public final class APIUtility {
                 throw new IllegalArgumentException("No value for offline");
             default:
                 throw new IllegalArgumentException("No api value for "+status);
+        }
+    }
+
+    @Nullable
+    public static RelationshipStatus translateToRelationshipStatus(@Nullable String jsonString){
+        if(jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_SINGLE.equals(jsonString)){
+            return RelationshipStatus.SINGLE;
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_LONGTERM.equals(jsonString)){
+            return RelationshipStatus.LONGTERM_RELATIONSHIP;
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_ENGANGED.equals(jsonString)){
+            return RelationshipStatus.ENGANGED;
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_MARRIED.equals(jsonString)){
+            return RelationshipStatus.MARRIED;
+        } else if (PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_OPEN.equals(jsonString)){
+            return RelationshipStatus.OPEN_RELATIONSHIP;
+        } else {
+            throw new IllegalArgumentException("Unknown value for relationship status "+jsonString);
+        }
+    }
+
+    @Nullable
+    public static EyeColor translateToEyeColor(@Nullable String jsonString){
+        if(jsonString == null || jsonString.isEmpty()){
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_LIGHTBROWN.equals(jsonString)){
+            return EyeColor.LIGHTBROWN;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_DARKBROWN.equals(jsonString)){
+            return EyeColor.DARKBROWN;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_BROWN.equals(jsonString)){
+            return EyeColor.BROWN;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_LIGHTBLUE.equals(jsonString)){
+            return EyeColor.LIGHTBLUE;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_DARKBLUE.equals(jsonString)){
+            return EyeColor.DARKBLUE;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_BLUE.equals(jsonString)){
+            return EyeColor.BLUE;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_BLACK.equals(jsonString)){
+            return EyeColor.BLACK;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_GREEN.equals(jsonString)){
+            return EyeColor.GREEN;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_BLUEGREY.equals(jsonString)){
+            return EyeColor.BLUEGREY;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_BLUEGREEN.equals(jsonString)){
+            return EyeColor.BLUEGREEN;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_GREENBROWN.equals(jsonString)){
+            return EyeColor.GREENBROWN;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_GREENGREY.equals(jsonString)){
+            return EyeColor.GREENGREY;
+        }else if (PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR_GREY.equals(jsonString)){
+            return EyeColor.GREY;
+        } else {
+            throw new IllegalArgumentException("Unknown value for eye color "+jsonString);
         }
     }
 }

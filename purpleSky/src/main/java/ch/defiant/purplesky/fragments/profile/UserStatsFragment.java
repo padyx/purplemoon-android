@@ -40,6 +40,7 @@ import ch.defiant.purplesky.constants.ProfileListMap;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;
+import ch.defiant.purplesky.enums.RelationshipStatus;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
@@ -296,7 +297,10 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
         StringBuilder allTables = createEventTable(user);
         StringBuilder locationsTable = createLocationsTable(user);
-        StringBuilder details = createDetailsTable(user);
+
+        StringBuilder details = createBodyTable(user);
+        details.append(createDetailsTable(user));
+        details.append(createRelationshipTable(user));
         allTables.append(locationsTable);
         allTables.append(details);
         StringUtility.replace(sb, PLACEHOLDER_TABLES_ALL, allTables.toString());
@@ -380,7 +384,10 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class='overview_text'>");
 
-        DetailedUser.RelationshipStatus status = user.getRelationshipStatus();
+        RelationshipStatus status = null;
+        if(user.getRelationshipInformation() != null){
+            status = user.getRelationshipInformation().getRelationshipStatus();
+        }
         String relStatus = null;
         if(status != null){
             relStatus = getString(status.getStringResource());
@@ -419,6 +426,60 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             sb.append(content);
         }
         sb.append("</td></tr>");
+    }
+
+    private StringBuilder createBodyTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
+         if(user.getHeight() != null) {
+            createAndAddTableRow(sb, R.string.bodyHeight, String.valueOf(user.getHeight()));
+        }
+        if(user.getWeight() != null){
+            createAndAddTableRow(sb, R.string.bodyWeight, String.valueOf(user.getWeight()));
+        }
+        if(user.getEyeColor() != null){
+            createAndAddTableRow(sb, R.string.profile_eye_color, getString(user.getEyeColor().getStringResource()));
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_body));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
+
+    private StringBuilder createRelationshipTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
+        if(user.getRelationshipInformation() != null){
+            DetailedUser.RelationshipInformation relationshipInfo = user.getRelationshipInformation();
+            if (relationshipInfo.getRelationshipStatus() != null){
+                createAndAddTableRow(sb, R.string.RelationshipStatus, getString(relationshipInfo.getRelationshipStatus().getStringResource()));
+            }
+            if(StringUtility.isNotNullOrEmpty(relationshipInfo.getText())){
+                createAndAddSpanningTableRow(sb, relationshipInfo.getText());
+            }
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_getToKnow)); // FIXME Add partner header
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
+
+    private StringBuilder createFriendshipTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
+        if(user.getHeight() != null) {
+            createAndAddTableRow(sb, R.string.bodyHeight, String.valueOf(user.getHeight()));
+        }
+        if(user.getWeight() != null){
+            createAndAddTableRow(sb, R.string.bodyWeight, String.valueOf(user.getWeight()));
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_subsectionHeader_getToKnowFriend));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
     }
 
     private StringBuilder createDetailsTable(DetailedUser user) {

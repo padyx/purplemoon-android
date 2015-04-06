@@ -1,20 +1,18 @@
 package ch.defiant.purplesky.beans;
 
 
-import android.support.annotation.StringRes;
-
 import java.util.Collections;
 import java.util.Map;
 
-import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.enums.RelationshipStatus;
 
 public class DetailedUser extends PreviewUser {
 
     private static final long serialVersionUID = -3375886805715954342L;
 
     private Map<Integer, String> m_eventTmp = Collections.emptyMap();
-    private RelationshipStatus m_relationshipStatus;
-
+    private RelationshipInformation m_relationshipInformation;
+    private FriendshipInformation m_friendshipInformation;
 
     /**
      * @return Map containing event id -> Eventvisiting preview text
@@ -27,31 +25,81 @@ public class DetailedUser extends PreviewUser {
         m_eventTmp = getEventsTmp();
     }
 
-    public RelationshipStatus getRelationshipStatus(){
-        return m_relationshipStatus;
+
+    public RelationshipInformation getRelationshipInformation(){
+        return m_relationshipInformation;
     }
 
-    public void setRelationshipStatus(RelationshipStatus status){
-        m_relationshipStatus = status;
+    public void setRelationShipInformation(RelationshipInformation info){
+        m_relationshipInformation = info;
     }
 
-    public enum RelationshipStatus {
-        SINGLE(R.string.RelationshipSingle),
-        LONGTERM_RELATIONSHIP(R.string.RelationshipLongTerm),
-        ENGANGED(R.string.RelationshipEngaged),
-        MARRIED(R.string.RelationshipMarried),
-        OPEN_RELATIONSHIP(R.string.RelationshipOpen);
 
-        private final int m_stringRes;
+    public FriendshipInformation getFriendshipInformation(){
+        return m_friendshipInformation;
+    }
 
-        RelationshipStatus(@StringRes int stringRes){
-            m_stringRes = stringRes;
+    public void setFriendshipInformation(FriendshipInformation info){
+        m_friendshipInformation = info;
+    }
+
+    public static class FriendshipInformation {
+        private String m_text;
+        private Integer m_desiredPartnerAgeFrom;
+        private Integer m_desiredPartnerAgeTo;
+        private Integer m_maximumDistance;
+
+        public String getText() {
+            return m_text;
         }
-        
-        @StringRes
-        public int getStringResource(){
-            return m_stringRes;
+
+        public FriendshipInformation setText(String text) {
+            this.m_text = text;
+            return this;
         }
+
+        public Integer getDesiredPartnerAgeFrom() {
+            return m_desiredPartnerAgeFrom;
+        }
+
+        public FriendshipInformation setDesiredPartnerAgeFrom(Integer desiredPartnerAgeFrom) {
+            this.m_desiredPartnerAgeFrom = desiredPartnerAgeFrom;
+            return this;
+        }
+
+        public Integer getDesiredPartnerAgeTo() {
+            return m_desiredPartnerAgeTo;
+        }
+
+        public FriendshipInformation setDesiredPartnerAgeTo(Integer desiredPartnerAgeTo) {
+            this.m_desiredPartnerAgeTo = desiredPartnerAgeTo;
+            return this;
+        }
+
+        public Integer getMaximumDistance() {
+            return m_maximumDistance;
+        }
+
+        public FriendshipInformation setMaximumDistance(Integer maximumDistance) {
+            this.m_maximumDistance = maximumDistance;
+            return this;
+        }
+    }
+
+    public static class RelationshipInformation extends FriendshipInformation{
+
+        private RelationshipStatus m_relationshipStatus;
+
+
+        public RelationshipStatus getRelationshipStatus() {
+            return m_relationshipStatus;
+        }
+
+        public RelationshipInformation setRelationshipStatus(RelationshipStatus relationshipStatus) {
+            this.m_relationshipStatus = relationshipStatus;
+            return this;
+        }
+
     }
 
 }

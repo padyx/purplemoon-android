@@ -109,6 +109,11 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_USER_RELATIONSHIP_STATUS_MARRIED = "married";
     public static final String JSON_USER_RELATIONSHIP_STATUS_OPEN = "open";
 
+    public static final String JSON_USER_RELATIONSHIP_MAXDISTANCE = "distance";
+    public static final String JSON_USER_RELATIONSHIP_AGEFROM = "age_from";
+    public static final String JSON_USER_RELATIONSHIP_AGETO = "age_till";
+    public static final String JSON_USER_RELATIONSHIP_TEXT = "text";
+
     /*
      * Favorite related
      */
@@ -309,7 +314,22 @@ public class PurplemoonAPIConstantsV1 {
         public static final String HEIGHT = "height";
         public static final String WEIGHT = "weight";
         public static final String PHYSIQUE = "physique";
+
         public static final String EYE_COLOR = "eye_color";
+        public static final String EYE_COLOR_LIGHTBROWN = "light-brown";
+        public static final String EYE_COLOR_DARKBROWN = "dark-brown";
+        public static final String EYE_COLOR_BROWN = "brown";
+        public static final String EYE_COLOR_LIGHTBLUE = "light-blue";
+        public static final String EYE_COLOR_DARKBLUE = "dark-blue";
+        public static final String EYE_COLOR_BLUE = "blue";
+        public static final String EYE_COLOR_BLACK = "black";
+        public static final String EYE_COLOR_GREEN = "green";
+        public static final String EYE_COLOR_BLUEGREY = "blue-grey";
+        public static final String EYE_COLOR_BLUEGREEN = "blue-green";
+        public static final String EYE_COLOR_GREENBROWN = "green-brown";
+        public static final String EYE_COLOR_GREENGREY = "green-grey";
+        public static final String EYE_COLOR_GREY = "grey";
+
         public static final String HAIR_COLOR = "hair_color";
         public static final String HAIR_LENGTH = "hair_length";
         public static final String FACIAL_HAIR = "facial_hair";

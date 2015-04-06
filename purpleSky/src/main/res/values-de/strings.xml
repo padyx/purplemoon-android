@@ -316,5 +316,7 @@
     <string name="RelationshipOpen">Offene Beziehung</string>
     <string name="RelationshipSingle">Single</string>
     <string name="RelationshipLongTerm">Feste Beziehung</string>
+    <string name="bodyHeight">Grösse</string>
+    <string name="bodyWeight">Gewicht</string>
 
 </resources>

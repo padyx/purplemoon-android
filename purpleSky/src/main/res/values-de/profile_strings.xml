@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <string name="profile_relationship">Beziehung</string>
+
+	<string name="profile_sectionHeader_getToKnow">Wen ich kennenlernen möchte</string>
+	<string name="profile_subsectionHeader_getToKnowPartner">Beziehung</string>
+	<string name="profile_subsectionHeader_getToKnowFriend">Freunde</string>
+
+	<string name="profile_sectionHeader_body">Body</string>
+
+	<string name="profile_relationship">Beziehung</string>
     <string name="profile_date_last24h">In den letzten 24 Stunden</string>
     <string name="profile_header_events">Events</string>
     <string name="profile_header_locations">Locations</string>
@@ -26,10 +32,7 @@
 	<string name="profileGroup_GetToKnowAsPartner">Beziehung</string>
 	<string name="profileGroup_Occupation">Was ich mache</string>
 	<string name="profileGroup_AboutProfile">Über das Profil</string>
-    
-    <string name="profileKeyText_height">Grösse (cm)</string>
-    <string name="profileKeyText_weight">Gewicht (kg)</string>
-    
+
     <string name="profileKeyText_physique">Körperbau</string>
     <string name="profileValueText_physique_slim">Schlank</string>
     <string name="profileValueText_physique_normal">Normal</string>
@@ -38,22 +41,7 @@
     <string name="profileValueText_physique_sturdy">Stämmig</string>
     <string name="profileValueText_physique_littletummy">Kleiner Bauch</string>
     <string name="profileValueText_physique_chubby">Mollig</string>
-    
-    <string name="profileKeyText_eye_color">Augenfarbe</string>
-    <string name="profileValueText_eye_color_lightbrown">Hellbraun</string>
-    <string name="profileValueText_eye_color_darkbrown">Dunkelbraun</string>
-    <string name="profileValueText_eye_color_brown">Braun</string>
-    <string name="profileValueText_eye_color_lightblue">Hellblau</string>
-    <string name="profileValueText_eye_color_darkblue">Dunkelblau</string>
-    <string name="profileValueText_eye_color_blue">Blau</string>
-    <string name="profileValueText_eye_color_black">Schwarz</string>
-    <string name="profileValueText_eye_color_green">Grün</string>
-    <string name="profileValueText_eye_color_bluegrey">Blau-grau</string>
-    <string name="profileValueText_eye_color_bluegreen">Blau-grün</string>
-    <string name="profileValueText_eye_color_greenbrown">Grün-braun</string>
-    <string name="profileValueText_eye_color_greengrey">Grün-grau</string>
-    <string name="profileValueText_eye_color_grey">Grau</string>
-    
+
     <string name="profileKeyText_hair_color">Haarfarbe</string>
     <string name="profileValueText_hair_color_lightbrown">Hellbraun</string>
 	<string name="profileValueText_hair_color_darkbrown">Dunkelbraun</string>

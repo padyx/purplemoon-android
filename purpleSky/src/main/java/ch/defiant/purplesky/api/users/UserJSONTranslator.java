@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import ch.defiant.purplesky.api.common.JSONUtility;
 import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.BasicUser;
@@ -62,6 +63,7 @@ public class UserJSONTranslator {
         T user = UserUtility.instantiateUser(clazz);
 
         try {
+            // Check status first
             // 'status': string,
             if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_PROFILESTATUS)) {
                 String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_PROFILESTATUS);
@@ -73,125 +75,20 @@ public class UserJSONTranslator {
                 user.setProfileStatus(status);
             }
 
-            // 'profile_id': integer,
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID)) {
-                String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID);
-                user.setUserId(string);
-            }
-            // 'name': string,
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_NAME)) {
-                String name = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_NAME);
-                user.setUsername(name);
-            }
-
-            // 'gender': string,
-            Gender gender = null;
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_GENDER)) {
-                String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_GENDER);
-                gender = APIUtility.toGender(string);
-                user.setGender(gender);
-            }
-
-            // 'sexuality': string,
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY)) {
-                String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY);
-                user.setSexuality(APIUtility.toSexuality(string));
-            }
-
-            // 'age': integer,
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_AGE_INT)) {
-                int age = jsonUserObject.getInt(PurplemoonAPIConstantsV1.JSON_USER_AGE_INT);
-                user.setAge(age);
-            }
-            // 'verified': boolean,
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_VERIFIED_BOOL)) {
-                boolean verified = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_VERIFIED_BOOL);
-                user.setAgeVerified(verified);
-            }
-            // 'picture': url,
-            if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_PICTUREDIR_URL)) {
-                String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_PICTUREDIR_URL);
-                try {
-                    user.setProfilePictureURLDirectory(new URL(string));
-                } catch (MalformedURLException e) {
-                    Log.d(TAG, "Invalid picture base URL: '" + string + "'");
-                }
-            }
+            translateMinimalUserProperties(jsonUserObject, user);
 
             if (BasicUser.class.isAssignableFrom(clazz)) {
                 BasicUser basicUser = (BasicUser) user;
-
-                // 'noted': boolean,
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_HASNOTES_BOOL)) {
-                    boolean hasNotes = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_HASNOTES_BOOL);
-                    basicUser.setHasNotes(hasNotes);
-                }
-                // 'friend': boolean,
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ISFRIEND_BOOL)) {
-                    boolean isFriend = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_ISFRIEND_BOOL);
-                    basicUser.setFriend(isFriend);
-                }
-                // 'known': boolean,
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ISKNOWN)) {
-                    boolean isKnown = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_ISKNOWN);
-                    basicUser.setKnown(isKnown);
-                }
-                // 'notes': string,
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_NOTES)) {
-                    String notes = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_NOTES);
-                    basicUser.setNotes(notes);
-                }
-                // 'online_status': string,
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS)) {
-                    String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS);
-                    OnlineStatus status =  APIUtility.toOnlineStatus(string);
-                    basicUser.setOnlineStatus(status);
-                } else {
-                    basicUser.setOnlineStatus(OnlineStatus.OFFLINE);
-                }
-
-                // 'online_status_text': string,
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUSTEXT)) {
-                    String text = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUSTEXT);
-                    basicUser.setOnlineStatusText(text);
-                }
-                // 'online_since': timestamp
-                if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESINCE_TIMESTAMP)) {
-                    long timestamp = jsonUserObject.getLong(PurplemoonAPIConstantsV1.JSON_USER_ONLINESINCE_TIMESTAMP);
-                    basicUser.setOnlineSince(DateUtility.getFromUnixTime(timestamp));
-                }
+                translateBasicUserProperties(jsonUserObject, basicUser);
             }
 
             if (PreviewUser.class.isAssignableFrom(clazz)) {
                 PreviewUser previewUser = (PreviewUser) user;
-
-                // TODO Preview user needs to be implemented here (Occupation!)
-                Map<String, ProfileTriplet> details = translateToUserDetails(jsonUserObject);
-                addUserLocation(jsonUserObject, previewUser);
-                previewUser.setProfileDetails(details);
+                translatePreviewUserProperties(jsonUserObject, previewUser);
             }
 
             if(DetailedUser.class.isAssignableFrom(clazz)){
-                DetailedUser detailedUser = (DetailedUser) user;
-
-
-                JSONObject partnerInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_PARTNER);
-                if(partnerInformation != null){
-                    DetailedUser.RelationshipStatus status = ch.defiant.purplesky.api.users.APIUtility.translateToRelationshipStatus(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS, null));
-                    detailedUser.setRelationshipStatus(status);
-                }
-
-                if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP)){
-                    Map<Integer, String> map = new HashMap<>();
-                    JSONArray array = jsonUserObject.getJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP);
-                    for(int i=0; i<array.length(); i++){
-                        JSONObject obj = array.getJSONObject(i);
-                        int eventId = obj.getInt(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_ID);
-                        String eventText = obj.getString(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_TEXT);
-                        map.put(eventId, eventText);
-                    }
-                    detailedUser.setEventTmp(map);
-                }
+                translateDetailedUserProperties(jsonUserObject, (DetailedUser) user);
             }
 
         } catch (JSONException e) {
@@ -199,6 +96,147 @@ public class UserJSONTranslator {
             return null;
         }
         return user;
+    }
+
+    private static void translateMinimalUserProperties(JSONObject jsonUserObject, MinimalUser user) throws JSONException {
+        // 'profile_id': integer,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID)) {
+            String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID);
+            user.setUserId(string);
+        }
+        // 'name': string,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_NAME)) {
+            String name = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_NAME);
+            user.setUsername(name);
+        }
+
+        // 'gender': string,
+        Gender gender = null;
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_GENDER)) {
+            String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_GENDER);
+            gender = APIUtility.toGender(string);
+            user.setGender(gender);
+        }
+
+        // 'sexuality': string,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY)) {
+            String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_SEXUALITY);
+            user.setSexuality(APIUtility.toSexuality(string));
+        }
+
+        // 'age': integer,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_AGE_INT)) {
+            int age = jsonUserObject.getInt(PurplemoonAPIConstantsV1.JSON_USER_AGE_INT);
+            user.setAge(age);
+        }
+        // 'verified': boolean,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_VERIFIED_BOOL)) {
+            boolean verified = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_VERIFIED_BOOL);
+            user.setAgeVerified(verified);
+        }
+        // 'picture': url,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_PICTUREDIR_URL)) {
+            String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_PICTUREDIR_URL);
+            try {
+                user.setProfilePictureURLDirectory(new URL(string));
+            } catch (MalformedURLException e) {
+                Log.d(TAG, "Invalid picture base URL: '" + string + "'");
+            }
+        }
+    }
+
+    private static void translateBasicUserProperties(JSONObject jsonUserObject, BasicUser basicUser) throws JSONException {
+        // 'noted': boolean,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_HASNOTES_BOOL)) {
+            boolean hasNotes = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_HASNOTES_BOOL);
+            basicUser.setHasNotes(hasNotes);
+        }
+        // 'friend': boolean,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ISFRIEND_BOOL)) {
+            boolean isFriend = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_ISFRIEND_BOOL);
+            basicUser.setFriend(isFriend);
+        }
+        // 'known': boolean,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ISKNOWN)) {
+            boolean isKnown = jsonUserObject.getBoolean(PurplemoonAPIConstantsV1.JSON_USER_ISKNOWN);
+            basicUser.setKnown(isKnown);
+        }
+        // 'notes': string,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_NOTES)) {
+            String notes = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_NOTES);
+            basicUser.setNotes(notes);
+        }
+        // 'online_status': string,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS)) {
+            String string = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUS);
+            OnlineStatus status =  APIUtility.toOnlineStatus(string);
+            basicUser.setOnlineStatus(status);
+        } else {
+            basicUser.setOnlineStatus(OnlineStatus.OFFLINE);
+        }
+
+        // 'online_status_text': string,
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUSTEXT)) {
+            String text = jsonUserObject.getString(PurplemoonAPIConstantsV1.JSON_USER_ONLINESTATUSTEXT);
+            basicUser.setOnlineStatusText(text);
+        }
+        // 'online_since': timestamp
+        if (jsonUserObject.has(PurplemoonAPIConstantsV1.JSON_USER_ONLINESINCE_TIMESTAMP)) {
+            long timestamp = jsonUserObject.getLong(PurplemoonAPIConstantsV1.JSON_USER_ONLINESINCE_TIMESTAMP);
+            basicUser.setOnlineSince(DateUtility.getFromUnixTime(timestamp));
+        }
+    }
+
+    private static void translatePreviewUserProperties(JSONObject jsonUserObject, PreviewUser previewUser) {
+        previewUser.setHeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.HEIGHT, null));
+        previewUser.setWeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.WEIGHT, null));
+//        previewUser.setHairColor();
+//        previewUser.setHairLength();
+        previewUser.setEyeColor(APIUtility.translateToEyeColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR)));
+//        previewUser.setFacialHair();
+
+        // TODO Preview user needs to be implemented here (Occupation!)
+        Map<String, ProfileTriplet> details = translateToUserDetails(jsonUserObject);
+        addUserLocation(jsonUserObject, previewUser);
+        previewUser.setProfileDetails(details);
+
+    }
+
+    private static <T extends MinimalUser> void translateDetailedUserProperties(JSONObject jsonUserObject, DetailedUser user) throws JSONException {
+        DetailedUser detailedUser = user;
+
+        JSONObject partnerInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_PARTNER);
+        if(partnerInformation != null){
+            DetailedUser.RelationshipInformation info = new DetailedUser.RelationshipInformation();
+            info.setRelationshipStatus(APIUtility.translateToRelationshipStatus(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS, null))).
+                setMaximumDistance(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_MAXDISTANCE, null)).
+                setDesiredPartnerAgeFrom(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
+                setDesiredPartnerAgeTo(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
+                setText(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
+            detailedUser.setRelationShipInformation(info);
+        }
+
+        JSONObject friendshipInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS);
+        if(friendshipInformation != null){
+            DetailedUser.FriendshipInformation info = new DetailedUser.FriendshipInformation();
+            info.setMaximumDistance(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_MAXDISTANCE, null)).
+                    setDesiredPartnerAgeFrom(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
+                    setDesiredPartnerAgeTo(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
+                    setText(friendshipInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
+            detailedUser.setFriendshipInformation(info);
+        }
+
+        if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP)){
+            Map<Integer, String> map = new HashMap<>();
+            JSONArray array = jsonUserObject.getJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP);
+            for(int i=0; i<array.length(); i++){
+                JSONObject obj = array.getJSONObject(i);
+                int eventId = obj.getInt(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_ID);
+                String eventText = obj.getString(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_TEXT);
+                map.put(eventId, eventText);
+            }
+            detailedUser.setEventTmp(map);
+        }
     }
 
     private static void addUserLocation(JSONObject obj, PreviewUser user) {
