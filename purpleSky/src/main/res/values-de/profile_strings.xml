@@ -31,6 +31,21 @@
 	<string name="profile_physique_littletummy">Kleiner Bauch</string>
 	<string name="profile_physique_chubby">Mollig</string>
 
+	<string name="profile_facial_hair">Gesichtsbehaarung</string>
+	<string name="profile_facial_hair_none">Keine</string>
+	<string name="profile_facial_hair_shaved">Rasiert</string>
+	<string name="profile_facial_hair_threeday">Dreitagbart</string>
+	<string name="profile_facial_hair_mustache">Schnurrbart</string>
+	<string name="profile_facial_hair_petitgoatee">Kleiner Kinnbart</string>
+	<string name="profile_facial_hair_goatee">Kinnbart</string>
+	<string name="profile_facial_hair_muttonchops">Koteletten</string>
+	<string name="profile_facial_hair_fullbeard">Vollbart</string>
+
+	<string name="profile_hair_length">Haarlänge</string>
+	<string name="profile_hair_length_bald">Glatze</string>
+	<string name="profile_hair_length_short">Kurz</string>
+	<string name="profile_hair_length_medium">Mittel</string>
+	<string name="profile_hair_length_long">Lang</string>
 
 	<string name="profile_relationship">Beziehung</string>
     <string name="profile_date_last24h">In den letzten 24 Stunden</string>
@@ -41,6 +56,24 @@
     <string name="profile_locations_secondhome">Zweiter Wohnort</string>
     <string name="PersonallyKnown">Persönlich bekannt</string>
     <string name="MarkedAsFriend">Als Freund markiert</string>
+
+	<string name="profile_hair_color">Haarfarbe</string>
+	<string name="profile_hair_color_lightbrown">Hellbraun</string>
+	<string name="profile_hair_color_darkbrown">Dunkelbraun</string>
+	<string name="profile_hair_color_brown">Braun</string>
+	<string name="profile_hair_color_lightblonde">Hellblond</string>
+	<string name="profile_hair_color_darkblonde">Dunkelblond</string>
+	<string name="profile_hair_color_blonde">Blond</string>
+	<string name="profile_hair_color_black">Schwarz</string>
+	<string name="profile_hair_color_red">Rot</string>
+	<string name="profile_hair_color_lightgrey">Hellrot</string>
+	<string name="profile_hair_color_darkgrey">Dunkelgrau</string>
+	<string name="profile_hair_color_dyedred">Rot gefärbt</string>
+	<string name="profile_hair_color_dyedblack">Schwarz gefärbt</string>
+	<string name="profile_hair_color_dyedblue">Blau gefärbt</string>
+	<string name="profile_hair_color_dyedgreen">Grün gefärbt</string>
+	<string name="profile_hair_color_dyedblonde">Blond gefärbt</string>
+	<string name="profile_hair_color_dyedpurple">Violett gefärbt</string>
     
     <string name="profileGroup_General">Allgemein</string>
     <string name="profileKeyText_birthdate">Geburtsdatum</string>
@@ -48,8 +81,7 @@
     <string name="profileKeyText_nicknames">Spitznamen</string>
     <string name="profileKeyText_lastname">Nachname</string>
     <string name="profileKeyText_emailaddress">E-Mail</string>
-    
-    
+
     <string name="profileGroup_Body">Körper</string>
 	<string name="profileGroup_Beliefs">Überzeugungen</string>
 	<string name="profileGroup_ChatContactHomepage">Chats und Homepage</string>
@@ -57,40 +89,6 @@
 	<string name="profileGroup_GetToKnowAsPartner">Beziehung</string>
 	<string name="profileGroup_Occupation">Was ich mache</string>
 	<string name="profileGroup_AboutProfile">Über das Profil</string>
-
-    <string name="profileKeyText_hair_color">Haarfarbe</string>
-    <string name="profileValueText_hair_color_lightbrown">Hellbraun</string>
-	<string name="profileValueText_hair_color_darkbrown">Dunkelbraun</string>
-	<string name="profileValueText_hair_color_brown">Braun</string>
-	<string name="profileValueText_hair_color_lightblonde">Hellblond</string>
-	<string name="profileValueText_hair_color_darkblonde">Dunkelblond</string>
-	<string name="profileValueText_hair_color_blonde">Blond</string>
-	<string name="profileValueText_hair_color_black">Schwarz</string>
-	<string name="profileValueText_hair_color_red">Rot</string>
-	<string name="profileValueText_hair_color_lightgrey">Hellrot</string>
-	<string name="profileValueText_hair_color_darkgrey">Dunkelgrau</string>
-	<string name="profileValueText_hair_color_dyedred">Rot gefärbt</string>
-	<string name="profileValueText_hair_color_dyedblack">Schwarz gefärbt</string>
-	<string name="profileValueText_hair_color_dyedblue">Blau gefärbt</string>
-	<string name="profileValueText_hair_color_dyedgreen">Grün gefärbt</string>
-	<string name="profileValueText_hair_color_dyedblonde">Blond gefärbt</string>
-	<string name="profileValueText_hair_color_dyedpurple">Violett gefärbt</string>
-
-	<string name="profileKeyText_facialhair">Gesichtsbehaarung</string>
-	<string name="profileValueText_facial_hair_none">Keine</string>
-	<string name="profileValueText_facial_hair_shaved">Rasiert</string>
-	<string name="profileValueText_facial_hair_threeday">Dreitagbart</string>
-	<string name="profileValueText_facial_hair_mustache">Schnurrbart</string>
-	<string name="profileValueText_facial_hair_petitgoatee">Kleiner Kinnbart</string>
-	<string name="profileValueText_facial_hair_goatee">Kinnbart</string>
-	<string name="profileValueText_facial_hair_muttonchops">Koteletten</string>
-	<string name="profileValueText_facial_hair_fullbeard">Vollbart</string>
-	
-	<string name="profileKeyText_hair_length">Haarlänge</string>
-	<string name="profileValueText_hair_length_bald">Glatze</string>
-	<string name="profileValueText_hair_length_short">Kurz</string>
-	<string name="profileValueText_hair_length_medium">Mittel</string>
-	<string name="profileValueText_hair_length_long">Lang</string>
 	
 	<string name="profileKeyText_drinker">Alkoholkonsum</string>
 	<string name="profileValueText_drinker_never">Nie</string>

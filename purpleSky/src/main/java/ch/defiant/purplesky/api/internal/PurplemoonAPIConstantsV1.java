@@ -339,8 +339,39 @@ public class PurplemoonAPIConstantsV1 {
         public static final String EYE_COLOR_GREY = "grey";
 
         public static final String HAIR_COLOR = "hair_color";
+        public static final String HAIR_COLOR_LIGHTBROWN = "light-brown";
+        public static final String HAIR_COLOR_DARKBROWN =  "dark-brown";
+        public static final String HAIR_COLOR_BROWN =  "brown";
+        public static final String HAIR_COLOR_LIGHTBLONDE =  "light-blonde";
+        public static final String HAIR_COLOR_DARKBLONDE =  "dark-blonde";
+        public static final String HAIR_COLOR_BLONDE =  "blonde";
+        public static final String HAIR_COLOR_BLACK =  "black";
+        public static final String HAIR_COLOR_RED =  "red";
+        public static final String HAIR_COLOR_LIGHTGREY =  "light-grey";
+        public static final String HAIR_COLOR_DARKGREY =  "dark-grey";
+        public static final String HAIR_COLOR_DYEDRED =  "dyed-red";
+        public static final String HAIR_COLOR_DYEDBLACK =  "dyed-black";
+        public static final String HAIR_COLOR_DYEDBLUE =  "dyed-blue";
+        public static final String HAIR_COLOR_DYEDGREEN =  "dyed-green";
+        public static final String HAIR_COLOR_DYEDBLONDE =  "dyed-blonde";
+        public static final String HAIR_COLOR_DYEDPURPLE =  "dyed-purple";
+
         public static final String HAIR_LENGTH = "hair_length";
+        public static final String HAIR_LENGTH_BALD = "bald";
+        public static final String HAIR_LENGTH_SHORT = "short";
+        public static final String HAIR_LENGTH_MEDIUM = "medium";
+        public static final String HAIR_LENGTH_LONG = "long";
+
         public static final String FACIAL_HAIR = "facial_hair";
+        public static final String FACIAL_HAIR_NONE = "none";
+        public static final String FACIAL_HAIR_SHAVED = "shaved";
+        public static final String FACIAL_HAIR_THREEDAY = "three-day";
+        public static final String FACIAL_HAIR_MUSTACHE = "mustache";
+        public static final String FACIAL_HAIR_PETITGOATEE = "petit-goatee";
+        public static final String FACIAL_HAIR_GOATEE = "goatee";
+        public static final String FACIAL_HAIR_MUTTONCHOPS = "mutton-chops";
+        public static final String FACIAL_HAIR_FULLBEARD = "full-beard";
+
 
         public static final String OCCUPATION_LIST = "occupations";
 

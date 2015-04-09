@@ -15,9 +15,9 @@ public enum SearchCriteria {
     BMI(SearchCriteriaType.MIN_MAX_INT, true, 0), //XXX
     PHYSIQUE(SearchCriteriaType.LIST, true, R.string.profile_physique),
     EYE_COLOR(SearchCriteriaType.LIST, true, R.string.profile_eye_color),
-    HAIR_COLOR(SearchCriteriaType.LIST, true, R.string.profileKeyText_hair_color),
-    HAIR_LENGTH(SearchCriteriaType.LIST, true, R.string.profileKeyText_hair_length),
-    FACIAL_HAIR(SearchCriteriaType.LIST, true, R.string.profileKeyText_facialhair),
+    HAIR_COLOR(SearchCriteriaType.LIST, true, R.string.profile_hair_color),
+    HAIR_LENGTH(SearchCriteriaType.LIST, true, R.string.profile_hair_length),
+    FACIAL_HAIR(SearchCriteriaType.LIST, true, R.string.profile_facial_hair),
     DRINKER(SearchCriteriaType.LIST, true, R.string.profileKeyText_drinker),
     SMOKER(SearchCriteriaType.LIST, true, R.string.profileKeyText_smoker),
     VEGETARIAN(SearchCriteriaType.LIST, true, R.string.profileKeyText_vegetarian),

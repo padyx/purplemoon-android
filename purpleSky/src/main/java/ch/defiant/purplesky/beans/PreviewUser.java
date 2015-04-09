@@ -3,6 +3,9 @@ package ch.defiant.purplesky.beans;
 import java.util.Map;
 
 import ch.defiant.purplesky.enums.profile.EyeColor;
+import ch.defiant.purplesky.enums.profile.FacialHair;
+import ch.defiant.purplesky.enums.profile.HairColor;
+import ch.defiant.purplesky.enums.profile.HairLength;
 import ch.defiant.purplesky.enums.profile.Physique;
 
 public class PreviewUser extends BasicUser {
@@ -16,11 +19,11 @@ public class PreviewUser extends BasicUser {
     private Integer m_height;
     private Integer m_weight;
 
-    private Physique m_physique; // FIXME Enum
-    private EyeColor m_eyeColor; // FIXME Enum
-    private String m_hairColor; // FIXME Enum
-    private String m_hairLength; // FIXME Enum
-    private String m_facialHair;  // FIXME Enum
+    private Physique m_physique;
+    private EyeColor m_eyeColor;
+    private HairColor m_hairColor;
+    private HairLength m_hairLength;
+    private FacialHair m_facialHair;
     private String m_drinker;  // FIXME Enum
     private String m_smoker;  // FIXME Enum
     private String m_vegetarian;  // FIXME Enum
@@ -107,11 +110,11 @@ public class PreviewUser extends BasicUser {
         m_physique = physique;
     }
 
-    public String getHairColor() {
+    public HairColor getHairColor() {
         return m_hairColor;
     }
 
-    public void setHairColor(String hairColor) {
+    public void setHairColor(HairColor hairColor) {
         m_hairColor = hairColor;
     }
 
@@ -123,19 +126,19 @@ public class PreviewUser extends BasicUser {
         m_eyeColor = eyeColor;
     }
 
-    public String getHairLength() {
+    public HairLength getHairLength() {
         return m_hairLength;
     }
 
-    public void setHairLength(String hairLength) {
+    public void setHairLength(HairLength hairLength) {
         m_hairLength = hairLength;
     }
 
-    public String getFacialHair() {
+    public FacialHair getFacialHair() {
         return m_facialHair;
     }
 
-    public void setFacialHair(String facialHair) {
+    public void setFacialHair(FacialHair facialHair) {
         m_facialHair = facialHair;
     }
 

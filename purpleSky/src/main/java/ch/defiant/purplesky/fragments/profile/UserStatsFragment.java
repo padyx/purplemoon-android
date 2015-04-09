@@ -448,6 +448,15 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         if(user.getEyeColor() != null){
             createAndAddTableRow(sb, R.string.profile_eye_color, getString(user.getEyeColor().getStringResource()));
         }
+        if(user.getHairLength() != null){
+            createAndAddTableRow(sb, R.string.profile_hair_length, getString(user.getHairLength().getStringResource()));
+        }
+        if(user.getHairColor() != null){
+            createAndAddTableRow(sb, R.string.profile_hair_color, getString(user.getHairColor().getStringResource()));
+        }
+        if(user.getEyeColor() != null){
+            createAndAddTableRow(sb, R.string.profile_facial_hair, getString(user.getFacialHair().getStringResource()));
+        }
         if(sb.length() > 0){
             sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_body));
             sb.insert(0,"<table class='content_tables'>");

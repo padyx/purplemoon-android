@@ -15,7 +15,10 @@ import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
 import ch.defiant.purplesky.enums.profile.EyeColor;
+import ch.defiant.purplesky.enums.profile.FacialHair;
 import ch.defiant.purplesky.enums.profile.Gender;
+import ch.defiant.purplesky.enums.profile.HairColor;
+import ch.defiant.purplesky.enums.profile.HairLength;
 import ch.defiant.purplesky.enums.profile.Physique;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.enums.profile.Sexuality;
@@ -311,4 +314,91 @@ public final class APIUtility {
             throw new IllegalArgumentException("Unknown value for physique " + jsonString);
         }
     }
+
+    @Nullable
+    public static FacialHair translateToFacialHair(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_NONE.equals(jsonString)){
+            return FacialHair.NONE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_SHAVED.equals(jsonString)) {
+            return FacialHair.SHAVED;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_THREEDAY.equals(jsonString)) {
+            return FacialHair.THREE_DAY;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_MUSTACHE.equals(jsonString)) {
+            return FacialHair.MUSTACHE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_PETITGOATEE.equals(jsonString)) {
+            return FacialHair.PETIT_GOATEE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_GOATEE.equals(jsonString)) {
+            return FacialHair.GOATEE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_MUTTONCHOPS.equals(jsonString)) {
+            return FacialHair.MUTTON_CHOPS;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR_FULLBEARD.equals(jsonString)) {
+            return FacialHair.FULL_BEARD;
+        } else {
+            throw new IllegalArgumentException("Unknown value for facial hair " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static HairLength translateToHairLength(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH_BALD.equals(jsonString)){
+            return HairLength.BALD;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH_SHORT.equals(jsonString)) {
+            return HairLength.SHORT;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH_MEDIUM.equals(jsonString)) {
+            return HairLength.MEDIUM;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH_LONG.equals(jsonString)) {
+            return HairLength.LONG;
+        } else {
+            throw new IllegalArgumentException("Unknown value for hair length " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static HairColor translateToHairColor(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_LIGHTBROWN.equals(jsonString)){
+            return HairColor.LIGHT_BROWN;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DARKBROWN.equals(jsonString)){
+            return HairColor.DARK_BROWN;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_BROWN.equals(jsonString)){
+            return HairColor.BROWN;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_LIGHTBLONDE.equals(jsonString)){
+            return HairColor.LIGHT_BLONDE;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DARKBLONDE.equals(jsonString)){
+            return HairColor.DARK_BLONDE;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_BLONDE.equals(jsonString)){
+            return HairColor.BLONDE;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_BLACK.equals(jsonString)){
+            return HairColor.BLACK;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_RED.equals(jsonString)){
+            return HairColor.RED;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_LIGHTGREY.equals(jsonString)){
+            return HairColor.LIGHT_GREY;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DARKGREY.equals(jsonString)){
+            return HairColor.DARK_GREY;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DYEDRED.equals(jsonString)){
+            return HairColor.DYED_RED;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DYEDBLACK.equals(jsonString)){
+            return HairColor.DYED_BLACK;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DYEDBLUE.equals(jsonString)){
+            return HairColor.DYED_BLUE;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DYEDGREEN.equals(jsonString)) {
+            return HairColor.DYED_GREEN;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DYEDBLONDE.equals(jsonString)){
+            return HairColor.DYED_BLONDE;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR_DYEDPURPLE.equals(jsonString)){
+            return HairColor.DYED_PURPLE;
+        } else {
+            throw new IllegalArgumentException("Unknown value for hair length " + jsonString);
+        }
+    }
+
 }

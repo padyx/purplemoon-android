@@ -190,11 +190,11 @@ public class UserJSONTranslator {
     private static void translatePreviewUserProperties(JSONObject jsonUserObject, PreviewUser previewUser) {
         previewUser.setHeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.HEIGHT, null));
         previewUser.setWeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.WEIGHT, null));
-        previewUser.setPhysique(APIUtility.translateToPhysique(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE)));
-        //        previewUser.setHairColor();
-//        previewUser.setHairLength();
-        previewUser.setEyeColor(APIUtility.translateToEyeColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR)));
-//        previewUser.setFacialHair();
+        previewUser.setPhysique(APIUtility.translateToPhysique(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE, null)));
+        previewUser.setHairColor(APIUtility.translateToHairColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR, null)));
+                previewUser.setHairLength(APIUtility.translateToHairLength(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH, null)));
+        previewUser.setEyeColor(APIUtility.translateToEyeColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR, null)));
+        previewUser.setFacialHair(APIUtility.translateToFacialHair(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR, null)));
 
         // TODO Preview user needs to be implemented here (Occupation!)
         Map<String, ProfileTriplet> details = translateToUserDetails(jsonUserObject);

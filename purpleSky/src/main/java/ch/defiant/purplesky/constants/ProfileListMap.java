@@ -41,15 +41,14 @@ public final class ProfileListMap {
      */
     public final List<List<String>> GROUP_LIST_APIKEYS;
 
-    private final Set<String> SPECIAL = new HashSet<String>();
+    private final Set<String> SPECIAL = new HashSet<>();
 
     private ProfileListMap() {
-        GROUPS = new ArrayList<Integer>();
-        GROUP_LIST_APIKEYS = new ArrayList<List<String>>();
+        GROUPS = new ArrayList<>();
+        GROUP_LIST_APIKEYS = new ArrayList<>();
 
         // Groups
         GROUPS.add(R.string.profileGroup_General);
-        GROUPS.add(R.string.profileGroup_Body);
         GROUPS.add(R.string.profileGroup_Occupation);
         GROUPS.add(R.string.profileGroup_Beliefs);
         GROUPS.add(R.string.profileGroup_ChatContactHomepage);
@@ -58,7 +57,7 @@ public final class ProfileListMap {
         GROUPS.add(R.string.profileGroup_AboutProfile);
 
         // General info
-        ArrayList<String> generalList = new ArrayList<String>();
+        ArrayList<String> generalList = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(generalList);
         generalList.add(ProfileDetails.BIRTHDATE);
         generalList.add(ProfileDetails.FIRST_NAME);
@@ -66,19 +65,11 @@ public final class ProfileListMap {
         generalList.add(ProfileDetails.LAST_NAME);
         generalList.add(ProfileDetails.EMAIL_ADDRESS);
 
-        // Group: Body
-        ArrayList<String> bodyList = new ArrayList<String>();
-        GROUP_LIST_APIKEYS.add(bodyList);
-        bodyList.add(ProfileDetails.PHYSIQUE);
-        bodyList.add(ProfileDetails.HAIR_COLOR);
-        bodyList.add(ProfileDetails.HAIR_LENGTH);
-        bodyList.add(ProfileDetails.FACIAL_HAIR);
-
-        ArrayList<String> occupationlist = new ArrayList<String>();
+        ArrayList<String> occupationlist = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(occupationlist);
         occupationlist.add(ProfileDetails.OCCUPATION_LIST);
 
-        ArrayList<String> beliefList = new ArrayList<String>();
+        ArrayList<String> beliefList = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(beliefList);
         beliefList.add(ProfileDetails.RELIGION);
         beliefList.add(ProfileDetails.POLITICS);
@@ -88,22 +79,14 @@ public final class ProfileListMap {
         beliefList.add(ProfileDetails.WANTS_KIDS);
         beliefList.add(ProfileDetails.HAS_KIDS);
 
-        ArrayList<String> chatContactList = new ArrayList<String>();
+        ArrayList<String> chatContactList = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(chatContactList);
         chatContactList.add(ProfileDetails.CHATS_FREQUENCY);
         chatContactList.add(ProfileDetails.CHATS_WHICH);
         chatContactList.add(ProfileDetails.CHATS_NAMES);
         chatContactList.add(ProfileDetails.HOMEPAGE);
 
-        ArrayList<String> getToKnow = new ArrayList<String>();
-        GROUP_LIST_APIKEYS.add(getToKnow);
-        getToKnow.add(ProfileDetails.TARGET_FRIENDS);
-
-        ArrayList<String> getToKnowPartner = new ArrayList<String>();
-        GROUP_LIST_APIKEYS.add(getToKnowPartner);
-        getToKnowPartner.add(ProfileDetails.TARGET_PARTNER);
-
-        ArrayList<String> aboutProfile = new ArrayList<String>();
+        ArrayList<String> aboutProfile = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(aboutProfile);
         aboutProfile.add(ProfileDetails.PROFILE_LASTONLINE_DATE);
         aboutProfile.add(ProfileDetails.PROFILE_LASTUPDATE_DATE);

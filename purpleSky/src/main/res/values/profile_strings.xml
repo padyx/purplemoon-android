@@ -31,6 +31,22 @@
 	<string name="profile_physique_littletummy">Little tummy</string>
 	<string name="profile_physique_chubby">Chubby</string>
 
+	<string name="profile_facial_hair">Facial hair</string>
+	<string name="profile_facial_hair_none">None</string>
+	<string name="profile_facial_hair_shaved">Shaved</string>
+	<string name="profile_facial_hair_threeday">Three day</string>
+	<string name="profile_facial_hair_mustache">Moustache</string>
+	<string name="profile_facial_hair_petitgoatee">Small goatee</string>
+	<string name="profile_facial_hair_goatee">Goatee</string>
+	<string name="profile_facial_hair_muttonchops">Mutton Chops</string>
+	<string name="profile_facial_hair_fullbeard">Full beard</string>
+
+	<string name="profile_hair_length">Hair length</string>
+	<string name="profile_hair_length_bald">Bald</string>
+	<string name="profile_hair_length_short">Short</string>
+	<string name="profile_hair_length_medium">Medium</string>
+	<string name="profile_hair_length_long">Long</string>
+
 	<string name="profile_relationship">Relationship</string>
     <string name="profile_date_last24h">Within the last 24 hours</string>
     <string name="profile_header_events">Events</string>
@@ -57,39 +73,23 @@
 	<string name="profileGroup_Occupation">Occupation</string>
 	<string name="profileGroup_AboutProfile">About profile</string>
     
-    <string name="profileKeyText_hair_color">Hair color</string>
-    <string name="profileValueText_hair_color_lightbrown">Light-brown</string>
-	<string name="profileValueText_hair_color_darkbrown">Dark-brown</string>
-	<string name="profileValueText_hair_color_brown">Brown</string>
-	<string name="profileValueText_hair_color_lightblonde">Light-blonde</string>
-	<string name="profileValueText_hair_color_darkblonde">Dark-blonde</string>
-	<string name="profileValueText_hair_color_blonde">Blonde</string>
-	<string name="profileValueText_hair_color_black">Black</string>
-	<string name="profileValueText_hair_color_red">Red</string>
-	<string name="profileValueText_hair_color_lightgrey">Light-red</string>
-	<string name="profileValueText_hair_color_darkgrey">Dark-grey</string>
-	<string name="profileValueText_hair_color_dyedred">Dyed-red</string>
-	<string name="profileValueText_hair_color_dyedblack">Dyed-black</string>
-	<string name="profileValueText_hair_color_dyedblue">Dyed-blue</string>
-	<string name="profileValueText_hair_color_dyedgreen">Dyed-green</string>
-	<string name="profileValueText_hair_color_dyedblonde">Dyed-blonde</string>
-	<string name="profileValueText_hair_color_dyedpurple">Dyed-purple</string>
-
-	<string name="profileKeyText_facialhair">Facial hair</string>
-	<string name="profileValueText_facial_hair_none">None</string>
-	<string name="profileValueText_facial_hair_shaved">Shaved</string>
-	<string name="profileValueText_facial_hair_threeday">Three day</string>
-	<string name="profileValueText_facial_hair_mustache">Moustache</string>
-	<string name="profileValueText_facial_hair_petitgoatee">Small goatee</string>
-	<string name="profileValueText_facial_hair_goatee">Goatee</string>
-	<string name="profileValueText_facial_hair_muttonchops">Mutton Chops</string>
-	<string name="profileValueText_facial_hair_fullbeard">Full beard</string>
-	
-	<string name="profileKeyText_hair_length">Hair length</string>
-	<string name="profileValueText_hair_length_bald">Bald</string>
-	<string name="profileValueText_hair_length_short">Short</string>
-	<string name="profileValueText_hair_length_medium">Medium</string>
-	<string name="profileValueText_hair_length_long">Long</string>
+    <string name="profile_hair_color">Hair color</string>
+    <string name="profile_hair_color_lightbrown">Light-brown</string>
+	<string name="profile_hair_color_darkbrown">Dark-brown</string>
+	<string name="profile_hair_color_brown">Brown</string>
+	<string name="profile_hair_color_lightblonde">Light-blonde</string>
+	<string name="profile_hair_color_darkblonde">Dark-blonde</string>
+	<string name="profile_hair_color_blonde">Blonde</string>
+	<string name="profile_hair_color_black">Black</string>
+	<string name="profile_hair_color_red">Red</string>
+	<string name="profile_hair_color_lightgrey">Light-red</string>
+	<string name="profile_hair_color_darkgrey">Dark-grey</string>
+	<string name="profile_hair_color_dyedred">Dyed-red</string>
+	<string name="profile_hair_color_dyedblack">Dyed-black</string>
+	<string name="profile_hair_color_dyedblue">Dyed-blue</string>
+	<string name="profile_hair_color_dyedgreen">Dyed-green</string>
+	<string name="profile_hair_color_dyedblonde">Dyed-blonde</string>
+	<string name="profile_hair_color_dyedpurple">Dyed-purple</string>
 	
 	<string name="profileKeyText_drinker">Drinker</string>
 	<string name="profileValueText_drinker_never">Never</string>
