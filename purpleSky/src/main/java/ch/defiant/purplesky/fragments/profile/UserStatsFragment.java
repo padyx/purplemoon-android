@@ -32,6 +32,7 @@ import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NullUser;
+import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.ProfileTriplet;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
@@ -301,6 +302,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         StringBuilder details = createBodyTable(user);
         details.append(createDetailsTable(user));
         details.append(createRelationshipTable(user));
+        details.append(createBeliefTable(user));
         allTables.append(locationsTable);
         allTables.append(details);
         StringUtility.replace(sb, PLACEHOLDER_TABLES_ALL, allTables.toString());
@@ -454,7 +456,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         if(user.getHairColor() != null){
             createAndAddTableRow(sb, R.string.profile_hair_color, getString(user.getHairColor().getStringResource()));
         }
-        if(user.getEyeColor() != null){
+        if(user.getFacialHair() != null){
             createAndAddTableRow(sb, R.string.profile_facial_hair, getString(user.getFacialHair().getStringResource()));
         }
         if(sb.length() > 0){
@@ -498,6 +500,38 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
         // FIXME IMPLEMENT
 
+        return sb;
+    }
+
+    private StringBuilder createBeliefTable(PreviewUser user){
+        StringBuilder sb = new StringBuilder();
+
+        if (user.getDrinkerFrequency() != null){
+            createAndAddTableRow(sb, R.string.profile_drinker, getString(user.getDrinkerFrequency().getStringResource()));
+        }
+        if (user.getSmokerFrequency() != null){
+            createAndAddTableRow(sb, R.string.profile_smoker, getString(user.getSmokerFrequency().getStringResource()));
+        }
+        if (user.getReligion() != null){
+            createAndAddTableRow(sb, R.string.profile_religion, getString(user.getReligion().getStringResource()));
+        }
+        if (user.getPolitics() != null){
+            createAndAddTableRow(sb, R.string.profile_politics, getString(user.getPolitics().getStringResource()));
+        }
+        if (user.getVegetarian() != null){
+            createAndAddTableRow(sb, R.string.profile_vegetarian, getString(user.getVegetarian().getStringResource()));
+        }
+        if (user.getWantsKids() != null){
+            createAndAddTableRow(sb, R.string.profile_kids_want, getString(user.getWantsKids().getStringResource()));
+        }
+        if (user.getHasKids() != null){
+            createAndAddTableRow(sb, R.string.profile_kids_have, getString(user.getHasKids().getStringResource()));
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_beliefs));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
         return sb;
     }
 

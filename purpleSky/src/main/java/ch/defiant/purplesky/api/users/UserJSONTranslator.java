@@ -192,9 +192,16 @@ public class UserJSONTranslator {
         previewUser.setWeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.WEIGHT, null));
         previewUser.setPhysique(APIUtility.translateToPhysique(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE, null)));
         previewUser.setHairColor(APIUtility.translateToHairColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_COLOR, null)));
-                previewUser.setHairLength(APIUtility.translateToHairLength(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH, null)));
+        previewUser.setHairLength(APIUtility.translateToHairLength(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HAIR_LENGTH, null)));
         previewUser.setEyeColor(APIUtility.translateToEyeColor(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EYE_COLOR, null)));
         previewUser.setFacialHair(APIUtility.translateToFacialHair(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.FACIAL_HAIR, null)));
+        previewUser.setDrinkerFrequency(APIUtility.translateToDrinkerFrequency(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.DRINKER, null)));
+        previewUser.setSmokerFrequency(APIUtility.translateToSmoker(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER, null)));
+        previewUser.setVegetarian(APIUtility.translateToVegetarian(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.VEGETARIAN, null)));
+        previewUser.setWantsKids(APIUtility.translateToWantsKids(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.WANTS_KIDS, null)));
+        previewUser.setHasKids(APIUtility.translateToHasKids(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HAS_KIDS, null)));
+        previewUser.setReligion(APIUtility.translateToReligion(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.RELIGION, null)));
+        previewUser.setPolitics(APIUtility.translateToPolitics(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.POLITICS, null)));
 
         // TODO Preview user needs to be implemented here (Occupation!)
         Map<String, ProfileTriplet> details = translateToUserDetails(jsonUserObject);
@@ -204,8 +211,6 @@ public class UserJSONTranslator {
     }
 
     private static <T extends MinimalUser> void translateDetailedUserProperties(JSONObject jsonUserObject, DetailedUser user) throws JSONException {
-        DetailedUser detailedUser = user;
-
         JSONObject partnerInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_PARTNER);
         if(partnerInformation != null){
             DetailedUser.RelationshipInformation info = new DetailedUser.RelationshipInformation();
@@ -214,7 +219,7 @@ public class UserJSONTranslator {
                 setDesiredPartnerAgeFrom(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
                 setDesiredPartnerAgeTo(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
                 setText(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
-            detailedUser.setRelationShipInformation(info);
+            user.setRelationShipInformation(info);
         }
 
         JSONObject friendshipInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS);
@@ -224,7 +229,7 @@ public class UserJSONTranslator {
                     setDesiredPartnerAgeFrom(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
                     setDesiredPartnerAgeTo(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
                     setText(friendshipInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
-            detailedUser.setFriendshipInformation(info);
+            user.setFriendshipInformation(info);
         }
 
         if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP)){
@@ -236,7 +241,7 @@ public class UserJSONTranslator {
                 String eventText = obj.getString(PurplemoonAPIConstantsV1.ProfileDetails.EVENT_TEXT);
                 map.put(eventId, eventText);
             }
-            detailedUser.setEventTmp(map);
+            user.setEventTmp(map);
         }
     }
 

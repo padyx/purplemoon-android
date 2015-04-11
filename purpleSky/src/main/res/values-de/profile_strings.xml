@@ -4,8 +4,9 @@
 	<string name="profile_sectionHeader_getToKnow">Wen ich kennenlernen möchte</string>
 	<string name="profile_subsectionHeader_getToKnowPartner">Beziehung</string>
 	<string name="profile_subsectionHeader_getToKnowFriend">Freunde</string>
-
 	<string name="profile_sectionHeader_body">Body</string>
+	<string name="profile_sectionHeader_beliefs">Beliefs</string>
+
 
 	<string name="profile_eye_color">Augenfarbe</string>
 	<string name="profile_eye_color_lightbrown">Hellbraun</string>
@@ -74,8 +75,18 @@
 	<string name="profile_hair_color_dyedgreen">Grün gefärbt</string>
 	<string name="profile_hair_color_dyedblonde">Blond gefärbt</string>
 	<string name="profile_hair_color_dyedpurple">Violett gefärbt</string>
-    
-    <string name="profileGroup_General">Allgemein</string>
+
+	<string name="profile_smoker">Rauchen</string>
+	<string name="profile_smoker_jointsonly">Nur Joints</string>
+	<string name="profile_smoker_reallyalot">Sehr viel</string>
+	<string name="profile_smoker_alot">Viel</string>
+	<string name="profile_smoker_moderately">Mässig</string>
+	<string name="profile_smoker_onweekends">Am Wochenende</string>
+	<string name="profile_smoker_almostnever">Fast nie</string>
+	<string name="profile_smoker_never">Nie</string>
+
+
+	<string name="profileGroup_General">Allgemein</string>
     <string name="profileKeyText_birthdate">Geburtsdatum</string>
     <string name="profileKeyText_firstname">Vorname</string>
     <string name="profileKeyText_nicknames">Spitznamen</string>
@@ -90,69 +101,59 @@
 	<string name="profileGroup_Occupation">Was ich mache</string>
 	<string name="profileGroup_AboutProfile">Über das Profil</string>
 	
-	<string name="profileKeyText_drinker">Alkoholkonsum</string>
-	<string name="profileValueText_drinker_never">Nie</string>
-	<string name="profileValueText_drinker_seldom">Selten</string>
-	<string name="profileValueText_drinker_sometimes">Manchmal</string>
-	<string name="profileValueText_drinker_regularly">Regelmässig</string>
-	<string name="profileValueText_drinker_alot">Viel</string>
-	<string name="profileValueText_drinker_wineonly">Nur Wein</string>
-	
-	<string name="profileKeyText_smoker">Rauchen</string>
-	<string name="profileValueText_smoker_jointsonly">Nur Joints</string>
-	<string name="profileValueText_smoker_reallyalot">Sehr viel</string>
-	<string name="profileValueText_smoker_alot">Viel</string>
-	<string name="profileValueText_smoker_moderately">Mässig</string> 
-	<string name="profileValueText_smoker_onweekends">Am Wochenende</string>
-	<string name="profileValueText_smoker_almostnever">Fast nie</string>
-	<string name="profileValueText_smoker_never">Nie</string>
-	
-	<string name="profileKeyText_vegetarian">Vegetarier</string>
-	<string name="profileValueText_vegetarian_vegan">Veganer</string>
-	<string name="profileValueText_vegetarian_yes">Ja</string>
-	<string name="profileValueText_vegetarian_no">Nein</string>
-	
-	<string name="profileKeyText_kids_want">Will Kinder</string>
-	<string name="profileValueText_kids_want_unsure">Nicht sicher</string>
-	<string name="profileValueText_kids_want_yes">Ja</string>
-	<string name="profileValueText_kids_want_no">Nein</string>      
+	<string name="profile_drinker">Alkoholkonsum</string>
+	<string name="profile_drinker_never">Nie</string>
+	<string name="profile_drinker_seldom">Selten</string>
+	<string name="profile_drinker_sometimes">Manchmal</string>
+	<string name="profile_drinker_regularly">Regelmässig</string>
+	<string name="profile_drinker_alot">Viel</string>
+	<string name="profile_drinker_wineonly">Nur Wein</string>
 
-	<string name="profileKeyText_kids_have">Hat Kinder</string>
-	<string name="profileValueText_kids_have_none">Nein</string>
-	<string name="profileValueText_kids_have_one">Ja, eines</string>
-	<string name="profileValueText_kids_have_multiple">Ja, mehrere</string>
+	<string name="profile_vegetarian">Vegetarier</string>
+	<string name="profile_vegetarian_vegan">Veganer</string>
+	<string name="profile_vegetarian_yes">Ja</string>
+	<string name="profile_vegetarian_no">Nein</string>
 	
+	<string name="profile_kids_want">Will Kinder</string>
+	<string name="profile_kids_want_unsure">Nicht sicher</string>
+	<string name="profile_kids_want_yes">Ja</string>
+	<string name="profile_kids_want_no">Nein</string>
+
+	<string name="profile_kids_have">Hat Kinder</string>
+	<string name="profile_kids_have_none">Nein</string>
+	<string name="profile_kids_have_one">Ja, eines</string>
+	<string name="profile_kids_have_multiple">Ja, mehrere</string>
 	 
-	<string name="profileKeyText_religion">Religion</string>
-	<string name="profileValueText_religion_agnostic">Agnostisch</string>
-	<string name="profileValueText_religion_atheist">Atheistisch</string>
-	<string name="profileValueText_religion_romancatholic">Römisch-Katholisch</string>
-	<string name="profileValueText_religion_oldcatholic">Christ-Katholisch</string>
-	<string name="profileValueText_religion_evangelicalreformed">Evangelisch-Reformiert</string>
-	<string name="profileValueText_religion_protestant">Protestantisch</string>
-	<string name="profileValueText_religion_russianorthodox">Russisch-Orthodox</string>
-	<string name="profileValueText_religion_greekorthodox">Griechisch-Orthodox</string>
-	<string name="profileValueText_religion_jewishorthodox">Jüdisch-Orthodox</string>
-	<string name="profileValueText_religion_orthodox">Orthodox</string>
-	<string name="profileValueText_religion_christian">Christlich</string>
-	<string name="profileValueText_religion_freechurch">Freikriche</string>
-	<string name="profileValueText_religion_folkreligion">Naturreligion</string>
-	<string name="profileValueText_religion_hindu">Hindu</string>
-	<string name="profileValueText_religion_sunnite">Sunnitisch</string>
-	<string name="profileValueText_religion_shiite">Shiitisch</string>
-	<string name="profileValueText_religion_jewish">Jüdisch</string>
-	<string name="profileValueText_religion_buddhist">Buddhistisch</string>
-	<string name="profileValueText_religion_shinto">Shinto</string>
-	<string name="profileValueText_religion_spiritual">Spirituell</string>
-	<string name="profileValueText_religion_other">Andere</string>
+	<string name="profile_religion">Religion</string>
+	<string name="profile_religion_agnostic">Agnostisch</string>
+	<string name="profile_religion_atheist">Atheistisch</string>
+	<string name="profile_religion_romancatholic">Römisch-Katholisch</string>
+	<string name="profile_religion_oldcatholic">Christ-Katholisch</string>
+	<string name="profile_religion_evangelicalreformed">Evangelisch-Reformiert</string>
+	<string name="profile_religion_protestant">Protestantisch</string>
+	<string name="profile_religion_russianorthodox">Russisch-Orthodox</string>
+	<string name="profile_religion_greekorthodox">Griechisch-Orthodox</string>
+	<string name="profile_religion_jewishorthodox">Jüdisch-Orthodox</string>
+	<string name="profile_religion_orthodox">Orthodox</string>
+	<string name="profile_religion_christian">Christlich</string>
+	<string name="profile_religion_freechurch">Freikriche</string>
+	<string name="profile_religion_folkreligion">Naturreligion</string>
+	<string name="profile_religion_hindu">Hindu</string>
+	<string name="profile_religion_sunnite">Sunnitisch</string>
+	<string name="profile_religion_shiite">Shiitisch</string>
+	<string name="profile_religion_jewish">Jüdisch</string>
+	<string name="profile_religion_buddhist">Buddhistisch</string>
+	<string name="profile_religion_shinto">Shinto</string>
+	<string name="profile_religion_spiritual">Spirituell</string>
+	<string name="profile_religion_other">Andere</string>
 
-	<string name="profileKeyText_politics">Politik</string>
-	<string name="profileValueText_politics_nointerest">Kein Interesse</string>
-	<string name="profileValueText_politics_right">Rechts</string>
-	<string name="profileValueText_politics_middleright">Mitte-rechts</string>
-	<string name="profileValueText_politics_middle">Mitte</string>
-	<string name="profileValueText_politics_middleleft">Mitte-links</string>
-	<string name="profileValueText_politics_left">Links</string>
+	<string name="profile_politics">Politik</string>
+	<string name="profile_politics_nointerest">Kein Interesse</string>
+	<string name="profile_politics_right">Rechts</string>
+	<string name="profile_politics_middleright">Mitte-rechts</string>
+	<string name="profile_politics_middle">Mitte</string>
+	<string name="profile_politics_middleleft">Mitte-links</string>
+	<string name="profile_politics_left">Links</string>
 	
 	<string name="profileKeyText_chat_names">Chatnamen</string>
 	<string name="profileKeyText_which_chats">Chats</string>

@@ -14,14 +14,21 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
+import ch.defiant.purplesky.enums.profile.DrinkerFrequency;
 import ch.defiant.purplesky.enums.profile.EyeColor;
 import ch.defiant.purplesky.enums.profile.FacialHair;
 import ch.defiant.purplesky.enums.profile.Gender;
 import ch.defiant.purplesky.enums.profile.HairColor;
 import ch.defiant.purplesky.enums.profile.HairLength;
+import ch.defiant.purplesky.enums.profile.HasKids;
 import ch.defiant.purplesky.enums.profile.Physique;
+import ch.defiant.purplesky.enums.profile.Politics;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
+import ch.defiant.purplesky.enums.profile.Religion;
 import ch.defiant.purplesky.enums.profile.Sexuality;
+import ch.defiant.purplesky.enums.profile.SmokerFrequency;
+import ch.defiant.purplesky.enums.profile.Vegetarian;
+import ch.defiant.purplesky.enums.profile.WantsKids;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -398,6 +405,173 @@ public final class APIUtility {
             return HairColor.DYED_PURPLE;
         } else {
             throw new IllegalArgumentException("Unknown value for hair length " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static DrinkerFrequency translateToDrinkerFrequency(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.DRINKER_NEVER.equals(jsonString)){
+            return DrinkerFrequency.NEVER;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.DRINKER_SELDOM.equals(jsonString)){
+            return DrinkerFrequency.SELDOM;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.DRINKER_SOMEIMES.equals(jsonString)){
+            return DrinkerFrequency.SOMETIMES;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.DRINKER_REGULARLY.equals(jsonString)){
+            return DrinkerFrequency.REGULARLY;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.DRINKER_A_LOT.equals(jsonString)){
+            return DrinkerFrequency.A_LOT;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.DRINKER_WINE_ONLY.equals(jsonString)){
+            return DrinkerFrequency.WINE_ONLY;
+        }  else {
+            throw new IllegalArgumentException("Unknown value for drinker frequency " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static SmokerFrequency translateToSmoker(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_NEVER.equals(jsonString)){
+            return SmokerFrequency.NEVER;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_ALMOST_NEVER.equals(jsonString)){
+            return SmokerFrequency.ALMOST_NEVER;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_ONWEEKENDS.equals(jsonString)){
+            return SmokerFrequency.ON_WEEKENDS;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_MODERATELY.equals(jsonString)){
+            return SmokerFrequency.MODERATELY;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_A_LOT.equals(jsonString)){
+            return SmokerFrequency.A_LOT;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_REALLY_A_LOT.equals(jsonString)){
+            return SmokerFrequency.REALlY_A_LOT;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.SMOKER_JOINTS_ONLY.equals(jsonString)){
+            return SmokerFrequency.JOINTS_ONLY;
+        }  else {
+            throw new IllegalArgumentException("Unknown value for smoker frequency " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static Vegetarian translateToVegetarian(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.VEGETARIAN_YES.equals(jsonString)){
+            return Vegetarian.YES;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.VEGETARIAN_NO.equals(jsonString)){
+            return Vegetarian.NO;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.VEGETARIAN_VEGAN.equals(jsonString)){
+            return Vegetarian.VEGAN;
+        } else {
+            throw new IllegalArgumentException("Unknown value for vegetarian " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static HasKids translateToHasKids(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.HAS_KIDS_ONE.equals(jsonString)){
+            return HasKids.ONE;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.HAS_KIDS_MULTIPLE.equals(jsonString)){
+            return HasKids.MULTIPLE;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.HAS_KIDS_NONE.equals(jsonString)){
+            return HasKids.NONE;
+        } else {
+            throw new IllegalArgumentException("Unknown value for hasKids " + jsonString);
+        }
+    }
+    @Nullable
+    public static WantsKids translateToWantsKids(@Nullable String jsonString){
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.WANTS_KIDS_YES.equals(jsonString)){
+            return WantsKids.YES;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.WANTS_KIDS_NO.equals(jsonString)){
+            return WantsKids.NO;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.WANTS_KIDS_UNSURE.equals(jsonString)){
+            return WantsKids.UNSURE;
+        } else {
+            throw new IllegalArgumentException("Unknown value for wantsKids " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static Religion translateToReligion(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_AGNOSTIC.equals(jsonString)) {
+            return Religion.AGNOSTIC;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_ATHEIST.equals(jsonString)) {
+            return Religion.ATHEIST;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_ROMAN_CATHOLIC.equals(jsonString)) {
+            return Religion.ROMAN_CATHOLIC;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_OLD_CATHOLIC.equals(jsonString)) {
+            return Religion.OLD_CATHOLIC;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_EVANGELICAL_REFORMED.equals(jsonString)) {
+            return Religion.EVANGELICAL_REFORMED;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_PROTESTANT.equals(jsonString)) {
+            return Religion.PROTESTANT;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_RUSSIAN_ORTHODOX.equals(jsonString)) {
+            return Religion.ORTHODOX;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_GREEK_ORTHODOX.equals(jsonString)) {
+            return Religion.GREEK_ORTHODOX;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_JEWISH_ORTHODOX.equals(jsonString)) {
+            return Religion.JEWISH_ORTHODOX;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_ORTHODOX.equals(jsonString)) {
+            return Religion.ORTHODOX;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_CHRISTIAN.equals(jsonString)) {
+            return Religion.CHRISTIAN;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_FREECHURCH.equals(jsonString)) {
+            return Religion.FREE_CHURCH;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_FOLK_RELIGION.equals(jsonString)) {
+            return Religion.FOLK_RELIGION;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_HINDU.equals(jsonString)) {
+            return Religion.HINDU;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_SUNNITE.equals(jsonString)) {
+            return Religion.SUNNITE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_SHIITE.equals(jsonString)) {
+            return Religion.SHIITE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_JEWISH.equals(jsonString)) {
+            return Religion.JEWISH;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_BUDDHIST.equals(jsonString)) {
+            return Religion.BUDDHIST;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_SHINTO.equals(jsonString)) {
+            return Religion.SHINTO;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_SPIRITUAL.equals(jsonString)) {
+            return Religion.SPIRITUAL;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.RELIGION_OTHER.equals(jsonString)) {
+            return Religion.OTHER;
+        } else {
+            throw new IllegalArgumentException("Unknown value for wantsKids " + jsonString);
+        }
+    }
+
+    @Nullable
+    public static Politics translateToPolitics(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if (PurplemoonAPIConstantsV1.ProfileDetails.POLITICS_LEFT.equals(jsonString)) {
+            return Politics.LEFT;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.POLITICS_MIDDLELEFT.equals(jsonString)) {
+            return Politics.MIDDLE_LEFT;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.POLITICS_MIDDLE.equals(jsonString)) {
+            return Politics.MIDDLE;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.POLITICS_MIDDLERIGHT.equals(jsonString)) {
+            return Politics.MIDDLE_RIGHT;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.POLITIC_RIGHT.equals(jsonString)) {
+            return Politics.RIGHT;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.POLITIC_NOINTEREST.equals(jsonString)) {
+            return Politics.NO_INTEREST;
+        } else {
+            throw new IllegalArgumentException("Unknown value for politics " + jsonString);
         }
     }
 

@@ -2,11 +2,18 @@ package ch.defiant.purplesky.beans;
 
 import java.util.Map;
 
+import ch.defiant.purplesky.enums.profile.DrinkerFrequency;
 import ch.defiant.purplesky.enums.profile.EyeColor;
 import ch.defiant.purplesky.enums.profile.FacialHair;
 import ch.defiant.purplesky.enums.profile.HairColor;
 import ch.defiant.purplesky.enums.profile.HairLength;
+import ch.defiant.purplesky.enums.profile.HasKids;
 import ch.defiant.purplesky.enums.profile.Physique;
+import ch.defiant.purplesky.enums.profile.Politics;
+import ch.defiant.purplesky.enums.profile.Religion;
+import ch.defiant.purplesky.enums.profile.SmokerFrequency;
+import ch.defiant.purplesky.enums.profile.Vegetarian;
+import ch.defiant.purplesky.enums.profile.WantsKids;
 
 public class PreviewUser extends BasicUser {
 
@@ -24,13 +31,13 @@ public class PreviewUser extends BasicUser {
     private HairColor m_hairColor;
     private HairLength m_hairLength;
     private FacialHair m_facialHair;
-    private String m_drinker;  // FIXME Enum
-    private String m_smoker;  // FIXME Enum
-    private String m_vegetarian;  // FIXME Enum
-    private String m_wantsKids;  // FIXME Enum
-    private String m_hasKids;  // FIXME Enum
-    private String m_religion;  // FIXME Enum
-    private String m_politics;  // FIXME Enum
+    private DrinkerFrequency m_drinkerfrequency;
+    private SmokerFrequency m_smokerFrequency;
+    private Vegetarian m_vegetarian;
+    private WantsKids m_wantsKids;
+    private HasKids m_hasKids;
+    private Religion m_religion;
+    private Politics m_politics;
 
     public String getFirstOccupationType() {
         return m_firstOccupationType;
@@ -142,4 +149,59 @@ public class PreviewUser extends BasicUser {
         m_facialHair = facialHair;
     }
 
+    public void setDrinkerFrequency(DrinkerFrequency drinkerFrequency){
+        m_drinkerfrequency = drinkerFrequency;
+    }
+
+    public DrinkerFrequency getDrinkerFrequency(){
+        return m_drinkerfrequency;
+    }
+
+    public SmokerFrequency getSmokerFrequency(){
+        return m_smokerFrequency;
+    }
+
+    public void setSmokerFrequency(SmokerFrequency smokerFrequency){
+        m_smokerFrequency = smokerFrequency;
+    }
+
+    public Vegetarian getVegetarian(){
+        return m_vegetarian;
+    }
+
+    public void setVegetarian(Vegetarian vegetarian){
+        m_vegetarian = vegetarian;
+    }
+
+    public void setWantsKids(WantsKids wantsKids){
+        m_wantsKids = wantsKids;
+    }
+
+    public WantsKids getWantsKids(){
+        return m_wantsKids;
+    }
+
+    public void setHasKids(HasKids wantsKids){
+        m_hasKids = wantsKids;
+    }
+
+    public HasKids getHasKids(){
+        return m_hasKids;
+    }
+
+    public Religion getReligion(){
+        return m_religion;
+    }
+
+    public void setReligion(Religion religion){
+        m_religion = religion;
+    }
+
+    public Politics getPolitics() {
+        return m_politics;
+    }
+
+    public void setPolitics(Politics politics) {
+        m_politics = politics;
+    }
 }

@@ -372,16 +372,70 @@ public class PurplemoonAPIConstantsV1 {
         public static final String FACIAL_HAIR_MUTTONCHOPS = "mutton-chops";
         public static final String FACIAL_HAIR_FULLBEARD = "full-beard";
 
+        public static final String DRINKER = "drinker";
+        public static final String DRINKER_NEVER = "never";
+        public static final String DRINKER_SELDOM = "seldom";
+        public static final String DRINKER_SOMEIMES = "sometimes";
+        public static final String DRINKER_REGULARLY = "regularly";
+        public static final String DRINKER_A_LOT = "a-lot";
+        public static final String DRINKER_WINE_ONLY = "wine-only";
 
         public static final String OCCUPATION_LIST = "occupations";
 
-        public static final String RELIGION = "religion";
-        public static final String POLITICS = "politics";
-        public static final String DRINKER = "drinker";
         public static final String SMOKER = "smoker";
+        public static final String SMOKER_JOINTS_ONLY  = "joints-only";
+        public static final String SMOKER_REALLY_A_LOT  = "really-a-lot";
+        public static final String SMOKER_A_LOT  = "a-lot";
+        public static final String SMOKER_MODERATELY  = "moderately";
+        public static final String SMOKER_ONWEEKENDS  = "on-weekends";
+        public static final String SMOKER_ALMOST_NEVER  = "almost-never";
+        public static final String SMOKER_NEVER  = "never";
+
         public static final String VEGETARIAN = "vegeterian";
-        public static final String WANTS_KIDS = "kidswant";
-        public static final String HAS_KIDS = "kidshave";
+        public static final String VEGETARIAN_YES = "yes";
+        public static final String VEGETARIAN_NO = "no";
+        public static final String VEGETARIAN_VEGAN = "vegan";
+
+        public static final String WANTS_KIDS = "kids_want";
+        public static final String WANTS_KIDS_YES = "yes";
+        public static final String WANTS_KIDS_NO = "no";
+        public static final String WANTS_KIDS_UNSURE = "unsure";
+
+        public static final String HAS_KIDS = "kids_have";
+        public static final String HAS_KIDS_NONE = "none";
+        public static final String HAS_KIDS_ONE = "one";
+        public static final String HAS_KIDS_MULTIPLE = "multiple";
+
+        public static final String RELIGION = "religion";
+        public static final String RELIGION_AGNOSTIC = "agnostic";
+        public static final String RELIGION_ATHEIST = "atheist";
+        public static final String RELIGION_ROMAN_CATHOLIC = "roman-catholic";
+        public static final String RELIGION_OLD_CATHOLIC = "old-catholic";
+        public static final String RELIGION_EVANGELICAL_REFORMED = "evangelical-reformed";
+        public static final String RELIGION_PROTESTANT = "protestant";
+        public static final String RELIGION_RUSSIAN_ORTHODOX = "russian-orthodox";
+        public static final String RELIGION_GREEK_ORTHODOX = "greek-orthodox";
+        public static final String RELIGION_JEWISH_ORTHODOX = "jewish-orthodox";
+        public static final String RELIGION_ORTHODOX = "orthodox";
+        public static final String RELIGION_CHRISTIAN = "christian";
+        public static final String RELIGION_FREECHURCH = "free-church";
+        public static final String RELIGION_FOLK_RELIGION = "folk-religion";
+        public static final String RELIGION_HINDU = "hindu";
+        public static final String RELIGION_SUNNITE = "sunnite";
+        public static final String RELIGION_SHIITE = "shiite";
+        public static final String RELIGION_JEWISH = "jewish";
+        public static final String RELIGION_BUDDHIST = "buddhist";
+        public static final String RELIGION_SHINTO = "shinto";
+        public static final String RELIGION_SPIRITUAL = "spiritual";
+        public static final String RELIGION_OTHER = "other";
+
+        public static final String POLITICS = "politics";
+        public static final String POLITIC_NOINTEREST = "no-interest";
+        public static final String POLITIC_RIGHT = "right";
+        public static final String POLITICS_MIDDLERIGHT = "middle-right";
+        public static final String POLITICS_MIDDLE = "middle";
+        public static final String POLITICS_MIDDLELEFT = "middle-left";
+        public static final String POLITICS_LEFT = "left";
 
         public static final String CHATS_FREQUENCY = "chat_frequency";
         public static final String CHATS_WHICH = "which_chats";

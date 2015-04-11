@@ -50,10 +50,7 @@ public final class ProfileListMap {
         // Groups
         GROUPS.add(R.string.profileGroup_General);
         GROUPS.add(R.string.profileGroup_Occupation);
-        GROUPS.add(R.string.profileGroup_Beliefs);
         GROUPS.add(R.string.profileGroup_ChatContactHomepage);
-        GROUPS.add(R.string.profileGroup_GetToKnow);
-        GROUPS.add(R.string.profileGroup_GetToKnowAsPartner);
         GROUPS.add(R.string.profileGroup_AboutProfile);
 
         // General info
@@ -68,16 +65,6 @@ public final class ProfileListMap {
         ArrayList<String> occupationlist = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(occupationlist);
         occupationlist.add(ProfileDetails.OCCUPATION_LIST);
-
-        ArrayList<String> beliefList = new ArrayList<>();
-        GROUP_LIST_APIKEYS.add(beliefList);
-        beliefList.add(ProfileDetails.RELIGION);
-        beliefList.add(ProfileDetails.POLITICS);
-        beliefList.add(ProfileDetails.DRINKER);
-        beliefList.add(ProfileDetails.SMOKER);
-        beliefList.add(ProfileDetails.VEGETARIAN);
-        beliefList.add(ProfileDetails.WANTS_KIDS);
-        beliefList.add(ProfileDetails.HAS_KIDS);
 
         ArrayList<String> chatContactList = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(chatContactList);
