@@ -216,8 +216,8 @@ public class UserJSONTranslator {
             DetailedUser.RelationshipInformation info = new DetailedUser.RelationshipInformation();
             info.setRelationshipStatus(APIUtility.translateToRelationshipStatus(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS, null))).
                 setMaximumDistance(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_MAXDISTANCE, null)).
-                setDesiredPartnerAgeFrom(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
-                setDesiredPartnerAgeTo(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
+                    setDesiredAgeFrom(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
+                    setDesiredAgeTill(JSONUtility.optInt(partnerInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
                 setText(partnerInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
             user.setRelationShipInformation(info);
         }
@@ -226,8 +226,8 @@ public class UserJSONTranslator {
         if(friendshipInformation != null){
             DetailedUser.FriendshipInformation info = new DetailedUser.FriendshipInformation();
             info.setMaximumDistance(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_MAXDISTANCE, null)).
-                    setDesiredPartnerAgeFrom(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
-                    setDesiredPartnerAgeTo(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
+                    setDesiredAgeFrom(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
+                    setDesiredAgeTill(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
                     setText(friendshipInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
             user.setFriendshipInformation(info);
         }

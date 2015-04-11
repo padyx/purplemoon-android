@@ -48,8 +48,8 @@ public class DetailedUser extends PreviewUser {
         private static final long serialVersionUID = 1L;
 
         private String m_text;
-        private Integer m_desiredPartnerAgeFrom;
-        private Integer m_desiredPartnerAgeTo;
+        private Integer m_desiredAgeFrom;
+        private Integer m_desiredAgeTill;
         private Integer m_maximumDistance;
 
         public String getText() {
@@ -61,21 +61,21 @@ public class DetailedUser extends PreviewUser {
             return this;
         }
 
-        public Integer getDesiredPartnerAgeFrom() {
-            return m_desiredPartnerAgeFrom;
+        public Integer getDesiredAgeFrom() {
+            return m_desiredAgeFrom;
         }
 
-        public FriendshipInformation setDesiredPartnerAgeFrom(Integer desiredPartnerAgeFrom) {
-            this.m_desiredPartnerAgeFrom = desiredPartnerAgeFrom;
+        public FriendshipInformation setDesiredAgeFrom(Integer desiredAgeFrom) {
+            this.m_desiredAgeFrom = desiredAgeFrom;
             return this;
         }
 
-        public Integer getDesiredPartnerAgeTo() {
-            return m_desiredPartnerAgeTo;
+        public Integer getDesiredAgeTill() {
+            return m_desiredAgeTill;
         }
 
-        public FriendshipInformation setDesiredPartnerAgeTo(Integer desiredPartnerAgeTo) {
-            this.m_desiredPartnerAgeTo = desiredPartnerAgeTo;
+        public FriendshipInformation setDesiredAgeTill(Integer desiredAgeTill) {
+            this.m_desiredAgeTill = desiredAgeTill;
             return this;
         }
 

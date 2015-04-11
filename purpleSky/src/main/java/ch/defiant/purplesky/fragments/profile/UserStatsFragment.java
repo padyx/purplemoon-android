@@ -301,7 +301,19 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
         StringBuilder details = createBodyTable(user);
         details.append(createDetailsTable(user));
-        details.append(createRelationshipTable(user));
+
+        StringBuilder relationshipTable = createRelationshipTable(user);
+        StringBuilder friendshipTable = createFriendshipTable(user);
+        if(relationshipTable.length() > 0 || friendshipTable.length() > 0){
+            details.append(createHeader(getResources(), R.string.profile_sectionHeader_getToKnow));
+            if(relationshipTable.length() > 0) {
+                details.append(relationshipTable);
+            }
+            if(friendshipTable.length() > 0){
+                details.append(friendshipTable);
+            }
+        }
+
         details.append(createBeliefTable(user));
         allTables.append(locationsTable);
         allTables.append(details);
@@ -474,21 +486,10 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             if (relationshipInfo.getRelationshipStatus() != null){
                 createAndAddTableRow(sb, R.string.RelationshipStatus, getString(relationshipInfo.getRelationshipStatus().getStringResource()));
             }
-            if (relationshipInfo.getDesiredPartnerAgeFrom() != null){
-                createAndAddTableRow(sb, R.string.MinimumAge, String.valueOf(relationshipInfo.getDesiredPartnerAgeFrom()));
-            }
-            if (relationshipInfo.getDesiredPartnerAgeTo() != null){
-                createAndAddTableRow(sb, R.string.MaximumAge, String.valueOf(relationshipInfo.getDesiredPartnerAgeTo()));
-            }
-            if (relationshipInfo.getMaximumDistance() != null){
-                createAndAddTableRow(sb, R.string.MaxDistance, String.valueOf(relationshipInfo.getMaximumDistance()));
-            }
-            if(StringUtility.isNotNullOrEmpty(relationshipInfo.getText())){
-                createAndAddSpanningTableRow(sb, relationshipInfo.getText());
-            }
+            addFriendshipInformation(sb, relationshipInfo);
         }
         if(sb.length() > 0){
-            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_getToKnow)); // FIXME Add partner header
+            sb.insert(0, createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_getToKnowPartner));
             sb.insert(0,"<table class='content_tables'>");
             sb.append("</table>\n");
         }
@@ -497,10 +498,31 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
     private StringBuilder createFriendshipTable(DetailedUser user){
         StringBuilder sb = new StringBuilder();
-
-        // FIXME IMPLEMENT
-
+        if(user.getFriendshipInformation() != null){
+            DetailedUser.FriendshipInformation friendshipInfo = user.getFriendshipInformation();
+            addFriendshipInformation(sb, friendshipInfo);
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_getToKnowFriend));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
         return sb;
+    }
+
+    private void addFriendshipInformation(StringBuilder sb, DetailedUser.FriendshipInformation relationshipInfo) {
+        if (relationshipInfo.getDesiredAgeFrom() != null){
+            createAndAddTableRow(sb, R.string.MinimumAge, String.valueOf(relationshipInfo.getDesiredAgeFrom()));
+        }
+        if (relationshipInfo.getDesiredAgeTill() != null){
+            createAndAddTableRow(sb, R.string.MaximumAge, String.valueOf(relationshipInfo.getDesiredAgeTill()));
+        }
+        if (relationshipInfo.getMaximumDistance() != null){
+            createAndAddTableRow(sb, R.string.MaxDistance, String.valueOf(relationshipInfo.getMaximumDistance()));
+        }
+        if(StringUtility.isNotNullOrEmpty(relationshipInfo.getText())){
+            createAndAddSpanningTableRow(sb, relationshipInfo.getText());
+        }
     }
 
     private StringBuilder createBeliefTable(PreviewUser user){
@@ -645,6 +667,18 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
     private StringBuilder createHeader(String header) {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class='section_header'>");
+        sb.append(header);
+        sb.append("</div>");
+        return sb;
+    }
+
+    private StringBuilder createSubsectionHeader(final Resources resources, int titleResId) {
+        return createSubsectionHeader(resources.getString(titleResId));
+    }
+
+    private StringBuilder createSubsectionHeader(String header) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class='subsection_header'>");
         sb.append(header);
         sb.append("</div>");
         return sb;
