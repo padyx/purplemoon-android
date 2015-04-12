@@ -14,7 +14,7 @@ public enum EyeColor {
     BROWN(R.string.profile_eye_color_brown),
     LIGHTBLUE(R.string.profile_eye_color_lightblue),
     DARKBLUE(R.string.profile_eye_color_darkblue),
-    BLUE(R.string.profile_eye_color_darkblue),
+    BLUE(R.string.profile_eye_color_blue),
     BLACK(R.string.profile_eye_color_black),
     GREEN(R.string.profile_eye_color_green),
     BLUEGREY(R.string.profile_eye_color_bluegrey),

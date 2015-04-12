@@ -14,7 +14,7 @@ public enum FacialHair {
     MUSTACHE(R.string.profile_facial_hair_mustache),
     PETIT_GOATEE(R.string.profile_facial_hair_petitgoatee),
     GOATEE(R.string.profile_facial_hair_goatee),
-    MUTTON_CHOPS(R.string.profile_facial_hair_mustache),
+    MUTTON_CHOPS(R.string.profile_facial_hair_muttonchops),
     FULL_BEARD(R.string.profile_facial_hair_fullbeard);
 
     @StringRes
