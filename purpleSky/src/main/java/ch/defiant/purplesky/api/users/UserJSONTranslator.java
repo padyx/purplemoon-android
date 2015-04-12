@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -188,6 +189,8 @@ public class UserJSONTranslator {
     }
 
     private static void translatePreviewUserProperties(JSONObject jsonUserObject, PreviewUser previewUser) {
+        previewUser.setFirstName(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.FIRST_NAME, null));
+        previewUser.setLastName(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.LAST_NAME, null));
         previewUser.setHeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.HEIGHT, null));
         previewUser.setWeight(JSONUtility.optInt(jsonUserObject, PurplemoonAPIConstantsV1.ProfileDetails.WEIGHT, null));
         previewUser.setPhysique(APIUtility.translateToPhysique(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PHYSIQUE, null)));
@@ -211,6 +214,11 @@ public class UserJSONTranslator {
     }
 
     private static <T extends MinimalUser> void translateDetailedUserProperties(JSONObject jsonUserObject, DetailedUser user) throws JSONException {
+        user.setNicknames(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.NICKNAMES, null));
+        user.setEmailAddress(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EMAIL_ADDRESS, null));
+        if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE)) {
+            user.setBirthDate(DateUtility.parseJSONDate(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE, null)));
+        }
         JSONObject partnerInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_PARTNER);
         if(partnerInformation != null){
             DetailedUser.RelationshipInformation info = new DetailedUser.RelationshipInformation();
@@ -225,11 +233,45 @@ public class UserJSONTranslator {
         JSONObject friendshipInformation = jsonUserObject.optJSONObject(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS);
         if(friendshipInformation != null){
             DetailedUser.FriendshipInformation info = new DetailedUser.FriendshipInformation();
-            info.setMaximumDistance(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_MAXDISTANCE, null)).
+            info.setTargetGender(APIUtility.translateToTargetGender(friendshipInformation.optString(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS_GENDER, null))).
+                    setMaximumDistance(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_MAXDISTANCE, null)).
                     setDesiredAgeFrom(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGEFROM, null)).
                     setDesiredAgeTill(JSONUtility.optInt(friendshipInformation, PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_AGETO, null)).
                     setText(friendshipInformation.optString(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_TEXT));
             user.setFriendshipInformation(info);
+        }
+
+        if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_CREATION_DATE)){
+            String date = jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_CREATION_DATE, null);
+            Date creationDate;
+            if(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_DATE_LAST24h.equals(date)){
+                creationDate = new Date();
+            } else {
+                creationDate = DateUtility.parseJSONDate(date);
+            }
+            user.setCreateDate(creationDate);
+        }
+
+        if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_LASTUPDATE_DATE)){
+            String date = jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_LASTUPDATE_DATE, null);
+            Date lastUpdate;
+            if(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_DATE_LAST24h.equals(date)){
+                lastUpdate = new Date();
+            } else {
+                lastUpdate = DateUtility.parseJSONDate(date);
+            }
+            user.setUpdateDate(lastUpdate);
+        }
+
+        if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_LASTONLINE_DATE)){
+            String date = jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_LASTONLINE_DATE, null);
+            Date onlineDate;
+            if(PurplemoonAPIConstantsV1.ProfileDetails.PROFILE_DATE_LAST24h.equals(date)){
+                onlineDate = new Date();
+            } else {
+                onlineDate = DateUtility.parseJSONDate(date);
+            }
+            user.setLastOnlineDate(onlineDate);
         }
 
         if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.EVENTS_TMP)){

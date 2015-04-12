@@ -48,19 +48,8 @@ public final class ProfileListMap {
         GROUP_LIST_APIKEYS = new ArrayList<>();
 
         // Groups
-        GROUPS.add(R.string.profileGroup_General);
         GROUPS.add(R.string.profileGroup_Occupation);
         GROUPS.add(R.string.profileGroup_ChatContactHomepage);
-        GROUPS.add(R.string.profileGroup_AboutProfile);
-
-        // General info
-        ArrayList<String> generalList = new ArrayList<>();
-        GROUP_LIST_APIKEYS.add(generalList);
-        generalList.add(ProfileDetails.BIRTHDATE);
-        generalList.add(ProfileDetails.FIRST_NAME);
-        generalList.add(ProfileDetails.NICKNAMES);
-        generalList.add(ProfileDetails.LAST_NAME);
-        generalList.add(ProfileDetails.EMAIL_ADDRESS);
 
         ArrayList<String> occupationlist = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(occupationlist);
@@ -73,19 +62,10 @@ public final class ProfileListMap {
         chatContactList.add(ProfileDetails.CHATS_NAMES);
         chatContactList.add(ProfileDetails.HOMEPAGE);
 
-        ArrayList<String> aboutProfile = new ArrayList<>();
-        GROUP_LIST_APIKEYS.add(aboutProfile);
-        aboutProfile.add(ProfileDetails.PROFILE_LASTONLINE_DATE);
-        aboutProfile.add(ProfileDetails.PROFILE_LASTUPDATE_DATE);
-        aboutProfile.add(ProfileDetails.PROFILE_CREATION_DATE);
-
         /*
          * List of all elements with special handling
          */
         SPECIAL.add(ProfileDetails.BIRTHDATE);
-        SPECIAL.add(ProfileDetails.PROFILE_LASTONLINE_DATE);
-        SPECIAL.add(ProfileDetails.PROFILE_LASTUPDATE_DATE);
-        SPECIAL.add(ProfileDetails.PROFILE_CREATION_DATE);
     }
 
     public boolean hasSpecialHandling(String key) {

@@ -6,7 +6,8 @@
 	<string name="profile_subsectionHeader_getToKnowFriend">Freunde</string>
 	<string name="profile_sectionHeader_body">Body</string>
 	<string name="profile_sectionHeader_beliefs">Beliefs</string>
-
+	<string name="profile_sectionHeader_AboutProfile">Über das Profil</string>
+	<string name="profile_sectionHeader_General">Allgemein</string>
 
 	<string name="profile_eye_color">Augenfarbe</string>
 	<string name="profile_eye_color_lightbrown">Hellbraun</string>
@@ -85,22 +86,15 @@
 	<string name="profile_smoker_almostnever">Fast nie</string>
 	<string name="profile_smoker_never">Nie</string>
 
+    <string name="profile_birthdate">Geburtsdatum</string>
+    <string name="profile_firstname">Vorname</string>
+    <string name="profile_nicknames">Spitznamen</string>
+    <string name="profile_lastname">Nachname</string>
+    <string name="profile_emailaddress">E-Mail</string>
 
-	<string name="profileGroup_General">Allgemein</string>
-    <string name="profileKeyText_birthdate">Geburtsdatum</string>
-    <string name="profileKeyText_firstname">Vorname</string>
-    <string name="profileKeyText_nicknames">Spitznamen</string>
-    <string name="profileKeyText_lastname">Nachname</string>
-    <string name="profileKeyText_emailaddress">E-Mail</string>
-
-    <string name="profileGroup_Body">Körper</string>
-	<string name="profileGroup_Beliefs">Überzeugungen</string>
 	<string name="profileGroup_ChatContactHomepage">Chats und Homepage</string>
-	<string name="profileGroup_GetToKnow">Wen ich kennenlernen möchte</string>
-	<string name="profileGroup_GetToKnowAsPartner">Beziehung</string>
 	<string name="profileGroup_Occupation">Was ich mache</string>
-	<string name="profileGroup_AboutProfile">Über das Profil</string>
-	
+
 	<string name="profile_drinker">Alkoholkonsum</string>
 	<string name="profile_drinker_never">Nie</string>
 	<string name="profile_drinker_seldom">Selten</string>
@@ -154,45 +148,29 @@
 	<string name="profile_politics_middle">Mitte</string>
 	<string name="profile_politics_middleleft">Mitte-links</string>
 	<string name="profile_politics_left">Links</string>
-	
+
+	<string name="profile_last_online">Zuletzt online</string>
+	<string name="profile_last_update">Zuletzt geändert</string>
+	<string name="profile_create_date">Erstellt</string>
+
 	<string name="profileKeyText_chat_names">Chatnamen</string>
 	<string name="profileKeyText_which_chats">Chats</string>
 	<!-- User defined string (value). No translation -->
-	
-	<string name="profileKeyText_chat_frequency">Häufigkeit</string>
-	<string name="profileValueText_chat_frequency_never">Nie</string>
-	<string name="profileValueText_chat_frequency_seldom">Selten</string>
-	<string name="profileValueText_chat_frequency_nowandthen">Ab und zu</string>
-	<string name="profileValueText_chat_frequency_regularly">Regelmässig</string>
-	<string name="profileValueText_chat_frequency_often">Oft</string>
-	<string name="profileValueText_chat_frequency_allthetime">Immer</string>
-	
+
 	<string name="profileKeyText_homepage">Homepage</string>
 	<!-- User defined string (value). No translation -->
 	
-	<string name="profileKeyText_target_friends_gender">Geschlecht</string>
-	<string name="profileValueText_target_friends_menonly">Nur Männer</string>
-	<string name="profileValueText_target_friends_womenonly">Nur Frauen</string>
-	<string name="profileValueText_target_friends_menonlypreferred">Bevorzugt Männer</string>
-	<string name="profileValueText_target_friends_womenpreferred">Bevorzugt Frauen</string>
-	
-	<string name="profileKeyText_age_from">Ab Alter</string>
-	<string name="profileKeyText_age_till">Bis zu Alter</string>
-	<string name="profileKeyText_distance">Maximale Distanz (km)</string>
-	<string name="profileKeyText_text"></string>
-	
-	<string name="profileValueText_menonly">Nur Männer</string>
-	<string name="profileValueText_womenonly">Nur Frauen</string>
-	<string name="profileValueText_menonlypreferred">Bevorzugt Männer</string>
-	<string name="profileValueText_womenpreferred">Bevorzugt Frauen</string>
-	
-	<string name="profileKeyText_status">Beziehungsstatus</string>
-	<string name="profileValueText_status_single">Single</string>
-	<string name="profileValueText_status_longterm">Feste Beziehung</string>
-	<string name="profileValueText_status_engaged">Verlobt</string>
-	<string name="profileValueText_status_married">Verheiratet</string>
-	<string name="profileValueText_status_open">Offene Beziehung</string>
-	
+	<string name="profile_target_friends_gender">Geschlecht</string>
+	<string name="profile_target_friends_menonly">Nur Männer</string>
+	<string name="profile_target_friends_womenonly">Nur Frauen</string>
+	<string name="profile_target_friends_menpreferred">Bevorzugt Männer</string>
+	<string name="profile_target_friends_womenpreferred">Bevorzugt Frauen</string>
+
+	<string name="profile_menonly">Nur Männer</string>
+	<string name="profile_womenonly">Nur Frauen</string>
+	<string name="profile_menonlypreferred">Bevorzugt Männer</string>
+	<string name="profile_womenpreferred">Bevorzugt Frauen</string>
+
 	<string name="profileKeyText_occupations"></string>
 
 	<string name="profileKeyText_current_location">Aktuelle Position</string>
@@ -212,9 +190,6 @@
 	<string name="profileKeyText_school_name">Schule</string>
 	<string name="profileKeyText_school_direction">Richtung</string>
 	<string name="profileKeyText_company_name">Firma</string>
-	
-	<string name="profileKeyText_last_online">Zuletzt online</string>
-	<string name="profileKeyText_last_update">Zuletzt geändert</string>
-	<string name="profileKeyText_create_date">Erstellt</string>
-	
+
+
 </resources>

@@ -445,6 +445,12 @@ public class PurplemoonAPIConstantsV1 {
         public static final String TARGET_PARTNER = "target_partner";
         public static final String TARGET_FRIENDS = "target_friends";
 
+        public static final String TARGET_FRIENDS_GENDER = "gender";
+        public static final String TARGET_FRIENDS_GENDER_MENONLY = "men-only";
+        public static final String TARGET_FRIENDS_GENDER_MENPREFERRED = "men-preferred";
+        public static final String TARGET_FRIENDS_GENDER_WOMENPREFERRED = "women-preferred";
+        public static final String TARGET_FRIENDS_GENDER_WOMENONLY = "women-only";
+
         public static final String EVENTS_TMP = "events_tmp";
         public static final String EVENT_ID = "event_id";
         public static final String EVENT_TEXT = "event_text";

@@ -27,6 +27,7 @@ import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.enums.profile.Religion;
 import ch.defiant.purplesky.enums.profile.Sexuality;
 import ch.defiant.purplesky.enums.profile.SmokerFrequency;
+import ch.defiant.purplesky.enums.profile.TargetGender;
 import ch.defiant.purplesky.enums.profile.Vegetarian;
 import ch.defiant.purplesky.enums.profile.WantsKids;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -259,6 +260,24 @@ public final class APIUtility {
             return RelationshipStatus.OPEN_RELATIONSHIP;
         } else {
             throw new IllegalArgumentException("Unknown value for relationship status "+jsonString);
+        }
+    }
+
+    @Nullable
+    public static TargetGender translateToTargetGender(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS_GENDER_MENONLY .equals(jsonString)){
+            return TargetGender.MEN_ONLY;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS_GENDER_MENPREFERRED.equals(jsonString)){
+            return TargetGender.MEN_PREFERRED;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS_GENDER_WOMENPREFERRED.equals(jsonString)){
+            return TargetGender.WOMEN_PREFERRED;
+        } else if (PurplemoonAPIConstantsV1.ProfileDetails.TARGET_FRIENDS_GENDER_WOMENONLY.equals(jsonString)){
+            return TargetGender.WOMEN_ONLY;
+        } else {
+            throw new IllegalArgumentException("Unknown value for target gender "+jsonString);
         }
     }
 

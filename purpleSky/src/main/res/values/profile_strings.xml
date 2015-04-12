@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="UnusedResources">
+<resources>
 
 	<string name="profile_sectionHeader_getToKnow">Who I want to get to know</string>
 	<string name="profile_subsectionHeader_getToKnowPartner">As partner</string>
 	<string name="profile_subsectionHeader_getToKnowFriend">As friends</string>
 	<string name="profile_sectionHeader_body">Body</string>
 	<string name="profile_sectionHeader_beliefs">Beliefs</string>
-
+	<string name="profile_sectionHeader_AboutProfile">About profile</string>
+	<string name="profile_sectionHeader_General">General</string>
 
 	<string name="profile_eye_color">Eye color</string>
 	<string name="profile_eye_color_lightbrown">Light-brown</string>
@@ -57,7 +57,6 @@
 	<string name="profile_drinker_alot">A lot</string>
 	<string name="profile_drinker_wineonly">Wine only</string>
 
-	<string name="profile_relationship">Relationship</string>
     <string name="profile_date_last24h">Within the last 24 hours</string>
     <string name="profile_header_events">Events</string>
     <string name="profile_header_locations">Locations</string>
@@ -67,21 +66,15 @@
     <string name="PersonallyKnown">Personally Known</string>
     <string name="MarkedAsFriend">Marked as a friend</string>
     
-    <string name="profileGroup_General">General</string>
-    <string name="profileKeyText_birthdate">Date of birth</string>
-    <string name="profileKeyText_firstname">First name</string>
-    <string name="profileKeyText_nicknames">Nicknames</string>
-    <string name="profileKeyText_lastname">Last name</string>
-    <string name="profileKeyText_emailaddress">E-Mail</string>
+    <string name="profile_birthdate">Date of birth</string>
+    <string name="profile_firstname">First name</string>
+    <string name="profile_nicknames">Nicknames</string>
+    <string name="profile_lastname">Last name</string>
+    <string name="profile_emailaddress">E-Mail</string>
 
-    <string name="profileGroup_Body">Body</string>
-	<string name="profileGroup_Beliefs">Beliefs</string>
 	<string name="profileGroup_ChatContactHomepage">Chats and homepage</string>
-	<string name="profileGroup_GetToKnow">Who I want to get to know</string>
-	<string name="profileGroup_GetToKnowAsPartner">Who I want as a partner</string>
 	<string name="profileGroup_Occupation">Occupation</string>
-	<string name="profileGroup_AboutProfile">About profile</string>
-    
+
     <string name="profile_hair_color">Hair color</string>
     <string name="profile_hair_color_lightbrown">Light-brown</string>
 	<string name="profile_hair_color_darkbrown">Dark-brown</string>
@@ -154,7 +147,11 @@
 	<string name="profile_politics_middle">Centre</string>
 	<string name="profile_politics_middleleft">Centre-left wing</string>
 	<string name="profile_politics_left">Left wing</string>
-	
+
+	<string name="profile_last_online">Last online</string>
+	<string name="profile_last_update">Last updated</string>
+	<string name="profile_create_date">Created</string>
+
 	<string name="profileKeyText_chat_names">Chat names</string>
 	<string name="profileKeyText_which_chats">Chats</string>
 	<!-- User defined string (value). No translation -->
@@ -170,29 +167,17 @@
 	<string name="profileKeyText_homepage">Homepage</string>
 	<!-- User defined string (value). No translation -->
 	
-	<string name="profileKeyText_target_friends_gender">Gender</string>
-	<string name="profileValueText_target_friends_menonly">Only men</string>
-	<string name="profileValueText_target_friends_womenonly">Only women</string>
-	<string name="profileValueText_target_friends_menonlypreferred">Men preferred</string>
-	<string name="profileValueText_target_friends_womenpreferred">Women preferred</string>
-	
-	<string name="profileKeyText_age_from">Age from</string>
-	<string name="profileKeyText_age_till">Age to</string>
-	<string name="profileKeyText_distance">Max. distance (km)</string>
-	<string name="profileKeyText_text"></string>
-	
+	<string name="profile_target_friends_gender">Gender</string>
+	<string name="profile_target_friends_menonly">Only men</string>
+	<string name="profile_target_friends_womenonly">Only women</string>
+	<string name="profile_target_friends_menpreferred">Men preferred</string>
+	<string name="profile_target_friends_womenpreferred">Women preferred</string>
+
 	<string name="profileValueText_menonly">Only men</string>
 	<string name="profileValueText_womenonly">Only women</string>
 	<string name="profileValueText_menonlypreferred">Men preferred</string>
 	<string name="profileValueText_womenpreferred">Women preferred</string>
-	
-	<string name="profileKeyText_status">Relationship status</string>
-	<string name="profileValueText_status_single">Single</string>
-	<string name="profileValueText_status_longterm">Long-term relationship</string>
-	<string name="profileValueText_status_engaged">Engaged</string>
-	<string name="profileValueText_status_married">Married</string>
-	<string name="profileValueText_status_open">Open Relationship</string>
-	
+
 	<string name="profileKeyText_occupations"></string>
 
 	<string name="profileKeyText_current_location">Current location</string>
@@ -212,9 +197,5 @@
 	<string name="profileKeyText_school_name">School</string>
 	<string name="profileKeyText_school_direction">Direction</string>
 	<string name="profileKeyText_company_name">Company</string>
-	
-	<string name="profileKeyText_last_online">Last online</string>
-	<string name="profileKeyText_last_update">Last updated</string>
-	<string name="profileKeyText_create_date">Created</string>
-	
+
 </resources>

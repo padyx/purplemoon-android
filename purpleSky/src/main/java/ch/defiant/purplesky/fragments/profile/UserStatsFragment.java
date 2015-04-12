@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -43,6 +44,7 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
+import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -299,7 +301,8 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         StringBuilder allTables = createEventTable(user);
         StringBuilder locationsTable = createLocationsTable(user);
 
-        StringBuilder details = createBodyTable(user);
+        StringBuilder details = createGeneralTable(user);
+        details.append(createBodyTable(user));
         details.append(createDetailsTable(user));
 
         StringBuilder relationshipTable = createRelationshipTable(user);
@@ -317,9 +320,37 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         details.append(createBeliefTable(user));
         allTables.append(locationsTable);
         allTables.append(details);
+        allTables.append(createAboutProfileTable(user));
         StringUtility.replace(sb, PLACEHOLDER_TABLES_ALL, allTables.toString());
 
         return sb.toString();
+    }
+
+    private StringBuilder createGeneralTable(DetailedUser user) {
+        StringBuilder sb = new StringBuilder();
+
+        if (StringUtility.isNotNullOrEmpty(user.getFirstName())) {
+            createAndAddTableRow(sb, R.string.profile_firstname, user.getFirstName());
+        }
+        if (StringUtility.isNotNullOrEmpty(user.getNicknames())) {
+            createAndAddTableRow(sb, R.string.profile_nicknames, user.getNicknames());
+        }
+        if (StringUtility.isNotNullOrEmpty(user.getLastName())) {
+            createAndAddTableRow(sb, R.string.profile_lastname, user.getLastName());
+        }
+        if (user.getBirthDate() != null) {
+            createAndAddTableRow(sb, R.string.profile_birthdate, DateUtility.getMediumDateString(user.getBirthDate()));
+        }
+        if (StringUtility.isNotNullOrEmpty(user.getEmailAddress())) {
+            createAndAddTableRow(sb, R.string.profile_emailaddress, user.getEmailAddress());
+        }
+
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_General));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
     }
 
     private StringBuilder createEventTable(DetailedUser user){
@@ -486,7 +517,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             if (relationshipInfo.getRelationshipStatus() != null){
                 createAndAddTableRow(sb, R.string.RelationshipStatus, getString(relationshipInfo.getRelationshipStatus().getStringResource()));
             }
-            addFriendshipInformation(sb, relationshipInfo);
+            addRelationInformation(sb, relationshipInfo);
         }
         if(sb.length() > 0){
             sb.insert(0, createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_getToKnowPartner));
@@ -498,9 +529,11 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
     private StringBuilder createFriendshipTable(DetailedUser user){
         StringBuilder sb = new StringBuilder();
+
         if(user.getFriendshipInformation() != null){
             DetailedUser.FriendshipInformation friendshipInfo = user.getFriendshipInformation();
-            addFriendshipInformation(sb, friendshipInfo);
+            createAndAddTableRow(sb, R.string.profile_target_friends_gender, getString(friendshipInfo.getTargetGender().getStringResource()));
+            addRelationInformation(sb, friendshipInfo);
         }
         if(sb.length() > 0){
             sb.insert(0, createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_getToKnowFriend));
@@ -510,7 +543,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         return sb;
     }
 
-    private void addFriendshipInformation(StringBuilder sb, DetailedUser.FriendshipInformation relationshipInfo) {
+    private void addRelationInformation(StringBuilder sb, DetailedUser.AbstractRelation relationshipInfo) {
         if (relationshipInfo.getDesiredAgeFrom() != null){
             createAndAddTableRow(sb, R.string.MinimumAge, String.valueOf(relationshipInfo.getDesiredAgeFrom()));
         }
@@ -551,6 +584,46 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         }
         if(sb.length() > 0){
             sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_beliefs));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
+
+    private StringBuilder createAboutProfileTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
+
+        final Date now = new Date();
+        if (user.getCreateDate() != null){
+            String dateString;
+            if (DateUtility.isWithin24Hours(now, user.getCreateDate())){
+                dateString = getString(R.string.profile_date_last24h);
+            } else {
+                dateString = DateUtility.getMediumDateString(user.getCreateDate());
+            }
+            createAndAddTableRow(sb, R.string.profile_create_date, dateString);
+        }
+        if (user.getUpdateDate() != null){
+            String dateString;
+            if (DateUtility.isWithin24Hours(now, user.getUpdateDate())){
+                dateString = getString(R.string.profile_date_last24h);
+            } else {
+                dateString = DateUtility.getMediumDateString(user.getUpdateDate());
+            }
+            createAndAddTableRow(sb, R.string.profile_last_update, dateString);
+        }
+        if (user.getLastOnlineDate() != null){
+            String dateString;
+            if (DateUtility.isWithin24Hours(now, user.getLastOnlineDate())){
+                dateString = getString(R.string.profile_date_last24h);
+            } else {
+                dateString = DateUtility.getMediumDateString(user.getLastOnlineDate());
+            }
+            createAndAddTableRow(sb, R.string.profile_last_online, dateString);
+        }
+
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_AboutProfile));
             sb.insert(0,"<table class='content_tables'>");
             sb.append("</table>\n");
         }

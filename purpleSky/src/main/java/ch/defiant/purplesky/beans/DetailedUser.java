@@ -1,11 +1,15 @@
 package ch.defiant.purplesky.beans;
 
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
+import ch.defiant.purplesky.enums.profile.TargetGender;
 
 public class DetailedUser extends PreviewUser {
 
@@ -14,6 +18,12 @@ public class DetailedUser extends PreviewUser {
     private Map<Integer, String> m_eventTmp = Collections.emptyMap();
     private RelationshipInformation m_relationshipInformation;
     private FriendshipInformation m_friendshipInformation;
+    private Date m_createDate;
+    private Date m_updateDate;
+    private Date m_lastOnlineDate;
+    private String m_nicknames;
+    private Date m_birthDate;
+    private String m_emailAddress;
 
     /**
      * @return Map containing event id -> Eventvisiting preview text
@@ -44,7 +54,58 @@ public class DetailedUser extends PreviewUser {
         m_friendshipInformation = info;
     }
 
-    public static class FriendshipInformation implements Serializable {
+    @Nullable
+    public Date getCreateDate() {
+        return m_createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        m_createDate = createDate;
+    }
+
+    @Nullable
+    public Date getUpdateDate() {
+        return m_updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        m_updateDate = updateDate;
+    }
+
+    @Nullable
+    public Date getLastOnlineDate() {
+        return m_lastOnlineDate;
+    }
+
+    public void setLastOnlineDate(Date lastOnlineDate) {
+        m_lastOnlineDate = lastOnlineDate;
+    }
+
+    public String getNicknames() {
+        return m_nicknames;
+    }
+
+    public void setNicknames(String nicknames) {
+        m_nicknames = nicknames;
+    }
+
+    public Date getBirthDate() {
+        return m_birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        m_birthDate = birthDate;
+    }
+
+    public String getEmailAddress() {
+        return m_emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        m_emailAddress = emailAddress;
+    }
+
+    public static abstract class AbstractRelation implements Serializable {
         private static final long serialVersionUID = 1L;
 
         private String m_text;
@@ -56,7 +117,7 @@ public class DetailedUser extends PreviewUser {
             return m_text;
         }
 
-        public FriendshipInformation setText(String text) {
+        public AbstractRelation setText(String text) {
             this.m_text = text;
             return this;
         }
@@ -65,7 +126,7 @@ public class DetailedUser extends PreviewUser {
             return m_desiredAgeFrom;
         }
 
-        public FriendshipInformation setDesiredAgeFrom(Integer desiredAgeFrom) {
+        public AbstractRelation setDesiredAgeFrom(Integer desiredAgeFrom) {
             this.m_desiredAgeFrom = desiredAgeFrom;
             return this;
         }
@@ -74,7 +135,7 @@ public class DetailedUser extends PreviewUser {
             return m_desiredAgeTill;
         }
 
-        public FriendshipInformation setDesiredAgeTill(Integer desiredAgeTill) {
+        public AbstractRelation setDesiredAgeTill(Integer desiredAgeTill) {
             this.m_desiredAgeTill = desiredAgeTill;
             return this;
         }
@@ -83,13 +144,27 @@ public class DetailedUser extends PreviewUser {
             return m_maximumDistance;
         }
 
-        public FriendshipInformation setMaximumDistance(Integer maximumDistance) {
+        public AbstractRelation setMaximumDistance(Integer maximumDistance) {
             this.m_maximumDistance = maximumDistance;
             return this;
         }
     }
 
-    public static class RelationshipInformation extends FriendshipInformation {
+
+    public static class FriendshipInformation extends AbstractRelation {
+        private TargetGender m_targetGender;
+
+        public TargetGender getTargetGender() {
+            return m_targetGender;
+        }
+
+        public FriendshipInformation setTargetGender(TargetGender targetGender) {
+            m_targetGender = targetGender;
+            return this;
+        }
+    }
+
+    public static class RelationshipInformation extends AbstractRelation {
         private static final long serialVersionUID = 2L;
 
         private RelationshipStatus m_relationshipStatus;
@@ -103,7 +178,6 @@ public class DetailedUser extends PreviewUser {
             this.m_relationshipStatus = relationshipStatus;
             return this;
         }
-
     }
 
 }

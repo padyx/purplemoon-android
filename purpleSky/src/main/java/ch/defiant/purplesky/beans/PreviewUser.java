@@ -38,6 +38,8 @@ public class PreviewUser extends BasicUser {
     private HasKids m_hasKids;
     private Religion m_religion;
     private Politics m_politics;
+    private String m_firstName;
+    private String m_lastName;
 
     public String getFirstOccupationType() {
         return m_firstOccupationType;
@@ -203,5 +205,21 @@ public class PreviewUser extends BasicUser {
 
     public void setPolitics(Politics politics) {
         m_politics = politics;
+    }
+
+    public String getFirstName() {
+        return m_firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        m_firstName = firstName;
+    }
+
+    public String getLastName() {
+        return m_lastName;
+    }
+
+    public void setLastName(String lastName) {
+        m_lastName = lastName;
     }
 }
