@@ -1,20 +1,12 @@
 package ch.defiant.purplesky.constants;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1.ProfileDetails;
-import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 /**
  * List of user details, indicating which groups exist and which items belong to that group.
@@ -49,23 +41,11 @@ public final class ProfileListMap {
 
         // Groups
         GROUPS.add(R.string.profileGroup_Occupation);
-        GROUPS.add(R.string.profileGroup_ChatContactHomepage);
 
         ArrayList<String> occupationlist = new ArrayList<>();
         GROUP_LIST_APIKEYS.add(occupationlist);
         occupationlist.add(ProfileDetails.OCCUPATION_LIST);
 
-        ArrayList<String> chatContactList = new ArrayList<>();
-        GROUP_LIST_APIKEYS.add(chatContactList);
-        chatContactList.add(ProfileDetails.CHATS_FREQUENCY);
-        chatContactList.add(ProfileDetails.CHATS_WHICH);
-        chatContactList.add(ProfileDetails.CHATS_NAMES);
-        chatContactList.add(ProfileDetails.HOMEPAGE);
-
-        /*
-         * List of all elements with special handling
-         */
-        SPECIAL.add(ProfileDetails.BIRTHDATE);
     }
 
     public boolean hasSpecialHandling(String key) {
@@ -73,33 +53,7 @@ public final class ProfileListMap {
     }
 
     public String handle(String key, String value) {
-        if (ProfileDetails.BIRTHDATE.equals(key)) {
-            return handleDate(value);
-        } else {
-            // All others are dual (so far) - either a string or a date
-            if (ProfileDetails.PROFILE_DATE_LAST24h.equals(value)) {
-                return PurpleSkyApplication.get().getString(R.string.profile_date_last24h);
-            } else {
-                return handleDate(value);
-            }
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private String handleDate(String value) {
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date parsed = format.parse(value);
-            if (parsed == null) {
-                return null;
-            }
-            return SimpleDateFormat.getDateInstance().format(parsed);
-        } catch (ParseException e) {
-            if (BuildConfig.DEBUG) {
-                Log.w(TAG, "Cannot parse date from JSON string: " + value);
-            }
-            return null;
-        }
+        return "";
     }
 
 }

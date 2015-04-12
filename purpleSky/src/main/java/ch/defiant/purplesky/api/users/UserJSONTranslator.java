@@ -216,6 +216,10 @@ public class UserJSONTranslator {
     private static <T extends MinimalUser> void translateDetailedUserProperties(JSONObject jsonUserObject, DetailedUser user) throws JSONException {
         user.setNicknames(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.NICKNAMES, null));
         user.setEmailAddress(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.EMAIL_ADDRESS, null));
+        user.setChatFrequency(APIUtility.translateToChatFrequency(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY, null)));
+        user.setChatNames(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_NAMES, null));
+        user.setWhichChats(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_WHICH, null));
+        user.setHomepage(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HOMEPAGE, null));
         if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE)) {
             user.setBirthDate(DateUtility.parseJSONDate(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE, null)));
         }

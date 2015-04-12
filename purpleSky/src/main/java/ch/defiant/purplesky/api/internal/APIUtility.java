@@ -14,6 +14,7 @@ import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.PurplemoonLocationType;
+import ch.defiant.purplesky.enums.profile.ChatFrequency;
 import ch.defiant.purplesky.enums.profile.DrinkerFrequency;
 import ch.defiant.purplesky.enums.profile.EyeColor;
 import ch.defiant.purplesky.enums.profile.FacialHair;
@@ -592,6 +593,27 @@ public final class APIUtility {
         } else {
             throw new IllegalArgumentException("Unknown value for politics " + jsonString);
         }
+    }
+
+    public static ChatFrequency translateToChatFrequency(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY_ALLTHETIME.equals(jsonString)) {
+            return ChatFrequency.ALL_THE_TIME;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY_REGULARLY.equals(jsonString)) {
+            return ChatFrequency.REGULARLY;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY_NOWANDTHEN.equals(jsonString)) {
+            return ChatFrequency.NOW_AND_THEN;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY_OFTEN.equals(jsonString)) {
+            return ChatFrequency.OFTEN;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY_SELDOM.equals(jsonString)) {
+            return ChatFrequency.SELDOM;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_FREQUENCY_NEVER.equals(jsonString)) {
+            return ChatFrequency.NEVER;
+        } else {
+            throw new IllegalArgumentException("Unknown value for chat frequency " + jsonString);
+         }
     }
 
 }

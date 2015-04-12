@@ -8,6 +8,7 @@
 	<string name="profile_sectionHeader_beliefs">Beliefs</string>
 	<string name="profile_sectionHeader_AboutProfile">About profile</string>
 	<string name="profile_sectionHeader_General">General</string>
+	<string name="profile_sectionHeader_ChatContactHomepage">Chats and homepage</string>
 
 	<string name="profile_eye_color">Eye color</string>
 	<string name="profile_eye_color_lightbrown">Light-brown</string>
@@ -72,7 +73,6 @@
     <string name="profile_lastname">Last name</string>
     <string name="profile_emailaddress">E-Mail</string>
 
-	<string name="profileGroup_ChatContactHomepage">Chats and homepage</string>
 	<string name="profileGroup_Occupation">Occupation</string>
 
     <string name="profile_hair_color">Hair color</string>
@@ -152,19 +152,19 @@
 	<string name="profile_last_update">Last updated</string>
 	<string name="profile_create_date">Created</string>
 
-	<string name="profileKeyText_chat_names">Chat names</string>
-	<string name="profileKeyText_which_chats">Chats</string>
+	<string name="profile_chat_names">Chat names</string>
+	<string name="profile_which_chats">Chats</string>
 	<!-- User defined string (value). No translation -->
 	
-	<string name="profileKeyText_chat_frequency">Frequency</string>
-	<string name="profileValueText_chat_frequency_never">Never</string>
-	<string name="profileValueText_chat_frequency_seldom">Seldom</string>
-	<string name="profileValueText_chat_frequency_nowandthen">Now and then</string>
-	<string name="profileValueText_chat_frequency_regularly">Regularly</string>
-	<string name="profileValueText_chat_frequency_often">Often</string>
-	<string name="profileValueText_chat_frequency_allthetime">All the time</string>
+	<string name="profile_chat_frequency">Frequency</string>
+	<string name="profile_chat_frequency_never">Never</string>
+	<string name="profile_chat_frequency_seldom">Seldom</string>
+	<string name="profile_chat_frequency_nowandthen">Now and then</string>
+	<string name="profile_chat_frequency_regularly">Regularly</string>
+	<string name="profile_chat_frequency_often">Often</string>
+	<string name="profile_chat_frequency_allthetime">All the time</string>
 	
-	<string name="profileKeyText_homepage">Homepage</string>
+	<string name="profile_homepage">Homepage</string>
 	<!-- User defined string (value). No translation -->
 	
 	<string name="profile_target_friends_gender">Gender</string>

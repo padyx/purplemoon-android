@@ -438,6 +438,13 @@ public class PurplemoonAPIConstantsV1 {
         public static final String POLITICS_LEFT = "left";
 
         public static final String CHATS_FREQUENCY = "chat_frequency";
+        public static final String CHATS_FREQUENCY_ALLTHETIME = "all-the-time";
+        public static final String CHATS_FREQUENCY_OFTEN = "often";
+        public static final String CHATS_FREQUENCY_REGULARLY = "regularly";
+        public static final String CHATS_FREQUENCY_NOWANDTHEN = "now-and-then";
+        public static final String CHATS_FREQUENCY_SELDOM = "seldom";
+        public static final String CHATS_FREQUENCY_NEVER = "never";
+
         public static final String CHATS_WHICH = "which_chats";
         public static final String CHATS_NAMES = "chat_names";
         public static final String HOMEPAGE = "homepage";

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+import ch.defiant.purplesky.enums.profile.ChatFrequency;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.enums.profile.TargetGender;
 
@@ -24,6 +25,10 @@ public class DetailedUser extends PreviewUser {
     private String m_nicknames;
     private Date m_birthDate;
     private String m_emailAddress;
+    private String m_homepage;
+    private String m_chatNames;
+    private String m_whichChats;
+    private ChatFrequency m_chatFrequency;
 
     /**
      * @return Map containing event id -> Eventvisiting preview text
@@ -103,6 +108,38 @@ public class DetailedUser extends PreviewUser {
 
     public void setEmailAddress(String emailAddress) {
         m_emailAddress = emailAddress;
+    }
+
+    public String getHomepage() {
+        return m_homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        m_homepage = homepage;
+    }
+
+    public String getChatNames() {
+        return m_chatNames;
+    }
+
+    public void setChatNames(String chatNames) {
+        m_chatNames = chatNames;
+    }
+
+    public String getWhichChats() {
+        return m_whichChats;
+    }
+
+    public void setWhichChats(String whichChats) {
+        m_whichChats = whichChats;
+    }
+
+    public ChatFrequency getChatFrequency() {
+        return m_chatFrequency;
+    }
+
+    public void setChatFrequency(ChatFrequency chatFrequency) {
+        m_chatFrequency = chatFrequency;
     }
 
     public static abstract class AbstractRelation implements Serializable {

@@ -318,6 +318,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         }
 
         details.append(createBeliefTable(user));
+        details.append(createChatHomepageTable(user));
         allTables.append(locationsTable);
         allTables.append(details);
         allTables.append(createAboutProfileTable(user));
@@ -532,7 +533,9 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
         if(user.getFriendshipInformation() != null){
             DetailedUser.FriendshipInformation friendshipInfo = user.getFriendshipInformation();
-            createAndAddTableRow(sb, R.string.profile_target_friends_gender, getString(friendshipInfo.getTargetGender().getStringResource()));
+            if (user.getFriendshipInformation().getTargetGender() != null) {
+                createAndAddTableRow(sb, R.string.profile_target_friends_gender, getString(friendshipInfo.getTargetGender().getStringResource()));
+            }
             addRelationInformation(sb, friendshipInfo);
         }
         if(sb.length() > 0){
@@ -584,6 +587,31 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         }
         if(sb.length() > 0){
             sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_beliefs));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
+
+    private StringBuilder createChatHomepageTable(DetailedUser user) {
+        StringBuilder sb = new StringBuilder();
+
+        if(user.getChatFrequency() != null){
+            createAndAddTableRow(sb, R.string.profile_chat_frequency, getString(user.getChatFrequency().getStringResource()));
+        }
+        if(StringUtility.isNotNullOrEmpty(user.getWhichChats())){
+            createAndAddTableRow(sb, R.string.profile_which_chats, user.getWhichChats());
+        }
+        if(StringUtility.isNotNullOrEmpty(user.getChatNames())){
+            createAndAddTableRow(sb, R.string.profile_chat_names, user.getChatNames());
+        }
+
+        if(StringUtility.isNotNullOrEmpty(user.getHomepage())){
+            createAndAddTableRow(sb, R.string.profile_homepage, user.getHomepage());
+        }
+
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_ChatContactHomepage));
             sb.insert(0,"<table class='content_tables'>");
             sb.append("</table>\n");
         }
