@@ -1,5 +1,7 @@
 package ch.defiant.purplesky.api.users;
 
+import android.support.annotation.Nullable;
+
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.beans.DetailedUser;
 
@@ -8,7 +10,11 @@ import ch.defiant.purplesky.beans.DetailedUser;
  */
 class APIUtility {
 
+    @Nullable
     static DetailedUser.RelationshipStatus translateToRelationshipStatus(String jsonString){
+        if(jsonString == null || jsonString.isEmpty()){
+            return null;
+        }
         if(PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_SINGLE.equals(jsonString)){
             return DetailedUser.RelationshipStatus.SINGLE;
         } else if (PurplemoonAPIConstantsV1.JSON_USER_RELATIONSHIP_STATUS_LONGTERM.equals(jsonString)){
