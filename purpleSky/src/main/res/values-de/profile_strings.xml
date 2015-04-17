@@ -9,6 +9,7 @@
 	<string name="profile_sectionHeader_AboutProfile">Über das Profil</string>
 	<string name="profile_sectionHeader_General">Allgemein</string>
 	<string name="profile_sectionHeader_ChatContactHomepage">Chats und Homepage</string>
+	<string name="profile_subsectionHeader_messengers">Messengers</string>
 
 	<string name="profile_eye_color">Augenfarbe</string>
 	<string name="profile_eye_color_lightbrown">Hellbraun</string>
@@ -158,8 +159,20 @@
 	<!-- User defined string (value). No translation -->
 
 	<string name="profile_homepage">Homepage</string>
-	<!-- User defined string (value). No translation -->
-	
+
+	<string name="profile_messenger_type">Messenger</string>
+	<string name="profile_messengers_icq">ICQ</string>
+	<string name="profile_messengers_aim">AIM</string>
+	<string name="profile_messengers_msn">Skype</string>
+	<string name="profile_messengers_yahoo">Yahoo</string>
+	<string name="profile_messengers_skype">Skype</string>
+	<string name="profile_messengers_jabber">Jabber</string>
+	<string name="profile_messengers_gadu_gadu">Gadu Gadu</string>
+	<string name="profile_messengers_ichat">iChat</string>
+	<string name="profile_messengers_googletalk">Google Talk</string>
+
+	<string name="profile_messenger_username">Username</string>
+
 	<string name="profile_target_friends_gender">Geschlecht</string>
 	<string name="profile_target_friends_menonly">Nur Männer</string>
 	<string name="profile_target_friends_womenonly">Nur Frauen</string>

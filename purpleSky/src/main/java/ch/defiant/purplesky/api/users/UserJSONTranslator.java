@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ch.defiant.purplesky.api.common.JSONUtility;
@@ -27,6 +28,7 @@ import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.ProfileTriplet;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.profile.Gender;
+import ch.defiant.purplesky.enums.profile.MessengerType;
 import ch.defiant.purplesky.enums.profile.ProfileStatus;
 import ch.defiant.purplesky.translators.ProfileTranslator;
 import ch.defiant.purplesky.util.DateUtility;
@@ -220,6 +222,23 @@ public class UserJSONTranslator {
         user.setChatNames(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_NAMES, null));
         user.setWhichChats(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_WHICH, null));
         user.setHomepage(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HOMEPAGE, null));
+
+        JSONArray messengers = jsonUserObject.optJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS);
+        List<DetailedUser.MessengerBean> beans = new ArrayList<>();
+        if(messengers != null){
+            for(int i=0, size = messengers.length(); i<size; i++){
+               JSONObject obj = messengers.optJSONObject(i);
+               if(obj != null){
+                   MessengerType type = APIUtility.translateToMessengerType(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE, null));
+                   String id = obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_ID, null);
+                   if(type != null && StringUtility.isNotNullOrEmpty(id)){
+                       beans.add(new DetailedUser.MessengerBean(type, id));
+                   }
+               }
+           }
+        }
+        user.setMessengers(beans);
+
         if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE)) {
             user.setBirthDate(DateUtility.parseJSONDate(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE, null)));
         }

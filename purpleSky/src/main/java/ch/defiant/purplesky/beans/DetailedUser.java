@@ -4,11 +4,13 @@ package ch.defiant.purplesky.beans;
 import android.support.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
 import ch.defiant.purplesky.enums.profile.ChatFrequency;
+import ch.defiant.purplesky.enums.profile.MessengerType;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.enums.profile.TargetGender;
 
@@ -29,6 +31,7 @@ public class DetailedUser extends PreviewUser {
     private String m_chatNames;
     private String m_whichChats;
     private ChatFrequency m_chatFrequency;
+    private Collection<MessengerBean> m_messengers;
 
     /**
      * @return Map containing event id -> Eventvisiting preview text
@@ -142,6 +145,14 @@ public class DetailedUser extends PreviewUser {
         m_chatFrequency = chatFrequency;
     }
 
+    public Collection<MessengerBean> getMessengers() {
+        return m_messengers;
+    }
+
+    public void setMessengers(Collection<MessengerBean> messengers) {
+        m_messengers = messengers;
+    }
+
     public static abstract class AbstractRelation implements Serializable {
         private static final long serialVersionUID = 1L;
 
@@ -189,6 +200,8 @@ public class DetailedUser extends PreviewUser {
 
 
     public static class FriendshipInformation extends AbstractRelation {
+        private static final long serialVersionUID = 1L;
+
         private TargetGender m_targetGender;
 
         public TargetGender getTargetGender() {
@@ -202,7 +215,7 @@ public class DetailedUser extends PreviewUser {
     }
 
     public static class RelationshipInformation extends AbstractRelation {
-        private static final long serialVersionUID = 2L;
+        private static final long serialVersionUID = 1L;
 
         private RelationshipStatus m_relationshipStatus;
 
@@ -214,6 +227,26 @@ public class DetailedUser extends PreviewUser {
         public RelationshipInformation setRelationshipStatus(RelationshipStatus relationshipStatus) {
             this.m_relationshipStatus = relationshipStatus;
             return this;
+        }
+    }
+
+    public static class MessengerBean implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+        private final MessengerType m_type;
+        private final String m_username;
+
+        public MessengerBean(MessengerType type, String username){
+            m_type = type;
+            m_username = username;
+        }
+
+        public MessengerType getType() {
+            return m_type;
+        }
+
+        public String getUsername() {
+            return m_username;
         }
     }
 

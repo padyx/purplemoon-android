@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
+import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
@@ -605,7 +607,6 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         if(StringUtility.isNotNullOrEmpty(user.getChatNames())){
             createAndAddTableRow(sb, R.string.profile_chat_names, user.getChatNames());
         }
-
         if(StringUtility.isNotNullOrEmpty(user.getHomepage())){
             createAndAddTableRow(sb, R.string.profile_homepage, user.getHomepage());
         }
@@ -615,6 +616,22 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             sb.insert(0,"<table class='content_tables'>");
             sb.append("</table>\n");
         }
+
+        if(!CollectionUtil.isEmpty(user.getMessengers())){
+            StringBuilder innerBuilder = new StringBuilder();
+
+            innerBuilder.append(createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_messengers));
+            Collection<DetailedUser.MessengerBean> messengers = user.getMessengers();
+            for(DetailedUser.MessengerBean b: messengers){
+                innerBuilder.append("<table class='content_tables' style='padding-bottom:1em' >");
+                createAndAddTableRow(innerBuilder, R.string.profile_messenger_type, getString(b.getType().getStringRes()));
+                createAndAddTableRow(innerBuilder, R.string.profile_messenger_username, b.getUsername());
+                innerBuilder.append("</table>\n");
+            }
+
+            sb.append(innerBuilder);
+        }
+
         return sb;
     }
 

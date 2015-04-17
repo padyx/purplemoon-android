@@ -445,9 +445,23 @@ public class PurplemoonAPIConstantsV1 {
         public static final String CHATS_FREQUENCY_SELDOM = "seldom";
         public static final String CHATS_FREQUENCY_NEVER = "never";
 
+        public static final String HOMEPAGE = "homepage";
         public static final String CHATS_WHICH = "which_chats";
         public static final String CHATS_NAMES = "chat_names";
-        public static final String HOMEPAGE = "homepage";
+
+        public static final String CHATS_MESSENGERS = "messengers";
+        public static final String CHATS_MESSENGERS_TYPE = "type";
+        public static final String CHATS_MESSENGERS_TYPE_ICQ = "icq";
+        public static final String CHATS_MESSENGERS_TYPE_AIM = "aim";
+        public static final String CHATS_MESSENGERS_TYPE_MSN = "msn";
+        public static final String CHATS_MESSENGERS_TYPE_YAHOO = "yahoo";
+        public static final String CHATS_MESSENGERS_TYPE_SKYPE = "skype";
+        public static final String CHATS_MESSENGERS_TYPE_JABBER = "jabber";
+        public static final String CHATS_MESSENGERS_TYPE_GADU_GADU = "gadu-gadu";
+        public static final String CHATS_MESSENGERS_TYPE_ICHAT = "ichat";
+        public static final String CHATS_MESSENGERS_TYPE_GOOGLETALK = "googletalk";
+
+        public static final String CHATS_MESSENGERS_ID = "id";
 
         public static final String TARGET_PARTNER = "target_partner";
         public static final String TARGET_FRIENDS = "target_friends";

@@ -22,6 +22,7 @@ import ch.defiant.purplesky.enums.profile.Gender;
 import ch.defiant.purplesky.enums.profile.HairColor;
 import ch.defiant.purplesky.enums.profile.HairLength;
 import ch.defiant.purplesky.enums.profile.HasKids;
+import ch.defiant.purplesky.enums.profile.MessengerType;
 import ch.defiant.purplesky.enums.profile.Physique;
 import ch.defiant.purplesky.enums.profile.Politics;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
@@ -613,7 +614,34 @@ public final class APIUtility {
             return ChatFrequency.NEVER;
         } else {
             throw new IllegalArgumentException("Unknown value for chat frequency " + jsonString);
-         }
+        }
     }
 
+    public static MessengerType translateToMessengerType(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_ICQ.equals(jsonString)) {
+            return MessengerType.ICQ;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_AIM.equals(jsonString)) {
+            return MessengerType.AIM;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_MSN.equals(jsonString)) {
+            return MessengerType.MSN;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_YAHOO.equals(jsonString)) {
+            return MessengerType.YAHOO;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_SKYPE.equals(jsonString)) {
+            return MessengerType.SKYPE;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_JABBER.equals(jsonString)) {
+            return MessengerType.JABBER;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_GADU_GADU.equals(jsonString)) {
+            return MessengerType.GADU_GADU;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_ICHAT.equals(jsonString)) {
+            return MessengerType.ICHAT;
+        }  else if(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE_GOOGLETALK.equals(jsonString)) {
+            return MessengerType.GOOGLETALK;
+        } else {
+            throw new IllegalArgumentException("Unknown value for messenger type " + jsonString);
+        }
+
+    }
 }
