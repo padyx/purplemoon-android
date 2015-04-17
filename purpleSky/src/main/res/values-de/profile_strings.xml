@@ -10,6 +10,7 @@
 	<string name="profile_sectionHeader_General">Allgemein</string>
 	<string name="profile_sectionHeader_ChatContactHomepage">Chats und Homepage</string>
 	<string name="profile_subsectionHeader_messengers">Messengers</string>
+	<string name="profile_sectionHeader_occupations">Tätigkeiten</string>
 
 	<string name="profile_eye_color">Augenfarbe</string>
 	<string name="profile_eye_color_lightbrown">Hellbraun</string>
@@ -184,7 +185,14 @@
 	<string name="profile_menonlypreferred">Bevorzugt Männer</string>
 	<string name="profile_womenpreferred">Bevorzugt Frauen</string>
 
-	<string name="profileKeyText_occupations"></string>
+	<string name="profile_occupation_type_school">Schule</string>
+	<string name="profile_occupation_type_studies">Studium</string>
+	<string name="profile_occupation_type_training">Ausbildung</string>
+	<string name="profile_occupation_type_looking">Arbeitslos</string>
+	<string name="profile_occupation_type_employed">Angestellt</string>
+	<string name="profile_occupation_type_self_employed">Selbständig</string>
+	<string name="profile_occupation_type_raising_kids">Kindererziehung</string>
+	<string name="profile_occupation_type_retired">In Rente</string>
 
 	<string name="profileKeyText_current_location">Aktuelle Position</string>
 	<string name="profileKeyText_home_location">Wohnort</string>

@@ -6,14 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +22,11 @@ import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PreviewUser;
-import ch.defiant.purplesky.beans.ProfileTriplet;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.enums.profile.Gender;
 import ch.defiant.purplesky.enums.profile.MessengerType;
+import ch.defiant.purplesky.enums.profile.OccupationType;
 import ch.defiant.purplesky.enums.profile.ProfileStatus;
-import ch.defiant.purplesky.translators.ProfileTranslator;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.UserUtility;
@@ -209,10 +205,7 @@ public class UserJSONTranslator {
         previewUser.setPolitics(APIUtility.translateToPolitics(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.POLITICS, null)));
 
         // TODO Preview user needs to be implemented here (Occupation!)
-        Map<String, ProfileTriplet> details = translateToUserDetails(jsonUserObject);
         addUserLocation(jsonUserObject, previewUser);
-        previewUser.setProfileDetails(details);
-
     }
 
     private static <T extends MinimalUser> void translateDetailedUserProperties(JSONObject jsonUserObject, DetailedUser user) throws JSONException {
@@ -224,7 +217,7 @@ public class UserJSONTranslator {
         user.setHomepage(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.HOMEPAGE, null));
 
         JSONArray messengers = jsonUserObject.optJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS);
-        List<DetailedUser.MessengerBean> beans = new ArrayList<>();
+        List<DetailedUser.MessengerBean> messengerBeans = new ArrayList<>();
         if(messengers != null){
             for(int i=0, size = messengers.length(); i<size; i++){
                JSONObject obj = messengers.optJSONObject(i);
@@ -232,12 +225,32 @@ public class UserJSONTranslator {
                    MessengerType type = APIUtility.translateToMessengerType(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_TYPE, null));
                    String id = obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.CHATS_MESSENGERS_ID, null);
                    if(type != null && StringUtility.isNotNullOrEmpty(id)){
-                       beans.add(new DetailedUser.MessengerBean(type, id));
+                       messengerBeans.add(new DetailedUser.MessengerBean(type, id));
                    }
                }
            }
         }
-        user.setMessengers(beans);
+        user.setMessengers(messengerBeans);
+
+        JSONArray occupations = jsonUserObject.optJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_SCHOOL_NAME);
+        List<DetailedUser.Occupation> occupationBeans = new ArrayList<>();
+        if(occupations != null){
+            for(int i=0, size = occupations.length(); i<size; i++){
+                JSONObject obj = occupations.optJSONObject(i);
+                if(obj != null){
+                    OccupationType type = APIUtility.translateToOccupationType(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE, null));
+                    if(type != null){
+                        DetailedUser.Occupation occupation = new DetailedUser.Occupation(type);
+                        occupation.setOccupationName(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_NAME, null));
+                        occupation.setSchoolName(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_SCHOOL_NAME, null));
+                        occupation.setSchoolDirection(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_SCHOOL_DIRECTION, null));
+                        occupation.setCompanyName(obj.optString(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_COMPANY, null));
+                        occupationBeans.add(occupation);
+                    }
+                }
+            }
+        }
+        user.setOccupations(occupationBeans);
 
         if(jsonUserObject.has(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE)) {
             user.setBirthDate(DateUtility.parseJSONDate(jsonUserObject.optString(PurplemoonAPIConstantsV1.ProfileDetails.BIRTHDATE, null)));
@@ -331,73 +344,6 @@ public class UserJSONTranslator {
         String country = obj.optString(PurplemoonAPIConstantsV1.JSON_LOCATION_COUNTRYID, null);
         String locationDesc = obj.optString(PurplemoonAPIConstantsV1.JSON_LOCATION_NAME, null);
         return new LocationBean(longit, latid, country, locationDesc);
-    }
-
-    /**
-     * Translates (recursively) all the properties into profile triplets.
-     *
-     * @param jsonUserObject
-     *            The JSON object to translate
-     * @return List of profile triplets, localized.
-     */
-    private static Map<String, ProfileTriplet> translateToUserDetails(JSONObject jsonUserObject) {
-        if (jsonUserObject == null)
-            return Collections.emptyMap();
-
-        HashMap<String, ProfileTriplet> list = new HashMap<String, ProfileTriplet>();
-
-        Iterator<?> keys = jsonUserObject.keys();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-
-            String translatedKey = ProfileTranslator.translateAPIKey(key);
-            if (translatedKey == null) {
-                // Cannot display this, skip it (If not listed as translatable, either unknown or handled otherwise).
-                continue;
-            }
-
-            Object object = jsonUserObject.opt(key);
-            if (object == null || JSONObject.NULL.equals(object)) {
-                // Don't translate
-            } else if (object instanceof JSONObject) {
-                Map<String, ProfileTriplet> objectDetails = translateToUserDetails((JSONObject) object);
-                list.put(key, new ProfileTriplet(key, translatedKey, objectDetails));
-            } else if (object instanceof JSONArray) {
-                ArrayList<Map<String, ProfileTriplet>> objectDetails = translateToUserDetails((JSONArray) object);
-                list.put(key, new ProfileTriplet(key, objectDetails));
-            } else {
-                // Must be a simple one (String, Integer, Double, Long, Boolean)
-                // We try to translate string values, but may fail (user specified). But that won't worry us.
-                String translatedValue = null;
-                Object rawValue = null;
-                if (object instanceof String) {
-                    translatedValue = ProfileTranslator.translateAPIValue(key, (String) object);
-                } else {
-                    rawValue = object;
-                    assert (rawValue instanceof Serializable) : "Non-serializable object! Class was: " + rawValue.getClass();
-                }
-
-                list.put(key, new ProfileTriplet(key, translatedKey, translatedValue, (Serializable) rawValue));
-            }
-        }
-
-        return list;
-    }
-
-    private static ArrayList<Map<String, ProfileTriplet>> translateToUserDetails(JSONArray jsonArray) {
-        // These must be ordered
-        ArrayList<Map<String, ProfileTriplet>> list = new ArrayList<>();
-        for (int i = 0, count = jsonArray.length(); i < count; i++) {
-            JSONObject obj = jsonArray.optJSONObject(i);
-            if (obj == null) {
-                continue;
-            }
-
-            Map<String, ProfileTriplet> details = translateToUserDetails(obj);
-            list.add(details);
-        }
-
-        return list;
     }
 
 }

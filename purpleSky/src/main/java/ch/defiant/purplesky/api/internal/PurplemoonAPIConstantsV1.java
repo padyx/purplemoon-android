@@ -463,6 +463,22 @@ public class PurplemoonAPIConstantsV1 {
 
         public static final String CHATS_MESSENGERS_ID = "id";
 
+        public static final String OCCUPATIONS = "occupations";
+        public static final String OCCUPATION_TYPE = "type";
+        public static final String OCCUPATION_TYPE_SCHOOL = "school";
+        public static final String OCCUPATION_TYPE_STUDIES = "studies";
+        public static final String OCCUPATION_TYPE_TRAINING = "training";
+        public static final String OCCUPATION_TYPE_LOOKING = "looking";
+        public static final String OCCUPATION_TYPE_EMPLOYED = "employed";
+        public static final String OCCUPATION_TYPE_SELF_EMPLOYED = "self-employed";
+        public static final String OCCUPATION_TYPE_RAISING_KIDS = "raising_kids";
+        public static final String OCCUPATION_TYPE_RETIRED = "retired";
+
+        public static final String OCCUPATION_NAME = "name";
+        public static final String OCCUPATION_SCHOOL_NAME = "school_name";
+        public static final String OCCUPATION_SCHOOL_DIRECTION = "school_direction";
+        public static final String OCCUPATION_COMPANY = "company_name";
+
         public static final String TARGET_PARTNER = "target_partner";
         public static final String TARGET_FRIENDS = "target_friends";
 

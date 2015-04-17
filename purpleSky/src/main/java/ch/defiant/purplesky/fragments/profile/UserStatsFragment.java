@@ -20,10 +20,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -35,11 +33,9 @@ import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NullUser;
 import ch.defiant.purplesky.beans.PreviewUser;
-import ch.defiant.purplesky.beans.ProfileTriplet;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.constants.ProfileListMap;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;
@@ -305,7 +301,6 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
         StringBuilder details = createGeneralTable(user);
         details.append(createBodyTable(user));
-        details.append(createDetailsTable(user));
 
         StringBuilder relationshipTable = createRelationshipTable(user);
         StringBuilder friendshipTable = createFriendshipTable(user);
@@ -673,109 +668,6 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             sb.append("</table>\n");
         }
         return sb;
-    }
-
-    private StringBuilder createDetailsTable(DetailedUser user) {
-        StringBuilder sb = new StringBuilder();
-
-        Map<String, ProfileTriplet> profileDetails = user.getProfileDetails();
-
-        final Resources resources = getResources();
-        ProfileListMap listMap = ProfileListMap.getInstance();
-        for (int ithgroup = 0, size = listMap.GROUPS.size(); ithgroup < size; ithgroup++) {
-
-            /* Create a new row to be added. */
-            StringBuilder title = createHeader(resources, listMap.GROUPS.get(ithgroup));
-
-            List<StringBuilder> rows = new ArrayList<StringBuilder>();
-
-            for (String apikey : listMap.GROUP_LIST_APIKEYS.get(ithgroup)) {
-                ProfileTriplet t = profileDetails.get(apikey);
-                if (t == null)
-                    continue;
-                if (t.getDisplayKey() == null && t.getList() == null) {
-                    continue;
-                }
-                if (StringUtility.isNullOrEmpty(t.getDisplayValue()) && t.getRawValue() == null && !t.isNested()) {
-                    // Not interested in those
-                    continue;
-                }
-                /* Create a new row to be added. */
-                List<StringBuilder> tr = createRows(t, false);
-                rows.addAll(tr);
-            }
-            // Add header only if there are any rows from this section
-            if (rows.size() > 0) {
-                sb.append(title);
-                sb.append("<table class='content_tables'>");
-                for (StringBuilder r : rows) {
-                    // Add row to TableLayout.
-                    sb.append(r);
-                }
-                sb.append("</table>");
-            }
-        }
-        return sb;
-    }
-
-    private List<StringBuilder> createRows(final ProfileTriplet t, boolean nested) {
-        ArrayList<StringBuilder> rows = new ArrayList<StringBuilder>();
-        if (!nested && t.isSimple()) {
-            StringBuilder sb = new StringBuilder();
-
-            String val = "";
-            if (t.getDisplayValue() != null) {
-                val = t.getDisplayValue();
-            } else {
-                if (t.getRawValue() != null) {
-                    val = t.getRawValue().toString();
-                }
-            }
-            createAndAddTableRow(sb, t.getDisplayKey(), val);
-
-            rows.add(sb);
-        } else if (t.getChildren() != null || t.getList() != null) {
-            // Then take this key as 'title'
-
-            if (t.getChildren() != null) {
-                // Iterate over all children
-                for (Entry<String, ProfileTriplet> e : t.getChildren().entrySet()) {
-                    List<StringBuilder> list = createRows(e.getValue(), true);
-                    rows.addAll(list);
-                }
-            } else if (t.getList() != null) {
-                // Iterate over all children
-                for (Map<String, ProfileTriplet> element : t.getList()) {
-                    if (!rows.isEmpty()) {
-                        // separator between list elements
-                        // TODO maybe do this better?
-                        StringBuilder sep = new StringBuilder();
-                        createAndAddSpanningTableRow(sep, "&nbsp;");
-                        rows.add(sep);
-                    }
-
-                    for (Entry<String, ProfileTriplet> entry : element.entrySet()) {
-                        List<StringBuilder> list = createRows(entry.getValue(), true);
-                        rows.addAll(list);
-                    }
-                }
-            }
-        } else {
-            StringBuilder sb = new StringBuilder();
-            String val = "";
-            if (t.getDisplayValue() != null) {
-                val = t.getDisplayValue();
-            } else {
-                if (t.getRawValue() != null) {
-                    val = t.getRawValue().toString();
-                }
-            }
-            createAndAddTableRow(sb, t.getDisplayKey(), val);
-
-            rows.add(sb);
-        }
-
-        return rows;
     }
 
     private StringBuilder createHeader(final Resources resources, int titleResId) {

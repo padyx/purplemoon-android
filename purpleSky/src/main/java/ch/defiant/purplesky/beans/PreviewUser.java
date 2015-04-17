@@ -1,7 +1,5 @@
 package ch.defiant.purplesky.beans;
 
-import java.util.Map;
-
 import ch.defiant.purplesky.enums.profile.DrinkerFrequency;
 import ch.defiant.purplesky.enums.profile.EyeColor;
 import ch.defiant.purplesky.enums.profile.FacialHair;
@@ -47,27 +45,6 @@ public class PreviewUser extends BasicUser {
 
     public void setFirstOccupationType(String firstOccupationType) {
         m_firstOccupationType = firstOccupationType;
-    }
-
-    /**
-     * Returns the profile details.
-     *
-     * @return List of profile triplets
-     */
-    @Override
-    public Map<String, ProfileTriplet> getProfileDetails() {
-        return super.getProfileDetails();
-    }
-
-    /**
-     * Set the profile details
-     * 
-     * @param profileDetails
-     *            List of profile triplets
-     */
-    @Override
-    public void setProfileDetails(Map<String, ProfileTriplet> profileDetails) {
-        super.setProfileDetails(profileDetails);
     }
 
     public LocationBean getHomeLocation() {

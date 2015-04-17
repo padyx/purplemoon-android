@@ -11,6 +11,7 @@ import java.util.Map;
 
 import ch.defiant.purplesky.enums.profile.ChatFrequency;
 import ch.defiant.purplesky.enums.profile.MessengerType;
+import ch.defiant.purplesky.enums.profile.OccupationType;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.enums.profile.TargetGender;
 
@@ -32,6 +33,7 @@ public class DetailedUser extends PreviewUser {
     private String m_whichChats;
     private ChatFrequency m_chatFrequency;
     private Collection<MessengerBean> m_messengers;
+    private Collection<Occupation> m_occupations;
 
     /**
      * @return Map containing event id -> Eventvisiting preview text
@@ -153,6 +155,14 @@ public class DetailedUser extends PreviewUser {
         m_messengers = messengers;
     }
 
+    public Collection<Occupation> getOccupations() {
+        return m_occupations;
+    }
+
+    public void setOccupations(Collection<Occupation> occupations) {
+        m_occupations = occupations;
+    }
+
     public static abstract class AbstractRelation implements Serializable {
         private static final long serialVersionUID = 1L;
 
@@ -247,6 +257,56 @@ public class DetailedUser extends PreviewUser {
 
         public String getUsername() {
             return m_username;
+        }
+    }
+
+    public static class Occupation implements  Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final OccupationType m_occupationType;
+        private String m_occupationName;
+        private String m_schoolName;
+        private String m_schoolDirection;
+        private String m_companyName;
+
+        public Occupation(OccupationType type){
+            m_occupationType = type;
+        }
+
+        public OccupationType getOccupationType() {
+            return m_occupationType;
+        }
+
+        public String getOccupationName() {
+            return m_occupationName;
+        }
+
+        public void setOccupationName(String occupationName) {
+            m_occupationName = occupationName;
+        }
+
+        public String getSchoolName() {
+            return m_schoolName;
+        }
+
+        public void setSchoolName(String schoolName) {
+            m_schoolName = schoolName;
+        }
+
+        public String getSchoolDirection() {
+            return m_schoolDirection;
+        }
+
+        public void setSchoolDirection(String schoolDirection) {
+            m_schoolDirection = schoolDirection;
+        }
+
+        public String getCompanyName() {
+            return m_companyName;
+        }
+
+        public void setCompanyName(String companyName) {
+            m_companyName = companyName;
         }
     }
 

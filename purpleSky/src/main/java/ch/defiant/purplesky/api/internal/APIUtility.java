@@ -23,6 +23,7 @@ import ch.defiant.purplesky.enums.profile.HairColor;
 import ch.defiant.purplesky.enums.profile.HairLength;
 import ch.defiant.purplesky.enums.profile.HasKids;
 import ch.defiant.purplesky.enums.profile.MessengerType;
+import ch.defiant.purplesky.enums.profile.OccupationType;
 import ch.defiant.purplesky.enums.profile.Physique;
 import ch.defiant.purplesky.enums.profile.Politics;
 import ch.defiant.purplesky.enums.profile.RelationshipStatus;
@@ -642,6 +643,31 @@ public final class APIUtility {
         } else {
             throw new IllegalArgumentException("Unknown value for messenger type " + jsonString);
         }
-
     }
+
+    public static OccupationType translateToOccupationType(@Nullable String jsonString) {
+        if (jsonString == null || jsonString.isEmpty()) {
+            return null;
+        }
+        if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_SCHOOL.equals(jsonString)) {
+            return OccupationType.SCHOOL;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_STUDIES.equals(jsonString)) {
+            return OccupationType.STUDIES;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_TRAINING.equals(jsonString)) {
+            return OccupationType.TRAINING;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_LOOKING.equals(jsonString)) {
+            return OccupationType.LOOKING;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_EMPLOYED.equals(jsonString)) {
+            return OccupationType.EMPLOYED;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_SELF_EMPLOYED.equals(jsonString)) {
+            return OccupationType.SELF_EMPLOYED;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_RAISING_KIDS.equals(jsonString)) {
+            return OccupationType.RAISING_KIDS;
+        } else if(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_TYPE_RETIRED.equals(jsonString)) {
+            return OccupationType.RETIRED;
+        } else {
+            throw new IllegalArgumentException("Unknown value for occupation type " + jsonString);
+        }
+    }
+
 }
