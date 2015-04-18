@@ -185,6 +185,7 @@
 	<string name="profile_menonlypreferred">Bevorzugt Männer</string>
 	<string name="profile_womenpreferred">Bevorzugt Frauen</string>
 
+	<string name="profile_occupation_type">Art</string>
 	<string name="profile_occupation_type_school">Schule</string>
 	<string name="profile_occupation_type_studies">Studium</string>
 	<string name="profile_occupation_type_training">Ausbildung</string>
@@ -193,6 +194,11 @@
 	<string name="profile_occupation_type_self_employed">Selbständig</string>
 	<string name="profile_occupation_type_raising_kids">Kindererziehung</string>
 	<string name="profile_occupation_type_retired">In Rente</string>
+
+	<string name="profile_occupation_name">Name</string>
+	<string name="profile_occupation_school_name">Schulname</string>
+	<string name="profile_occupation_school_direction">Studienrichtung</string>
+	<string name="profile_occupation_company_name">Firma</string>
 
 	<string name="profileKeyText_current_location">Aktuelle Position</string>
 	<string name="profileKeyText_home_location">Wohnort</string>

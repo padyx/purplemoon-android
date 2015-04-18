@@ -232,7 +232,7 @@ public class UserJSONTranslator {
         }
         user.setMessengers(messengerBeans);
 
-        JSONArray occupations = jsonUserObject.optJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATION_SCHOOL_NAME);
+        JSONArray occupations = jsonUserObject.optJSONArray(PurplemoonAPIConstantsV1.ProfileDetails.OCCUPATIONS);
         List<DetailedUser.Occupation> occupationBeans = new ArrayList<>();
         if(occupations != null){
             for(int i=0, size = occupations.length(); i<size; i++){

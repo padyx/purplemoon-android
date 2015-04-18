@@ -192,6 +192,7 @@
 	<string name="profileValueText_menonlypreferred">Men preferred</string>
 	<string name="profileValueText_womenpreferred">Women preferred</string>
 
+	<string name="profile_occupation_type">Type</string>
 	<string name="profile_occupation_type_school">School</string>
 	<string name="profile_occupation_type_studies">Studies</string>
 	<string name="profile_occupation_type_training">Training</string>
@@ -200,6 +201,11 @@
 	<string name="profile_occupation_type_self_employed">Self-employed</string>
 	<string name="profile_occupation_type_raising_kids">Raising kids</string>
 	<string name="profile_occupation_type_retired">Retired</string>
+
+	<string name="profile_occupation_name">Name</string>
+	<string name="profile_occupation_school_name">School name</string>
+	<string name="profile_occupation_school_direction">Study direction</string>
+	<string name="profile_occupation_company_name">Company</string>
 
 	<string name="profileKeyText_current_location">Current location</string>
 	<string name="profileKeyText_home_location">Home location</string>

@@ -300,6 +300,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         StringBuilder locationsTable = createLocationsTable(user);
 
         StringBuilder details = createGeneralTable(user);
+        details.append(createOccupationTable(user));
         details.append(createBodyTable(user));
 
         StringBuilder relationshipTable = createRelationshipTable(user);
@@ -313,6 +314,8 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
                 details.append(friendshipTable);
             }
         }
+
+        // FIXME Implement Occupation
 
         details.append(createBeliefTable(user));
         details.append(createChatHomepageTable(user));
@@ -625,6 +628,39 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
             }
 
             sb.append(innerBuilder);
+        }
+
+        return sb;
+    }
+
+    private StringBuilder createOccupationTable(DetailedUser user) {
+        StringBuilder sb = new StringBuilder();
+
+        Collection<DetailedUser.Occupation> occupations = user.getOccupations();
+        if (!CollectionUtil.isEmpty(occupations)){
+            for(DetailedUser.Occupation o : occupations){
+                sb.append("<table class='content_tables' style='padding-bottom:1em'>");
+                if(o.getOccupationName() != null){
+                    createAndAddTableRow(sb, R.string.profile_occupation_name, o.getOccupationName());
+                }
+                if(o.getOccupationType() != null) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_type, getString(o.getOccupationType().getStringRes()));
+                }
+                if(StringUtility.isNotNullOrEmpty(o.getCompanyName())) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_company_name, o.getCompanyName());
+                }
+                if(StringUtility.isNotNullOrEmpty(o.getSchoolDirection())) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_school_direction, o.getSchoolDirection());
+                }
+                if(StringUtility.isNotNullOrEmpty(o.getSchoolName())) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_school_name, o.getSchoolName());
+                }
+                sb.append("</table>\n");
+            }
+        }
+
+        if (sb.length() > 0) {
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_occupations));
         }
 
         return sb;
