@@ -1,8 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="UnusedResources">
-    
-    <string name="profile_relationship">Relationship</string>
+<resources>
+
+	<string name="profile_sectionHeader_getToKnow">Who I want to get to know</string>
+	<string name="profile_subsectionHeader_getToKnowPartner">As partner</string>
+	<string name="profile_subsectionHeader_getToKnowFriend">As friends</string>
+	<string name="profile_sectionHeader_body">Body</string>
+	<string name="profile_sectionHeader_beliefs">Beliefs</string>
+	<string name="profile_sectionHeader_AboutProfile">About profile</string>
+	<string name="profile_sectionHeader_General">General</string>
+	<string name="profile_sectionHeader_ChatContactHomepage">Chats and homepage</string>
+	<string name="profile_subsectionHeader_messengers">Messengers</string>
+	<string name="profile_sectionHeader_occupations">Occupations</string>
+
+	<string name="profile_eye_color">Eye color</string>
+	<string name="profile_eye_color_lightbrown">Light-brown</string>
+	<string name="profile_eye_color_darkbrown">Dark-brown</string>
+	<string name="profile_eye_color_brown">Brown</string>
+	<string name="profile_eye_color_lightblue">Light-blue</string>
+	<string name="profile_eye_color_darkblue">Dark-blue</string>
+	<string name="profile_eye_color_blue">Blue</string>
+	<string name="profile_eye_color_black">Black</string>
+	<string name="profile_eye_color_green">Green</string>
+	<string name="profile_eye_color_bluegrey">Blue-grey</string>
+	<string name="profile_eye_color_bluegreen">Blue-green</string>
+	<string name="profile_eye_color_greenbrown">Green-brown</string>
+	<string name="profile_eye_color_greengrey">Green-grey</string>
+	<string name="profile_eye_color_grey">Grey</string>
+
+	<string name="profile_physique">Physique</string>
+	<string name="profile_physique_slim">Slim</string>
+	<string name="profile_physique_normal">Normal</string>
+	<string name="profile_physique_athletic">Athletic</string>
+	<string name="profile_physique_bodybuilder">Bodybuilder</string>
+	<string name="profile_physique_sturdy">Sturdy</string>
+	<string name="profile_physique_littletummy">Little tummy</string>
+	<string name="profile_physique_chubby">Chubby</string>
+
+	<string name="profile_facial_hair">Facial hair</string>
+	<string name="profile_facial_hair_none">None</string>
+	<string name="profile_facial_hair_shaved">Shaved</string>
+	<string name="profile_facial_hair_threeday">Three day</string>
+	<string name="profile_facial_hair_mustache">Moustache</string>
+	<string name="profile_facial_hair_petitgoatee">Small goatee</string>
+	<string name="profile_facial_hair_goatee">Goatee</string>
+	<string name="profile_facial_hair_muttonchops">Mutton Chops</string>
+	<string name="profile_facial_hair_fullbeard">Full beard</string>
+
+	<string name="profile_hair_length">Hair length</string>
+	<string name="profile_hair_length_bald">Bald</string>
+	<string name="profile_hair_length_short">Short</string>
+	<string name="profile_hair_length_medium">Medium</string>
+	<string name="profile_hair_length_long">Long</string>
+
+	<string name="profile_drinker">Drinker</string>
+	<string name="profile_drinker_never">Never</string>
+	<string name="profile_drinker_seldom">Seldom</string>
+	<string name="profile_drinker_sometimes">Sometimes</string>
+	<string name="profile_drinker_regularly">Regularly</string>
+	<string name="profile_drinker_alot">A lot</string>
+	<string name="profile_drinker_wineonly">Wine only</string>
+
     <string name="profile_date_last24h">Within the last 24 hours</string>
     <string name="profile_header_events">Events</string>
     <string name="profile_header_locations">Locations</string>
@@ -12,186 +69,143 @@
     <string name="PersonallyKnown">Personally Known</string>
     <string name="MarkedAsFriend">Marked as a friend</string>
     
-    <string name="profileGroup_General">General</string>
-    <string name="profileKeyText_birthdate">Date of birth</string>
-    <string name="profileKeyText_firstname">First name</string>
-    <string name="profileKeyText_nicknames">Nicknames</string>
-    <string name="profileKeyText_lastname">Last name</string>
-    <string name="profileKeyText_emailaddress">E-Mail</string>
-    
-    
-    <string name="profileGroup_Body">Body</string>
-	<string name="profileGroup_Beliefs">Beliefs</string>
-	<string name="profileGroup_ChatContactHomepage">Chats and homepage</string>
-	<string name="profileGroup_GetToKnow">Who I want to get to know</string>
-	<string name="profileGroup_GetToKnowAsPartner">Who I want as a partner</string>
+    <string name="profile_birthdate">Date of birth</string>
+    <string name="profile_firstname">First name</string>
+    <string name="profile_nicknames">Nicknames</string>
+    <string name="profile_lastname">Last name</string>
+    <string name="profile_emailaddress">E-Mail</string>
+
 	<string name="profileGroup_Occupation">Occupation</string>
-	<string name="profileGroup_AboutProfile">About profile</string>
-    
-    <string name="profileKeyText_height">Height (cm)</string>
-    <string name="profileKeyText_weight">Weight (kg)</string>
-    
-    <string name="profileKeyText_physique">Physique</string>
-    <string name="profileValueText_physique_slim">Slim</string>
-    <string name="profileValueText_physique_normal">Normal</string>
-    <string name="profileValueText_physique_athletic">Athletic</string>
-    <string name="profileValueText_physique_bodybuilder">Bodybuilder</string>
-    <string name="profileValueText_physique_sturdy">Sturdy</string>
-    <string name="profileValueText_physique_littletummy">Little tummy</string>
-    <string name="profileValueText_physique_chubby">Chubby</string>
-    
-    <string name="profileKeyText_eye_color">Eye color</string>
-    <string name="profileValueText_eye_color_lightbrown">Light-brown</string>
-    <string name="profileValueText_eye_color_darkbrown">Dark-brown</string>
-    <string name="profileValueText_eye_color_brown">Brown</string>
-    <string name="profileValueText_eye_color_lightblue">Light-blue</string>
-    <string name="profileValueText_eye_color_darkblue">Dark-blue</string>
-    <string name="profileValueText_eye_color_blue">Blue</string>
-    <string name="profileValueText_eye_color_black">Black</string>
-    <string name="profileValueText_eye_color_green">Green</string>
-    <string name="profileValueText_eye_color_bluegrey">Blue-grey</string>
-    <string name="profileValueText_eye_color_bluegreen">Blue-green</string>
-    <string name="profileValueText_eye_color_greenbrown">Green-brown</string>
-    <string name="profileValueText_eye_color_greengrey">Green-grey</string>
-    <string name="profileValueText_eye_color_grey">Grey</string>
-    
-    <string name="profileKeyText_hair_color">Hair color</string>
-    <string name="profileValueText_hair_color_lightbrown">Light-brown</string>
-	<string name="profileValueText_hair_color_darkbrown">Dark-brown</string>
-	<string name="profileValueText_hair_color_brown">Brown</string>
-	<string name="profileValueText_hair_color_lightblonde">Light-blonde</string>
-	<string name="profileValueText_hair_color_darkblonde">Dark-blonde</string>
-	<string name="profileValueText_hair_color_blonde">Blonde</string>
-	<string name="profileValueText_hair_color_black">Black</string>
-	<string name="profileValueText_hair_color_red">Red</string>
-	<string name="profileValueText_hair_color_lightgrey">Light-red</string>
-	<string name="profileValueText_hair_color_darkgrey">Dark-grey</string>
-	<string name="profileValueText_hair_color_dyedred">Dyed-red</string>
-	<string name="profileValueText_hair_color_dyedblack">Dyed-black</string>
-	<string name="profileValueText_hair_color_dyedblue">Dyed-blue</string>
-	<string name="profileValueText_hair_color_dyedgreen">Dyed-green</string>
-	<string name="profileValueText_hair_color_dyedblonde">Dyed-blonde</string>
-	<string name="profileValueText_hair_color_dyedpurple">Dyed-purple</string>
 
-	<string name="profileKeyText_facialhair">Facial hair</string>
-	<string name="profileValueText_facial_hair_none">None</string>
-	<string name="profileValueText_facial_hair_shaved">Shaved</string>
-	<string name="profileValueText_facial_hair_threeday">Three day</string>
-	<string name="profileValueText_facial_hair_mustache">Moustache</string>
-	<string name="profileValueText_facial_hair_petitgoatee">Small goatee</string>
-	<string name="profileValueText_facial_hair_goatee">Goatee</string>
-	<string name="profileValueText_facial_hair_muttonchops">Mutton Chops</string>
-	<string name="profileValueText_facial_hair_fullbeard">Full beard</string>
+    <string name="profile_hair_color">Hair color</string>
+    <string name="profile_hair_color_lightbrown">Light-brown</string>
+	<string name="profile_hair_color_darkbrown">Dark-brown</string>
+	<string name="profile_hair_color_brown">Brown</string>
+	<string name="profile_hair_color_lightblonde">Light-blonde</string>
+	<string name="profile_hair_color_darkblonde">Dark-blonde</string>
+	<string name="profile_hair_color_blonde">Blonde</string>
+	<string name="profile_hair_color_black">Black</string>
+	<string name="profile_hair_color_red">Red</string>
+	<string name="profile_hair_color_lightgrey">Light-red</string>
+	<string name="profile_hair_color_darkgrey">Dark-grey</string>
+	<string name="profile_hair_color_dyedred">Dyed-red</string>
+	<string name="profile_hair_color_dyedblack">Dyed-black</string>
+	<string name="profile_hair_color_dyedblue">Dyed-blue</string>
+	<string name="profile_hair_color_dyedgreen">Dyed-green</string>
+	<string name="profile_hair_color_dyedblonde">Dyed-blonde</string>
+	<string name="profile_hair_color_dyedpurple">Dyed-purple</string>
 	
-	<string name="profileKeyText_hair_length">Hair length</string>
-	<string name="profileValueText_hair_length_bald">Bald</string>
-	<string name="profileValueText_hair_length_short">Short</string>
-	<string name="profileValueText_hair_length_medium">Medium</string>
-	<string name="profileValueText_hair_length_long">Long</string>
+	<string name="profile_smoker">Smoker</string>
+	<string name="profile_smoker_jointsonly">Only joints</string>
+	<string name="profile_smoker_reallyalot">Really a lot</string>
+	<string name="profile_smoker_alot">A lot</string>
+	<string name="profile_smoker_moderately">Moderately</string>
+	<string name="profile_smoker_onweekends">On weekends</string>
+	<string name="profile_smoker_almostnever">Almost never</string>
+	<string name="profile_smoker_never">Never</string>
 	
-	<string name="profileKeyText_drinker">Drinker</string>
-	<string name="profileValueText_drinker_never">Never</string>
-	<string name="profileValueText_drinker_seldom">Seldom</string>
-	<string name="profileValueText_drinker_sometimes">Sometimes</string>
-	<string name="profileValueText_drinker_regularly">Regularly</string>
-	<string name="profileValueText_drinker_alot">A lot</string>
-	<string name="profileValueText_drinker_wineonly">Wine only</string>
+	<string name="profile_vegetarian">Vegetarian</string>
+	<string name="profile_vegetarian_vegan">Vegan</string>
+	<string name="profile_vegetarian_yes">Yes</string>
+	<string name="profile_vegetarian_no">No</string>
 	
-	<string name="profileKeyText_smoker">Smoker</string>
-	<string name="profileValueText_smoker_jointsonly">Only joints</string>
-	<string name="profileValueText_smoker_reallyalot">Really a lot</string>
-	<string name="profileValueText_smoker_alot">A lot</string>
-	<string name="profileValueText_smoker_moderately">Moderately</string> 
-	<string name="profileValueText_smoker_onweekends">On weekends</string>
-	<string name="profileValueText_smoker_almostnever">Almost never</string>
-	<string name="profileValueText_smoker_never">Never</string>
-	
-	<string name="profileKeyText_vegetarian">Vegetarian</string>
-	<string name="profileValueText_vegetarian_vegan">Vegan</string>
-	<string name="profileValueText_vegetarian_yes">Yes</string>
-	<string name="profileValueText_vegetarian_no">No</string>
-	
-	<string name="profileKeyText_kids_want">Wants kids</string>
-	<string name="profileValueText_kids_want_unsure">Unsure</string>
-	<string name="profileValueText_kids_want_yes">Yes</string>    
-	<string name="profileValueText_kids_want_no">No</string>      
+	<string name="profile_kids_want">Wants kids</string>
+	<string name="profile_kids_want_unsure">Unsure</string>
+	<string name="profile_kids_want_yes">Yes</string>
+	<string name="profile_kids_want_no">No</string>
 
-	<string name="profileKeyText_kids_have">Has kids</string>
-	<string name="profileValueText_kids_have_none">No</string>
-	<string name="profileValueText_kids_have_one">Yes, one</string>
-	<string name="profileValueText_kids_have_multiple">Yes, more than one</string>
-	
+	<string name="profile_kids_have">Has kids</string>
+	<string name="profile_kids_have_none">No</string>
+	<string name="profile_kids_have_one">Yes, one</string>
+	<string name="profile_kids_have_multiple">Yes, more than one</string>
 	 
-	<string name="profileKeyText_religion">Religion</string>
-	<string name="profileValueText_religion_agnostic">Agnostic</string>
-	<string name="profileValueText_religion_atheist">Atheist</string>
-	<string name="profileValueText_religion_romancatholic">Roman-Catholic</string>
-	<string name="profileValueText_religion_oldcatholic">Old-Catholic</string>
-	<string name="profileValueText_religion_evangelicalreformed">Evangelical-Reformed</string>
-	<string name="profileValueText_religion_protestant">Protestant</string>
-	<string name="profileValueText_religion_russianorthodox">Russian-Orthodox</string>
-	<string name="profileValueText_religion_greekorthodox">Greek-Orthodox</string>
-	<string name="profileValueText_religion_jewishorthodox">Jewish-Orthodox</string>
-	<string name="profileValueText_religion_orthodox">Orthodox</string>
-	<string name="profileValueText_religion_christian">Christian</string>
-	<string name="profileValueText_religion_freechurch">Free church</string>
-	<string name="profileValueText_religion_folkreligion">Folk-Religion</string>
-	<string name="profileValueText_religion_hindu">Hindu</string>
-	<string name="profileValueText_religion_sunnite">Sunnite</string>
-	<string name="profileValueText_religion_shiite">Shiite</string>
-	<string name="profileValueText_religion_jewish">Jewish</string>
-	<string name="profileValueText_religion_buddhist">Buddhist</string>
-	<string name="profileValueText_religion_shinto">Shinto</string>
-	<string name="profileValueText_religion_spiritual">Spiritual</string>
-	<string name="profileValueText_religion_other">Other</string>
+	<string name="profile_religion">Religion</string>
+	<string name="profile_religion_agnostic">Agnostic</string>
+	<string name="profile_religion_atheist">Atheist</string>
+	<string name="profile_religion_romancatholic">Roman-Catholic</string>
+	<string name="profile_religion_oldcatholic">Old-Catholic</string>
+	<string name="profile_religion_evangelicalreformed">Evangelical-Reformed</string>
+	<string name="profile_religion_protestant">Protestant</string>
+	<string name="profile_religion_russianorthodox">Russian-Orthodox</string>
+	<string name="profile_religion_greekorthodox">Greek-Orthodox</string>
+	<string name="profile_religion_jewishorthodox">Jewish-Orthodox</string>
+	<string name="profile_religion_orthodox">Orthodox</string>
+	<string name="profile_religion_christian">Christian</string>
+	<string name="profile_religion_freechurch">Free church</string>
+	<string name="profile_religion_folkreligion">Folk-Religion</string>
+	<string name="profile_religion_hindu">Hindu</string>
+	<string name="profile_religion_sunnite">Sunnite</string>
+	<string name="profile_religion_shiite">Shiite</string>
+	<string name="profile_religion_jewish">Jewish</string>
+	<string name="profile_religion_buddhist">Buddhist</string>
+	<string name="profile_religion_shinto">Shinto</string>
+	<string name="profile_religion_spiritual">Spiritual</string>
+	<string name="profile_religion_other">Other</string>
 
-	<string name="profileKeyText_politics">Politics</string>
-	<string name="profileValueText_politics_nointerest">No interest</string>
-	<string name="profileValueText_politics_right">Right wing</string>
-	<string name="profileValueText_politics_middleright">Centre-right wing</string>
-	<string name="profileValueText_politics_middle">Centre</string>
-	<string name="profileValueText_politics_middleleft">Centre-left wing</string>
-	<string name="profileValueText_politics_left">Left wing</string>
-	
-	<string name="profileKeyText_chat_names">Chat names</string>
-	<string name="profileKeyText_which_chats">Chats</string>
+	<string name="profile_politics">Politics</string>
+	<string name="profile_politics_nointerest">No interest</string>
+	<string name="profile_politics_right">Right wing</string>
+	<string name="profile_politics_middleright">Centre-right wing</string>
+	<string name="profile_politics_middle">Centre</string>
+	<string name="profile_politics_middleleft">Centre-left wing</string>
+	<string name="profile_politics_left">Left wing</string>
+
+	<string name="profile_last_online">Last online</string>
+	<string name="profile_last_update">Last updated</string>
+	<string name="profile_create_date">Created</string>
+
+	<string name="profile_chat_names">Chat names</string>
+	<string name="profile_which_chats">Chats</string>
 	<!-- User defined string (value). No translation -->
 	
-	<string name="profileKeyText_chat_frequency">Frequency</string>
-	<string name="profileValueText_chat_frequency_never">Never</string>
-	<string name="profileValueText_chat_frequency_seldom">Seldom</string>
-	<string name="profileValueText_chat_frequency_nowandthen">Now and then</string>
-	<string name="profileValueText_chat_frequency_regularly">Regularly</string>
-	<string name="profileValueText_chat_frequency_often">Often</string>
-	<string name="profileValueText_chat_frequency_allthetime">All the time</string>
+	<string name="profile_chat_frequency">Frequency</string>
+	<string name="profile_chat_frequency_never">Never</string>
+	<string name="profile_chat_frequency_seldom">Seldom</string>
+	<string name="profile_chat_frequency_nowandthen">Now and then</string>
+	<string name="profile_chat_frequency_regularly">Regularly</string>
+	<string name="profile_chat_frequency_often">Often</string>
+	<string name="profile_chat_frequency_allthetime">All the time</string>
 	
-	<string name="profileKeyText_homepage">Homepage</string>
-	<!-- User defined string (value). No translation -->
-	
-	<string name="profileKeyText_target_friends_gender">Gender</string>
-	<string name="profileValueText_target_friends_menonly">Only men</string>
-	<string name="profileValueText_target_friends_womenonly">Only women</string>
-	<string name="profileValueText_target_friends_menonlypreferred">Men preferred</string>
-	<string name="profileValueText_target_friends_womenpreferred">Women preferred</string>
-	
-	<string name="profileKeyText_age_from">Age from</string>
-	<string name="profileKeyText_age_till">Age to</string>
-	<string name="profileKeyText_distance">Max. distance (km)</string>
-	<string name="profileKeyText_text"></string>
-	
+	<string name="profile_homepage">Homepage</string>
+
+	<string name="profile_messenger_type">Messenger</string>
+	<string name="profile_messengers_icq">ICQ</string>
+	<string name="profile_messengers_aim">AIM</string>
+	<string name="profile_messengers_msn">Skype</string>
+	<string name="profile_messengers_yahoo">Yahoo</string>
+	<string name="profile_messengers_skype">Skype</string>
+	<string name="profile_messengers_jabber">Jabber</string>
+	<string name="profile_messengers_gadu_gadu">Gadu Gadu</string>
+	<string name="profile_messengers_ichat">iChat</string>
+	<string name="profile_messengers_googletalk">Google Talk</string>
+
+	<string name="profile_messenger_username">Username</string>
+
+	<string name="profile_target_friends_gender">Gender</string>
+	<string name="profile_target_friends_menonly">Only men</string>
+	<string name="profile_target_friends_womenonly">Only women</string>
+	<string name="profile_target_friends_menpreferred">Men preferred</string>
+	<string name="profile_target_friends_womenpreferred">Women preferred</string>
+
 	<string name="profileValueText_menonly">Only men</string>
 	<string name="profileValueText_womenonly">Only women</string>
 	<string name="profileValueText_menonlypreferred">Men preferred</string>
 	<string name="profileValueText_womenpreferred">Women preferred</string>
-	
-	<string name="profileKeyText_status">Relationship status</string>
-	<string name="profileValueText_status_single">Single</string>
-	<string name="profileValueText_status_longterm">Long-term relationship</string>
-	<string name="profileValueText_status_engaged">Engaged</string>
-	<string name="profileValueText_status_married">Married</string>
-	<string name="profileValueText_status_open">Open Relationship</string>
-	
-	<string name="profileKeyText_occupations"></string>
+
+	<string name="profile_occupation_type">Type</string>
+	<string name="profile_occupation_type_school">School</string>
+	<string name="profile_occupation_type_studies">Studies</string>
+	<string name="profile_occupation_type_training">Training</string>
+	<string name="profile_occupation_type_looking">Looking for employment</string>
+	<string name="profile_occupation_type_employed">Employed</string>
+	<string name="profile_occupation_type_self_employed">Self-employed</string>
+	<string name="profile_occupation_type_raising_kids">Raising kids</string>
+	<string name="profile_occupation_type_retired">Retired</string>
+
+	<string name="profile_occupation_name">Name</string>
+	<string name="profile_occupation_school_name">School name</string>
+	<string name="profile_occupation_school_direction">Study direction</string>
+	<string name="profile_occupation_company_name">Company</string>
 
 	<string name="profileKeyText_current_location">Current location</string>
 	<string name="profileKeyText_home_location">Home location</string>
@@ -210,9 +224,5 @@
 	<string name="profileKeyText_school_name">School</string>
 	<string name="profileKeyText_school_direction">Direction</string>
 	<string name="profileKeyText_company_name">Company</string>
-	
-	<string name="profileKeyText_last_online">Last online</string>
-	<string name="profileKeyText_last_update">Last updated</string>
-	<string name="profileKeyText_create_date">Created</string>
-	
+
 </resources>

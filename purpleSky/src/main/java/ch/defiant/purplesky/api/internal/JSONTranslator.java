@@ -14,7 +14,7 @@ import ch.defiant.purplesky.util.DateUtility;
 
 class JSONTranslator { // TODO Make package private
 
-    private static final String TAG = "JSONTranslator";
+    private static final String TAG = JSONTranslator.class.getSimpleName();
 
     public static OnlineBean translateToOnlineBean(JSONObject obj) {
         if (obj == null)
@@ -126,9 +126,6 @@ class JSONTranslator { // TODO Make package private
 
         return bean;
     }
-
-
-
 
     public static PurplemoonLocation toPurplemoonLocation(JSONObject obj){
         String type = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_TYPE);

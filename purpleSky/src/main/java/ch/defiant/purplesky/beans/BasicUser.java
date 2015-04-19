@@ -1,7 +1,6 @@
 package ch.defiant.purplesky.beans;
 
 import java.util.Date;
-import java.util.Map;
 
 public class BasicUser extends MinimalUser {
 
@@ -13,7 +12,6 @@ public class BasicUser extends MinimalUser {
     private Boolean m_isFriend;
     private Boolean m_hasNotes;
     private Date m_onlineSince;
-    private Map<String, ProfileTriplet> m_profileDetails;
 
     public String getNotes() {
         return m_notes;
@@ -53,27 +51,6 @@ public class BasicUser extends MinimalUser {
 
     public void setOnlineSince(Date onlineSince) {
         m_onlineSince = onlineSince;
-    }
-
-    /**
-     * Get the profile details. This getter (and it's setter) implementation is protected, as in the basic user it is not provided. Subclass may make
-     * this public if it provides these details.
-     * 
-     * @return List of profile triplets
-     */
-    protected Map<String, ProfileTriplet> getProfileDetails() {
-        return m_profileDetails;
-    }
-
-    /**
-     * Set the profile details. This setter (and it's getter) implementation is protected, as in the basic user it is not provided. Subclass may make
-     * this public if it provides these details.
-     * 
-     * @param profileDetails
-     *            Map of profile triplets (Key: ApiValue)
-     */
-    protected void setProfileDetails(Map<String, ProfileTriplet> profileDetails) {
-        m_profileDetails = profileDetails;
     }
 
     @Override

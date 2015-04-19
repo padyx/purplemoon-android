@@ -109,6 +109,11 @@ public class PurplemoonAPIConstantsV1 {
     public static final String JSON_USER_RELATIONSHIP_STATUS_MARRIED = "married";
     public static final String JSON_USER_RELATIONSHIP_STATUS_OPEN = "open";
 
+    public static final String JSON_USER_RELATIONSHIP_MAXDISTANCE = "distance";
+    public static final String JSON_USER_RELATIONSHIP_AGEFROM = "age_from";
+    public static final String JSON_USER_RELATIONSHIP_AGETO = "age_till";
+    public static final String JSON_USER_RELATIONSHIP_TEXT = "text";
+
     /*
      * Favorite related
      */
@@ -308,29 +313,180 @@ public class PurplemoonAPIConstantsV1 {
 
         public static final String HEIGHT = "height";
         public static final String WEIGHT = "weight";
+
         public static final String PHYSIQUE = "physique";
+        public static final String PHYSIQUE_SLIM = "slim";
+        public static final String PHYSIQUE_NORMAL = "normal";
+        public static final String PHYSIQUE_ATHLETIC = "athletic";
+        public static final String PHYSIQUE_BODYBUILDER = "bodybuilder";
+        public static final String PHYSIQUE_STURDY = "sturdy";
+        public static final String PHYSIQUE_LITTLE_TUMMY = "littletummy";
+        public static final String PHYSIQUE_CHUBBY = "chubby";
+
         public static final String EYE_COLOR = "eye_color";
+        public static final String EYE_COLOR_LIGHTBROWN = "light-brown";
+        public static final String EYE_COLOR_DARKBROWN = "dark-brown";
+        public static final String EYE_COLOR_BROWN = "brown";
+        public static final String EYE_COLOR_LIGHTBLUE = "light-blue";
+        public static final String EYE_COLOR_DARKBLUE = "dark-blue";
+        public static final String EYE_COLOR_BLUE = "blue";
+        public static final String EYE_COLOR_BLACK = "black";
+        public static final String EYE_COLOR_GREEN = "green";
+        public static final String EYE_COLOR_BLUEGREY = "blue-grey";
+        public static final String EYE_COLOR_BLUEGREEN = "blue-green";
+        public static final String EYE_COLOR_GREENBROWN = "green-brown";
+        public static final String EYE_COLOR_GREENGREY = "green-grey";
+        public static final String EYE_COLOR_GREY = "grey";
+
         public static final String HAIR_COLOR = "hair_color";
+        public static final String HAIR_COLOR_LIGHTBROWN = "light-brown";
+        public static final String HAIR_COLOR_DARKBROWN =  "dark-brown";
+        public static final String HAIR_COLOR_BROWN =  "brown";
+        public static final String HAIR_COLOR_LIGHTBLONDE =  "light-blonde";
+        public static final String HAIR_COLOR_DARKBLONDE =  "dark-blonde";
+        public static final String HAIR_COLOR_BLONDE =  "blonde";
+        public static final String HAIR_COLOR_BLACK =  "black";
+        public static final String HAIR_COLOR_RED =  "red";
+        public static final String HAIR_COLOR_LIGHTGREY =  "light-grey";
+        public static final String HAIR_COLOR_DARKGREY =  "dark-grey";
+        public static final String HAIR_COLOR_DYEDRED =  "dyed-red";
+        public static final String HAIR_COLOR_DYEDBLACK =  "dyed-black";
+        public static final String HAIR_COLOR_DYEDBLUE =  "dyed-blue";
+        public static final String HAIR_COLOR_DYEDGREEN =  "dyed-green";
+        public static final String HAIR_COLOR_DYEDBLONDE =  "dyed-blonde";
+        public static final String HAIR_COLOR_DYEDPURPLE =  "dyed-purple";
+
         public static final String HAIR_LENGTH = "hair_length";
+        public static final String HAIR_LENGTH_BALD = "bald";
+        public static final String HAIR_LENGTH_SHORT = "short";
+        public static final String HAIR_LENGTH_MEDIUM = "medium";
+        public static final String HAIR_LENGTH_LONG = "long";
+
         public static final String FACIAL_HAIR = "facial_hair";
+        public static final String FACIAL_HAIR_NONE = "none";
+        public static final String FACIAL_HAIR_SHAVED = "shaved";
+        public static final String FACIAL_HAIR_THREEDAY = "three-day";
+        public static final String FACIAL_HAIR_MUSTACHE = "mustache";
+        public static final String FACIAL_HAIR_PETITGOATEE = "petit-goatee";
+        public static final String FACIAL_HAIR_GOATEE = "goatee";
+        public static final String FACIAL_HAIR_MUTTONCHOPS = "mutton-chops";
+        public static final String FACIAL_HAIR_FULLBEARD = "full-beard";
+
+        public static final String DRINKER = "drinker";
+        public static final String DRINKER_NEVER = "never";
+        public static final String DRINKER_SELDOM = "seldom";
+        public static final String DRINKER_SOMEIMES = "sometimes";
+        public static final String DRINKER_REGULARLY = "regularly";
+        public static final String DRINKER_A_LOT = "a-lot";
+        public static final String DRINKER_WINE_ONLY = "wine-only";
 
         public static final String OCCUPATION_LIST = "occupations";
 
-        public static final String RELIGION = "religion";
-        public static final String POLITICS = "politics";
-        public static final String DRINKER = "drinker";
         public static final String SMOKER = "smoker";
+        public static final String SMOKER_JOINTS_ONLY  = "joints-only";
+        public static final String SMOKER_REALLY_A_LOT  = "really-a-lot";
+        public static final String SMOKER_A_LOT  = "a-lot";
+        public static final String SMOKER_MODERATELY  = "moderately";
+        public static final String SMOKER_ONWEEKENDS  = "on-weekends";
+        public static final String SMOKER_ALMOST_NEVER  = "almost-never";
+        public static final String SMOKER_NEVER  = "never";
+
         public static final String VEGETARIAN = "vegeterian";
-        public static final String WANTS_KIDS = "kidswant";
-        public static final String HAS_KIDS = "kidshave";
+        public static final String VEGETARIAN_YES = "yes";
+        public static final String VEGETARIAN_NO = "no";
+        public static final String VEGETARIAN_VEGAN = "vegan";
+
+        public static final String WANTS_KIDS = "kids_want";
+        public static final String WANTS_KIDS_YES = "yes";
+        public static final String WANTS_KIDS_NO = "no";
+        public static final String WANTS_KIDS_UNSURE = "unsure";
+
+        public static final String HAS_KIDS = "kids_have";
+        public static final String HAS_KIDS_NONE = "none";
+        public static final String HAS_KIDS_ONE = "one";
+        public static final String HAS_KIDS_MULTIPLE = "multiple";
+
+        public static final String RELIGION = "religion";
+        public static final String RELIGION_AGNOSTIC = "agnostic";
+        public static final String RELIGION_ATHEIST = "atheist";
+        public static final String RELIGION_ROMAN_CATHOLIC = "roman-catholic";
+        public static final String RELIGION_OLD_CATHOLIC = "old-catholic";
+        public static final String RELIGION_EVANGELICAL_REFORMED = "evangelical-reformed";
+        public static final String RELIGION_PROTESTANT = "protestant";
+        public static final String RELIGION_RUSSIAN_ORTHODOX = "russian-orthodox";
+        public static final String RELIGION_GREEK_ORTHODOX = "greek-orthodox";
+        public static final String RELIGION_JEWISH_ORTHODOX = "jewish-orthodox";
+        public static final String RELIGION_ORTHODOX = "orthodox";
+        public static final String RELIGION_CHRISTIAN = "christian";
+        public static final String RELIGION_FREECHURCH = "free-church";
+        public static final String RELIGION_FOLK_RELIGION = "folk-religion";
+        public static final String RELIGION_HINDU = "hindu";
+        public static final String RELIGION_SUNNITE = "sunnite";
+        public static final String RELIGION_SHIITE = "shiite";
+        public static final String RELIGION_JEWISH = "jewish";
+        public static final String RELIGION_BUDDHIST = "buddhist";
+        public static final String RELIGION_SHINTO = "shinto";
+        public static final String RELIGION_SPIRITUAL = "spiritual";
+        public static final String RELIGION_OTHER = "other";
+
+        public static final String POLITICS = "politics";
+        public static final String POLITIC_NOINTEREST = "no-interest";
+        public static final String POLITIC_RIGHT = "right";
+        public static final String POLITICS_MIDDLERIGHT = "middle-right";
+        public static final String POLITICS_MIDDLE = "middle";
+        public static final String POLITICS_MIDDLELEFT = "middle-left";
+        public static final String POLITICS_LEFT = "left";
 
         public static final String CHATS_FREQUENCY = "chat_frequency";
+        public static final String CHATS_FREQUENCY_ALLTHETIME = "all-the-time";
+        public static final String CHATS_FREQUENCY_OFTEN = "often";
+        public static final String CHATS_FREQUENCY_REGULARLY = "regularly";
+        public static final String CHATS_FREQUENCY_NOWANDTHEN = "now-and-then";
+        public static final String CHATS_FREQUENCY_SELDOM = "seldom";
+        public static final String CHATS_FREQUENCY_NEVER = "never";
+
+        public static final String HOMEPAGE = "homepage";
         public static final String CHATS_WHICH = "which_chats";
         public static final String CHATS_NAMES = "chat_names";
-        public static final String HOMEPAGE = "homepage";
+
+        public static final String CHATS_MESSENGERS = "messengers";
+        public static final String CHATS_MESSENGERS_TYPE = "type";
+        public static final String CHATS_MESSENGERS_TYPE_ICQ = "icq";
+        public static final String CHATS_MESSENGERS_TYPE_AIM = "aim";
+        public static final String CHATS_MESSENGERS_TYPE_MSN = "msn";
+        public static final String CHATS_MESSENGERS_TYPE_YAHOO = "yahoo";
+        public static final String CHATS_MESSENGERS_TYPE_SKYPE = "skype";
+        public static final String CHATS_MESSENGERS_TYPE_JABBER = "jabber";
+        public static final String CHATS_MESSENGERS_TYPE_GADU_GADU = "gadu-gadu";
+        public static final String CHATS_MESSENGERS_TYPE_ICHAT = "ichat";
+        public static final String CHATS_MESSENGERS_TYPE_GOOGLETALK = "googletalk";
+
+        public static final String CHATS_MESSENGERS_ID = "id";
+
+        public static final String OCCUPATIONS = "occupations";
+        public static final String OCCUPATION_TYPE = "type";
+        public static final String OCCUPATION_TYPE_SCHOOL = "school";
+        public static final String OCCUPATION_TYPE_STUDIES = "studies";
+        public static final String OCCUPATION_TYPE_TRAINING = "training";
+        public static final String OCCUPATION_TYPE_LOOKING = "looking";
+        public static final String OCCUPATION_TYPE_EMPLOYED = "employed";
+        public static final String OCCUPATION_TYPE_SELF_EMPLOYED = "self-employed";
+        public static final String OCCUPATION_TYPE_RAISING_KIDS = "raising_kids";
+        public static final String OCCUPATION_TYPE_RETIRED = "retired";
+
+        public static final String OCCUPATION_NAME = "name";
+        public static final String OCCUPATION_SCHOOL_NAME = "school_name";
+        public static final String OCCUPATION_SCHOOL_DIRECTION = "school_direction";
+        public static final String OCCUPATION_COMPANY = "company_name";
 
         public static final String TARGET_PARTNER = "target_partner";
         public static final String TARGET_FRIENDS = "target_friends";
+
+        public static final String TARGET_FRIENDS_GENDER = "gender";
+        public static final String TARGET_FRIENDS_GENDER_MENONLY = "men-only";
+        public static final String TARGET_FRIENDS_GENDER_MENPREFERRED = "men-preferred";
+        public static final String TARGET_FRIENDS_GENDER_WOMENPREFERRED = "women-preferred";
+        public static final String TARGET_FRIENDS_GENDER_WOMENONLY = "women-only";
 
         public static final String EVENTS_TMP = "events_tmp";
         public static final String EVENT_ID = "event_id";

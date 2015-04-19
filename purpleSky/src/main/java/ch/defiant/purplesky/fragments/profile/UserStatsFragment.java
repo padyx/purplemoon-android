@@ -20,8 +20,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,15 +32,17 @@ import ch.defiant.purplesky.beans.DetailedUser;
 import ch.defiant.purplesky.beans.LocationBean;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.NullUser;
-import ch.defiant.purplesky.beans.ProfileTriplet;
+import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.broadcast.LocalBroadcastReceiver;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.constants.ProfileListMap;
 import ch.defiant.purplesky.core.UserService;
 import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.enums.OnlineStatus;
+import ch.defiant.purplesky.enums.profile.RelationshipStatus;
 import ch.defiant.purplesky.interfaces.IBroadcastReceiver;
+import ch.defiant.purplesky.util.CollectionUtil;
+import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.LocationUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -296,12 +298,60 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
 
         StringBuilder allTables = createEventTable(user);
         StringBuilder locationsTable = createLocationsTable(user);
-        StringBuilder details = createDetailsTable(user);
+
+        StringBuilder details = createGeneralTable(user);
+        details.append(createOccupationTable(user));
+        details.append(createBodyTable(user));
+
+        StringBuilder relationshipTable = createRelationshipTable(user);
+        StringBuilder friendshipTable = createFriendshipTable(user);
+        if(relationshipTable.length() > 0 || friendshipTable.length() > 0){
+            details.append(createHeader(getResources(), R.string.profile_sectionHeader_getToKnow));
+            if(relationshipTable.length() > 0) {
+                details.append(relationshipTable);
+            }
+            if(friendshipTable.length() > 0){
+                details.append(friendshipTable);
+            }
+        }
+
+        // FIXME Implement Occupation
+
+        details.append(createBeliefTable(user));
+        details.append(createChatHomepageTable(user));
         allTables.append(locationsTable);
         allTables.append(details);
+        allTables.append(createAboutProfileTable(user));
         StringUtility.replace(sb, PLACEHOLDER_TABLES_ALL, allTables.toString());
 
         return sb.toString();
+    }
+
+    private StringBuilder createGeneralTable(DetailedUser user) {
+        StringBuilder sb = new StringBuilder();
+
+        if (StringUtility.isNotNullOrEmpty(user.getFirstName())) {
+            createAndAddTableRow(sb, R.string.profile_firstname, user.getFirstName());
+        }
+        if (StringUtility.isNotNullOrEmpty(user.getNicknames())) {
+            createAndAddTableRow(sb, R.string.profile_nicknames, user.getNicknames());
+        }
+        if (StringUtility.isNotNullOrEmpty(user.getLastName())) {
+            createAndAddTableRow(sb, R.string.profile_lastname, user.getLastName());
+        }
+        if (user.getBirthDate() != null) {
+            createAndAddTableRow(sb, R.string.profile_birthdate, DateUtility.getMediumDateString(user.getBirthDate()));
+        }
+        if (StringUtility.isNotNullOrEmpty(user.getEmailAddress())) {
+            createAndAddTableRow(sb, R.string.profile_emailaddress, user.getEmailAddress());
+        }
+
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_General));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
     }
 
     private StringBuilder createEventTable(DetailedUser user){
@@ -362,7 +412,11 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         final boolean shouldCreateLink = bean.getLatitude() != null && bean.getLongitude() != null;
 
         if (shouldCreateLink) {
-            url.append("<a href='geo:" + bean.getLatitude() + "," + bean.getLongitude() + "' target='_blank'>");
+            url.append("<a href='geo:").
+                    append(bean.getLatitude()).
+                    append(",").
+                    append(bean.getLongitude()).
+                    append("' target='_blank'>");
         }
         url.append(bean.getLocationDescription());
         if (country != null) {
@@ -380,7 +434,10 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class='overview_text'>");
 
-        DetailedUser.RelationshipStatus status = user.getRelationshipStatus();
+        RelationshipStatus status = null;
+        if(user.getRelationshipInformation() != null){
+            status = user.getRelationshipInformation().getRelationshipStatus();
+        }
         String relStatus = null;
         if(status != null){
             relStatus = getString(status.getStringResource());
@@ -394,7 +451,9 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         sb.append("</div>");
 
         if (user.isAgeVerified()) {
-            sb.append("<div class='overview_text'><div id='verifieduser'>" + getString(R.string.VerifiedUser) + "</div></div>");
+            sb.append("<div class='overview_text'><div id='verifieduser'>").
+                    append(getString(R.string.VerifiedUser)).
+                    append("</div></div>");
         }
         return sb;
     }
@@ -421,107 +480,230 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         sb.append("</td></tr>");
     }
 
-    private StringBuilder createDetailsTable(DetailedUser user) {
+    private StringBuilder createBodyTable(DetailedUser user){
         StringBuilder sb = new StringBuilder();
-
-        Map<String, ProfileTriplet> profileDetails = user.getProfileDetails();
-
-        final Resources resources = getResources();
-        ProfileListMap listMap = ProfileListMap.getInstance();
-        for (int ithgroup = 0, size = listMap.GROUPS.size(); ithgroup < size; ithgroup++) {
-
-            /* Create a new row to be added. */
-            StringBuilder title = createHeader(resources, listMap.GROUPS.get(ithgroup));
-
-            List<StringBuilder> rows = new ArrayList<StringBuilder>();
-
-            for (String apikey : listMap.GROUP_LIST_APIKEYS.get(ithgroup)) {
-                ProfileTriplet t = profileDetails.get(apikey);
-                if (t == null)
-                    continue;
-                if (t.getDisplayKey() == null && t.getList() == null) {
-                    continue;
-                }
-                if (StringUtility.isNullOrEmpty(t.getDisplayValue()) && t.getRawValue() == null && !t.isNested()) {
-                    // Not interested in those
-                    continue;
-                }
-                /* Create a new row to be added. */
-                List<StringBuilder> tr = createRows(t, false);
-                rows.addAll(tr);
-            }
-            // Add header only if there are any rows from this section
-            if (rows.size() > 0) {
-                sb.append(title);
-                sb.append("<table class='content_tables'>");
-                for (StringBuilder r : rows) {
-                    // Add row to TableLayout.
-                    sb.append(r);
-                }
-                sb.append("</table>");
-            }
+         if(user.getHeight() != null) {
+            createAndAddTableRow(sb, R.string.bodyHeight, String.valueOf(user.getHeight()));
+        }
+        if(user.getWeight() != null){
+            createAndAddTableRow(sb, R.string.bodyWeight, String.valueOf(user.getWeight()));
+        }
+        if(user.getPhysique() != null){
+            createAndAddTableRow(sb, R.string.profile_physique, getString(user.getPhysique().getStringRes()));
+        }
+        if(user.getEyeColor() != null){
+            createAndAddTableRow(sb, R.string.profile_eye_color, getString(user.getEyeColor().getStringResource()));
+        }
+        if(user.getHairLength() != null){
+            createAndAddTableRow(sb, R.string.profile_hair_length, getString(user.getHairLength().getStringResource()));
+        }
+        if(user.getHairColor() != null){
+            createAndAddTableRow(sb, R.string.profile_hair_color, getString(user.getHairColor().getStringResource()));
+        }
+        if(user.getFacialHair() != null){
+            createAndAddTableRow(sb, R.string.profile_facial_hair, getString(user.getFacialHair().getStringResource()));
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_body));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
         }
         return sb;
     }
 
-    private List<StringBuilder> createRows(final ProfileTriplet t, boolean nested) {
-        ArrayList<StringBuilder> rows = new ArrayList<StringBuilder>();
-        if (!nested && t.isSimple()) {
-            StringBuilder sb = new StringBuilder();
-
-            String val = "";
-            if (t.getDisplayValue() != null) {
-                val = t.getDisplayValue();
-            } else {
-                if (t.getRawValue() != null) {
-                    val = t.getRawValue().toString();
-                }
+    private StringBuilder createRelationshipTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
+        if(user.getRelationshipInformation() != null){
+            DetailedUser.RelationshipInformation relationshipInfo = user.getRelationshipInformation();
+            if (relationshipInfo.getRelationshipStatus() != null){
+                createAndAddTableRow(sb, R.string.RelationshipStatus, getString(relationshipInfo.getRelationshipStatus().getStringResource()));
             }
-            createAndAddTableRow(sb, t.getDisplayKey(), val);
+            addRelationInformation(sb, relationshipInfo);
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_getToKnowPartner));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
 
-            rows.add(sb);
-        } else if (t.getChildren() != null || t.getList() != null) {
-            // Then take this key as 'title'
+    private StringBuilder createFriendshipTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
 
-            if (t.getChildren() != null) {
-                // Iterate over all children
-                for (Entry<String, ProfileTriplet> e : t.getChildren().entrySet()) {
-                    List<StringBuilder> list = createRows(e.getValue(), true);
-                    rows.addAll(list);
-                }
-            } else if (t.getList() != null) {
-                // Iterate over all children
-                for (Map<String, ProfileTriplet> element : t.getList()) {
-                    if (!rows.isEmpty()) {
-                        // separator between list elements
-                        // TODO maybe do this better?
-                        StringBuilder sep = new StringBuilder();
-                        createAndAddSpanningTableRow(sep, "&nbsp;");
-                        rows.add(sep);
-                    }
-
-                    for (Entry<String, ProfileTriplet> entry : element.entrySet()) {
-                        List<StringBuilder> list = createRows(entry.getValue(), true);
-                        rows.addAll(list);
-                    }
-                }
+        if(user.getFriendshipInformation() != null){
+            DetailedUser.FriendshipInformation friendshipInfo = user.getFriendshipInformation();
+            if (user.getFriendshipInformation().getTargetGender() != null) {
+                createAndAddTableRow(sb, R.string.profile_target_friends_gender, getString(friendshipInfo.getTargetGender().getStringResource()));
             }
-        } else {
-            StringBuilder sb = new StringBuilder();
-            String val = "";
-            if (t.getDisplayValue() != null) {
-                val = t.getDisplayValue();
-            } else {
-                if (t.getRawValue() != null) {
-                    val = t.getRawValue().toString();
-                }
-            }
-            createAndAddTableRow(sb, t.getDisplayKey(), val);
+            addRelationInformation(sb, friendshipInfo);
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_getToKnowFriend));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
 
-            rows.add(sb);
+    private void addRelationInformation(StringBuilder sb, DetailedUser.AbstractRelation relationshipInfo) {
+        if (relationshipInfo.getDesiredAgeFrom() != null){
+            createAndAddTableRow(sb, R.string.MinimumAge, String.valueOf(relationshipInfo.getDesiredAgeFrom()));
+        }
+        if (relationshipInfo.getDesiredAgeTill() != null){
+            createAndAddTableRow(sb, R.string.MaximumAge, String.valueOf(relationshipInfo.getDesiredAgeTill()));
+        }
+        if (relationshipInfo.getMaximumDistance() != null){
+            createAndAddTableRow(sb, R.string.MaxDistance, String.valueOf(relationshipInfo.getMaximumDistance()));
+        }
+        if(StringUtility.isNotNullOrEmpty(relationshipInfo.getText())){
+            createAndAddSpanningTableRow(sb, relationshipInfo.getText());
+        }
+    }
+
+    private StringBuilder createBeliefTable(PreviewUser user){
+        StringBuilder sb = new StringBuilder();
+
+        if (user.getDrinkerFrequency() != null){
+            createAndAddTableRow(sb, R.string.profile_drinker, getString(user.getDrinkerFrequency().getStringResource()));
+        }
+        if (user.getSmokerFrequency() != null){
+            createAndAddTableRow(sb, R.string.profile_smoker, getString(user.getSmokerFrequency().getStringResource()));
+        }
+        if (user.getReligion() != null){
+            createAndAddTableRow(sb, R.string.profile_religion, getString(user.getReligion().getStringResource()));
+        }
+        if (user.getPolitics() != null){
+            createAndAddTableRow(sb, R.string.profile_politics, getString(user.getPolitics().getStringResource()));
+        }
+        if (user.getVegetarian() != null){
+            createAndAddTableRow(sb, R.string.profile_vegetarian, getString(user.getVegetarian().getStringResource()));
+        }
+        if (user.getWantsKids() != null){
+            createAndAddTableRow(sb, R.string.profile_kids_want, getString(user.getWantsKids().getStringResource()));
+        }
+        if (user.getHasKids() != null){
+            createAndAddTableRow(sb, R.string.profile_kids_have, getString(user.getHasKids().getStringResource()));
+        }
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_beliefs));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
+    }
+
+    private StringBuilder createChatHomepageTable(DetailedUser user) {
+        StringBuilder sb = new StringBuilder();
+
+        if(user.getChatFrequency() != null){
+            createAndAddTableRow(sb, R.string.profile_chat_frequency, getString(user.getChatFrequency().getStringResource()));
+        }
+        if(StringUtility.isNotNullOrEmpty(user.getWhichChats())){
+            createAndAddTableRow(sb, R.string.profile_which_chats, user.getWhichChats());
+        }
+        if(StringUtility.isNotNullOrEmpty(user.getChatNames())){
+            createAndAddTableRow(sb, R.string.profile_chat_names, user.getChatNames());
+        }
+        if(StringUtility.isNotNullOrEmpty(user.getHomepage())){
+            createAndAddTableRow(sb, R.string.profile_homepage, user.getHomepage());
         }
 
-        return rows;
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_ChatContactHomepage));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+
+        if(!CollectionUtil.isEmpty(user.getMessengers())){
+            StringBuilder innerBuilder = new StringBuilder();
+
+            innerBuilder.append(createSubsectionHeader(getResources(), R.string.profile_subsectionHeader_messengers));
+            Collection<DetailedUser.MessengerBean> messengers = user.getMessengers();
+            for(DetailedUser.MessengerBean b: messengers){
+                innerBuilder.append("<table class='content_tables' style='padding-bottom:1em' >");
+                createAndAddTableRow(innerBuilder, R.string.profile_messenger_type, getString(b.getType().getStringRes()));
+                createAndAddTableRow(innerBuilder, R.string.profile_messenger_username, b.getUsername());
+                innerBuilder.append("</table>\n");
+            }
+
+            sb.append(innerBuilder);
+        }
+
+        return sb;
+    }
+
+    private StringBuilder createOccupationTable(DetailedUser user) {
+        StringBuilder sb = new StringBuilder();
+
+        Collection<DetailedUser.Occupation> occupations = user.getOccupations();
+        if (!CollectionUtil.isEmpty(occupations)){
+            for(DetailedUser.Occupation o : occupations){
+                sb.append("<table class='content_tables' style='padding-bottom:1em'>");
+                if(o.getOccupationName() != null){
+                    createAndAddTableRow(sb, R.string.profile_occupation_name, o.getOccupationName());
+                }
+                if(o.getOccupationType() != null) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_type, getString(o.getOccupationType().getStringRes()));
+                }
+                if(StringUtility.isNotNullOrEmpty(o.getCompanyName())) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_company_name, o.getCompanyName());
+                }
+                if(StringUtility.isNotNullOrEmpty(o.getSchoolDirection())) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_school_direction, o.getSchoolDirection());
+                }
+                if(StringUtility.isNotNullOrEmpty(o.getSchoolName())) {
+                    createAndAddTableRow(sb, R.string.profile_occupation_school_name, o.getSchoolName());
+                }
+                sb.append("</table>\n");
+            }
+        }
+
+        if (sb.length() > 0) {
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_occupations));
+        }
+
+        return sb;
+    }
+
+    private StringBuilder createAboutProfileTable(DetailedUser user){
+        StringBuilder sb = new StringBuilder();
+
+        final Date now = new Date();
+        if (user.getCreateDate() != null){
+            String dateString;
+            if (DateUtility.isWithin24Hours(now, user.getCreateDate())){
+                dateString = getString(R.string.profile_date_last24h);
+            } else {
+                dateString = DateUtility.getMediumDateString(user.getCreateDate());
+            }
+            createAndAddTableRow(sb, R.string.profile_create_date, dateString);
+        }
+        if (user.getUpdateDate() != null){
+            String dateString;
+            if (DateUtility.isWithin24Hours(now, user.getUpdateDate())){
+                dateString = getString(R.string.profile_date_last24h);
+            } else {
+                dateString = DateUtility.getMediumDateString(user.getUpdateDate());
+            }
+            createAndAddTableRow(sb, R.string.profile_last_update, dateString);
+        }
+        if (user.getLastOnlineDate() != null){
+            String dateString;
+            if (DateUtility.isWithin24Hours(now, user.getLastOnlineDate())){
+                dateString = getString(R.string.profile_date_last24h);
+            } else {
+                dateString = DateUtility.getMediumDateString(user.getLastOnlineDate());
+            }
+            createAndAddTableRow(sb, R.string.profile_last_online, dateString);
+        }
+
+        if(sb.length() > 0){
+            sb.insert(0, createHeader(getResources(), R.string.profile_sectionHeader_AboutProfile));
+            sb.insert(0,"<table class='content_tables'>");
+            sb.append("</table>\n");
+        }
+        return sb;
     }
 
     private StringBuilder createHeader(final Resources resources, int titleResId) {
@@ -531,6 +713,18 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
     private StringBuilder createHeader(String header) {
         StringBuilder sb = new StringBuilder();
         sb.append("<div class='section_header'>");
+        sb.append(header);
+        sb.append("</div>");
+        return sb;
+    }
+
+    private StringBuilder createSubsectionHeader(final Resources resources, int titleResId) {
+        return createSubsectionHeader(resources.getString(titleResId));
+    }
+
+    private StringBuilder createSubsectionHeader(String header) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class='subsection_header'>");
         sb.append(header);
         sb.append("</div>");
         return sb;

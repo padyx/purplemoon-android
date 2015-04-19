@@ -118,6 +118,14 @@ public class DateUtility {
                 aDate.get(Calendar.DAY_OF_YEAR) == bDate.get(Calendar.DAY_OF_YEAR);
     }
 
+    public static boolean isWithin24Hours(Date a, Date b){
+        if(a == null || b == null){
+            return false;
+        }
+        long diff =  Math.abs(a.getTime() - b.getTime());
+        return diff <= 24*60*60*1000;
+    }
+
     /**
      * Parse a format in the form of <tt>yyyy-MM-dd</tt> from a string and return a date.
      *
