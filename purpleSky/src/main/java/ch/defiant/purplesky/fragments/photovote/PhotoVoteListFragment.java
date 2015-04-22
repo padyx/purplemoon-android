@@ -171,7 +171,7 @@ public class PhotoVoteListFragment extends BaseListFragment {
             ViewHolder holder;
             View v;
             if (convertView == null) {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.photovotelist_item, null);
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.photovotelist_item, parent, false);
                 holder = new ViewHolder();
                 holder.imgV = (ImageView) view.findViewById(R.id.photovotelist_item_imgV);
                 holder.usernameLbl = (TextView) view.findViewById(R.id.photovotelist_item_usernameLbl);
