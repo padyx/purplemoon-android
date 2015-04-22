@@ -187,11 +187,6 @@
 	<string name="profile_target_friends_menpreferred">Men preferred</string>
 	<string name="profile_target_friends_womenpreferred">Women preferred</string>
 
-	<string name="profileValueText_menonly">Only men</string>
-	<string name="profileValueText_womenonly">Only women</string>
-	<string name="profileValueText_menonlypreferred">Men preferred</string>
-	<string name="profileValueText_womenpreferred">Women preferred</string>
-
 	<string name="profile_occupation_type">Type</string>
 	<string name="profile_occupation_type_school">School</string>
 	<string name="profile_occupation_type_studies">Studies</string>

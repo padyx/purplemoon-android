@@ -52,7 +52,6 @@
 	<string name="profile_hair_length_medium">Mittel</string>
 	<string name="profile_hair_length_long">Lang</string>
 
-	<string name="profile_relationship">Beziehung</string>
     <string name="profile_date_last24h">In den letzten 24 Stunden</string>
     <string name="profile_header_events">Events</string>
     <string name="profile_header_locations">Locations</string>
@@ -159,6 +158,14 @@
 	<string name="profile_which_chats">Chats</string>
 	<!-- User defined string (value). No translation -->
 
+	<string name="profile_chat_frequency">Häuigkeit</string>
+	<string name="profile_chat_frequency_never">Nie</string>
+	<string name="profile_chat_frequency_seldom">Selten</string>
+	<string name="profile_chat_frequency_nowandthen">Ab und zu</string>
+	<string name="profile_chat_frequency_regularly">Regelmässig</string>
+	<string name="profile_chat_frequency_often">Oft</string>
+	<string name="profile_chat_frequency_allthetime">Andauernd</string>
+
 	<string name="profile_homepage">Homepage</string>
 
 	<string name="profile_messenger_type">Messenger</string>
@@ -179,11 +186,6 @@
 	<string name="profile_target_friends_womenonly">Nur Frauen</string>
 	<string name="profile_target_friends_menpreferred">Bevorzugt Männer</string>
 	<string name="profile_target_friends_womenpreferred">Bevorzugt Frauen</string>
-
-	<string name="profile_menonly">Nur Männer</string>
-	<string name="profile_womenonly">Nur Frauen</string>
-	<string name="profile_menonlypreferred">Bevorzugt Männer</string>
-	<string name="profile_womenpreferred">Bevorzugt Frauen</string>
 
 	<string name="profile_occupation_type">Art</string>
 	<string name="profile_occupation_type_school">Schule</string>
