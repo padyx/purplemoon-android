@@ -1,10 +1,11 @@
 package ch.defiant.purplesky.activities.common;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,7 @@ import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 /**
  * @author Patrick Bänziger
  */
-public abstract class BaseFragmentActivity extends Activity {
+public abstract class BaseFragmentActivity extends AppCompatActivity {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
@@ -40,6 +41,7 @@ public abstract class BaseFragmentActivity extends Activity {
     private DrawerDelegate m_drawerDelegate;
     private PurpleSkyApplication.UpdateListener m_listener;
     private Handler m_handler;
+    private Toolbar m_actionbarToolbar;
 
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     private static final String TAG = BaseFragmentActivity.class.getSimpleName();
@@ -103,10 +105,28 @@ public abstract class BaseFragmentActivity extends Activity {
         // registerLogoutReceiver();
     }
 
+    @Nullable
+    public Toolbar getActionbarToolbar(){
+        if(m_actionbarToolbar != null){
+            return m_actionbarToolbar;
+        } else {
+            m_actionbarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+            if(m_actionbarToolbar != null) {
+                setSupportActionBar(m_actionbarToolbar);
+            }
+        }
+        return m_actionbarToolbar;
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        if (toolbar != null) {
+            m_actionbarToolbar = toolbar;
+            setSupportActionBar(toolbar);
+        }
         if(isShowNavigationDrawer()) {
             setupDrawer();
             m_drawerDelegate.postCreate();
@@ -123,12 +143,20 @@ public abstract class BaseFragmentActivity extends Activity {
         }
     }
 
+    public void setActionBarTitle(CharSequence title){
+        m_title = title;
+        if(getActionbarToolbar() != null){
+            Toolbar actionBar = getActionbarToolbar();
+            actionBar.setTitle(m_title);
+        }
+    }
+
     public void setActionBarTitle(CharSequence title, CharSequence subTitle){
         m_title = title;
         m_subTitle = subTitle;
 
-        if(getActionBar() != null){
-            ActionBar actionBar = getActionBar();
+        if(getActionbarToolbar() != null){
+            Toolbar actionBar = getActionbarToolbar();
             actionBar.setTitle(m_title);
             actionBar.setSubtitle(m_subTitle);
         }

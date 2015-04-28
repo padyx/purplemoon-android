@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -280,8 +281,11 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                m_activity.getActionBar().setTitle(m_drawerTitle);
-                m_activity.getActionBar().setSubtitle(null);
+                Toolbar toolbar = m_activity.getActionbarToolbar();
+                if(toolbar != null){
+                    toolbar.setTitle(m_drawerTitle);
+                    toolbar.setSubtitle(null);
+                }
                 // creates call to onPrepareOptionsMenu()
                 m_activity.invalidateOptionsMenu();
 

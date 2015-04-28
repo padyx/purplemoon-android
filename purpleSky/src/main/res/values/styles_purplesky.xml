@@ -19,53 +19,58 @@
 
 <resources>
 
-    <style name="Theme.Purplesky" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Purplesky" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
         <item name="android:actionBarItemBackground">@drawable/selectable_background_purplesky</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Purplesky</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Purplesky</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Purplesky</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Purplesky</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Purplesky</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_purplesky</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_purplesky</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Purplesky</item>
         
-                <!-- Light.DarkActionBar specific -->
+        <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Purplesky.Widget</item>
 
     </style>
 
-    <style name="ActionBar.Solid.Purplesky" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/ab_solid_purplesky</item>
+    <style name="ActionBar">
+        <item name="android:background">@color/primary</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_purplesky</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_purplesky</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Purplesky</item>
+        <item name="android:progressBarStyle">@style/ProgressBar</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+<!--        <item name="actionOverflowButtonStyle">@style/ActionButtonOverflowStyle</item> -->
     </style>
 
-    <style name="ActionBar.Transparent.Purplesky" parent="@android:style/Widget.Holo.ActionBar">
+    <style name="ActionBar.Transparent">
         <item name="android:background">@drawable/ab_transparent_purplesky</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Purplesky</item>
+        <item name="android:progressBarStyle">@style/ProgressBar</item>
     </style>
 
-    <style name="PopupMenu.Purplesky" parent="@android:style/Widget.Holo.ListPopupWindow">
+    <style name="PopupMenu">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_purplesky</item>	
     </style>
 
-    <style name="DropDownListView.Purplesky" parent="@android:style/Widget.Holo.ListView.DropDown">
+    <style name="DropDownListView">
         <item name="android:listSelector">@drawable/selectable_background_purplesky</item>
     </style>
 
-    <style name="ActionBarTabStyle.Purplesky" parent="@android:style/Widget.Holo.ActionBar.TabView">
+    <style name="ActionBarTabStyle">
         <item name="android:background">@drawable/tab_indicator_ab_purplesky</item>
     </style>
 
-    <style name="DropDownNav.Purplesky" parent="@android:style/Widget.Holo.Spinner">
+    <style name="DropDownNav">
         <item name="android:background">@drawable/spinner_background_ab_purplesky</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_purplesky</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_purplesky</item>
     </style>
     
-    <style name="ProgressBar.Purplesky" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+    <style name="ProgressBar">
         <item name="android:progressDrawable">@drawable/progress_horizontal_purplesky</item>
     </style>
     
@@ -75,8 +80,8 @@
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Purplesky.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Purplesky</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Purplesky</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView</item>
     </style>
 
 </resources>

@@ -1,11 +1,10 @@
 package ch.defiant.purplesky.activities.common;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
@@ -32,47 +31,23 @@ public abstract class AbstractTabbedActivity extends BaseFragmentActivity {
         m_viewPager = (ViewPager) findViewById(R.id.viewpager);
         m_viewPager.setAdapter(m_pagerAdapter);
 
-        final ActionBar actionBar = getActionBar();
+        PagerTabStrip strip = (PagerTabStrip) findViewById(R.id.viewpager_strip);
+        strip.setDrawFullUnderline(false);
+        strip.setTextColor(getResources().getColor(android.R.color.white));
+        strip.setTabIndicatorColor(getResources().getColor(R.color.amber));
+
 
         // Specify that tabs should be displayed in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        // Create a tab listener that is called when the user changes tabs.
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // show the given tab
-                final int position = tab.getPosition();
-                tabChanging(position);
-                m_viewPager.setCurrentItem(position);
-            }
-
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // hide the given tab
-            }
-
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // probably ignore this event
-            }
-        };
         m_viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 // When swiping between pages, select the
                 // corresponding tab.
-                getActionBar().setSelectedNavigationItem(position);
                 tabChanging(position);
             }
         });
 
-
-        // Add 3 tabs, specifying the tab's text and TabListener
-        int fragmentCount = getFragmentCount();
-        for (int i = 0; i < fragmentCount; i++) {
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(getTitleAtPosition(i))
-                            .setTabListener(tabListener));
-        }
     }
 
     protected abstract Fragment createItemAtPosition(int i);

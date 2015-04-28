@@ -1,6 +1,5 @@
 package ch.defiant.purplesky.fragments.conversation;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.LoaderManager;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +33,8 @@ import javax.inject.Inject;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
+import ch.defiant.purplesky.activities.chatlist.ConversationActivity;
+import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.PrivateMessage;
@@ -126,11 +128,16 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
 
         @Override
         public void onLoadFinished(Loader<Drawable> arg0, Drawable result) {
-            if (getActivity() != null) {
-                if(result != null) {
-                    getActivity().getActionBar().setIcon(result);
-                } else {
-                    getActivity().getActionBar().setIcon(R.drawable.ic_launcher);
+            Activity activity = getActivity();
+            if (activity instanceof BaseFragmentActivity) {
+                BaseFragmentActivity fragmentActivity = (BaseFragmentActivity) activity;
+                Toolbar toolbar = fragmentActivity.getActionbarToolbar();
+                if(toolbar != null) {
+                    if (result != null) {
+                        fragmentActivity.getActionbarToolbar().setLogo(result);
+                    } else {
+                        fragmentActivity.getActionbarToolbar().setLogo(R.drawable.ic_launcher);
+                    }
                 }
             }
             getLoaderManager().destroyLoader(R.id.loader_message_profileImage);
@@ -196,7 +203,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(getActivity() instanceof ConversationActivity);
         String profileId = null;
         String title = null;
         Bundle args = getArguments();
@@ -234,7 +241,10 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         m_chatGroupBox = (ViewGroup) inflated.findViewById(R.id.conversation_fragment_chatGroupBox);
         LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(m_profileId));
 
-        getActivity().getActionBar().setIcon(R.drawable.social_person);
+        Toolbar toolbar = (((BaseFragmentActivity) getActivity()).getActionbarToolbar());
+        if(toolbar != null) {
+            toolbar.setLogo(R.drawable.social_person);
+        }
         return inflated;
     }
 
@@ -272,14 +282,6 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         }
         outState.putBoolean(SAVEINSTANCE_HASNOMOREONLINE, m_hasNoMoreOnline);
         outState.putBoolean(SAVEINSTANCE_HASNOMORECACHED, m_hasNoMoreCached);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // Restore (because it is not done by stack)
-        ActionBar actionbar = getActivity().getActionBar();
-        actionbar.setIcon(R.drawable.ic_launcher);
     }
 
     @Override
@@ -511,8 +513,8 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     }
 
     private void setTitle(String result) {
-        if(getActivity() != null && getActivity().getActionBar() != null && result != null){
-            getActivity().getActionBar().setTitle(result);
+        if(getActivity() instanceof BaseFragmentActivity && result != null){
+            ((BaseFragmentActivity) getActivity()).setActionBarTitle(result);
         }
     }
 
@@ -535,14 +537,18 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     }
 
     private void updateConversationSubtitle(){
+        Toolbar toolbar = ((BaseFragmentActivity) getActivity()).getActionbarToolbar();
+        if(toolbar==null){
+            return;
+        }
         if(m_conversationState != null && m_conversationState.getOtherUserLastRead() != null){
             StringBuilder sb = new StringBuilder();
             sb.append(getString(R.string.ReadOn));
             sb.append(StringUtility.WHITE_SPACE);
             sb.append(DateUtility.getTimeOrDateString(m_conversationState.getOtherUserLastRead()));
-            getActivity().getActionBar().setSubtitle(sb.toString());
+            toolbar.setSubtitle(sb.toString());
         } else {
-            getActivity().getActionBar().setSubtitle(null);
+            toolbar.setSubtitle(null);
         }
     }
 

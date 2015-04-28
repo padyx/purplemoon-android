@@ -32,52 +32,48 @@
         android:paddingBottom="4dp"
         android:orientation="vertical"
     	>
-    <View android:id="@+id/conversation_fragment_lowerGrp_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#BBBBFF" />
-    
-    <LinearLayout
-        android:id="@+id/conversation_fragment_chatGroupBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal"
-    	>
+        <View android:id="@+id/conversation_fragment_lowerGrp_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BBBBFF" />
 
-        <EditText
-            android:id="@+id/conversation_fragment_messageEditText"
-            android:layout_width="0dip"
+        <LinearLayout
+            android:id="@+id/conversation_fragment_chatGroupBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="bottom"
-            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-            android:maxLines="4"
-            android:minLines="1" >
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
 
-        </EditText>
+            <EditText
+                android:id="@+id/conversation_fragment_messageEditText"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="bottom"
+                android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+                android:maxLines="4"
+                android:minLines="1" >
 
-        <ImageView
-            android:id="@+id/conversation_fragment_sendImgV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/send"
-            android:enabled="false"
-            android:minHeight="48dp"
-            android:minWidth="48dp"
-            android:paddingTop="2dp"
-            android:paddingLeft="2dp"
-            android:src="@drawable/action_send_now"
-            android:text="@string/send" />
+            </EditText>
 
+            <ImageView
+                android:id="@+id/conversation_fragment_sendImgV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/send"
+                android:enabled="false"
+                android:minHeight="48dp"
+                android:minWidth="48dp"
+                android:paddingTop="2dp"
+                android:paddingLeft="2dp"
+                android:src="@drawable/action_send_now"
+                android:text="@string/send" />
+
+        </LinearLayout>
     </LinearLayout>
-    </LinearLayout>
-
-    
-
 
 </LinearLayout>

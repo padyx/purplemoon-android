@@ -223,7 +223,7 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(R.string.Messages);
+        getActivity().setTitle(R.string.Messages);
         getOrUpdateData();
         cancelMessageNotifications();
     }

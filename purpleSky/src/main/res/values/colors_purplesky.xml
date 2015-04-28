@@ -18,5 +18,7 @@
 -->
 
 <resources>
-    <color name="pressed_purplesky">#CC33B5E5</color>
+     <color name="pressed_purplesky">#CC33B5E5</color>
+     <color name="primary">#3F51B5</color>
+     <color name="amber">#FFC107</color>
 </resources>

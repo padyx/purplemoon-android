@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/multiupload_menu_add"
         android:title="@string/Upload"
         android:titleCondensed="@string/Upload"
-        android:icon="@drawable/content_new_picture" android:showAsAction="ifRoom">
+        android:icon="@drawable/content_new_picture"
+        app:showAsAction="ifRoom">
 </item>
     
 

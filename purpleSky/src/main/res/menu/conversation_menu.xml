@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/conversation_menu_showprofile"
         android:title="@string/ShowProfile"
         android:titleCondensed="@string/ShowProfile"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/action_person">
     </item>
     <item
         android:id="@+id/conversation_menu_refresh"
         android:icon="@drawable/action_refresh"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/Refresh"
         android:titleCondensed="@string/Refresh">
     </item>
@@ -19,7 +20,7 @@
            android:title="@string/_Action_Report"
            android:titleCondensed="@string/_Action_Report"
            android:icon="@drawable/action_flag"
-           android:showAsAction="ifRoom"
+          app:showAsAction="ifRoom"
     />
 
 </menu>
