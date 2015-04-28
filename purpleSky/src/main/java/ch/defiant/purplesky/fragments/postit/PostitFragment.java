@@ -3,6 +3,7 @@ package ch.defiant.purplesky.fragments.postit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,7 @@ public class PostitFragment extends BaseListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         if (arguments != null) {
             isShowGiven = arguments.getBoolean(ARGUMENT_BOOLEAN_SHOW_GIVEN, false);
@@ -93,7 +94,7 @@ public class PostitFragment extends BaseListFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<PostIt> list = new ArrayList<PostIt>();
+        ArrayList<PostIt> list = new ArrayList<>();
         for (int i = 0, count = m_adapter.getCount(); i < count; i++) {
             list.add(m_adapter.getItem(i));
         }
@@ -168,7 +169,7 @@ public class PostitFragment extends BaseListFragment {
             ViewHolder holder = null;
             if (v == null) {
                 LayoutInflater vi = LayoutInflater.from(getContext());
-                v = vi.inflate(R.layout.displaypostit_item, null);
+                v = vi.inflate(R.layout.displaypostit_item, parent, false);
 
                 holder = createViewHolder(v);
                 v.setTag(holder);

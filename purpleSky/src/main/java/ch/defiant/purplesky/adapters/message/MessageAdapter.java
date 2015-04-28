@@ -35,7 +35,7 @@ public class MessageAdapter extends BaseAdapter {
 
     private final ConversationFragment m_conversationFragment;
 
-    private LinkedList<PrivateMessage> m_data = new LinkedList<PrivateMessage>();
+    private LinkedList<PrivateMessage> m_data = new LinkedList<>();
     private boolean m_showLoadMore;
 
     /**
@@ -50,18 +50,18 @@ public class MessageAdapter extends BaseAdapter {
         View v;
         if (getItemViewType(position) == 0) {
             PrivateMessage o = getData().get(position - (m_showLoadMore ? 1 : 0));
-            v = createMessageView(convertView, o);
+            v = createMessageView(convertView, o, parent);
         } else {
-            v = createButtonView(convertView);
+            v = createButtonView(convertView, parent);
         }
         return v;
     }
 
-    private View createButtonView(View convertView) {
+    private View createButtonView(View convertView, ViewGroup parent) {
         View buttonView;
         if (convertView == null) {
-            LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_conversationFragment.getActivity());
-            buttonView = vi.inflate(R.layout.conversation_button_loadmore, null);
+            LayoutInflater vi = LayoutInflater.from(m_conversationFragment.getActivity());
+            buttonView = vi.inflate(R.layout.conversation_button_loadmore, parent, false);
             Button b = (Button) buttonView.findViewById(R.id.conversation_button_loadmore_button);
             b.setOnClickListener(new OnClickListener() {
                 @Override
@@ -79,12 +79,12 @@ public class MessageAdapter extends BaseAdapter {
         return buttonView;
     }
 
-    private View createMessageView(View convertView, PrivateMessage m) {
+    private View createMessageView(View convertView, PrivateMessage m, ViewGroup parent) {
         View v;
         ViewHolder holder = null;
         if (convertView == null) {
-            LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_conversationFragment.getActivity());
-            v = vi.inflate(R.layout.conversation_item, null);
+            LayoutInflater vi = LayoutInflater.from(m_conversationFragment.getActivity());
+            v = vi.inflate(R.layout.conversation_item, parent, false);
 
             holder = new ViewHolder();
 

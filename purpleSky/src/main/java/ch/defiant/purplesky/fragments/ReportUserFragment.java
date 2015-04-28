@@ -61,12 +61,12 @@ public class ReportUserFragment extends BaseFragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle(R.string.ReportUser);
 
-        View view = inflater.inflate(R.layout.dialog_reportuser, null);
+        View view = inflater.inflate(R.layout.dialog_reportuser, container);
         reasonSpinner = (Spinner) view.findViewById(R.id.fragment_reportuser_reasonSpinner);
         explanationField = (EditText) view.findViewById(R.id.fragment_reportuser_explanation);
 
         String[] reportReasons = getResources().getStringArray(R.array.ReportReasons);
-        spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, reportReasons);
+        spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, reportReasons);
         reasonSpinner.setAdapter(spinnerAdapter);
 
         Button btn = (Button) view.findViewById(R.id.fragment_reportuser_sendBtn);

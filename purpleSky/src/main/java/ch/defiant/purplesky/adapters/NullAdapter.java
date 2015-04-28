@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.core.INullObject;
 
@@ -50,7 +51,7 @@ public class NullAdapter<T extends INullObject> extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup container) {
         View v = convertView;
         if(convertView == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.emptyadapter_element, null);
+            v = LayoutInflater.from(context).inflate(R.layout.emptyadapter_element, container, false);
         }
         if(overrideTextResource != 0){
             TextView text = (TextView) v.findViewById(R.id.emptyadapter_element_text);

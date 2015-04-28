@@ -105,7 +105,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
             View v = convertView;
             ViewHolder holder = null;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getContext());
+                LayoutInflater vi = LayoutInflater.from(getContext());
                 v = vi.inflate(R.layout.usersearch_result_item, null);
                 holder = new ViewHolder();
                 holder.usernameLbl = (TextView) v.findViewById(R.id.usersearch_result_usernameLbl);
@@ -116,7 +116,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
             } else {
                 holder = (ViewHolder) v.getTag();
             }
-            v.setTag(POSITION, Integer.valueOf(position));
+            v.setTag(POSITION, position);
 
             int imgSize = LayoutUtility.dpToPx(getResources(), 50);
             OnlineBean item = (OnlineBean) m_adapter.getItem(position);
@@ -170,11 +170,11 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
             public Holder<List<OnlineBean>> loadInBackground() {
                 Holder<List<OnlineBean>> favorites = null;
                 try {
-                    favorites = new Holder<List<OnlineBean>>(apiAdapter.getOnlineFavorites());
+                    favorites = new Holder<>(apiAdapter.getOnlineFavorites());
                 } catch (IOException e) {
-                    return new Holder<List<OnlineBean>>(e);
+                    return new Holder<>(e);
                 } catch (PurpleSkyException e) {
-                    return new Holder<List<OnlineBean>>(e);
+                    return new Holder<>(e);
                 }
 
                 return favorites;

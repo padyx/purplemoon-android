@@ -33,7 +33,7 @@ class DrawerAdapter extends ArrayAdapter<DrawerItem> {
         ViewHolder holder;
         if (v == null) {
             holder = new ViewHolder();
-            v = LayoutInflater.from(getContext()).inflate(R.layout.drawer_item, null);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.drawer_item, parent, false);
 
             holder.imgV = (ImageView) v.findViewById(R.id.drawer_item_imageV);
             holder.notifLbl = (TextView) v.findViewById(R.id.drawer_item_notificationLbl);

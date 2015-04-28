@@ -3,6 +3,7 @@ package ch.defiant.purplesky.fragments.visits;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class VisitorFragment extends BaseListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         if (arguments != null) {
             isShowOwnVisits = arguments.getBoolean(ARGUMENT_BOOLEAN_SHOWMYVISITS, false);
@@ -108,7 +109,7 @@ public class VisitorFragment extends BaseListFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<AbstractVisitBean> list = new ArrayList<AbstractVisitBean>();
+        ArrayList<AbstractVisitBean> list = new ArrayList<>();
         for (int i = 0, count = m_adapter.getCount(); i < count; i++) {
             list.add(m_adapter.getItem(i));
         }
@@ -135,7 +136,7 @@ public class VisitorFragment extends BaseListFragment {
             }
 
             boolean hasMore = false;
-            final ArrayList<AbstractVisitBean> list = new ArrayList<AbstractVisitBean>();
+            final ArrayList<AbstractVisitBean> list = new ArrayList<>();
             if (isShowOwnVisits) {
                 List<VisitsMadeBean> own = visitAdapter.getOwnVists(options);
                 if (own != null) {
@@ -200,8 +201,8 @@ public class VisitorFragment extends BaseListFragment {
             View v = convertView;
             ViewHolder holder = null;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getContext());
-                v = vi.inflate(R.layout.uservisit_item, null);
+                LayoutInflater vi = LayoutInflater.from(getContext());
+                v = vi.inflate(R.layout.uservisit_item, parent, false);
 
                 holder = createViewHolder(v);
                 v.setTag(holder);

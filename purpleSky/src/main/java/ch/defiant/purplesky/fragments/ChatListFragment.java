@@ -91,8 +91,8 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
             View v = convertView;
             ViewHolder holder = null;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) LayoutInflater.from(getContext());
-                v = vi.inflate(R.layout.messagebyuserlist_item, null);
+                LayoutInflater vi = LayoutInflater.from(getContext());
+                v = vi.inflate(R.layout.messagebyuserlist_item, parent, false);
     
                 holder = createViewHolder(v);
                 v.setTag(holder);
@@ -191,7 +191,7 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
     
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(getActivity()).inflate(R.layout.emptyadapter_element, null);
+            View v = LayoutInflater.from(getActivity()).inflate(R.layout.emptyadapter_element, parent, false);
             ((TextView) v.findViewById(R.id.emptyadapter_element_text)).setText(R.string.NoMessagesYet);
             return v;
         }
@@ -276,13 +276,12 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
                 List<UserMessageHistoryBean> list = Collections.emptyList();
                 switch (convLoader.getType()) {
                     case R.id.loader_chatlist_offline:
-                        list = new ArrayList<UserMessageHistoryBean>(result.getContainedObject());
+                        list = new ArrayList<>(result.getContainedObject());
                         break;
                     case R.id.loader_chatlist_online:
                         ArrayList<UserMessageHistoryBean> offlineData = getAdapterData();
                         List<UserMessageHistoryBean> onlineData = result.getContainedObject();
-                        List<UserMessageHistoryBean> merged = ConversationReconciler.reconcile(offlineData, onlineData);
-                        list = merged;
+                        list = ConversationReconciler.reconcile(offlineData, onlineData);
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown conversation loader " + convLoader.getType());
@@ -331,9 +330,9 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
 
     private ArrayList<UserMessageHistoryBean> getAdapterData() {
         if(m_adapter == null){
-            return new ArrayList<UserMessageHistoryBean>();  
+            return new ArrayList<>();
         }
-        ArrayList<UserMessageHistoryBean> l = new ArrayList<UserMessageHistoryBean>();
+        ArrayList<UserMessageHistoryBean> l = new ArrayList<>();
         for (int i = 0, size = m_adapter.getCount(); i < size; i++) {
             l.add(m_adapter.getItem(i));
         }

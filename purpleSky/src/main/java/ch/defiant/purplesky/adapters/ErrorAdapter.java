@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import ch.defiant.purplesky.R;
 
 public class ErrorAdapter extends BaseAdapter {
@@ -45,8 +46,8 @@ public class ErrorAdapter extends BaseAdapter {
         if (convertView != null) {
             return convertView;
         }
-        LayoutInflater vi = (LayoutInflater) LayoutInflater.from(m_context);
-        View inflated = vi.inflate(R.layout.error_listitem, null);
+        LayoutInflater vi = LayoutInflater.from(m_context);
+        View inflated = vi.inflate(R.layout.error_listitem, parent, false);
         if (m_resource != 0) {
             ((TextView) inflated.findViewById(R.id.textView1)).setText(m_resource);
         }
