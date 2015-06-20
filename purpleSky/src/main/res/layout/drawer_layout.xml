@@ -16,7 +16,7 @@
             android:id="@+id/drawer_layout_profileImgV"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:src="@drawable/social_person" 
+            android:src="@drawable/social_person"
             android:contentDescription="@string/Accessibility_OwnProfilePicture"/>
 
         <TextView

@@ -24,7 +24,7 @@
             <android.support.v4.view.PagerTabStrip
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primary"
+                android:background="@color/colorPrimary"
                 android:id="@+id/viewpager_strip"
                 />
 
