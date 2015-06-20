@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/endlessAdapter/endlessAdapter.iml" filepath="$PROJECT_DIR$/endlessAdapter/endlessAdapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/purpleSky/purpleSky.iml" filepath="$PROJECT_DIR$/purpleSky/purpleSky.iml" />
-      <module fileurl="file://$PROJECT_DIR$/purplesky-gradle.iml" filepath="$PROJECT_DIR$/purplesky-gradle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/purplemoon-android.iml" filepath="$PROJECT_DIR$/purplemoon-android.iml" />
     </modules>
   </component>
 </project>
