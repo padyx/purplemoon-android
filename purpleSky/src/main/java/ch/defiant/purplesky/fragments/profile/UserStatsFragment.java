@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import org.apache.commons.io.IOUtils;
 
@@ -70,6 +72,8 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
     private static final String PLACEHOLDER_ERROR = PLACEHOLDER_PREPOSTFIX + "ERROR_OCCURRED" + PLACEHOLDER_PREPOSTFIX;
     private static final String PLACEHOLDER_ERRORSUB = PLACEHOLDER_PREPOSTFIX + "ERROR_SUBTITLE" + PLACEHOLDER_PREPOSTFIX;
     private static final String PLACEHOLDER_ERRORTEXT = PLACEHOLDER_PREPOSTFIX + "ERROR_TEXT" + PLACEHOLDER_PREPOSTFIX;
+
+    private static final String GEO_SCHEME = "geo:";
 
     private MinimalUser m_user;
     private String m_profileId;
@@ -142,6 +146,18 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new EventInterface(getActivity()), "ppmoonEvent");
+        webView.setWebViewClient( new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.startsWith(GEO_SCHEME)){
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
     }
 
     @Override
@@ -412,7 +428,8 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         final boolean shouldCreateLink = bean.getLatitude() != null && bean.getLongitude() != null;
 
         if (shouldCreateLink) {
-            url.append("<a href='geo:").
+                    url.append("<a href='").
+                    append(GEO_SCHEME).
                     append(bean.getLatitude()).
                     append(",").
                     append(bean.getLongitude()).
