@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.inject.Inject;
 
@@ -16,7 +20,9 @@ import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.constants.PreferenceConstants;
+import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PreferenceUtility;
+import ch.defiant.purplesky.db.IDatabaseProvider;
 import ch.defiant.purplesky.gcm.GcmRegisterTask;
 import ch.defiant.purplesky.util.DateUtility;
 
@@ -25,10 +31,14 @@ import ch.defiant.purplesky.util.DateUtility;
  */
 public class SettingFragmentActivity extends BaseFragmentActivity {
 
+    private String TAG = SettingFragmentActivity.class.getSimpleName();
+
     private GcmRegisterTask m_asyncTask = null;
     private PreferenceUpdateListener m_listener;
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
+    @Inject
+    protected IDatabaseProvider m_databaseProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +92,8 @@ public class SettingFragmentActivity extends BaseFragmentActivity {
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
+                        removeAllDataAndLogout();
+
                         startActivity(new Intent(SettingFragmentActivity.this, AboutActivity.class));
                         return true;
                     }
@@ -90,9 +102,32 @@ public class SettingFragmentActivity extends BaseFragmentActivity {
     }
 
     private void removeAllDataAndLogout() {
+        // Async task: unregister
+        GcmRegisterTask task = new GcmRegisterTask(apiAdapter);
+        task.execute(false); // unregister
+        try {
+            task.get(1, TimeUnit.SECONDS);
+            Log.i(TAG, "Unregistering task completed");
+        } catch (InterruptedException e) {
+            if(Log.isLoggable(TAG, Log.DEBUG)){
+                Log.d(TAG, "Interrupted while waiting for unregistering on logout", e);
+            }
+        } catch (ExecutionException e) {
+            Log.w(TAG, "While unregistering on logout, an error occured", e);
+        } catch (TimeoutException e) {
+            if(Log.isLoggable(TAG, Log.DEBUG)){
+                Log.d(TAG, "Unregister operation took longer than expected");
+            }
+        }
+        PersistantModel.getInstance().clearCredentials();
+        // Clear all preferences - need to do it synchronously!
+        PreferenceUtility.getPreferences().edit().clear().commit();
+
+        m_databaseProvider.truncateAllTables();
+
         // Delegates the task to the main activity
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BroadcastTypes.BROADCAST_LOGOUT));
     }
 
     private class PreferenceUpdateListener implements SharedPreferences.OnSharedPreferenceChangeListener {

@@ -1,6 +1,10 @@
 package ch.defiant.purplesky.db.internal;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.util.Set;
 
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
@@ -14,13 +18,37 @@ import ch.defiant.purplesky.db.IDatabaseProvider;
  */
 class DatabaseProvider implements IDatabaseProvider {
 
+    private static String TAG = DatabaseProvider.class.getSimpleName();
+
     @Override
     public SQLiteDatabase getWritableDatabase() {
-        return DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
+        return getDbHelper().getWritableDatabase();
     }
 
     @Override
     public SQLiteDatabase getReadableDatabase() {
-        return DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
+        return getDbHelper().getReadableDatabase();
     }
+
+    @NonNull
+    private DBHelper getDbHelper() {
+        return DBHelper.fromContext(PurpleSkyApplication.get());
+    }
+
+    public void truncateAllTables() {
+        SQLiteDatabase db = getWritableDatabase();
+
+        Set<String> tables = getDbHelper().getAllTables();
+        for ( String table: tables ) {
+            db.beginTransaction();
+            try{
+                db.delete(table,null,null);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+        db.close();
+    }
+
 }

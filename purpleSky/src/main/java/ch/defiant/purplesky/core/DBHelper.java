@@ -13,11 +13,19 @@ import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_PENDING;
 import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_TEXT;
 import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_TIMESENT;
 import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_TOUSERID;
+import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_BUNDLESTORE;
 import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_CONVERSATIONS;
 import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_MESSAGES;
+import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_USERMAPPING;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import ch.defiant.purplesky.constants.DatabaseConstants;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -79,6 +87,15 @@ public class DBHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public @NonNull Set<String> getAllTables(){
+        Set<String> s = new HashSet<>();
+        s.add(TABLE_BUNDLESTORE);
+        s.add(TABLE_CONVERSATIONS);
+        s.add(TABLE_MESSAGES);
+        s.add(TABLE_USERMAPPING);
+        return s;
     }
 
     /**
@@ -171,5 +188,10 @@ public class DBHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public void delete(@NonNull Context c) {
+        close();
+        c.deleteDatabase(DATABASE_NAME);
     }
 }

@@ -100,7 +100,7 @@ public class PersistantModel {
      * This will remove any preferences and saved user data. It will also end the update service in case it should be running.
      */
     @SuppressLint("CommitPrefEdits")
-    private synchronized void clearCredentials() {
+    public synchronized void clearCredentials() {
         m_oAuthAccessToken = null;
         m_userProfileId = null;
         // Synchronous

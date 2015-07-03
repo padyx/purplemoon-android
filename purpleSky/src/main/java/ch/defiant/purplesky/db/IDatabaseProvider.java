@@ -13,4 +13,8 @@ public interface IDatabaseProvider {
 
     SQLiteDatabase getReadableDatabase();
 
+    /**
+     * Deletes all records from all tables.
+     */
+    void truncateAllTables();
 }
