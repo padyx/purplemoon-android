@@ -263,7 +263,7 @@ public class SimpleUserSearchFragment extends Fragment implements UserSearchTabb
     }
 
     private void dismissProgressLocation() {
-        ProgressFragmentDialog fragm = (ProgressFragmentDialog) getFragmentManager().findFragmentByTag(TAG_PROGRESS_DIALOG);
+        ChooseLocationDialogFragment fragm = (ChooseLocationDialogFragment) getFragmentManager().findFragmentByTag(TAG_PROGRESS_DIALOG);
         if (fragm != null) {
             fragm.dismiss();
         }
