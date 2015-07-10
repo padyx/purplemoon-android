@@ -1,50 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout_main"
-    android:layout_width="240dp"
+    android:layout_width="280dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/navdrawer_background"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical"
+        android:paddingTop="4dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/drawer_layout_profileImgV"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:src="@drawable/social_person"
-            android:contentDescription="@string/Accessibility_OwnProfilePicture"/>
+            android:contentDescription="@string/Accessibility_OwnProfilePicture"
+            android:scaleType="fitCenter"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="2dip"
+            app:riv_border_color="#ffffff"
+            app:riv_mutate_background="true"
+            app:riv_oval="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp" />
+            />
 
         <TextView
-            android:id="@+id/drawer_layout_statusLbl"
+            android:id="@+id/drawer_layout_usernameLbl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/edit_indicator"
+            android:layout_height="56dp"
             android:ellipsize="end"
-            android:gravity="center_vertical|start"
+            android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="@string/Loading_"
-            android:textAppearance="@style/TextAppearance.MediumLarge" />
+            tools:text="My username"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 
-    <View
+    <View android:layout_height="1dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCC" />
+        android:background="@color/colorPrimary"
+    />
 
     <ListView
         android:id="@+id/drawer_layout_list"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="#CCC"
-        android:dividerHeight="1dp" />
+        tools:listitem="@layout/drawer_item"
+        android:dividerHeight="0dp" />
 
 </LinearLayout>

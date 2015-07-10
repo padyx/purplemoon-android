@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.net.URL;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
@@ -107,26 +110,38 @@ public class PersistantModel {
         m_preferences.edit().clear().commit();
     }
 
-    private static final long EXPIRY_PROFILEPIC = 1000 * 60 * 60 * 24; // A day
+    private static final long EXPIRY_OWN_PROPERTIES = 1000 * 60 * 60 * 24; // A day
 
     /**
      * Retrieve cached profile picture of user
-     * 
+     *
      * @return The cached url or <tt>null</tt> if it expired or is not found
      */
     public String getCachedOwnProfilePictureURLDirectory() {
         String url = m_preferences.getString(PreferenceConstants.cachedOwnUserProfilePictureUrl, null);
-        long expiry = m_preferences.getLong(PreferenceConstants.cachedOwnUserProfilePictureUrlExpiry, 0);
-        if (url == null || (System.currentTimeMillis() - expiry < EXPIRY_PROFILEPIC)) {
+        long expiry = m_preferences.getLong(PreferenceConstants.cachedOwnUserPropertyExpiry, 0);
+        if (url == null || (System.currentTimeMillis() - expiry < EXPIRY_OWN_PROPERTIES)) {
             return url;
         }
         return null;
     }
 
-    public void setCachedOwnProfilePictureURLDirectory(String s) {
+    public void setOwnUserProperties(String username, URL profilePictureDirectory){
         Editor edit = m_preferences.edit();
-        edit.putString(PreferenceConstants.cachedOwnUserProfilePictureUrl, s);
-        edit.putLong(PreferenceConstants.cachedOwnUserProfilePictureUrlExpiry, System.currentTimeMillis());
+        edit.putString(PreferenceConstants.cachedOwnUsername, username);
+        String pictureUrl = profilePictureDirectory != null ? profilePictureDirectory.toString() : null;
+        edit.putString(PreferenceConstants.cachedOwnUserProfilePictureUrl, pictureUrl );
+
+        edit.putLong(PreferenceConstants.cachedOwnUserPropertyExpiry, System.currentTimeMillis());
         edit.apply();
+    }
+
+    public String getOwnUsername(){
+        String username =  m_preferences.getString(PreferenceConstants.cachedOwnUsername, null);
+        long expiry = m_preferences.getLong(PreferenceConstants.cachedOwnUserPropertyExpiry, 0);
+        if (username == null || (System.currentTimeMillis() - expiry < EXPIRY_OWN_PROPERTIES)) {
+            return username;
+        }
+        return null;
     }
 }

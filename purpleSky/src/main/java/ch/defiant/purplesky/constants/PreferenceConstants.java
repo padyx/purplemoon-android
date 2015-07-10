@@ -35,7 +35,8 @@ public class PreferenceConstants {
     public static final String powerUserExpiry = searchBase + "powerUserExpiry";
 
     public static final String cachedOwnUserProfilePictureUrl = BASE + "cachedOwnUserProfilePictureUrl";
-    public static final String cachedOwnUserProfilePictureUrlExpiry = BASE + "cachedOwnUserProfilePictureUrlExpiry";
+    public static final String cachedOwnUsername = BASE + "cachedOwnUsername";
+    public static final String cachedOwnUserPropertyExpiry = BASE + "cachedOwnUserPropertyExpiry";
 
     private static final String lastSeenBase = BASE + "lastSeen.";
     public static final String lastSeenMessageTimestamp = lastSeenBase + "message";

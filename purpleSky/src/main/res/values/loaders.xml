@@ -6,7 +6,7 @@
     <item type="id" name="loader_message_moreoldDB" />
     <item type="id" name="loader_message_moreoldOnline" />
     <item type="id" name="loader_message_send" />
-    <item type="id" name="loader_drawermenu_profileimage" />
+    <item type="id" name="loader_drawer_userbean_own" />
     <item type="id" name="loader_drawermenu_notificationCounters" />
     <item type="id" name="loader_drawermenu_status" />
     <item type="id" name="loader_main_upgradePush" />
@@ -22,8 +22,7 @@
     <item type="id" name="loader_uploadpicture_getfolders" />
     <item type="id" name="loader_usernamesearch_main" />
     <item type="id" name="loader_radar_main" />
-    <item type="id" name="loader_main_logout" />
-	<item type="id" name="loader_message_profileImage" />  
+	<item type="id" name="loader_message_profileImage" />
 	<item type="id" name="loader_username" /> 
 	<item type="id" name="loader_conversationstatus" />
     <item type="id" name="loader_profilePositionUpdate" />

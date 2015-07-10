@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/draweritem_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="4dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp" xmlns:tools="http://schemas.android.com/tools">
+    android:paddingTop="4dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <ImageView
         android:id="@+id/drawer_item_imageV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_vertical"
-        android:paddingRight="12dp"
+        android:layout_marginRight="24dp"
         android:src="@drawable/icon"
         tools:ignore="ContentDescription" />
 
@@ -28,7 +28,7 @@
         android:paddingRight="16dp"
         android:text="@string/Unknown"
         android:textAppearance="@style/TextAppearance.MediumLarge"
-        />
+        android:textColor="#ffffff" />
 
     <TextView
         android:id="@+id/drawer_item_notificationLbl"

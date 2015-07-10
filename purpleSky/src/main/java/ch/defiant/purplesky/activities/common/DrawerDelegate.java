@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +25,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +43,7 @@ import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
+import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.UpdateBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.PersistantModel;
@@ -48,10 +53,9 @@ import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.loaders.NotificationLoader;
-import ch.defiant.purplesky.loaders.ProfileImageLoader;
+import ch.defiant.purplesky.loaders.OwnUserLoader;
 import ch.defiant.purplesky.loaders.StatusLoader;
 import ch.defiant.purplesky.util.LayoutUtility;
-import ch.defiant.purplesky.util.StringUtility;
 
 /**
  * Delegate handling drawer and navigation-related tasks.
@@ -59,6 +63,8 @@ import ch.defiant.purplesky.util.StringUtility;
  *
  */
 class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
+
+    private static final String TAG = DrawerDelegate.class.getSimpleName();
 
     // delay to launch nav drawer item, to allow close animation to play
     private static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -98,8 +104,6 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     private DrawerLayout m_drawerLayout;
     private List<DrawerItem> m_drawerTitles = new ArrayList<DrawerItem>();
     private ListView m_drawerList;
-    private TextView m_onlineStatusLbl;
-
 
     public DrawerDelegate(BaseFragmentActivity a){
         m_activity = a;
@@ -148,11 +152,34 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     }
 
     void updateStatus(Pair<OnlineStatus, String> p) {
-        if (StringUtility.isNotNullOrEmpty(p.second)) {
-            m_onlineStatusLbl.setText(R.string.Custom);
+        @ColorRes int color;
+        if(p == null){
+            color = R.color.onlinestatus_invisible;
         } else {
-            m_onlineStatusLbl.setText(p.first.getLocalizedString(m_activity));
+            switch (p.first){
+                case UNKNOWN:
+                case INVISIBLE:
+                    color = R.color.onlinestatus_invisible;
+                    break;
+                case AWAY:
+                    color = R.color.onlinestatus_away;
+                    break;
+                case BUSY:
+                    color = R.color.onlinestatus_busy;
+                    break;
+                case ONLINE:
+                    color = R.color.onlinestatus_online;
+                    break;
+                case OFFLINE:
+                    color = R.color.onlinestatus_offline;
+                    break;
+                default:
+                    Log.w(TAG, "Unknown status "+p.first);
+                    color = R.color.onlinestatus_invisible;
+            }
         }
+        RoundedImageView imgV = (RoundedImageView) m_activity.findViewById(R.id.drawer_layout_profileImgV);
+        imgV.setBorderColor(m_activity.getResources().getColor(color));
     }
 
     void updateCounts(UpdateBean b) {
@@ -221,20 +248,21 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
      */
     void setupOrUpdateDrawerHeader() {
         int imgSize = LayoutUtility.dpToPx(m_activity.getResources(), 50);
-        m_activity.findViewById(R.id.drawer_layout_profileImgV).setOnClickListener(new OwnProfileListener());
-        m_activity.findViewById(R.id.drawer_layout_statusLbl).setOnClickListener(new ChangeStatusListener());
-        ImageView profileImgV = (ImageView) m_activity.findViewById(R.id.drawer_layout_profileImgV);
-        m_onlineStatusLbl = (TextView) m_activity.findViewById(R.id.drawer_layout_statusLbl);
+        ImageView profileImg = (ImageView) m_activity.findViewById(R.id.drawer_layout_profileImgV);
+        profileImg.setOnClickListener(new OwnProfileListener());
+        TextView usernameLbl = (TextView) m_activity.findViewById(R.id.drawer_layout_usernameLbl);
 
-        String url = PersistantModel.getInstance().getCachedOwnProfilePictureURLDirectory();
+        PersistantModel model = PersistantModel.getInstance();
+        String url = model.getCachedOwnProfilePictureURLDirectory();
         if (url == null) {
-            Picasso.with(m_activity).load(R.drawable.social_person).fit().into(profileImgV);
-            startProfileImageLoad();
+            Picasso.with(m_activity).load(R.drawable.social_person).fit().into(profileImg);
+            startOwnUserbeanLoad();
         } else {
             UserPreviewPictureSize size = UserPreviewPictureSize.getPictureForPx(imgSize);
             Picasso.with(m_activity).load(url + size.getAPIValue()).error(R.drawable.social_person)
-                    .placeholder(R.drawable.social_person).resize(imgSize, imgSize).centerCrop().into(profileImgV);
+                    .placeholder(R.drawable.social_person).resize(imgSize, imgSize).centerCrop().into(profileImg);
         }
+        usernameLbl.setText(model.getOwnUsername());
     }
 
     /**
@@ -360,8 +388,8 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
         closeDrawer();
     }
 
-    void startProfileImageLoad(){
-        m_activity.getLoaderManager().restartLoader(R.id.loader_drawermenu_profileimage, null, this);
+    void startOwnUserbeanLoad(){
+        m_activity.getLoaderManager().restartLoader(R.id.loader_drawer_userbean_own, null, this);
     }
 
     private void triggerUpdate() {
@@ -373,15 +401,12 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     @Override
     public Loader<Object> onCreateLoader(int type, Bundle arg1) {
         switch (type) {
-            case R.id.loader_drawermenu_profileimage:
-                return new ProfileImageLoader(m_activity);
+            case R.id.loader_drawer_userbean_own:
+                return new OwnUserLoader(m_activity);
             case R.id.loader_drawermenu_notificationCounters:
                 return new NotificationLoader(m_activity, m_activity.apiAdapter, m_activity.conversationAdapter);
             case R.id.loader_drawermenu_status:
                 return new StatusLoader(m_activity, m_activity.apiAdapter);
-            case R.id.loader_main_logout:
-                // FIXME Rremove and add it in the settings
-                // return new LogoutLoader(this, apiAdapter);
             default:
                 throw new IllegalArgumentException("Loader type not found: " + type);
         }
@@ -391,8 +416,12 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     public void onLoadFinished(Loader<Object> loader, Object result) {
         if (result != null) {
             switch (loader.getId()) {
-                case R.id.loader_drawermenu_profileimage:
-                    PersistantModel.getInstance().setCachedOwnProfilePictureURLDirectory((String) result);
+                case R.id.loader_drawer_userbean_own:
+                    MinimalUser user = (MinimalUser) result;
+                    PersistantModel model = PersistantModel.getInstance();
+                    if(user != null) {
+                        model.setOwnUserProperties(user.getUsername(), user.getProfilePictureURLDirectory());
+                    }
                     // Refresh
                     setupOrUpdateDrawerHeader();
                     return;
@@ -404,22 +433,6 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
                     Pair<OnlineStatus, String> p = (Pair<OnlineStatus, String>) result;
                     updateStatus(p);
                     return;
-                case R.id.loader_main_logout:
-//                    Boolean succeeded = (Boolean) result;
-//                    if (succeeded) {
-//                        logoutComplete();
-//                    } else {
-//                        FragmentManager manager = getFragmentManager();
-//                        Fragment frag = manager.findFragmentByTag(LOGOUT_FRAGMENT_TAG);
-//                        if (frag != null) {
-//                            FragmentTransaction t = manager.beginTransaction();
-//                            t.detach(frag);
-//                            t.commitAllowingStateLoss(); // What the user never saw...
-//                        }
-//                        Toast.makeText(this, "Could not logout. Check your internet connection", Toast.LENGTH_LONG)
-//                                .show();
-//                    }
-                    break;
                 case R.id.loader_main_upgradePush:
                     // NOP
                     break;
