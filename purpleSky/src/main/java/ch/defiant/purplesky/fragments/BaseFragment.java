@@ -16,7 +16,7 @@ import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
  * @author Patrick Bänziger
  * @since 1.1.0
  */
-public class BaseFragment extends Fragment implements IAlertDialogFragmentResponder{
+public class BaseFragment extends Fragment implements IAlertDialogFragmentResponder {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;

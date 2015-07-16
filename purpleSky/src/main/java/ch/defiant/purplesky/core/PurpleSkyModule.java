@@ -10,7 +10,6 @@ import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PictureGridViewActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
-import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchResultsActivity;
@@ -38,6 +37,7 @@ import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
+import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.ReportUserFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
@@ -58,74 +58,73 @@ import dagger.Module;
  */
 @Module(
     includes = {
-            APIModule.class,
-            CoreModule.class,
-            DatabaseModule.class,
-            ReportModule.class,
-            PostitModule.class,
-            GalleryModule.class,
-            PhotoVoteModule.class,
-            VisitModule.class,
-            ConversationModule.class,
-            PromotionModule.class
+        APIModule.class,
+        CoreModule.class,
+        DatabaseModule.class,
+        ReportModule.class,
+        PostitModule.class,
+        GalleryModule.class,
+        PhotoVoteModule.class,
+        VisitModule.class,
+        ConversationModule.class,
+        PromotionModule.class
     },
     injects = {
-            PurpleSkyApplication.class,
+        PurpleSkyApplication.class,
 
-            // Activities
-            LoginActivity.class,
-            RadarActivity.class,
-            VisitorTabbedActivity.class,
-            PostitTabbedActivity.class,
-            UserSearchTabbedActivity.class,
-            PhotoVoteTabbedActivity.class,
-            MultiUploadPictureActivity.class,
-            FavoritesActivity.class,
-            DisplayProfileActivity.class,
-            ReportActivity.class,
-            SettingFragmentActivity.class,
-            UserSearchResultsActivity.class,
-            AboutActivity.class,
-            PictureGridViewActivity.class,
-            LightboxActivity.class,
-            EventActivity.class,
+        // Activities
+        LoginActivity.class,
+        VisitorTabbedActivity.class,
+        PostitTabbedActivity.class,
+        UserSearchTabbedActivity.class,
+        PhotoVoteTabbedActivity.class,
+        MultiUploadPictureActivity.class,
+        FavoritesActivity.class,
+        DisplayProfileActivity.class,
+        ReportActivity.class,
+        SettingFragmentActivity.class,
+        UserSearchResultsActivity.class,
+        AboutActivity.class,
+        PictureGridViewActivity.class,
+        LightboxActivity.class,
+        EventActivity.class,
 
+        // Base or abstract classes
+        BaseListFragment.class,
+        BaseFragment.class,
 
-            // Base or abstract classes
-            BaseListFragment.class,
-            BaseFragment.class,
+        ChatListActivity.class,
+        ConversationActivity.class,
 
-            ChatListActivity.class,
-            ConversationActivity.class,
+        // Services
+        UserService.class,
 
-            // Services
-            UserService.class,
+        // Fragments
+        PostitFragment.class,
+        VisitorFragment.class,
+        UsernameSearchFragment.class,
+        RadarGridFragment.class,
 
-            // Fragments
-            PostitFragment.class,
-            VisitorFragment.class,
-            UsernameSearchFragment.class,
+        UserStatsFragment.class,
+        PictureFolderGridViewFragment.class,
 
-            UserStatsFragment.class,
-            PictureFolderGridViewFragment.class,
+        PhotoVoteFragment.class,
+        PhotoVoteListFragment.class,
+        ChatListFragment.class,
 
-            PhotoVoteFragment.class,
-            PhotoVoteListFragment.class,
-            ChatListFragment.class,
+        FavoritesFragment.class,
+        ConversationFragment.class,
+        UserSearchResultsFragment.class,
 
-            FavoritesFragment.class,
-            ConversationFragment.class,
-            UserSearchResultsFragment.class,
-
-            OnlineStatusDialogFragment.class,
-            RadarGridFragment.class,
-            RadarOptionsDialogFragment.class,
-            CreatePostitDialogFragment.class,
-            UploadPhotoDialogFragment.class,
-            ReportUserFragment.class,
-            EnterPasswordDialogFragment.class,
-            MultiUploadFragment.class,
-            EventFragment.class
+        OnlineStatusDialogFragment.class,
+        RadarActivity.class,
+        RadarOptionsDialogFragment.class,
+        CreatePostitDialogFragment.class,
+        UploadPhotoDialogFragment.class,
+        ReportUserFragment.class,
+        EnterPasswordDialogFragment.class,
+        MultiUploadFragment.class,
+        EventFragment.class
     }
 )
 public class PurpleSkyModule {
