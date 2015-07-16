@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,6 @@ import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
-import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
@@ -52,6 +50,7 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
+import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.loaders.NotificationLoader;
 import ch.defiant.purplesky.loaders.OwnUserLoader;
 import ch.defiant.purplesky.loaders.StatusLoader;

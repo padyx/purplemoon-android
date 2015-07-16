@@ -19,8 +19,8 @@
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/drawer_layout_profileImgV"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/social_person"
             android:contentDescription="@string/Accessibility_OwnProfilePicture"
             android:scaleType="fitCenter"
@@ -30,14 +30,14 @@
             app:riv_mutate_background="true"
             app:riv_oval="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp" />
             />
 
         <TextView
             android:id="@+id/drawer_layout_usernameLbl"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:ellipsize="end"
             android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="8dp"
@@ -61,6 +61,7 @@
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
         tools:listitem="@layout/drawer_item"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        android:divider="@null" />
 
 </LinearLayout>

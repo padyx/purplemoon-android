@@ -276,8 +276,6 @@ public class RadarGridFragment extends BaseFragment implements
 
     @Override
     public void onDetach() {
-        getActivity().getActionBar().removeAllTabs();
-        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         getActivity().setProgressBarIndeterminateVisibility(false);
         super.onDetach();
     }

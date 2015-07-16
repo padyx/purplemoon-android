@@ -11,18 +11,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
+import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 
 /**
  * @author Patrick Bänziger
  */
-public abstract class BaseFragmentActivity extends AppCompatActivity {
+public abstract class BaseFragmentActivity extends AppCompatActivity implements IAlertDialogFragmentResponder {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
@@ -208,6 +211,22 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
      */
     protected boolean isShowNavigationDrawer(){
         return true;
+    }
+
+    @Override
+    public void doPositiveAlertClick(int dialogId) {
+    }
+
+    @Override
+    public void doNegativeAlertClick(int dialogId) {
+    }
+
+    @Override
+    public void doNeutralAlertClick(int dialogId) {
+    }
+
+    @Override
+    public void doListSelectResult(int dialogId, Set<Integer> selected) {
     }
 
 }
