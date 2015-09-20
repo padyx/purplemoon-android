@@ -74,12 +74,6 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
         return m_listView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().getActionBar().setTitle(R.string.Favorites_Online_);
-    }
-
     private void getOrUpdateData() {
         getLoaderManager().initLoader(R.id.loader_favorites_main, null, this);
     }
@@ -103,10 +97,10 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
         public View getView(int position, View convertView, ViewGroup parent) {
 
             View v = convertView;
-            ViewHolder holder = null;
+            ViewHolder holder;
             if (v == null) {
                 LayoutInflater vi = LayoutInflater.from(getContext());
-                v = vi.inflate(R.layout.usersearch_result_item, null);
+                v = vi.inflate(R.layout.usersearch_result_item, parent, false);
                 holder = new ViewHolder();
                 holder.usernameLbl = (TextView) v.findViewById(R.id.usersearch_result_usernameLbl);
                 holder.descriptionLbl = (TextView) v.findViewById(R.id.usersearch_result_item_description);
@@ -168,7 +162,7 @@ public class FavoritesFragment extends BaseFragment implements LoaderManager.Loa
 
             @Override
             public Holder<List<OnlineBean>> loadInBackground() {
-                Holder<List<OnlineBean>> favorites = null;
+                Holder<List<OnlineBean>> favorites;
                 try {
                     favorites = new Holder<>(apiAdapter.getOnlineFavorites());
                 } catch (IOException e) {

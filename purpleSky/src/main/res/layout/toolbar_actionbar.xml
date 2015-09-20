@@ -7,4 +7,5 @@
      android:layout_height="?actionBarSize"
      app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+     app:navigationIcon="@drawable/ic_launcher"
     />
