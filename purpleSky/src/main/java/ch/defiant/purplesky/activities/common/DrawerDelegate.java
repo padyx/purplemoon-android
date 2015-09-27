@@ -37,6 +37,7 @@ import ch.defiant.purplesky.activities.FavoritesActivity;
 import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
+import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
@@ -50,7 +51,6 @@ import ch.defiant.purplesky.core.UserService.UserPreviewPictureSize;
 import ch.defiant.purplesky.dialogs.OnlineStatusDialogFragment;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
 import ch.defiant.purplesky.enums.OnlineStatus;
-import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.loaders.NotificationLoader;
 import ch.defiant.purplesky.loaders.OwnUserLoader;
 import ch.defiant.purplesky.loaders.StatusLoader;
@@ -101,7 +101,7 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
 
     private ActionBarDrawerToggle m_drawerToggle;
     private DrawerLayout m_drawerLayout;
-    private List<DrawerItem> m_drawerTitles = new ArrayList<DrawerItem>();
+    private List<DrawerItem> m_drawerTitles = new ArrayList<>();
     private ListView m_drawerList;
 
     public DrawerDelegate(BaseFragmentActivity a){
@@ -141,14 +141,11 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     void postCreate(){
         // Sync the toggle state after onRestoreInstanceState has occurred.
         m_drawerToggle.syncState();
-        if (isDrawerOpen()) {
-            m_activity.setActionBarTitle(m_drawerTitle, null);
-        } else {
-            m_activity.setActionBarTitlesFromActivity();
-        }
-
-
+        // Restore the titles
+        m_activity.setActionBarTitlesFromActivity();
     }
+
+
 
     void updateStatus(Pair<OnlineStatus, String> p) {
         @ColorRes int color;
@@ -192,7 +189,7 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     void selectItem(BaseFragmentActivity.NavigationDrawerEntries startFragment, Bundle args) {
         // update the main content by replacing fragments
 
-        Class<? extends Activity> f = null;
+        Class<? extends Activity> f;
         switch (startFragment) {
             case LAUNCH_CHATLIST:
                 f = ChatListActivity.class;
@@ -300,9 +297,7 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
 
             @Override
             public void onDrawerClosed(View view) {
-                m_activity.setActionBarTitlesFromActivity();
                 ActivityCompat.invalidateOptionsMenu(m_activity); // creates call to onPrepareOptionsMenu()
-                m_activity.invalidateOptionsMenu();
             }
 
 
@@ -418,9 +413,8 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
                 case R.id.loader_drawer_userbean_own:
                     MinimalUser user = (MinimalUser) result;
                     PersistantModel model = PersistantModel.getInstance();
-                    if(user != null) {
-                        model.setOwnUserProperties(user.getUsername(), user.getProfilePictureURLDirectory());
-                    }
+                    model.setOwnUserProperties(user.getUsername(), user.getProfilePictureURLDirectory());
+
                     // Refresh
                     setupOrUpdateDrawerHeader();
                     return;
