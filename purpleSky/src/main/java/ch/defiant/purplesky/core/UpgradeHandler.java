@@ -4,11 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import java.io.IOException;
 
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.beans.PushStatus;
 import ch.defiant.purplesky.constants.PreferenceConstants;
+import ch.defiant.purplesky.constants.SecureConstants;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
+import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.SystemUtility;
 
@@ -40,7 +45,7 @@ public final class UpgradeHandler {
     public boolean performUpgradeActions(Context c){
         boolean needsUpgrade = needsUpgrade(c);
         if(needsUpgrade){
-            boolean success = upgrade(c);
+            boolean success = upgrade();
             if(success){
                 // Make sure, next time we won't do this again unless updated
                 SystemUtility.updateStoredApplicationVersion();
@@ -52,11 +57,9 @@ public final class UpgradeHandler {
 
     /**
      * Performs all upgrade actions.
-     * @param c 
-     * @param c 
      * @return Whether all upgrade actions succeeded. If not, it should be retried later.
      */
-    private boolean upgrade(Context c){
+    private boolean upgrade(){
         boolean success = true;
         Log.i(TAG, "Beginning upgrade actions");
         // BEGIN Upgrades
@@ -74,32 +77,77 @@ public final class UpgradeHandler {
     }
 
     /**
-     * Unregisters old push notification id from server, then clears it.
-     * Re-registering is NOT performed here.
-     * @return If unregistering succeeded.
+     * Unregisters old push notification id from server, obtains a new one, and registers it
+     * @return If re-registering succeeded.
      */
     private boolean upgradeNotifications() {
         SharedPreferences prefs = PreferenceUtility.getPreferences();
         String gcmStored = prefs.getString(PreferenceConstants.gcmToken, null);
         if(StringUtility.isNotNullOrEmpty(gcmStored)){
-            try{
-                boolean unregisterPush = apiAdapter.unregisterPush(gcmStored);
-                if(!unregisterPush){
-                    Log.w(TAG, "Unregistering push failed. Aborting upgrade action");
-                    return false;
-                } else {
-                    Log.i(TAG, "Unregistering for push succeeded.");
-                }
-            } catch(IOException e){
-                return false;
-            } catch (PurpleSkyException e) {
-                Log.w(TAG, "Encountered exception when unregistering from push messages!",e);
+            if (unregisterPush(prefs, gcmStored)){
                 return false;
             }
-            // Delete from store
-            prefs.edit().remove(PreferenceConstants.gcmToken).apply();
         }
-        return true;
+
+        return doCGMRegister(prefs);
+    }
+
+    private boolean unregisterPush(SharedPreferences prefs, String gcmStored) {
+        try{
+            boolean unregisterPush = apiAdapter.unregisterPush(gcmStored);
+            if(!unregisterPush){
+                Log.w(TAG, "Unregistering push failed. Aborting upgrade action");
+                return true;
+            } else {
+                Log.i(TAG, "Unregistering for push succeeded.");
+            }
+        } catch(IOException e){
+            return true;
+        } catch (PurpleSkyException e) {
+            Log.w(TAG, "Encountered exception when unregistering from push messages!",e);
+            return true;
+        }
+        // Delete from store
+        prefs.edit().remove(PreferenceConstants.gcmToken).apply();
+        return false;
+    }
+
+    private boolean doCGMRegister(SharedPreferences prefs) {
+        try{
+            String gcmToken = GoogleCloudMessaging.getInstance(PurpleSkyApplication.get()).
+                    register(SecureConstants.get(SecureConstants.GCM_ID));
+
+            if(StringUtility.isNullOrEmpty(gcmToken)){
+                Log.w(TAG, "Setup of Google Cloud Messaging failed: No registratioId received");
+                return false;
+            }
+
+            PushStatus pushStatus = apiAdapter.getPushStatus();
+
+            // If we still have the GCM Id - and it matches the registered one, no update is needed
+            if(pushStatus != null
+                    && pushStatus.isEnabled()
+                    && CompareUtility.equals(gcmToken, pushStatus.getDeviceToken())){
+                return true;
+            }
+
+            boolean registered = apiAdapter.registerPush(gcmToken);
+            if(registered){
+                prefs.edit().
+                        putString(PreferenceConstants.gcmToken, gcmToken).
+                        putLong(PreferenceConstants.lastPushRegistrationAttempt, System.currentTimeMillis()).
+                        apply();
+                Log.i(TAG, "Register for push with server: Success");
+            } else {
+                Log.w(TAG, "Register for push with server: Failed");
+            }
+            return true;
+        }catch(IOException ioe){
+            Log.i(TAG, "Registering for Google cLoud Messaging failed: IOException", ioe);
+        } catch (PurpleSkyException e) {
+            Log.w(TAG, "Registering for Google Clous Messaging failed with unexpected error", e);
+        }
+        return false;
     }
 
 }

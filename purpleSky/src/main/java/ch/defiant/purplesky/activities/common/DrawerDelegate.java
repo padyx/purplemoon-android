@@ -49,7 +49,6 @@ import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.loaders.NotificationLoader;
 import ch.defiant.purplesky.loaders.ProfileImageLoader;
 import ch.defiant.purplesky.loaders.StatusLoader;
-import ch.defiant.purplesky.loaders.UpgradeAndPushLoader;
 import ch.defiant.purplesky.util.LayoutUtility;
 import ch.defiant.purplesky.util.StringUtility;
 
@@ -143,6 +142,8 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
         } else {
             m_activity.setActionBarTitlesFromActivity();
         }
+
+
     }
 
     void updateStatus(Pair<OnlineStatus, String> p) {
@@ -374,8 +375,6 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
                 return new NotificationLoader(m_activity, m_activity.apiAdapter, m_activity.conversationAdapter);
             case R.id.loader_drawermenu_status:
                 return new StatusLoader(m_activity, m_activity.apiAdapter);
-            case R.id.loader_main_upgradePush:
-                return new UpgradeAndPushLoader(m_activity, m_activity.apiAdapter);
             case R.id.loader_main_logout:
                 // FIXME Rremove and add it in the settings
                 // return new LogoutLoader(this, apiAdapter);

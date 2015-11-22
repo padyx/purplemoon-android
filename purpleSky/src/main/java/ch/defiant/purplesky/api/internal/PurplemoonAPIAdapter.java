@@ -39,6 +39,7 @@ import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
+import ch.defiant.purplesky.beans.PushStatus;
 import ch.defiant.purplesky.constants.SecureConstants;
 import ch.defiant.purplesky.core.ErrorTranslator;
 import ch.defiant.purplesky.core.PersistantModel;
@@ -696,6 +697,25 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE, String.valueOf(location.getLongitude())));
 
        performPOSTRequestForResponseHolder(new URL(url), postData, null);
+    }
+
+    @Override
+    public PushStatus getPushStatus() throws IOException, PurpleSkyException {
+        URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_URL);
+        JSONObject object = performGETRequestForJSONObject(u);
+
+        if (object != null) {
+
+            PushStatus status = new PushStatus();
+            status.setEnabled(object.optBoolean(PurplemoonAPIConstantsV1.JSON_PUSH_ACTIVE, false));
+            status.setDeviceToken(object.optString(PurplemoonAPIConstantsV1.JSON_PUSH_DEVICETOKEN, ""));
+            status.setLastPush(DateUtility.parseJSONDate(object.optString(PurplemoonAPIConstantsV1.JSON_PUSH_TYPE)));
+
+            return status;
+        } else {
+            Log.e(TAG, "API returned null object when requesting push status");
+            return null;
+        }
     }
 
     private JSONObject performGETRequestForJSONObject(URL resource) throws IOException, PurpleSkyException {

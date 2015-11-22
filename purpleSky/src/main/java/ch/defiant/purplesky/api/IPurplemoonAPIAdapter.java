@@ -15,6 +15,7 @@ import ch.defiant.purplesky.beans.NotificationBean;
 import ch.defiant.purplesky.beans.OnlineBean;
 import ch.defiant.purplesky.beans.PreviewUser;
 import ch.defiant.purplesky.beans.PurplemoonLocation;
+import ch.defiant.purplesky.beans.PushStatus;
 import ch.defiant.purplesky.core.UserSearchOptions;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -214,4 +215,10 @@ public interface IPurplemoonAPIAdapter {
      * @throws PurpleSkyException
      */
     void setOwnLocation(PurplemoonLocation location) throws IOException, PurpleSkyException;
+
+    /**
+     * Retrieve the status of the push notification.
+     * @return
+     */
+    PushStatus getPushStatus() throws IOException, PurpleSkyException;
 }

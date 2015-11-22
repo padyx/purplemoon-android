@@ -103,8 +103,15 @@ public class SettingFragmentActivity extends BaseFragmentActivity {
 
     private void removeAllDataAndLogout() {
         // Async task: unregister
+        // Stop pending task first
+        GcmRegisterTask existingTask = GcmRegisterTask.INSTANCE.get();
+        if(existingTask != null && !existingTask.isCancelled()){
+            existingTask.cancel(true);
+        }
         GcmRegisterTask task = new GcmRegisterTask(apiAdapter);
-        task.execute(false); // unregister
+        GcmRegisterTask.INSTANCE.compareAndSet(null, task);
+        task.execute(false); // deregister
+
         try {
             task.get(1, TimeUnit.SECONDS);
             Log.i(TAG, "Unregistering task completed");

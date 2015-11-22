@@ -27,15 +27,19 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.EventActivity;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.animation.WeightAnimation;
+import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.api.promotions.IPromotionAdapter;
 import ch.defiant.purplesky.beans.promotion.Promotion;
 import ch.defiant.purplesky.beans.promotion.PromotionPicture;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PreferenceUtility;
+import ch.defiant.purplesky.core.UpgradeHandler;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
+import ch.defiant.purplesky.gcm.GcmRegisterTask;
 import ch.defiant.purplesky.interfaces.IChatListActivity;
 import ch.defiant.purplesky.interfaces.IDateProvider;
+import ch.defiant.purplesky.loaders.UpgradeTask;
 import ch.defiant.purplesky.loaders.promotions.PromotionLoader;
 import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.Holder;
@@ -54,6 +58,9 @@ public class ChatListActivity extends BaseFragmentActivity
     protected IPromotionAdapter m_promotionAdapter;
     @Inject
     protected IDateProvider m_dateProvider;
+    @Inject
+    protected IPurplemoonAPIAdapter m_apiAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,34 @@ public class ChatListActivity extends BaseFragmentActivity
         }
 
         startPromotionLoading();
+
+        UpgradeHandler upgradeHandler = new UpgradeHandler(m_apiAdapter);
+        if(upgradeHandler.needsUpgrade(this)){
+            UpgradeTask task = new UpgradeTask(this, m_apiAdapter);
+            if(UpgradeTask.INSTANCE.compareAndSet(null, task)){
+                task.execute();
+            }
+        } else {
+            // Self healing: Execute once every 24 hours
+            SharedPreferences preferences = PreferenceUtility.getPreferences();
+            if(preferences.getBoolean(PreferenceConstants.updateEnabled, false)){
+                long lastAttempt = preferences.getLong(PreferenceConstants.lastPushRegistrationAttempt, 0);
+                long currentTime = System.currentTimeMillis();
+                if(isPushSelfHealAttemptNeeded(lastAttempt, currentTime)) {
+                    Log.i(TAG, "Starting notification self-healing task");
+
+                    GcmRegisterTask task = new GcmRegisterTask(m_apiAdapter);
+                    if (GcmRegisterTask.INSTANCE.compareAndSet(null, task)) {
+                        task.execute();
+                    }
+                    preferences.edit().putLong(PreferenceConstants.lastPushRegistrationAttempt, currentTime).apply();
+                }
+            }
+        }
+    }
+
+    private boolean isPushSelfHealAttemptNeeded(long lastAttempt, long currentTime) {
+        return currentTime -  lastAttempt > 24 * 60 *60 * 1000;
     }
 
     private void startPromotionLoading() {
