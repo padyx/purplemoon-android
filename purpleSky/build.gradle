@@ -21,6 +21,12 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res_ccby']
+        }
+    }
+
     buildTypes {
         debug {
             debuggable true

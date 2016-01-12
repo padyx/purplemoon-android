@@ -226,7 +226,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         // Load asset raw file
         String rawHtml;
         try {
-            InputStream rawResource = getResources().openRawResource(R.raw.error);
+            InputStream rawResource = getResources().openRawResource(R.raw.error_raw);
             rawHtml = IOUtils.toString(rawResource);
         } catch (IOException e) {
             if (BuildConfig.DEBUG) {
@@ -247,7 +247,7 @@ public class UserStatsFragment extends Fragment implements IBroadcastReceiver {
         // Load asset raw file
         String rawHtml;
         try {
-            InputStream rawResource = getResources().openRawResource(R.raw.user_profile);
+            InputStream rawResource = getResources().openRawResource(R.raw.user_profile_raw);
             rawHtml = IOUtils.toString(rawResource);
         } catch (IOException e) {
             if (BuildConfig.DEBUG) {
