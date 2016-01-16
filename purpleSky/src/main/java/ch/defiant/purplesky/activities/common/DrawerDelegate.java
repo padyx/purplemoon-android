@@ -332,15 +332,15 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
     private void populateDrawer() {
         int selectedIndex = m_activity.getSelfNavigationIndex();
 
-        addDrawerItem(R.string.Messages, R.drawable.ic_chat_white_36dp, NavigationDrawerEventType.MESSAGE, selectedIndex , R.drawable.rounded_rect_red);
-        addDrawerItem(R.string.Radar, R.drawable.ic_track_changes_white_36dp, null, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.Postits, R.drawable.ic_library_books_white_36px, NavigationDrawerEventType.POSTIT, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.ProfileVisits, R.drawable.ic_person_waving_white_36px, NavigationDrawerEventType.VISIT, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.Favorites_Online_, R.drawable.ic_star_white_36dp, NavigationDrawerEventType.FAVORITES, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.SearchUser_ShortHome, R.drawable.ic_search_white_36dp, null, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.PhotoVotes, R.drawable.ic_thumbs_up_down_white_36dp, null, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.Upload, R.drawable.ic_cloud_upload_white_36dp, null, selectedIndex, R.drawable.rounded_button_blue);
-        addDrawerItem(R.string.Settings, R.drawable.ic_settings_white_36dp, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Messages, R.drawable.ic_chat_white_24dp, NavigationDrawerEventType.MESSAGE, selectedIndex , R.drawable.rounded_rect_red);
+        addDrawerItem(R.string.Radar, R.drawable.ic_track_changes_white_24dp, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Postits, R.drawable.ic_library_books_white_24px, NavigationDrawerEventType.POSTIT, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.ProfileVisits, R.drawable.ic_person_waving_white_24px, NavigationDrawerEventType.VISIT, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Favorites_Online_, R.drawable.ic_star_white_24dp, NavigationDrawerEventType.FAVORITES, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.SearchUser_ShortHome, R.drawable.ic_search_white_24dp, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.PhotoVotes, R.drawable.ic_thumbs_up_down_white_24dp, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Upload, R.drawable.ic_cloud_upload_white_24dp, null, selectedIndex, R.drawable.rounded_button_blue);
+        addDrawerItem(R.string.Settings, R.drawable.ic_settings_white_24dp, null, selectedIndex, R.drawable.rounded_button_blue);
     }
 
     private void addDrawerItem(

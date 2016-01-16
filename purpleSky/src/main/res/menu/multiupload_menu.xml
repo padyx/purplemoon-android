@@ -6,7 +6,7 @@
         android:id="@+id/multiupload_menu_add"
         android:title="@string/Upload"
         android:titleCondensed="@string/Upload"
-        android:icon="@drawable/content_new_picture"
+        android:icon="@drawable/ic_library_add_white_24px"
         app:showAsAction="ifRoom">
 </item>
     
