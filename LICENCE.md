@@ -1,6 +1,6 @@
 # Licences
 ## Source code
-This repository's source code is licenced under the MIT licence (included below).
+This repository's <strong>source code</strong> is licenced under the MIT licence (included below).
 
 ## Assets
 * This repository includes third-party images and assets whose licences are specified below.
@@ -9,6 +9,9 @@ This repository's source code is licenced under the MIT licence (included below)
 ### [LGPL Licence 2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 * The Photo Vote icons: Adapted from the "Kuikshow" icon from Nuvola icon set,
 by [David Vignoni](http://www.icon-king.com/).
+
+### [Creative Commons Attribution CC-BY](https://creativecommons.org/licenses/by/4.0/)
+* The Android Material Design Icons (https://design.google.com/icons/)
 
 ### No licence
 * Action Bar Icon Pack (no longer available)

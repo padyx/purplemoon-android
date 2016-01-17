@@ -5,12 +5,11 @@ Android application for the [Purplemoon.ch](https://www.purplemoon.ch) and
 
 Please see [the licence file](LICENCE.md).
 
-## Attributions, Third-party libraries and contributions
+## Attributions, third-party libraries and contributions
+For the licences of assets or code included in this repository, please see the [Licence file](Licence.md).
 
-This application builds on third party libraries, icons and contributions.
+This application builds on the work of many others: Third party libraries, icons or assets.
 Thanks to the authors of all of them!
-
-For the licences of directly included third-party code, images and assets, please see the [Licence file](Licence.md).
 
 ### [Apache 2 licence](http://www.apache.org/licenses/LICENSE-2.0)
 
