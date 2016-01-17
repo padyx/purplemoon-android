@@ -23,7 +23,7 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs = ['src/main/res', 'src/main/res_ccby']
+            res.srcDirs = ['src/main/res', 'src/main/res_ccby', 'src/main/res_lgpl', 'src/main/res_nonfree']
         }
     }
 
