@@ -20,6 +20,8 @@
 <resources>
 
     <style name="Theme.Purplesky" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:actionBarItemBackground">@drawable/selectable_background_purplesky</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
