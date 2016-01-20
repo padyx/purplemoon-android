@@ -112,8 +112,9 @@ public class MultiUploadFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         getActivity().getMenuInflater().inflate(R.menu.multiupload_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

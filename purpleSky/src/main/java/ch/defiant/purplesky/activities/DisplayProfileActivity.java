@@ -148,7 +148,7 @@ public class DisplayProfileActivity extends AbstractTabbedActivity implements Lo
             // Remove post it menu
             menu.removeItem(R.id.postit_menu);
         }
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
