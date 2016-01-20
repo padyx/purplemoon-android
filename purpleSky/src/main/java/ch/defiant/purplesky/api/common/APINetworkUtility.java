@@ -3,8 +3,10 @@ package ch.defiant.purplesky.api.common;
 import android.util.Log;
 
 import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.apache.http.NameValuePair;
@@ -91,7 +93,7 @@ public class APINetworkUtility {
             builder.post(formBuilder.build());
         } else {
             // No actual content
-            builder.post(null);
+            builder.post(RequestBody.create(null, new byte[0]));
         }
         Response response = new OkHttpClient().newCall(builder.build()).execute();
 
