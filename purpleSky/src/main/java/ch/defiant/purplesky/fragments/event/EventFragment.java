@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
@@ -45,11 +46,16 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Inject
     protected IPromotionAdapter m_promotionAdapter;
+
     private int m_eventId;
+    private final AtomicReference<Event> m_event = new AtomicReference<>();
     private WebView m_webview;
-    private MenuItem m_registerMenu;
-    private MenuItem m_unregisterMenu;
     private EventRegistrationListener m_registerUnregisterHandler;
+
+    @Nullable
+    private MenuItem m_registerMenu;
+    @Nullable
+    private MenuItem m_unregisterMenu;
 
     @Override
     public void onAttach(Activity activity) {
@@ -88,15 +94,20 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         View view = inflater.inflate(R.layout.webview_full, container);
 
         m_webview = (WebView) view.findViewById(R.id.webview_full_webview);
-        loadData();
 
         return view;
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadData();
+    }
+
+    @Override
     public Loader<Holder<Event>> onCreateLoader(int id, Bundle args) {
         getActivity().setProgressBarIndeterminateVisibility(true);
-                return new EventLoader(m_eventId, m_promotionAdapter, getActivity());
+        return new EventLoader(m_eventId, m_promotionAdapter, getActivity());
     }
 
     @Override
@@ -110,18 +121,28 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
         if(data.isException()){
             // FIXME Implement
             m_registerMenu.setEnabled(false);
+            m_event.set(null);
         } else {
             Event event = data.getContainedObject();
+            m_event.set(event);
             m_webview.loadData(EventHTMLTranslator.promoToHtml(getActivity(), event), "text/html; charset=utf-8", "UTF-8");
 
-            m_registerMenu.setEnabled(canRegister(event));
-            m_registerMenu.setVisible(!event.isRegistered());
-            m_unregisterMenu.setVisible(event.isRegistered());
+            updateMenuState();
         }
+    }
+
+    private void updateMenuState() {
+        Event event = m_event.get();
+        m_registerMenu.setVisible(event != null && canRegister(event));
+        m_unregisterMenu.setVisible(event != null && canUnregister(event));
     }
 
     private boolean canRegister(@NonNull Event event) {
         return !event.isPreliminary() && !event.isRegistered();
+    }
+
+    private boolean canUnregister(@NonNull Event event){
+        return event.isRegistered();
     }
 
     @Override
@@ -129,10 +150,11 @@ public class EventFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.event_menu, menu);
         m_registerMenu = menu.findItem(R.id.register);
         m_unregisterMenu = menu.findItem(R.id.unregister);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

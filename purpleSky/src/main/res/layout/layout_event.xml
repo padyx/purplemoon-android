@@ -1,11 +1,23 @@
-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+<?xml version="1.0" encoding="utf-8"?>
+
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="ch.defiant.purplesky.activities.EventActivity">
+
+    <LinearLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <include layout="@layout/toolbar_actionbar" />
+
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
@@ -13,8 +25,10 @@
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="ch.defiant.purplesky.fragments.event.EventFragment"/>
+        android:name="ch.defiant.purplesky.fragments.event.EventFragment"
+        tools:layout="@layout/webview_full"/>
 
-    <include layout="@layout/drawer_layout" />
-
+</LinearLayout>
+    <!-- Nav drawer -->
+<include layout="@layout/drawer_layout" />
 </android.support.v4.widget.DrawerLayout>
