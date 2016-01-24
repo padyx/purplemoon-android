@@ -29,10 +29,7 @@
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav</item>
         <item name="android:actionBarStyle">@style/ActionBar</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_purplesky</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_purplesky</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Purplesky</item>
-        
+
         <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Purplesky.Widget</item>
 
@@ -46,7 +43,6 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
-<!--        <item name="actionOverflowButtonStyle">@style/ActionButtonOverflowStyle</item> -->
     </style>
 
     <style name="ActionBar.Transparent">
@@ -55,7 +51,7 @@
     </style>
 
     <style name="PopupMenu">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_purplesky</item>	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_purplesky</item>
     </style>
 
     <style name="DropDownListView">
@@ -71,13 +67,9 @@
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_purplesky</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_purplesky</item>
     </style>
-    
+
     <style name="ProgressBar">
         <item name="android:progressDrawable">@drawable/progress_horizontal_purplesky</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Purplesky" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_purplesky</item>
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
