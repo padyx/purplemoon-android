@@ -23,7 +23,7 @@ public class GallerySwipeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.layout_viewpager, container, false);
+        View v = inflater.inflate(R.layout.layout_viewpager_noactionbar, container, false);
 
         if (getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER) instanceof PictureFolder) {
             m_folder = (PictureFolder) getActivity().getIntent().getSerializableExtra(ArgumentConstants.ARG_FOLDER);
@@ -39,6 +39,8 @@ public class GallerySwipeFragment extends Fragment {
         if (startPos < m_folder.getPictureCount()) {
             pager.setCurrentItem(startPos);
         }
+
+        v.findViewById(R.id.viewpager_strip).setVisibility(View.GONE);
 
         return v;
     }
