@@ -7,7 +7,8 @@
      android:layout_width="match_parent"
      android:layout_height="?attr/actionBarSize"
      android:elevation="4dp"
-     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+     app:popupTheme="@style/Purplemoon_Toolbar_Popup"
+     android:background="?attr/colorPrimary"
      app:navigationIcon="@drawable/ic_launcher"
     />
