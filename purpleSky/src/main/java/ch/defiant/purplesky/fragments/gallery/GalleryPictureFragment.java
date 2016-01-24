@@ -61,9 +61,6 @@ public class GalleryPictureFragment extends Fragment {
     }
 
     public void loadImage() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
         // Must measure view first
         ImageView imgView = (ImageView) getView().findViewById(R.id.picturefragment_image);
 
