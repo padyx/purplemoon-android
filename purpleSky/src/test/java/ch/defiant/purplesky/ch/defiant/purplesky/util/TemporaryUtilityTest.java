@@ -1,8 +1,9 @@
-package ch.defiant.purplesky.test;
+package ch.defiant.purplesky.ch.defiant.purplesky.util;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Date;
@@ -17,13 +18,14 @@ import ch.defiant.purplesky.util.TemporaryUtility;
  *
  * @author Patrick Bänziger
  */
-public class TemporaryUtilityTest extends TestCase {
+public class TemporaryUtilityTest {
 
     private Date JAN_1_2015 = DateUtility.parseSimpleDate("20150101");
     private Date DEC_31_2014 = DateUtility.parseSimpleDate("20141231");
     private Date FEB_28_2014 = DateUtility.parseSimpleDate("20140228");
 
 
+    @Test
     public void testIsValidWithin(){
         ITemporary temporary = createTemporary(FEB_28_2014, JAN_1_2015);
         // Between
@@ -33,6 +35,7 @@ public class TemporaryUtilityTest extends TestCase {
         Assert.assertTrue(TemporaryUtility.isValid(temporary, createDateProvider(JAN_1_2015)));
     }
 
+    @Test
     public void testIsValidNullSafety(){
         ITemporary temporary = createTemporary(null, JAN_1_2015);
         Assert.assertTrue(TemporaryUtility.isValid(temporary, createDateProvider(FEB_28_2014)));
@@ -44,6 +47,7 @@ public class TemporaryUtilityTest extends TestCase {
         Assert.assertTrue(TemporaryUtility.isValid(temporary, createDateProvider(DEC_31_2014)));
     }
 
+    @Test
     public void testIsValidOutside(){
         ITemporary temporary = createTemporary(FEB_28_2014, DEC_31_2014);
         Assert.assertFalse(TemporaryUtility.isValid(temporary, createDateProvider(JAN_1_2015)));

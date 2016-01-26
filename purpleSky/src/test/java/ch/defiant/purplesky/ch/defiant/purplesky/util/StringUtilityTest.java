@@ -1,11 +1,14 @@
-package ch.defiant.purplesky.test;
+package ch.defiant.purplesky.ch.defiant.purplesky.util;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
+
+import org.junit.Test;
+
 import ch.defiant.purplesky.util.StringUtility;
 
-public class StringUtilityTest extends TestCase {
+public class StringUtilityTest {
 
+	@Test
 	public void testIsNullOrEmpty() {
 		// Test 1: Null
 		Assert.assertTrue(StringUtility.isNullOrEmpty(null));
@@ -17,6 +20,7 @@ public class StringUtilityTest extends TestCase {
 		Assert.assertFalse(StringUtility.isNullOrEmpty("I am empty"));
 	}
 
+	@Test
 	public void testIsNotNullOrEmpty() {
 		// Test 1: Null
 		Assert.assertFalse(StringUtility.isNotNullOrEmpty(null));
@@ -28,6 +32,7 @@ public class StringUtilityTest extends TestCase {
 		Assert.assertTrue(StringUtility.isNotNullOrEmpty("I am empty"));
 	}
 
+	@Test
 	public void testRemovePrefix() {
 		// Test 1: Full prefix required, but not present. Should return original string
 		String s = "Hell World";
@@ -49,7 +54,8 @@ public class StringUtilityTest extends TestCase {
 		Assert.assertEquals(s, StringUtility.removePrefix(s, null, false));
 		Assert.assertEquals(s, StringUtility.removePrefix(s, null, true));
 	}
-	
+
+	@Test
 	public void testRemovePostfix() {
 		// Test 1: Full postfix required, but not present. Should return original string
 		String s = "Hello orld";
