@@ -32,6 +32,8 @@
 
         <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Purplesky.Widget</item>
+        <item name="colorAccent">@color/amber</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 
     </style>
 
