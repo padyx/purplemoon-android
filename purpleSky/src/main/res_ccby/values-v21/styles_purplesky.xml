@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="Theme.Purplesky" parent="Theme.AppCompat.Light.NoActionBar">
+                <item name="android:windowAnimationStyle">@null</item>
+
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <item name="android:actionBarItemBackground">
+                        @drawable/selectable_background_purplesky
+                </item>
+                <item name="android:popupMenuStyle">@style/PopupMenu</item>
+                <item name="android:dropDownListViewStyle">@style/DropDownListView</item>
+                <item name="android:actionBarTabStyle">@style/ActionBarTabStyle</item>
+                <item name="android:actionDropDownStyle">@style/DropDownNav</item>
+                <item name="android:actionBarStyle">@style/ActionBar</item>
+
+                <!-- Light.DarkActionBar specific -->
+                <item name="android:actionBarWidgetTheme">@style/Theme.Purplesky.Widget</item>
+                <item name="colorAccent">@color/amber</item>
+                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="android:statusBarColor">?android:attr/colorPrimary</item>
+
+        </style>
+</resources>
