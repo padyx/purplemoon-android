@@ -1,6 +1,8 @@
 Android application for the [Purplemoon.ch](https://www.purplemoon.ch) and
 [Purplestar.ch](https://www.purplestar.ch) social websites.
 
+[![Build Status](https://travis-ci.org/padyx/purplemoon-android.svg?branch=master)](https://travis-ci.org/padyx/purplemoon-android)
+
 ## Licence
 
 Please see [the licence file](LICENCE.md).
