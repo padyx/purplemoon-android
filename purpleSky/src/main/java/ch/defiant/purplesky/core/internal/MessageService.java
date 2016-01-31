@@ -58,22 +58,6 @@ class MessageService implements IMessageService {
 
     private final int MAX_CACHED_CONVERSATIONS = 100;
 
-    public interface OnMessageLoadCompleteHandler {
-        /**
-         * Called to deliver the result of the query.
-         * 
-         * @param result
-         */
-        void success(List<PrivateMessage> result);
-
-        /**
-         * Called to indicate that an error occurred handling the request.
-         * 
-         * @param e
-         */
-        void error(Exception e);
-    }
-
     /**
      * Returns up tp {@link #BATCH} messages that directly preceeded the messages indicated by <code>messageId</code>. This function issues an online
      * call. The returned order is oldest first.
@@ -96,9 +80,9 @@ class MessageService implements IMessageService {
                 insertMessages(list);
             }
             Collections.reverse(list); // We need oldest first
-            return new Holder<List<PrivateMessage>>(list);
+            return new Holder<>(list);
         } catch (Exception e) {
-            return new Holder<List<PrivateMessage>>(e);
+            return new Holder<>(e);
         }
     }
 
@@ -138,7 +122,7 @@ class MessageService implements IMessageService {
      */
     @Override
     public Holder<List<PrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId) {
-        final ArrayList<PrivateMessage> res = new ArrayList<PrivateMessage>();
+        final List<PrivateMessage> res = new ArrayList<>();
 
         boolean hasPossiblyMore = lastMessageId != null;
 
@@ -166,7 +150,7 @@ class MessageService implements IMessageService {
                     }
                 }
             } catch (Exception e) {
-                return new Holder<List<PrivateMessage>>(e);
+                return new Holder<>(e);
             }
             if (!hasPossiblyMore) {
                 break;
@@ -180,7 +164,7 @@ class MessageService implements IMessageService {
         if (!res.isEmpty()) {
             insertMessages(res);
         }
-        return new Holder<List<PrivateMessage>>(res);
+        return new Holder<>(res);
 
     }
 
@@ -525,7 +509,7 @@ class MessageService implements IMessageService {
     @Override
     public List<UserMessageHistoryBean> getCachedConversations(){
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
-        List<UserMessageHistoryBean> list = new ArrayList<UserMessageHistoryBean>();
+        List<UserMessageHistoryBean> list = new ArrayList<>();
         try{
             Cursor cursor = db.rawQuery(
                     " SELECT " + 
@@ -590,14 +574,14 @@ class MessageService implements IMessageService {
     @Override
     public List<UserMessageHistoryBean> getOnlineConversations() throws IOException, PurpleSkyException{
         final Date newestCached = getNewestConversationTimestamp();
-        List<UserMessageHistoryBean> conversations = new ArrayList<UserMessageHistoryBean>();
+        List<UserMessageHistoryBean> conversations = new ArrayList<>();
 
         boolean loadmore = true;
         int currentIdx = 0;
         while(loadmore){
             loadmore = false;
 
-            List<UserMessageHistoryBean> lastcontacts = new ArrayList<UserMessageHistoryBean>( 
+            List<UserMessageHistoryBean> lastcontacts = new ArrayList<>(
                         apiAdapter.getRecentContacts(BATCH, currentIdx, MessageRetrievalRestrictionType.UNREAD_FIRST));
             Collections.sort(lastcontacts, new UserMessageHistoryBeanLastContactComparator());
             
@@ -618,7 +602,7 @@ class MessageService implements IMessageService {
         }
         
         updateLastContact(conversations);
-        List<MinimalUser> list = new ArrayList<MinimalUser>();
+        List<MinimalUser> list = new ArrayList<>();
         for (UserMessageHistoryBean b : conversations) {
             if(b != null && b.getUserBean() != null){
                 MinimalUser user = b.getUserBean();
@@ -643,7 +627,7 @@ class MessageService implements IMessageService {
         where.append(DatabaseConstants.MESSAGES_MESSAGEID);
         where.append(" < ? ");
 
-        List<String> selectArgs = new ArrayList<String>();
+        List<String> selectArgs = new ArrayList<>();
         selectArgs.add(profileId);
         selectArgs.add(profileId);
         selectArgs.add(String.valueOf(upToMessageId));
@@ -659,7 +643,7 @@ class MessageService implements IMessageService {
                 DatabaseConstants.MESSAGES_TEXT,
                 DatabaseConstants.MESSAGES_PENDING },
                 where.toString(),
-                (String[]) selectArgs.toArray(new String[selectArgs.size()]),
+                selectArgs.toArray(new String[selectArgs.size()]),
                 null,
                 null,
                 DatabaseConstants.MESSAGES_MESSAGEID + " DESC ",
@@ -667,7 +651,7 @@ class MessageService implements IMessageService {
         try {
             curs.moveToFirst();
             if (curs.isAfterLast()) {
-                return  Collections.<PrivateMessage>emptyList();
+                return  Collections.emptyList();
             } else {
                 List<PrivateMessage> messages = translateCursorToMessages(curs);
                 Collections.reverse(messages);
@@ -688,7 +672,7 @@ class MessageService implements IMessageService {
 
         final String myUserId = PersistantModel.getInstance().getUserProfileId();
 
-        ArrayList<PrivateMessage> list = new ArrayList<PrivateMessage>();
+        ArrayList<PrivateMessage> list = new ArrayList<>();
         while (!curs.isAfterLast()) {
             PrivateMessage message = new PrivateMessage();
             PrivateMessageHead head = new PrivateMessageHead();

@@ -38,11 +38,11 @@ public class UploadService extends Service {
 
     public static final String TAG = UploadService.class.getSimpleName();
 
-    private final BinderServiceWrapper<UploadService> m_binder = new BinderServiceWrapper<UploadService>(this);
-    private final LinkedList<UploadBean> m_queue = new LinkedList<UploadBean>();
-    private final Set<UploadBean> m_completed = new HashSet<UploadBean>();
+    private final BinderServiceWrapper<UploadService> m_binder = new BinderServiceWrapper<>(this);
+    private final LinkedList<UploadBean> m_queue = new LinkedList<>();
+    private final Set<UploadBean> m_completed = new HashSet<>();
 
-    private AtomicReference<Thread> m_uploader = new AtomicReference<Thread>();
+    private AtomicReference<Thread> m_uploader = new AtomicReference<>();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -101,7 +101,6 @@ public class UploadService extends Service {
     private boolean upload(UploadBean b) {
         // Get file
         final Uri fileUri = b.getFileUri();
-        final AssetFileDescriptor descriptor;
         if(fileUri == null){
             Log.e(TAG, "No fileUri passed to upload service");
             b.setError(getString(R.string.PictureNotFound));
