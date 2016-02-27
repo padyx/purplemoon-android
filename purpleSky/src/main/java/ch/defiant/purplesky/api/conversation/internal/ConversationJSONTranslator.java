@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -68,7 +70,7 @@ class ConversationJSONTranslator {
             return res;
         }
 
-        ArrayList<PrivateMessage> unread = new ArrayList<PrivateMessage>();
+        List<IPrivateMessage> unread = new ArrayList<>();
         JSONArray array = obj.optJSONArray(PurplemoonAPIConstantsV1.JSON_MESSAGE_SEND_UNREAD_MSGS);
         if (array != null) {
             // Oops unsaid!

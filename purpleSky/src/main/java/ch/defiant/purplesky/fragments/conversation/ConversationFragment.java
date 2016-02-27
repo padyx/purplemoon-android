@@ -37,6 +37,8 @@ import ch.defiant.purplesky.activities.chatlist.ConversationActivity;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
+import ch.defiant.purplesky.beans.IPrivateMessage;
+import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -44,6 +46,7 @@ import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
+import ch.defiant.purplesky.dao.IPendingMessageDao;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.MessageType;
@@ -71,6 +74,9 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     protected IMessageService messageService;
     @Inject
     protected IConversationAdapter conversationAdapter;
+    @Inject
+    protected IPendingMessageDao pendingMessageDao;
+
     private ViewGroup m_chatGroupBox;
 
     private final class NotifyAdapter implements Runnable {
@@ -96,12 +102,8 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 lastReceivedTS = 0L;
             }
 
-            PrivateMessageHead head = new PrivateMessageHead();
-            head.setRecipientProfileId(m_profileId);
-            head.setMessageType(MessageType.SENT);
-            head.setTimeSent(new Date());
-            PrivateMessage message = new PrivateMessage();
-            message.setMessageHead(head);
+            PendingMessage message = new PendingMessage();
+            message.setRecipientId(Long.valueOf(m_profileId));
             message.setMessageText(messageField.getText().toString());
 
             Bundle bundle = new Bundle();
@@ -349,14 +351,14 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         if (text != null && text.getText().length() > 0) {
             AlertDialogFragment.newDiscardCancelDialog(R.string.Discard_, R.string.ConfirmDiscardMessage,
                     DIALOG_DISCARD_ON_EXIT).show(
-                            getFragmentManager(), String.valueOf(DIALOG_DISCARD_ON_EXIT));
+                    getFragmentManager(), String.valueOf(DIALOG_DISCARD_ON_EXIT));
             return false;
         }
         return true;
     }
 
     @Override
-    public AbstractMessageLoader onCreateLoader(final int type, final Bundle bundle) {
+    public Loader<Holder<MessageResult>> onCreateLoader(final int type, final Bundle bundle) {
         final Activity context = getActivity();
         context.setProgressBarIndeterminateVisibility(true);
         switch (type) {
@@ -370,7 +372,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 return new OlderMessageOnlineLoader(context, bundle, conversationAdapter, messageService);
             case R.id.loader_message_send:
                 sendPreActions();
-                return new SendMessageLoader(context, bundle, conversationAdapter, messageService);
+                return new SendMessageLoader(context, bundle, pendingMessageDao);
             case R.id.loader_message_refresh:
                 return new RefreshMessageLoader(context, bundle, conversationAdapter, messageService);
             default:
@@ -399,8 +401,9 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         }
 
         getLoaderManager().destroyLoader(type);
-        
-        List<PrivateMessage> unreadMessages = res.getUnreadMessages();
+
+        List<IPrivateMessage> unreadMessages = res.getUnreadMessages();
+        IPrivateMessage sendMessage = res.getSentMessage();
         switch (type) {
             case R.id.loader_message_moreoldDB: {
                 // More old from db. If result non-empty, we might have more
@@ -430,7 +433,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                     m_hasNoMoreCached = true;
                     m_hasNoMoreOnline = true;
                 }
-                for (PrivateMessage pm : unreadMessages) {
+                for (IPrivateMessage pm : unreadMessages) {
                     m_adapter.add(pm);
                 }
                 break;
@@ -460,15 +463,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 break;
             }
             case R.id.loader_message_refresh: {
-                // Drop last dummy message again, should be replaced by a real one
-                if (!m_adapter.isEmpty()) {
-                    int position = m_adapter.getCount() - 1;
-                    PrivateMessage item = (PrivateMessage) m_adapter.getItem(position);
-                    if (item != null && item.isDummy()) {
-                        m_adapter.getData().remove(position);
-                    }
-                }
-                for (PrivateMessage pm : unreadMessages) {
+                for (IPrivateMessage pm : unreadMessages) {
                     m_adapter.add(pm);
                 }
 
@@ -481,6 +476,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             default:
                 throw new IllegalArgumentException("Unknown loader type " + type);
         }
+
         updateAdapterButtonState();
         getActivity().runOnUiThread(new NotifyAdapter());
     }
@@ -527,7 +523,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             .getSerializable(SAVEINSTANCE_DATA);
             // WORKAROUND: Note that Android deserializes any list as an ArrayList from a bundle.
             // See http://stackoverflow.com/questions/12300886/
-            m_adapter.setData(new LinkedList<PrivateMessage>(adapterdata));
+            m_adapter.setData(new LinkedList<IPrivateMessage>(adapterdata));
         }
         if (savedInstanceState.containsKey(SAVEINSTANCE_HASNOMORECACHED)) {
             m_hasNoMoreCached = savedInstanceState.getBoolean(SAVEINSTANCE_HASNOMORECACHED);
@@ -684,11 +680,11 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     }
 
     private void doSendPostActions(MessageResult res) {
-        List<PrivateMessage> unreadMessages = res.getUnreadMessages();
+        List<IPrivateMessage> unreadMessages = res.getUnreadMessages();
         if (unreadMessages != null) {
             // There are unread messages!
             // Append them!
-            for (PrivateMessage privateMessage : unreadMessages) {
+            for (IPrivateMessage privateMessage : unreadMessages) {
                 m_adapter.add(privateMessage);
             }
 

@@ -17,6 +17,7 @@ import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_BUNDLESTORE
 import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_CONVERSATIONS;
 import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_MESSAGES;
 import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_USERMAPPING;
+import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_PENDING_MESSAGES;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,8 +39,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1&2: pre-release versions
      * Version 3: App version 29 (1.0.0)
      * Version 4: App version 30 (1.0.1)
+     * Version 5: App version 1600000135 (1.3.5)
      */
-    private static final int SCHEMA_VERSION = 4;
+    private static final int SCHEMA_VERSION = 5;
 
     public static DBHelper fromContext(Context c){
         return new DBHelper(c);
@@ -61,11 +63,14 @@ public class DBHelper extends SQLiteOpenHelper {
         createConversationTable(db);
         createUserNameMappingTable(db);
         createBundleStoreTable(db);
+        createPendingMessageTable(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch(oldVersion){
+            case 4:
+                createPendingMessageTable(db);
             case 3:
                 createBundleStoreTable(db);
             case 2:
@@ -95,6 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
         s.add(TABLE_CONVERSATIONS);
         s.add(TABLE_MESSAGES);
         s.add(TABLE_USERMAPPING);
+        s.add(TABLE_PENDING_MESSAGES);
         return s;
     }
 
@@ -165,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Creates the bundle store table
      * @param db
-     * @since  Database version 4
+     * @since  Database version 3
      */
     private void createBundleStoreTable(SQLiteDatabase db){
         db.beginTransaction();
@@ -183,6 +189,31 @@ public class DBHelper extends SQLiteOpenHelper {
                             DatabaseConstants.BUNDLESTORE_OWNER +", " +
                             DatabaseConstants.BUNDLESTORE_KEY+") " +
                     ")"
+            );
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /**
+     * Creates the bundle store table
+     * @param db
+     * @since  Database version 4
+     */
+    private void createPendingMessageTable(SQLiteDatabase db){
+        db.beginTransaction();
+        try{
+            db.execSQL("    CREATE TABLE IF NOT EXISTS "+DatabaseConstants.TABLE_PENDING_MESSAGES +
+                            " ( " +
+                            "       " + DatabaseConstants.PENDING_MESSAGES_ID + " INTEGER PRIMARY KEY, " +
+                            "       " + DatabaseConstants.PENDING_MESSAGES_TOUSERID + " INTEGER NOT NULL, " +
+                            "       " + DatabaseConstants.PENDING_MESSAGES_STATUS + " INTEGER NOT NULL, " +
+                            "       " + DatabaseConstants.PENDING_ATTEMPT_COUNT + " INTEGER NOT NULL, " +
+                            "       " + DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT + " INTEGER NOT NULL," +
+                            "       " + DatabaseConstants.PENDING_MESSAGES_TIMESENT + " INTEGER NOT NULL, " +
+                            "       " + DatabaseConstants.PENDING_MESSAGES_TEXT + " TEXT " +
+                            ")"
             );
             db.setTransactionSuccessful();
         } finally {

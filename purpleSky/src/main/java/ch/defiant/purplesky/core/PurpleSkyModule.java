@@ -26,6 +26,7 @@ import ch.defiant.purplesky.api.promotions.internal.PromotionModule;
 import ch.defiant.purplesky.api.report.internal.ReportModule;
 import ch.defiant.purplesky.api.visit.internal.VisitModule;
 import ch.defiant.purplesky.core.internal.CoreModule;
+import ch.defiant.purplesky.dao.internal.DaoModule;
 import ch.defiant.purplesky.db.internal.DatabaseModule;
 import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
@@ -50,6 +51,7 @@ import ch.defiant.purplesky.fragments.profile.UserStatsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import ch.defiant.purplesky.fragments.visits.VisitorFragment;
+import ch.defiant.purplesky.services.MessageSendingService;
 import dagger.Module;
 
 /**
@@ -67,7 +69,8 @@ import dagger.Module;
         PhotoVoteModule.class,
         VisitModule.class,
         ConversationModule.class,
-        PromotionModule.class
+        PromotionModule.class,
+        DaoModule.class
     },
     injects = {
         PurpleSkyApplication.class,
@@ -98,6 +101,7 @@ import dagger.Module;
 
         // Services
         UserService.class,
+        MessageSendingService.class,
 
         // Fragments
         PostitFragment.class,

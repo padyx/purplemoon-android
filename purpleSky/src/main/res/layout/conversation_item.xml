@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/spacer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" android:baselineAligned="false">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/spacer"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:baselineAligned="false">
 
     <FrameLayout
         android:id="@+id/conversation_item_leftspacer"
@@ -28,7 +30,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.MediumLarge"
             android:autoLink="all"
-            android:text="@string/Unknown" />
+            android:text="@string/Unknown"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+            />
 
         <LinearLayout
             android:id="@+id/conversation_item_dateTimeContainer"
@@ -38,22 +42,22 @@
             android:gravity="right|center_vertical"
             android:paddingTop="5dp" >
 
-            <ImageView
-                android:id="@+id/conversation_item_stateNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/Accessibiliy_IndicatorNewMessage"
-                android:paddingRight="4dp"
-                android:src="@drawable/indicator_new" 
-                android:visibility="gone"
-                />
-
             <TextView
                 android:id="@+id/conversation_item_dateTimeLbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Unknown"
                 android:textStyle="italic" />
+
+            <ImageView
+                android:id="@+id/conversation_item_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="4dp"
+                android:src="@drawable/ic_file_upload_black_24dp"
+                tools:visibility="visible"
+                />
+
         </LinearLayout>
     </LinearLayout>
 

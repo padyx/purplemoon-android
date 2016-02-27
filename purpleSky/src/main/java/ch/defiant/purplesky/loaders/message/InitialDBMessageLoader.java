@@ -3,10 +3,12 @@ package ch.defiant.purplesky.loaders.message;
 import android.content.Context;
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
@@ -26,7 +28,8 @@ public class InitialDBMessageLoader extends AbstractMessageLoader {
     @Override
     public Holder<MessageResult> loadInBackground() {
         List<PrivateMessage> list = messageService.getNewestCachedMessagesWithUser(m_userId);
-        return Holder.newInstance(new MessageResult().setUnreadMessages(list));
+        List<IPrivateMessage> messages = new ArrayList<IPrivateMessage>(list);
+        return Holder.newInstance(new MessageResult().setUnreadMessages(messages));
     }
 
 }

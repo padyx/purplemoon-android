@@ -17,6 +17,8 @@ import java.util.List;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
+import ch.defiant.purplesky.beans.IPrivateMessage;
+import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
@@ -26,7 +28,7 @@ public class MessageAdapter extends BaseAdapter {
     private static class ViewHolder {
         TextView messageLbl;
         TextView dateTimeLbl;
-        ImageView newIndicator;
+        ImageView stateIndicator;
 
         LinearLayout outerLinearLayout;
         View leftSpacer;
@@ -35,7 +37,7 @@ public class MessageAdapter extends BaseAdapter {
 
     private final ConversationFragment m_conversationFragment;
 
-    private LinkedList<PrivateMessage> m_data = new LinkedList<>();
+    private LinkedList<IPrivateMessage> m_data = new LinkedList<>();
     private boolean m_showLoadMore;
 
     /**
@@ -49,7 +51,7 @@ public class MessageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v;
         if (getItemViewType(position) == 0) {
-            PrivateMessage o = getData().get(position - (m_showLoadMore ? 1 : 0));
+            IPrivateMessage o = getData().get(position - (m_showLoadMore ? 1 : 0));
             v = createMessageView(convertView, o, parent);
         } else {
             v = createButtonView(convertView, parent);
@@ -79,7 +81,7 @@ public class MessageAdapter extends BaseAdapter {
         return buttonView;
     }
 
-    private View createMessageView(View convertView, PrivateMessage m, ViewGroup parent) {
+    private View createMessageView(View convertView, IPrivateMessage m, ViewGroup parent) {
         View v;
         ViewHolder holder = null;
         if (convertView == null) {
@@ -90,7 +92,7 @@ public class MessageAdapter extends BaseAdapter {
 
             holder.messageLbl = (TextView) v.findViewById(R.id.conversation_item_messageTxtLbl);
             holder.dateTimeLbl = (TextView) v.findViewById(R.id.conversation_item_dateTimeLbl);
-            holder.newIndicator = (ImageView) v.findViewById(R.id.conversation_item_stateNew);
+            holder.stateIndicator = (ImageView) v.findViewById(R.id.conversation_item_state);
             holder.leftSpacer = v.findViewById(R.id.conversation_item_leftspacer);
             holder.rightSpacer = v.findViewById(R.id.conversation_item_rightSpacer);
             holder.outerLinearLayout = (LinearLayout) v.findViewById(R.id.conversation_item_outerLinearLayout);
@@ -105,7 +107,9 @@ public class MessageAdapter extends BaseAdapter {
             // Wipe fields
             holder.messageLbl.setText("");
             holder.dateTimeLbl.setText("");
-            holder.newIndicator.setVisibility(View.GONE);
+
+            holder.stateIndicator.setVisibility(m instanceof PendingMessage ? View.VISIBLE : View.GONE);
+
             holder.leftSpacer.setVisibility(View.GONE);
             holder.rightSpacer.setVisibility(View.GONE);
 
@@ -118,28 +122,28 @@ public class MessageAdapter extends BaseAdapter {
                 holder.messageLbl.setText(m.getMessageText());
             }
 
-            PrivateMessageHead head = m.getMessageHead();
-            holder.newIndicator.setVisibility(head.isUnopened() ? View.VISIBLE : View.GONE);
-            if (head.getMessageType() != null) {
-                switch (head.getMessageType()) {
-                    case RECEIVED: {
-                        // Put on
-                        holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_left);
-                        holder.rightSpacer.setVisibility(View.VISIBLE);
-                        break;
-                    }
-                    case SENT: {
-                        holder.leftSpacer.setVisibility(View.VISIBLE);
-                        holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_right);
-                        break;
-                    }
-                    default: {
-                        if (BuildConfig.DEBUG) {
-                            assert (false);
+            if(m instanceof PrivateMessage){
+                PrivateMessageHead head = ((PrivateMessage)m).getMessageHead();
+                if (head.getMessageType() != null) {
+                    switch (head.getMessageType()) {
+                        case RECEIVED: {
+                            // Put on
+                            holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_left);
+                            holder.rightSpacer.setVisibility(View.VISIBLE);
+                            break;
                         }
-                        break;
+                        case SENT: {
+                            holder.leftSpacer.setVisibility(View.VISIBLE);
+                            holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_right);
+                            break;
+                        }
                     }
                 }
+            } else if (m instanceof PendingMessage){
+                PendingMessage message = (PendingMessage) m;
+
+                holder.leftSpacer.setVisibility(View.VISIBLE);
+                holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_right);
             }
         }
         return v;
@@ -154,18 +158,18 @@ public class MessageAdapter extends BaseAdapter {
      * @param m
      *            Item to add
      */
-    public synchronized void add(int index, PrivateMessage m) {
+    public synchronized void add(int index, IPrivateMessage m) {
         m_data.add(index, m);
     }
 
-    public synchronized void add(PrivateMessage m) {
+    public synchronized void add(IPrivateMessage m) {
         m_data.add(m);
     }
 
-    public synchronized void addAll(Collection<PrivateMessage> m){
+    public synchronized void addAll(Collection<IPrivateMessage> m){
         m_data.addAll(m);
     }
-    public synchronized void prepend(List<PrivateMessage> c){
+    public synchronized void prepend(List<IPrivateMessage> c){
         for(int i=c.size(); i >= 0; i--){
             m_data.add(0, c.get(i));
         }
@@ -221,11 +225,11 @@ public class MessageAdapter extends BaseAdapter {
         m_showLoadMore = showLoadMore;
     }
 
-    public LinkedList<PrivateMessage> getData() {
+    public LinkedList<IPrivateMessage> getData() {
         return m_data;
     }
 
-    public void setData(LinkedList<PrivateMessage> data) {
+    public void setData(LinkedList<IPrivateMessage> data) {
         m_data = data;
         notifyDataSetChanged();
     }

@@ -9,20 +9,26 @@ public class DatabaseConstants {
     public static final String MESSAGES_PENDING = "pending";
     public static final String MESSAGES_TEXT = "message_text";
 
+    /*
+     * Pending messages
+     */
+    public static final String TABLE_PENDING_MESSAGES = "pending_messages";
+    public static final String PENDING_MESSAGES_ID = "id";
+    public static final String PENDING_MESSAGES_TOUSERID = "to_user_id";
+    public static final String PENDING_MESSAGES_TIMESENT = "time_sent";
+    public static final String PENDING_MESSAGES_NEXTATTEMPT = "next_attempt";
+    public static final String PENDING_MESSAGES_STATUS = "status";
+    public static final String PENDING_MESSAGES_TEXT = "message_text";
+    public static final String PENDING_ATTEMPT_COUNT = "attempt_count";
+
+    public static final int PENDING_MESSAGES_UNSENT = 0;
+    public static final int PENDING_MESSAGES_FAILED = 1;
+
+
     public static final String MESSAGES_INDEX_FROMUSERID = "messages_from_idx";
     public static final String MESSAGES_INDEX_TOUSERID = "messages_to_idx";
     public static final String MESSAGES_INDEX_SENT = "messages_time_sent_idx";
 
-    public static final int MESSAGES_PENDING_NONE = 0;
-    public static final int MESSAGES_PENDING_UNSENT = 1;
-    /**
-     * Indicates that this message was sent, but there may be
-     */
-    public static final int MESSAGES_PENDING_SENT_UNCONFIRMED = 2;
-    /**
-     * Indicates that this message was sent, and the directly preceding messages have
-     */
-    public static final int MESSAGES_PENDING_SENT = 3;
 
     /********
      * Conversation table

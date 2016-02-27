@@ -3,10 +3,12 @@ package ch.defiant.purplesky.loaders.message;
 import android.content.Context;
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -29,10 +31,12 @@ public class OlderMessageOnlineLoader extends AbstractMessageLoader {
     public Holder<MessageResult> loadInBackground() {
         Holder<List<PrivateMessage>> holder = messageService.getPreviousMessagesOnline(m_userId, m_upToMessageId);
         if (holder.getException() != null){
-            return new Holder<MessageResult>(holder.getException());
+            return new Holder<>(holder.getException());
         }
         List<PrivateMessage> obj = holder.getContainedObject();
-        return Holder.newInstance(new MessageResult().setUnreadMessages(obj));
+        List<IPrivateMessage> messages = new ArrayList<IPrivateMessage>(obj);
+
+        return Holder.newInstance(new MessageResult().setUnreadMessages(messages));
     }
 
 }

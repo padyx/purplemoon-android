@@ -12,10 +12,8 @@ public class PrivateMessageHead implements Serializable {
     public static final String TYPEIDENTIFIER = "ch.defiant.purplesky.beans.PrivateMessageHead";
 
     private MessageType m_messageType;
-    private MinimalUser m_author;
     private String m_authorProfileId;
     private Date m_timeSent;
-    private MinimalUser m_recipient;
     private String m_recipientProfileId;
     private long m_messageId;
     private String m_replyToMessageId;
@@ -23,19 +21,6 @@ public class PrivateMessageHead implements Serializable {
 
     public PrivateMessageHead() {
     };
-
-    public PrivateMessageHead(MinimalUser u, Date timesent) {
-        m_author = u;
-        m_timeSent = timesent;
-    }
-
-    public void setAuthor(MinimalUser author) {
-        m_author = author;
-    }
-
-    public MinimalUser getAuthor() {
-        return m_author;
-    }
 
     public String getAuthorProfileId() {
         return m_authorProfileId;
@@ -51,14 +36,6 @@ public class PrivateMessageHead implements Serializable {
 
     public Date getTimeSent() {
         return m_timeSent;
-    }
-
-    public void setRecipient(MinimalUser recipient) {
-        m_recipient = recipient;
-    }
-
-    public MinimalUser getRecipient() {
-        return m_recipient;
     }
 
     public String getRecipientProfileId() {

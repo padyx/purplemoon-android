@@ -22,6 +22,7 @@ import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.beans.MinimalUser;
+import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.core.AdapterOptions;
@@ -44,18 +45,13 @@ class ConversationAdapter implements IConversationAdapter {
     private static final String TAG = ConversationAdapter.class.getSimpleName();
 
     @Override
-    public MessageResult sendMessage(PrivateMessage message, SendOptions opts) throws IOException, PurpleSkyException {
+    public MessageResult sendMessage(PendingMessage message, SendOptions opts) throws IOException, PurpleSkyException {
         if (message == null) {
             throw new IllegalArgumentException("Cannot send message with 'null' message.");
         }
-        String userid;
-        if (message.getRecipient() != null) {
-            userid = message.getRecipient().getUserId();
-        } else {
-            userid = message.getMessageHead().getRecipientProfileId();
-        }
+        Long userid = message.getRecipientId();
 
-        if (StringUtility.isNullOrEmpty(userid)) {
+        if (userid == null) {
             throw new IllegalArgumentException("Cannot send message with without a receiver!");
         }
 
@@ -115,7 +111,7 @@ class ConversationAdapter implements IConversationAdapter {
             restrict = MessageRetrievalRestrictionType.LAST_CONTACT;
         }
 
-        ArrayList<UserMessageHistoryBean> resultList = new ArrayList<UserMessageHistoryBean>();
+        ArrayList<UserMessageHistoryBean> resultList = new ArrayList<>();
 
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(PurplemoonAPIConstantsV1.BASE_URL);
@@ -230,7 +226,7 @@ class ConversationAdapter implements IConversationAdapter {
     @Override
     public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options) throws IOException, PurpleSkyException {
 
-        ArrayList<PrivateMessage> list = new ArrayList<PrivateMessage>();
+        ArrayList<PrivateMessage> list = new ArrayList<>();
         if (profileId == null)
             return list;
 

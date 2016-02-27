@@ -77,6 +77,10 @@
             android:name=".services.UploadService"
             android:exported="false" >
         </service>
+        <service
+            android:name=".services.MessageSendingService"
+            android:exported="false" >
+        </service>
 
         <receiver
             android:name=".broadcast.StartupBroadcastReceiver"

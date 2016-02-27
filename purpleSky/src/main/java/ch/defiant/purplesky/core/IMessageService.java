@@ -12,7 +12,7 @@ import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.Holder;
 
 /**
- * Created by Chakotay on 09.05.2014.
+ * Created by Patrick Bänziger on 09.05.2014.
  */
 public interface IMessageService {
 

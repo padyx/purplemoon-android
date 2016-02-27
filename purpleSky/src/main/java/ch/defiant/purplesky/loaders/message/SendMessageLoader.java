@@ -1,21 +1,36 @@
 package ch.defiant.purplesky.loaders.message;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
+import ch.defiant.purplesky.beans.IPrivateMessage;
+import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
+import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.core.SendOptions.UnreadHandling;
+import ch.defiant.purplesky.dao.IPendingMessageDao;
+import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
+import ch.defiant.purplesky.services.BinderServiceWrapper;
+import ch.defiant.purplesky.services.MessageSendingService;
+import ch.defiant.purplesky.services.UploadService;
 import ch.defiant.purplesky.util.Holder;
 
 /**
@@ -24,64 +39,36 @@ import ch.defiant.purplesky.util.Holder;
  * 
  * @author Patrick Bänziger
  */
-public class SendMessageLoader extends AbstractMessageLoader {
+public class SendMessageLoader extends SimpleAsyncLoader<Holder<MessageResult>>{
 
-    private static final String TAG = SendMessageLoader.class.getSimpleName();
-    private PrivateMessage m_message;
-    
-    public SendMessageLoader(Context c, Bundle args, IConversationAdapter apiAdapter, IMessageService msgService) {
-        super(c, R.id.loader_message_send, args, apiAdapter, msgService);
-        
-        m_message = (PrivateMessage) args.getSerializable(ArgumentConstants.ARG_MESSAGE);
-        if (m_message == null) {
+    @NonNull
+    private PendingMessage m_message;
+    @NonNull
+    private IPendingMessageDao m_messageDao;
+
+    public SendMessageLoader(Context c, Bundle args, @NonNull IPendingMessageDao messageDao) {
+        super(c, R.id.loader_message_send);
+
+        m_messageDao = messageDao;
+
+        Object message0 = args.getSerializable(ArgumentConstants.ARG_MESSAGE);
+        if (message0 == null) {
             throw new IllegalArgumentException("No message to send!");
+        } else {
+            m_message = (PendingMessage) message0;
         }
     }
 
     @Override
     public Holder<MessageResult> loadInBackground() {
-        boolean finished = false;
-        List<PrivateMessage> unreadMsgs = new ArrayList<PrivateMessage>();
-        MessageResult sent = null;
-        int maxsending = 5;
-        while (!finished) {
-            if (maxsending == 0) {
-                Log.w(TAG, "Emergency abort. Retried sending without exception too many times");
-                return new Holder<MessageResult>(new IllegalStateException("Emergency abort. Retried sending without exception too many times"));
-            }
-            Long lastReceivedTimestamp = messageService.getLatestReceivedMessageTimestamp(m_userId);
+        m_message = m_messageDao.create(m_message);
 
-            // If we had a message before, send it only if there is nothing in between
-            // Otherwise, just send anyway
-            SendOptions opts = new SendOptions();
-            if (lastReceivedTimestamp != null) {
-                opts.setUnreadHandling(UnreadHandling.ABORT);
-                opts.setLatestRead(new Date(lastReceivedTimestamp));
-            } else {
-                opts.setUnreadHandling(UnreadHandling.SEND);
-            }
+        Intent intent = new Intent(PurpleSkyApplication.get(), MessageSendingService.class);
+        PurpleSkyApplication.get().startService(intent);
 
-            try {
-                sent = apiAdapter.sendMessage(m_message, opts);
-                maxsending--;
-                // Add to database
-                if (sent != null) {
-
-                    if (sent.getUnreadMessages() != null) {
-                        unreadMsgs.addAll(sent.getUnreadMessages());
-                        messageService.insertMessages(unreadMsgs);
-                    }
-                    if (sent.getSentMessage() != null) {
-                        finished = true;
-                        messageService.insertMessage(sent.getSentMessage());
-                        sent.setUnreadMessages(unreadMsgs);
-                    }
-                }
-            } catch (Exception e) {
-                return new Holder<MessageResult>(e);
-            }
-        }
-        return new Holder<MessageResult>(sent);
+        MessageResult result = new MessageResult();
+        result.setSentMessage(m_message);
+        return new Holder<>(result);
     }
 
 }

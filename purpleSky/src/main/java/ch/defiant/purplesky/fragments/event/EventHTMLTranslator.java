@@ -20,7 +20,7 @@ import ch.defiant.purplesky.util.DateUtility;
  */
 public class EventHTMLTranslator {
 
-    public static String promoToHtml(Context c, Event event) {
+    public static String  promoToHtml(Context c, Event event) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
         sb.append("<style>td {padding: 8px} tr:nth-child(odd) {background-color:#BBE4FA;} " +
@@ -35,7 +35,7 @@ public class EventHTMLTranslator {
                 Uri uri = flyer.getPictureBaseUri();
                 sb.append("<img style='float:left; margin-right: 8px; margin-bottom: 8px' src='");
                 sb.append(uri.toString());
-                sb.append("400/w' width='30%' />"); // FIXME Determine w/h from context
+                sb.append("400/h' width='30%' />"); // FIXME Determine w/h from context
             }
         }
         sb.append("<p style='font-face: Verdana,Arial,sans-serif;'>");

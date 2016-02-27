@@ -9,7 +9,7 @@ import java.util.Date;
  * @author Patrick Bänziger
  * 
  */
-public class PrivateMessage implements Serializable {
+public class PrivateMessage implements Serializable, IPrivateMessage {
 
     private static final long serialVersionUID = -7577615162687828508L;
 
@@ -17,7 +17,6 @@ public class PrivateMessage implements Serializable {
 
     private String m_messageText;
     private PrivateMessageHead m_messageHead;
-    private boolean m_isDummy;
 
     public void setMessageText(String messageText) {
         m_messageText = messageText;
@@ -27,15 +26,14 @@ public class PrivateMessage implements Serializable {
         return m_messageText;
     }
 
-    /**
-     * Convenience method. Delegates to {@link PrivateMessageHead#getAuthor()}
-     */
-    public MinimalUser getAuthor() {
-        if (getMessageHead() != null) {
-            return getMessageHead().getAuthor();
-        } else {
-            return null;
-        }
+    @Override
+    public long getRecipientId() {
+        return Long.valueOf(getMessageHead().getRecipientProfileId());
+    }
+
+    @Override
+    public long getSenderId() {
+        return Long.valueOf(getMessageHead().getAuthorProfileId());
     }
 
     /**
@@ -44,17 +42,6 @@ public class PrivateMessage implements Serializable {
     public Date getTimeSent() {
         if (getMessageHead() != null) {
             return getMessageHead().getTimeSent();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Convenience method. Delegates to {@link PrivateMessageHead#getRecipient()}
-     */
-    public MinimalUser getRecipient() {
-        if (getMessageHead() != null) {
-            return getMessageHead().getRecipient();
         } else {
             return null;
         }
@@ -79,14 +66,4 @@ public class PrivateMessage implements Serializable {
         }
     }
 
-    /**
-     * @return <tt>true</tt>:Indicates that this is a dummy message (created for display, not retrieved).
-     */
-    public boolean isDummy() {
-        return m_isDummy;
-    }
-
-    public void setDummy(boolean isDummy) {
-        m_isDummy = isDummy;
-    }
 }

@@ -47,7 +47,7 @@ public class MultiUploadFragment extends BaseFragment {
     private static final int REQUESTCODE_CHOOSEIMAGE = 0;
     private static final String TAG = MultiUploadFragment.class.getSimpleName();
 
-    private final AtomicReference<UploadService> m_service = new AtomicReference<UploadService>();
+    private final AtomicReference<UploadService> m_service = new AtomicReference<>();
     private PendingAdapter m_adapter;
     private ScheduledExecutorService m_executor;
 
@@ -74,7 +74,7 @@ public class MultiUploadFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.multiupload, container, false);
 
-        m_adapter = new PendingAdapter(Collections.<UploadBean> emptyList());
+        m_adapter = new PendingAdapter(Collections.<UploadBean>emptyList());
         ((ListView) v.findViewById(R.id.multiupload_uploadsList)).setAdapter(m_adapter);
         return v;
     }
@@ -239,7 +239,7 @@ public class MultiUploadFragment extends BaseFragment {
                     List<UploadBean> pendingUploads = m_service.get().getPendingUploads();
                     Set<UploadBean> completedUploads = m_service.get().getCompletedUploads();
 
-                    ArrayList<UploadBean> list = new ArrayList<UploadBean>();
+                    ArrayList<UploadBean> list = new ArrayList<>();
                     list.addAll(pendingUploads);
                     list.addAll(completedUploads);
                     m_adapter.setData(list);

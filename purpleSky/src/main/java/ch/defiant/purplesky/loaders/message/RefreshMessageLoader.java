@@ -8,6 +8,7 @@ import java.util.List;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
@@ -37,13 +38,13 @@ public class RefreshMessageLoader extends AbstractMessageLoader {
     @Override
     public Holder<MessageResult> loadInBackground() {
         boolean loadMore = true;
-        ArrayList<PrivateMessage> overallList = new ArrayList<PrivateMessage>();
+        List<IPrivateMessage> overallList = new ArrayList<>();
 
         while (loadMore) {
             loadMore = false;
             Holder<List<PrivateMessage>> res = messageService.getNewMessagesFromUser(m_userId, m_sinceMsgId);
             if (res.getException() != null) {
-                return new Holder<MessageResult>(res.getException());
+                return new Holder<>(res.getException());
             }
 
             List<PrivateMessage> list = res.getContainedObject();
