@@ -2,7 +2,6 @@ package ch.defiant.purplesky.fragments.gallery;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.util.LayoutUtility;
+import ch.defiant.purplesky.util.PictureUrlUtility;
 
 public class GalleryPictureFragment extends Fragment {
 
@@ -33,14 +33,10 @@ public class GalleryPictureFragment extends Fragment {
 
         if (getArguments() != null && getArguments().getSerializable(ARGUMENT_PICTURE) instanceof Picture) {
             m_picture = (Picture) getArguments().getSerializable(ARGUMENT_PICTURE);
-        } else if (m_picture != null) {
-
-        } else {
+        } else if (m_picture == null) {
             // Oops
             Log.e(TAG, "No picture argument received!");
         }
-
-        createGUI(inflated, m_picture);
 
         return inflated;
     }
@@ -51,23 +47,14 @@ public class GalleryPictureFragment extends Fragment {
         loadImage();
     }
 
-    /**
-     * This method would fill additional image fields...
-     * 
-     * @param inflated
-     * @param picture
-     */
-    private void createGUI(View inflated, Picture picture) {
-    }
-
     public void loadImage() {
         // Must measure view first
         ImageView imgView = (ImageView) getView().findViewById(R.id.picturefragment_image);
 
         // Get appropriate size
         UserPictureSize pictureSize = UserPictureSize.getPictureSizeForPx(maxSideLengthPx);
-
-        Picasso.with(getActivity()).load(m_picture.getUrl() + pictureSize.getAPIValue()).
+        String pictureUrl = PictureUrlUtility.getPictureUrl(m_picture.getUrl(), pictureSize);
+        Picasso.with(getActivity()).load(pictureUrl).
                 placeholder(R.drawable.picture_placeholder).error(R.drawable.no_image).into(imgView);
     }
 }

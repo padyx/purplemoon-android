@@ -2,6 +2,7 @@ package ch.defiant.purplesky.enums;
 
 import android.content.res.Resources;
 import android.util.TypedValue;
+
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 
 public enum UserPictureSize {
@@ -17,7 +18,7 @@ public enum UserPictureSize {
 	private String m_APIValue;
 	private int m_size;
 
-	private UserPictureSize(String apiValue, int size) {
+	UserPictureSize(String apiValue, int size) {
 		m_APIValue = apiValue;
 		m_size = size;
 	}

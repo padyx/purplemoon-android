@@ -96,17 +96,17 @@ class GalleryJSONTranslator {
             int pictureCount = jsonFolder.optInt(PurplemoonAPIConstantsV1.JSON_PICTUREFOLDER_PICTURE_COUNT, 0);
             folder.setDeclaredPictureCount(pictureCount);
 
-            boolean isProtected = false;
+            boolean isProtected;
             isProtected = jsonFolder.optBoolean(PurplemoonAPIConstantsV1.JSON_PICTUREFOLDER_PASSPROTECTED_BOOL, false);
             folder.setPasswordProtected(isProtected);
 
-            boolean hasAccess = false;
+            boolean hasAccess;
             hasAccess = jsonFolder.optBoolean(PurplemoonAPIConstantsV1.JSON_PICTUREFOLDER_ACCESSGRANTED_BOOL, true);
             folder.setAccessGranted(hasAccess);
 
             JSONArray pictures = jsonFolder.optJSONArray(PurplemoonAPIConstantsV1.JSON_PICTUREFOLDER_PICTURE_ARRAY);
             if (pictures != null) {
-                ArrayList<Picture> pictureList = new ArrayList<Picture>();
+                List<Picture> pictureList = new ArrayList<>();
                 for (int p = 0, psize = pictures.length(); p < psize; p++) {
                     JSONObject picture = pictures.optJSONObject(p);
                     if (picture != null) {

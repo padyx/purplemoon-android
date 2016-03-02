@@ -1,6 +1,5 @@
 package ch.defiant.purplesky.fragments.gallery;
 
-import android.app.DialogFragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -24,7 +23,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
@@ -35,7 +33,6 @@ import ch.defiant.purplesky.api.gallery.IGalleryAdapter;
 import ch.defiant.purplesky.beans.Picture;
 import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
-import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
 import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
@@ -48,6 +45,7 @@ import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.LayoutUtility;
+import ch.defiant.purplesky.util.PictureUrlUtility;
 
 public class PictureFolderGridViewFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<List<PictureFolder>>>, EnterPasswordDialogFragment.PasswordResult {
 
@@ -322,12 +320,11 @@ public class PictureFolderGridViewFragment extends BaseFragment implements Loade
             // Get first image
             if (pictureFolder.getPictureCount() > 0) {
                 Picture picture = pictureFolder.getPictures().get(0);
-                String url = picture.getUrl();
-
+                 
                 final int px = LayoutUtility.dpToPx(getResources(), 96);
                 UserPictureSize size = UserPictureSize.getPictureSizeForPx(px);
-
-                url += size.getAPIValue();
+                String url = PictureUrlUtility.getPictureUrl(picture.getUrl(), size);
+                
                 holder.imgV.setTag(url);
                 Picasso.with(getActivity()).load(url).placeholder(R.drawable.picture_placeholder).
                         error(R.drawable.no_image).resize(px, px).centerCrop().into(holder.imgV);

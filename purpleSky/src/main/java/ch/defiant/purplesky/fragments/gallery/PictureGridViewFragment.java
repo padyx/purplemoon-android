@@ -3,7 +3,6 @@ package ch.defiant.purplesky.fragments.gallery;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.LightboxActivity;
 import ch.defiant.purplesky.beans.Picture;
@@ -25,6 +21,7 @@ import ch.defiant.purplesky.beans.PictureFolder;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.enums.UserPictureSize;
 import ch.defiant.purplesky.util.LayoutUtility;
+import ch.defiant.purplesky.util.PictureUrlUtility;
 
 public class PictureGridViewFragment extends Fragment {
 
@@ -101,16 +98,11 @@ public class PictureGridViewFragment extends Fragment {
             }
 
             Picture picture = m_data.getPictures().get(position);
-            URL url;
-            try {
-                url = new URL(picture.getUrl() + UserPictureSize.getPictureSizeForPx(px).getAPIValue());
-                Picasso.with(getActivity()).load(url.toString()).placeholder(R.drawable.picture_placeholder)
-                        .error(R.drawable.no_image).resize(px, px).centerCrop().into(h.imgV);
-            } catch (MalformedURLException e) {
-                Log.e(TAG, "Malformed url created", e);
-                h.imgV.setImageResource(R.drawable.no_image);
-                return v;
-            }
+            UserPictureSize size = UserPictureSize.getPictureSizeForPx(px);
+            String url = PictureUrlUtility.getPictureUrl(picture.getUrl(), size);
+
+            Picasso.with(getActivity()).load(url).placeholder(R.drawable.picture_placeholder)
+                    .error(R.drawable.no_image).resize(px, px).centerCrop().into(h.imgV);
 
             return v;
         }
