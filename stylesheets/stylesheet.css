@@ -325,6 +325,21 @@ Full-Width Styles
   background: url('../images/icon_download.png') no-repeat 0% 90%;
 }
 
+#languages {
+  bottom: -5px;
+  position: absolute;
+  width: 210px;
+  z-index: 10;
+  right: 0;
+}
+
+.language {
+  font-size:14px;
+  display: block;
+  float: right;
+  overflow: hidden;
+}
+
 .zip_download_link {
   display: block;
   float: right;
