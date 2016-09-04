@@ -15,6 +15,8 @@ import ch.defiant.purplesky.constants.DatabaseConstants;
 import ch.defiant.purplesky.db.IBundleDao;
 import ch.defiant.purplesky.db.IDatabaseProvider;
 
+import ch.defiant.purplesky.constants.DatabaseConstants.BundleStoreTable;
+
 /**
  * Implementation to store bundles in the database.
  * @author Patrick Bänziger
@@ -46,7 +48,7 @@ class BundleDao implements IBundleDao {
 
         db.beginTransaction();
         try {
-            db.delete(DatabaseConstants.TABLE_BUNDLESTORE, DatabaseConstants.BUNDLESTORE_OWNER + "=?", new String[]{owner});
+            db.delete(BundleStoreTable.TABLE_BUNDLESTORE, BundleStoreTable.BUNDLESTORE_OWNER + "=?", new String[]{owner});
 
             Set<String> keys = b.keySet();
             for(String k : keys) {
@@ -55,24 +57,24 @@ class BundleDao implements IBundleDao {
                     continue;
                 }
                 ContentValues values = new ContentValues();
-                values.put(DatabaseConstants.BUNDLESTORE_OWNER, owner);
-                values.put(DatabaseConstants.BUNDLESTORE_KEY, k);
+                values.put(BundleStoreTable.BUNDLESTORE_OWNER, owner);
+                values.put(BundleStoreTable.BUNDLESTORE_KEY, k);
                 if(value instanceof String){
-                    values.put(DatabaseConstants.BUNDLESTORE_TYPE, TYPE_CHAR);
-                    values.put(DatabaseConstants.BUNDLESTORE_CVALUE, (String)value);
+                    values.put(BundleStoreTable.BUNDLESTORE_TYPE, TYPE_CHAR);
+                    values.put(BundleStoreTable.BUNDLESTORE_CVALUE, (String)value);
                 } else if (value instanceof Integer) {
-                    values.put(DatabaseConstants.BUNDLESTORE_TYPE, TYPE_INT);
-                    values.put(DatabaseConstants.BUNDLESTORE_NVALUE, (Integer) value);
+                    values.put(BundleStoreTable.BUNDLESTORE_TYPE, TYPE_INT);
+                    values.put(BundleStoreTable.BUNDLESTORE_NVALUE, (Integer) value);
                 } else if (value instanceof  Float) {
-                    values.put(DatabaseConstants.BUNDLESTORE_TYPE, TYPE_FLOAT);
-                    values.put(DatabaseConstants.BUNDLESTORE_FVALUE, (Float) value);
+                    values.put(BundleStoreTable.BUNDLESTORE_TYPE, TYPE_FLOAT);
+                    values.put(BundleStoreTable.BUNDLESTORE_FVALUE, (Float) value);
                 } else if (value instanceof Double) {
-                    values.put(DatabaseConstants.BUNDLESTORE_TYPE, TYPE_DOUBLE);
-                    values.put(DatabaseConstants.BUNDLESTORE_FVALUE, (Double) value);
+                    values.put(BundleStoreTable.BUNDLESTORE_TYPE, TYPE_DOUBLE);
+                    values.put(BundleStoreTable.BUNDLESTORE_FVALUE, (Double) value);
                 } else {
                     Log.w(TAG, "Could not store object from bundle. Unsupported type: " + value.getClass().getCanonicalName());
                 }
-                db.insert(DatabaseConstants.TABLE_BUNDLESTORE, null, values);
+                db.insert(BundleStoreTable.TABLE_BUNDLESTORE, null, values);
             }
             db.setTransactionSuccessful();
         } finally {
@@ -86,14 +88,14 @@ class BundleDao implements IBundleDao {
         Cursor cursor = null;
         SQLiteDatabase db = dbProvider.getReadableDatabase();
         try {
-            cursor = db.query(false, DatabaseConstants.TABLE_BUNDLESTORE,
+            cursor = db.query(false, BundleStoreTable.TABLE_BUNDLESTORE,
                     new String[]{
-                            DatabaseConstants.BUNDLESTORE_KEY,      // 0
-                            DatabaseConstants.BUNDLESTORE_TYPE,     // 1
-                            DatabaseConstants.BUNDLESTORE_CVALUE,   // 2
-                            DatabaseConstants.BUNDLESTORE_NVALUE,   // 3
-                            DatabaseConstants.BUNDLESTORE_FVALUE},  // 4
-                    DatabaseConstants.BUNDLESTORE_OWNER + "=?",
+                            BundleStoreTable.BUNDLESTORE_KEY,      // 0
+                            BundleStoreTable.BUNDLESTORE_TYPE,     // 1
+                            BundleStoreTable.BUNDLESTORE_CVALUE,   // 2
+                            BundleStoreTable.BUNDLESTORE_NVALUE,   // 3
+                            BundleStoreTable.BUNDLESTORE_FVALUE},  // 4
+                    BundleStoreTable.BUNDLESTORE_OWNER + "=?",
                     new String[]{owner}, null, null, null, null
             );
             Bundle b = new Bundle();

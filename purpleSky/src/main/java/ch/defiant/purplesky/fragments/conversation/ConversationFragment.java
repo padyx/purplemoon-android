@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,22 +37,18 @@ import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.adapters.message.MessageAdapter;
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.IPrivateMessage;
-import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
-import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.constants.ArgumentConstants;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.customwidgets.ProgressFragmentDialog;
-import ch.defiant.purplesky.dao.IPendingMessageDao;
+import ch.defiant.purplesky.dao.IMessageDao;
 import ch.defiant.purplesky.dialogs.AlertDialogFragment;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
-import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 import ch.defiant.purplesky.loaders.conversations.ConversationStatusLoader;
-import ch.defiant.purplesky.loaders.message.AbstractMessageLoader;
 import ch.defiant.purplesky.loaders.message.ActionBarImageLoader;
 import ch.defiant.purplesky.loaders.message.EmptyOnlineLoader;
 import ch.defiant.purplesky.loaders.message.InitialDBMessageLoader;
@@ -70,12 +65,17 @@ import ch.defiant.purplesky.util.StringUtility;
 
 public class ConversationFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Holder<MessageResult>> {
 
+    private static final String SAVEINSTANCE_DATA = "savedInstanceData";
+    private static final String SAVEINSTANCE_HASNOMOREONLINE = "savedInstanceHasNoMoreOnline";
+    private static final String SAVEINSTANCE_HASNOMORECACHED = "savedInstanceHasNoMoreCached";
+    private static final String SAVEINSTANCE_USERNAME = "savedInstanceUserName";
+
     @Inject
-    protected IMessageService messageService;
+    protected IMessageService m_messageService;
     @Inject
-    protected IConversationAdapter conversationAdapter;
+    protected IConversationAdapter m_conversationAdapter;
     @Inject
-    protected IPendingMessageDao pendingMessageDao;
+    protected IMessageDao m_pendingMessageDao;
 
     private ViewGroup m_chatGroupBox;
 
@@ -97,13 +97,15 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 return;
             }
 
-            Long lastReceivedTS = messageService.getLatestReceivedMessageTimestamp(m_profileId);
+            Long lastReceivedTS = m_messageService.getLatestReceivedMessageTimestamp(m_profileId);
             if (lastReceivedTS == null) {
                 lastReceivedTS = 0L;
             }
 
-            PendingMessage message = new PendingMessage();
-            message.setRecipientId(Long.valueOf(m_profileId));
+            // Must send the message asynchronously
+            // TODO pbn Profile id set in bundle args and message
+            PrivateMessage message = new PrivateMessage();
+            message.setRecipientId(m_profileId);
             message.setMessageText(messageField.getText().toString());
 
             Bundle bundle = new Bundle();
@@ -136,9 +138,9 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 Toolbar toolbar = fragmentActivity.getActionbarToolbar();
                 if(toolbar != null) {
                     if (result != null) {
-                        fragmentActivity.getActionbarToolbar().setLogo(result);
+                        toolbar.setLogo(result);
                     } else {
-                        fragmentActivity.getActionbarToolbar().setLogo(R.drawable.ic_launcher);
+                        toolbar.setLogo(R.drawable.social_person);
                     }
                 }
             }
@@ -155,7 +157,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         public Loader<Holder<UserMessageHistoryBean>> onCreateLoader(int arg0, Bundle arg1) {
             Bundle b = new Bundle();
             b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-            return new ConversationStatusLoader(getActivity(), b, conversationAdapter);
+            return new ConversationStatusLoader(getActivity(), b, m_conversationAdapter);
         }
 
         @Override
@@ -183,11 +185,6 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
 
     private static final String TAG = ConversationFragment.class.getSimpleName();
     private final static String FRAGMENT_TAG = "sendDialogFragment";
-
-    private static final String SAVEINSTANCE_DATA = "saveinstance_data";
-    private static final String SAVEINSTANCE_HASNOMORECACHED = "hasNoMoreCached";
-    private static final String SAVEINSTANCE_HASNOMOREONLINE = "hasNoMoreOnline";
-    private static final String SAVEINSTANCE_USERNAME = "username";
 
     private UserMessageHistoryBean m_conversationState;
 
@@ -217,7 +214,9 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             profileId = args.getString(ArgumentConstants.ARG_USERID);
             m_conversationState = (UserMessageHistoryBean) args.getSerializable(ArgumentConstants.ARG_MESSAGEHISTORYBEAN);
         }
-        m_adapter = new MessageAdapter(this);
+
+        ConversationActivity activity = (ConversationActivity) getActivity();
+        m_adapter = activity.getMessageAdapter();
 
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState);
@@ -281,9 +280,6 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (m_adapter != null) {
-            outState.putSerializable(SAVEINSTANCE_DATA, m_adapter.getData());
-        }
         outState.putBoolean(SAVEINSTANCE_HASNOMOREONLINE, m_hasNoMoreOnline);
         outState.putBoolean(SAVEINSTANCE_HASNOMORECACHED, m_hasNoMoreCached);
     }
@@ -306,7 +302,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             LayoutUtility.setEnabledRecursive(m_chatGroupBox, StringUtility.isNotNullOrEmpty(userId));
         }
         if(CompareUtility.notEquals(userId, m_profileId)) {
-            m_adapter.clear();
+            m_adapter.getData().clear();
             m_hasNoMoreCached = false;
             m_hasNoMoreOnline = false;
 
@@ -363,18 +359,18 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         context.setProgressBarIndeterminateVisibility(true);
         switch (type) {
             case R.id.loader_message_empty:
-                return new EmptyOnlineLoader(context, bundle, conversationAdapter, messageService);
+                return new EmptyOnlineLoader(context, bundle, m_conversationAdapter, m_messageService);
             case R.id.loader_message_initial:
-                return new InitialDBMessageLoader(context, bundle, conversationAdapter, messageService);
+                return new InitialDBMessageLoader(context, bundle, m_conversationAdapter, m_messageService);
             case R.id.loader_message_moreoldDB:
-                return new OlderMessageDBLoader(context, bundle, conversationAdapter, messageService);
+                return new OlderMessageDBLoader(context, bundle, m_conversationAdapter, m_messageService);
             case R.id.loader_message_moreoldOnline:
-                return new OlderMessageOnlineLoader(context, bundle, conversationAdapter, messageService);
+                return new OlderMessageOnlineLoader(context, bundle, m_conversationAdapter, m_messageService);
             case R.id.loader_message_send:
                 sendPreActions();
-                return new SendMessageLoader(context, bundle, pendingMessageDao);
+                return new SendMessageLoader(context, bundle, m_pendingMessageDao);
             case R.id.loader_message_refresh:
-                return new RefreshMessageLoader(context, bundle, conversationAdapter, messageService);
+                return new RefreshMessageLoader(context, bundle, m_conversationAdapter, m_messageService);
             default:
                 throw new UnsupportedOperationException("Unknown loader");
         }
@@ -403,7 +399,6 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
         getLoaderManager().destroyLoader(type);
 
         List<IPrivateMessage> unreadMessages = res.getUnreadMessages();
-        IPrivateMessage sendMessage = res.getSentMessage();
         switch (type) {
             case R.id.loader_message_moreoldDB: {
                 // More old from db. If result non-empty, we might have more
@@ -420,7 +415,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 for (int i = unreadMessages.size() - 1; i >= 0; i--) {
                     // Oldest first, ideally we'd prepend it.
                     // But like this, we have to insert at beginning, starting with last (newest)
-                    m_adapter.add(0, unreadMessages.get(i));
+                    m_adapter.getData().add(0, unreadMessages.get(i));
                 }
             }
             case R.id.loader_message_empty: { // Online load when nothing in DB
@@ -434,7 +429,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                     m_hasNoMoreOnline = true;
                 }
                 for (IPrivateMessage pm : unreadMessages) {
-                    m_adapter.add(pm);
+                    m_adapter.getData().add(pm);
                 }
                 break;
             }
@@ -444,7 +439,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                     showToastError();
                     return;
                 }
-                m_adapter.addAll(unreadMessages);
+                m_adapter.getData().addAll(unreadMessages);
                 // If we found nothing, request online
                 if (unreadMessages.isEmpty()) {
                     startEmpty();
@@ -458,13 +453,13 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 // Can we load any others? No, if empty
                 m_hasNoMoreOnline = unreadMessages.isEmpty();
                 for (int i = unreadMessages.size() - 1; i >= 0; i--) {
-                    m_adapter.add(0, unreadMessages.get(i)); // Add at the beginning of the list
+                    m_adapter.getData().add(0, unreadMessages.get(i)); // Add at the beginning of the list
                 }
                 break;
             }
             case R.id.loader_message_refresh: {
                 for (IPrivateMessage pm : unreadMessages) {
-                    m_adapter.add(pm);
+                    m_adapter.getData().add(pm);
                 }
 
                 break;
@@ -644,7 +639,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
     private void startRefresh() {
         Bundle b = new Bundle();
         b.putString(ArgumentConstants.ARG_USERID, m_profileId);
-        Long lastRId = NVLUtility.nvl(messageService.getLatestMessageId(m_profileId), 0L);
+        Long lastRId = NVLUtility.nvl(m_messageService.getLatestMessageId(m_profileId), 0L);
         b.putLong(ArgumentConstants.ARG_ID, lastRId);
         getLoaderManager().restartLoader(R.id.loader_message_refresh, b, this);
         startRefreshConversationState();
@@ -685,12 +680,12 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             // There are unread messages!
             // Append them!
             for (IPrivateMessage privateMessage : unreadMessages) {
-                m_adapter.add(privateMessage);
+                m_adapter.getData().add(privateMessage);
             }
 
         }
         if (res.getSentMessage() != null) {
-            m_adapter.add(res.getSentMessage());
+            m_adapter.getData().add(res.getSentMessage());
         }
         dismissSendingDialog();
         // Clear text

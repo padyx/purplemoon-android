@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.Date;
 
@@ -19,13 +21,16 @@ import javax.inject.Inject;
 
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.beans.IPrivateMessage;
-import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.constants.DatabaseConstants;
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.SendOptions;
+import ch.defiant.purplesky.dao.IMessageDao;
+import ch.defiant.purplesky.enums.MessageStatus;
+import ch.defiant.purplesky.events.MessageDeliveryFailedEvent;
+import ch.defiant.purplesky.events.MessageSentEvent;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 
 
@@ -34,6 +39,9 @@ import ch.defiant.purplesky.exceptions.PurpleSkyException;
  * @since 1.4
  */
 public class MessageSendingService extends IntentService {
+
+    @Inject
+    protected IMessageDao m_pendingMessageDao;
 
     private final int MAX_RETRY = 2;
 
@@ -86,7 +94,7 @@ public class MessageSendingService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        PendingMessage pendingMessage = getNextPendingMessage();
+        IPrivateMessage pendingMessage = getNextPendingMessage();
         while (pendingMessage != null) {
             Log.d(TAG, "Found pending message to send");
 
@@ -94,8 +102,14 @@ public class MessageSendingService extends IntentService {
 
             SendResultStatus status = sendResult.getStatus();
             if(status == SendResultStatus.OK){
-                deletePendingAndInsertFinalMessage(pendingMessage, (PrivateMessage) sendResult.getMessage());
-                // FIMXE Notify UI
+                // TODO Proper states
+                PrivateMessage sentMessage = sendResult.getMessage();
+                sentMessage.setStatus(MessageStatus.SENT);
+                m_pendingMessageDao.updateStatus(sentMessage);
+                // Fire event
+                long sentMessageId = sentMessage.getMessageHead().getMessageId();
+                MessageSentEvent event = new MessageSentEvent(pendingMessage.getInternalId(), sentMessageId);
+                fireEvent(event);
             }
             else if (status == SendResultStatus.BUSINESS_ERROR) {
                 Log.i(TAG, "Sending message failed - business error. Schedule for retry");
@@ -108,13 +122,18 @@ public class MessageSendingService extends IntentService {
         }
     }
 
-    public void rescheduleMessage(PendingMessage message, boolean businessError){
+    private void fireEvent(Object event) {
+        EventBus.getDefault().post(event);
+    }
+
+    private void rescheduleMessage(IPrivateMessage message, boolean businessError){
         message.setRetryCount(message.getRetryCount() + (businessError ? 1 : 0));
 
         long lastBackoff = Math.max(15000, message.getNextSendAttempt().getTime() - message.getTimeSent().getTime());
         if(lastBackoff > 64*60*1000){
-            updateStatus(message, PendingMessage.Status.FAILED);
-            // FIXME Notify UI
+            message.setStatus(MessageStatus.FAILED);
+            m_pendingMessageDao.updateStatus(message);
+            fireEvent(new MessageDeliveryFailedEvent(message.getInternalId()));
             return;
         }
         long nextBackoffInterval = lastBackoff;
@@ -131,24 +150,29 @@ public class MessageSendingService extends IntentService {
             // Update all messages for this recipient to try again at the same point in time
             // This way, attempts should be fairly distributed to all other recipients...
             ContentValues nextAttemptValues = new ContentValues();
-            nextAttemptValues.put(DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT, nextAttempt);
+            nextAttemptValues.put(DatabaseConstants.MessageTable.MESSAGES_NEXTATTEMPT, nextAttempt);
             db.update(
-                    DatabaseConstants.TABLE_PENDING_MESSAGES,
+                    DatabaseConstants.MessageTable.TABLE_MESSAGES,
                     nextAttemptValues,
-                    DatabaseConstants.PENDING_MESSAGES_TOUSERID + " = ?",
-                    new String[]{String.valueOf(message.getRecipientId())}
+                    DatabaseConstants.MessageTable.MESSAGES_TOUSERID + " = ? "+ // FIXME Needs additional constraint
+                    DatabaseConstants.MessageTable.MESSAGES_STATUS + " IN ( ? , ? ) ",
+                    new String[]{
+                            String.valueOf(message.getRecipientId()),
+                            String.valueOf(MessageStatus.NEW),
+                            String.valueOf(MessageStatus.RETRY_NEEDED),
+                    }
             );
 
             // Update retry count of this message if it is a business error
             if(businessError) {
                 ContentValues values = new ContentValues();
-                values.put(DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT, nextAttempt);
-                values.put(DatabaseConstants.PENDING_ATTEMPT_COUNT, message.getRetryCount());
+                values.put(DatabaseConstants.MessageTable.MESSAGES_NEXTATTEMPT, nextAttempt);
+                values.put(DatabaseConstants.MessageTable.MESSAGES_ATTEMPT_COUNT, message.getRetryCount());
                 db.update(
-                        DatabaseConstants.TABLE_PENDING_MESSAGES,
+                        DatabaseConstants.MessageTable.TABLE_MESSAGES,
                         values,
-                        DatabaseConstants.PENDING_MESSAGES_ID + " = ?",
-                        new String[] {String.valueOf(message.getId())}
+                        DatabaseConstants.MessageTable.MESSAGES_PK + " = ?",
+                        new String[] {String.valueOf(message.getInternalId())}
                 );
             }
 
@@ -158,30 +182,7 @@ public class MessageSendingService extends IntentService {
             db.close();
         }
 
-
         scheduleRerun(nextBackoffInterval);
-    }
-
-    private void updateStatus(@NonNull PendingMessage message, @NonNull PendingMessage.Status status){
-        message.setStatus(status);
-        // Update reschedule time
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
-        try {
-            db.beginTransaction();
-
-            ContentValues nextAttemptValues = new ContentValues();
-            nextAttemptValues.put(DatabaseConstants.PENDING_MESSAGES_STATUS, status.getId());
-            db.update(
-                    DatabaseConstants.TABLE_PENDING_MESSAGES,
-                    nextAttemptValues,
-                    DatabaseConstants.PENDING_MESSAGES_ID + " = ?",
-                    new String[] {String.valueOf(message.getId())}
-            );
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-            db.close();
-        }
     }
 
     /**
@@ -196,25 +197,8 @@ public class MessageSendingService extends IntentService {
         service.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, nextBackoffInterval+5000, pending);
     }
 
-    private void deletePendingAndInsertFinalMessage(@NonNull PendingMessage message, @NonNull PrivateMessage sendMessage) {
-        SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
-
-        try {
-            db.beginTransaction();
-            db.delete(
-                    DatabaseConstants.TABLE_PENDING_MESSAGES,
-                    DatabaseConstants.PENDING_MESSAGES_ID + " = ?",
-                    new String[] {message.getId().toString()}
-            );
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-            db.close();
-        }
-    }
-
     @NonNull
-    private SendResult send(@NonNull PendingMessage pendingMessage) {
+    private SendResult send(@NonNull IPrivateMessage pendingMessage) {
         SendOptions sendOptions = new SendOptions();
         sendOptions.setUnreadHandling(SendOptions.UnreadHandling.SEND);
         try {
@@ -233,19 +217,19 @@ public class MessageSendingService extends IntentService {
     }
 
     @Nullable
-    private PendingMessage getNextPendingMessage() {
+    private IPrivateMessage getNextPendingMessage() {
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
 
         try {
             // Find recipient with soonest pending message (that is not in the failed state)
             Cursor recipientIdQuery = db.query(false,
-                    DatabaseConstants.TABLE_PENDING_MESSAGES,
-                    new String[] {DatabaseConstants.PENDING_MESSAGES_TOUSERID},
-                    DatabaseConstants.PENDING_MESSAGES_STATUS + " != ?",
-                    new String[]{String.valueOf(DatabaseConstants.PENDING_MESSAGES_FAILED)},
+                    DatabaseConstants.MessageTable.TABLE_MESSAGES,
+                    new String[] {DatabaseConstants.MessageTable.MESSAGES_TOUSERID},
+                    DatabaseConstants.MessageTable.MESSAGES_STATUS + " NOT IN ( ?, ?)",
+                    new String[]{String.valueOf(MessageStatus.FAILED), String.valueOf(MessageStatus.SENT)},
                     null,
                     null,
-                    DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT + " ASC ",
+                    DatabaseConstants.MessageTable.MESSAGES_NEXTATTEMPT + " ASC ",
                     "1");
             boolean hasData = recipientIdQuery.moveToFirst();
             if(!hasData){
@@ -257,26 +241,28 @@ public class MessageSendingService extends IntentService {
 
             // Now, get the next pending message for this recipient
             Cursor query = db.query(false,
-                    DatabaseConstants.TABLE_PENDING_MESSAGES,
+                    DatabaseConstants.MessageTable.TABLE_MESSAGES,
                     new String[] {
-                            DatabaseConstants.PENDING_MESSAGES_ID,
-                            DatabaseConstants.PENDING_MESSAGES_TOUSERID,
-                            DatabaseConstants.PENDING_MESSAGES_STATUS,
-                            DatabaseConstants.PENDING_ATTEMPT_COUNT,
-                            DatabaseConstants.PENDING_MESSAGES_TIMESENT,
-                            DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT,
-                            DatabaseConstants.PENDING_MESSAGES_TEXT},
-                    DatabaseConstants.PENDING_MESSAGES_TOUSERID + " = ? AND "
-                    + DatabaseConstants.PENDING_MESSAGES_STATUS + " != ? AND "
-                    + DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT + " < ? ",
+                            DatabaseConstants.MessageTable.MESSAGES_PK,
+                            DatabaseConstants.MessageTable.MESSAGES_MESSAGEID,
+                            DatabaseConstants.MessageTable.MESSAGES_TOUSERID,
+                            DatabaseConstants.MessageTable.MESSAGES_STATUS,
+                            DatabaseConstants.MessageTable.MESSAGES_ATTEMPT_COUNT,
+                            DatabaseConstants.MessageTable.MESSAGES_TIMESENT,
+                            DatabaseConstants.MessageTable.MESSAGES_NEXTATTEMPT,
+                            DatabaseConstants.MessageTable.MESSAGES_TEXT},
+                    DatabaseConstants.MessageTable.MESSAGES_TOUSERID + " = ? AND "
+                    + DatabaseConstants.MessageTable.MESSAGES_STATUS + " NOT IN (?, ?) AND "
+                    + DatabaseConstants.MessageTable.MESSAGES_NEXTATTEMPT + " < ? ",
                     new String[] {
                             String.valueOf(recipientId),
-                            String.valueOf(DatabaseConstants.PENDING_MESSAGES_FAILED),
+                            String.valueOf(MessageStatus.FAILED.getId()),
+                            String.valueOf(MessageStatus.SENT.getId()),
                             String.valueOf(System.currentTimeMillis())
                     },
                     null,
                     null,
-                    DatabaseConstants.PENDING_MESSAGES_TIMESENT + " ASC ",
+                    DatabaseConstants.MessageTable.MESSAGES_TIMESENT + " ASC ",
                     "1");
 
             hasData = query.moveToFirst();
@@ -284,14 +270,15 @@ public class MessageSendingService extends IntentService {
                 query.close();
                 return null;
             } else {
-                PendingMessage message = new PendingMessage();
-                message.setId(query.getLong(0));
-                message.setRecipientId(query.getLong(1));
-                message.setStatus(PendingMessage.Status.getById(query.getInt(2)));
-                message.setRetryCount(query.getInt(3));
-                message.setTimeSent(new Date(query.getLong(4)));
-                message.setNextSendAttempt(new Date(query.getLong(5)));
-                message.setMessageText(query.getString(6));
+                PrivateMessage message = new PrivateMessage();
+                message.setInternalId(query.getLong(0));
+                message.setMessageId(query.getLong(1));
+                message.setRecipientId(query.getString(2));
+                message.setStatus(MessageStatus.getById(query.getInt(3)));
+                message.setRetryCount(query.getInt(4));
+                message.setTimeSent(new Date(query.getLong(5)));
+                message.setNextSendAttempt(new Date(query.getLong(6)));
+                message.setMessageText(query.getString(7));
                 query.close();
                 return message;
             }

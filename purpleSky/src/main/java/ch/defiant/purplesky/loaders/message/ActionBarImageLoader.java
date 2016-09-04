@@ -30,27 +30,6 @@ public class ActionBarImageLoader extends SimpleAsyncLoader<Drawable> {
 
     private static final String TAG = ActionBarImageLoader.class.getSimpleName();
 
-    private class P_Target implements Target {
-
-        boolean finished = false;
-        BitmapDrawable m_bitmap;
-
-        @Override
-        public void onPrepareLoad(Drawable arg0) {
-        }
-
-        @Override
-        public void onBitmapLoaded(Bitmap arg0, LoadedFrom arg1) {
-            finished = true;
-            m_bitmap = new BitmapDrawable(getContext().getResources(), arg0);
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable arg0) {
-            finished = true;
-        }
-    }
-
     public ActionBarImageLoader(Context context, Bundle b, IPurplemoonAPIAdapter apiAdapter) {
         super(context);
         this.apiAdapter = apiAdapter;
@@ -68,11 +47,15 @@ public class ActionBarImageLoader extends SimpleAsyncLoader<Drawable> {
             MinimalUser user = apiAdapter.getMinimalUserData(userId, false);
             URL url = UserService.getUserPreviewPictureUrl(user, UserPreviewPictureSize.getPictureForPx(imgSize));
             if(url != null){
-                Bitmap bitmap = Picasso.with(PurpleSkyApplication.get()).load(url.toString()).
-                        resize(imgSize, imgSize).centerCrop().get();
+                Bitmap bitmap = Picasso
+                        .with(PurpleSkyApplication.get())
+                        .load(url.toString())
+                        .resize(imgSize, imgSize)
+                        .centerCrop()
+                        .get();
 
                 if(bitmap != null){
-                    return new BitmapDrawable(getContext().getResources(),bitmap);
+                    return new BitmapDrawable(getContext().getResources(), bitmap);
                 }
             }
         }

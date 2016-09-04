@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
@@ -18,17 +19,17 @@ public interface IMessageService {
 
     public final int BATCH = 50;
 
-    Holder<List<PrivateMessage>> getPreviousMessagesOnline(String profileId, long messageId);
+    Holder<List<IPrivateMessage>> getPreviousMessagesOnline(String profileId, long messageId);
 
-    List<PrivateMessage> getNewestCachedMessagesWithUser(String profileId);
+    List<IPrivateMessage> getNewestCachedMessagesWithUser(String profileId);
 
-    List<PrivateMessage> getPreviousCachedMessagesWithUser(String profileId, long messageId);
+    List<IPrivateMessage> getPreviousCachedMessagesWithUser(String profileId, long messageId);
 
-    Holder<List<PrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId);
+    Holder<List<IPrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId);
 
-    void insertMessage(PrivateMessage m);
+    void insertMessage(IPrivateMessage m);
 
-    void insertMessages(Collection<PrivateMessage> list);
+    void insertMessages(Collection<IPrivateMessage> list);
 
     Long getLatestReceivedMessageTimestamp(String profileId);
 

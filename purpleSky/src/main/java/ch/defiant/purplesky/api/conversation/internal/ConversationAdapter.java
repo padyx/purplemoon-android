@@ -21,8 +21,8 @@ import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.api.internal.APIUtility;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.api.users.UserJSONTranslator;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.MinimalUser;
-import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.core.AdapterOptions;
@@ -30,6 +30,7 @@ import ch.defiant.purplesky.core.MessageResult;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.core.SendOptions;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
+import ch.defiant.purplesky.enums.MessageStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.DateUtility;
 import ch.defiant.purplesky.util.HTTPURLResponseHolder;
@@ -45,11 +46,11 @@ class ConversationAdapter implements IConversationAdapter {
     private static final String TAG = ConversationAdapter.class.getSimpleName();
 
     @Override
-    public MessageResult sendMessage(PendingMessage message, SendOptions opts) throws IOException, PurpleSkyException {
+    public MessageResult sendMessage(IPrivateMessage message, SendOptions opts) throws IOException, PurpleSkyException {
         if (message == null) {
             throw new IllegalArgumentException("Cannot send message with 'null' message.");
         }
-        Long userid = message.getRecipientId();
+        String userid = message.getRecipientId();
 
         if (userid == null) {
             throw new IllegalArgumentException("Cannot send message with without a receiver!");
@@ -224,9 +225,9 @@ class ConversationAdapter implements IConversationAdapter {
     }
 
     @Override
-    public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options) throws IOException, PurpleSkyException {
+    public List<IPrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options) throws IOException, PurpleSkyException {
 
-        ArrayList<PrivateMessage> list = new ArrayList<>();
+        ArrayList<IPrivateMessage> list = new ArrayList<>();
         if (profileId == null)
             return list;
 
@@ -274,6 +275,7 @@ class ConversationAdapter implements IConversationAdapter {
                 JSONObject obj = array.getJSONObject(i);
                 PrivateMessage message = ConversationJSONTranslator.translateToPrivateMessage(obj);
                 if (message != null) {
+                    message.setStatus(MessageStatus.SENT);
                     list.add(message);
                 }
             } catch (JSONException e) {

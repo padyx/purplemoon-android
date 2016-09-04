@@ -32,7 +32,7 @@ class ConversationJSONTranslator {
             return null;
         UserMessageHistoryBean bean = new UserMessageHistoryBean();
 
-        String id = obj.optString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID, null);
+        String id = obj.optString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID);
         bean.setProfileId(id);
 
         int unopend = obj.optInt(PurplemoonAPIConstantsV1.JSON_CHATLIST_UNOPENEDCOUNT, 0);
@@ -94,17 +94,13 @@ class ConversationJSONTranslator {
         if (obj == null)
             return null;
         PrivateMessage msg = new PrivateMessage();
-        PrivateMessageHead head = new PrivateMessageHead();
-        msg.setMessageHead(head);
+        PrivateMessageHead head = msg.getMessageHead();
 
         try {
             if (obj.has(PurplemoonAPIConstantsV1.JSON_MESSAGE_ID)) {
                 long id = obj.getLong(PurplemoonAPIConstantsV1.JSON_MESSAGE_ID);
                 head.setMessageId(id);
             }
-
-            boolean unopened = obj.optBoolean("new"); // Officially not documented!
-            head.setUnopened(unopened);
 
             if (obj.has(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE)) {
                 String type = obj.getString(PurplemoonAPIConstantsV1.JSON_MESSAGE_TYPE);

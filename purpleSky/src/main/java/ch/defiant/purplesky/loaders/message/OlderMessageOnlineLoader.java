@@ -29,11 +29,11 @@ public class OlderMessageOnlineLoader extends AbstractMessageLoader {
 
     @Override
     public Holder<MessageResult> loadInBackground() {
-        Holder<List<PrivateMessage>> holder = messageService.getPreviousMessagesOnline(m_userId, m_upToMessageId);
+        Holder<List<IPrivateMessage>> holder = messageService.getPreviousMessagesOnline(m_userId, m_upToMessageId);
         if (holder.getException() != null){
             return new Holder<>(holder.getException());
         }
-        List<PrivateMessage> obj = holder.getContainedObject();
+        List<IPrivateMessage> obj = holder.getContainedObject();
         List<IPrivateMessage> messages = new ArrayList<IPrivateMessage>(obj);
 
         return Holder.newInstance(new MessageResult().setUnreadMessages(messages));

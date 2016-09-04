@@ -1,23 +1,10 @@
 package ch.defiant.purplesky.core;
 
-import static ch.defiant.purplesky.constants.DatabaseConstants.CONVERSATIONS_EXCERPT;
-import static ch.defiant.purplesky.constants.DatabaseConstants.CONVERSATIONS_INDEX_LASTCONTACT;
-import static ch.defiant.purplesky.constants.DatabaseConstants.CONVERSATIONS_LASTCONTACT;
-import static ch.defiant.purplesky.constants.DatabaseConstants.CONVERSATIONS_OTHERUSERID;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_FROMUSERID;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_INDEX_FROMUSERID;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_INDEX_SENT;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_INDEX_TOUSERID;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_MESSAGEID;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_PENDING;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_TEXT;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_TIMESENT;
-import static ch.defiant.purplesky.constants.DatabaseConstants.MESSAGES_TOUSERID;
-import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_BUNDLESTORE;
-import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_CONVERSATIONS;
-import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_MESSAGES;
-import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_USERMAPPING;
-import static ch.defiant.purplesky.constants.DatabaseConstants.TABLE_PENDING_MESSAGES;
+import static ch.defiant.purplesky.constants.DatabaseConstants.MessageTable;
+import static ch.defiant.purplesky.constants.DatabaseConstants.ConversationTable;
+import static ch.defiant.purplesky.constants.DatabaseConstants.BundleStoreTable;
+import static ch.defiant.purplesky.constants.DatabaseConstants.UserMappingTable;
+
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1&2: pre-release versions
      * Version 3: App version 29 (1.0.0)
      * Version 4: App version 30 (1.0.1)
-     * Version 5: App version 1600000135 (1.3.5)
+     * Version 5: App version 1600000135 (1.3.5) - c
      */
     private static final int SCHEMA_VERSION = 5;
 
@@ -63,18 +50,19 @@ public class DBHelper extends SQLiteOpenHelper {
         createConversationTable(db);
         createUserNameMappingTable(db);
         createBundleStoreTable(db);
-        createPendingMessageTable(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch(oldVersion){
             case 4:
-                createPendingMessageTable(db);
+                // Delete Message Table, recreate
+                dropTable(db, MessageTable.TABLE_MESSAGES);
+                createMessageTable(db);
             case 3:
                 createBundleStoreTable(db);
             case 2:
-                dropTable(db, DatabaseConstants.TABLE_USERMAPPING);
+                dropTable(db, UserMappingTable.TABLE_USERMAPPING);
                 createConversationTable(db);
             case 1:
                 createConversationTable(db);
@@ -96,11 +84,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public @NonNull Set<String> getAllTables(){
         Set<String> s = new HashSet<>();
-        s.add(TABLE_BUNDLESTORE);
-        s.add(TABLE_CONVERSATIONS);
-        s.add(TABLE_MESSAGES);
-        s.add(TABLE_USERMAPPING);
-        s.add(TABLE_PENDING_MESSAGES);
+        s.add(DatabaseConstants.BundleStoreTable.TABLE_BUNDLESTORE);
+        s.add(DatabaseConstants.ConversationTable.TABLE_CONVERSATIONS);
+        s.add(DatabaseConstants.MessageTable.TABLE_MESSAGES);
+        s.add(DatabaseConstants.UserMappingTable.TABLE_USERMAPPING);
         return s;
     }
 
@@ -112,16 +99,20 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createMessageTable(SQLiteDatabase db){
         db.beginTransaction();
         try {
-            db.execSQL("    CREATE TABLE IF NOT EXISTS " + TABLE_MESSAGES + " (" +
-                    "         " + MESSAGES_MESSAGEID + " INTEGER PRIMARY KEY," +
-                    "         " + MESSAGES_FROMUSERID + " INTEGER NOT NULL," +
-                    "         " + MESSAGES_TOUSERID + " INTEGER NOT NULL," +
-                    "         " + MESSAGES_TIMESENT + " INTEGER NOT NULL," +
-                    "         " + MESSAGES_PENDING + " INTEGER NOT NULL," +
-                    "         " + MESSAGES_TEXT + " TEXT ); ");
-            db.execSQL("    CREATE INDEX IF NOT EXISTS " + MESSAGES_INDEX_FROMUSERID + " ON " + TABLE_MESSAGES + " (" + MESSAGES_FROMUSERID + ");");
-            db.execSQL("    CREATE INDEX IF NOT EXISTS " + MESSAGES_INDEX_TOUSERID + " ON " + TABLE_MESSAGES + " (" + MESSAGES_TOUSERID + ");");
-            db.execSQL("    CREATE INDEX IF NOT EXISTS " + MESSAGES_INDEX_SENT + " ON " + TABLE_MESSAGES + " (" + MESSAGES_TIMESENT + " DESC);");
+            db.execSQL("    CREATE TABLE IF NOT EXISTS " + DatabaseConstants.MessageTable.TABLE_MESSAGES + " (" +
+                    "         " + MessageTable.MESSAGES_PK + " INTEGER PRIMARY KEY," +
+                    "         " + MessageTable.MESSAGES_MESSAGEID + " INTEGER," +
+                    "         " + MessageTable.MESSAGES_FROMUSERID + " INTEGER NOT NULL," +
+                    "         " + MessageTable.MESSAGES_TOUSERID + " INTEGER NOT NULL," +
+                    "         " + MessageTable.MESSAGES_TIMESENT + " INTEGER NOT NULL," +
+                    "         " + MessageTable.MESSAGES_LASTATTEMPT + " INTEGER, " +
+                    "         " + MessageTable.MESSAGES_NEXTATTEMPT + " INTEGER, " +
+                    "         " + MessageTable.MESSAGES_STATUS + " INTEGER, " + // FIXME Changed
+                    "         " + MessageTable.MESSAGES_ATTEMPT_COUNT + " INTEGER, " +
+                    "         " + MessageTable.MESSAGES_TEXT + " TEXT ); ");
+            db.execSQL("    CREATE INDEX IF NOT EXISTS " + MessageTable.MESSAGES_INDEX_FROMUSERID + " ON " + MessageTable.TABLE_MESSAGES + " (" + MessageTable.MESSAGES_FROMUSERID + ");");
+            db.execSQL("    CREATE INDEX IF NOT EXISTS " + MessageTable.MESSAGES_INDEX_TOUSERID + " ON " + MessageTable.TABLE_MESSAGES + " (" + MessageTable.MESSAGES_TOUSERID + ");");
+            db.execSQL("    CREATE INDEX IF NOT EXISTS " + MessageTable.MESSAGES_INDEX_SENT + " ON " + MessageTable.TABLE_MESSAGES + " (" + MessageTable.MESSAGES_TIMESENT + " DESC);");
 
             db.setTransactionSuccessful();
         } finally {
@@ -137,12 +128,12 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createConversationTable(SQLiteDatabase db){
         db.beginTransaction();
         try {
-            db.execSQL("    CREATE TABLE IF NOT EXISTS " + TABLE_CONVERSATIONS + " (" +
-                    "         " + CONVERSATIONS_OTHERUSERID + " INTEGER PRIMARY KEY," +
-                    "         " + CONVERSATIONS_LASTCONTACT + " INTEGER NOT NULL, " +
-                    "         " + DatabaseConstants.CONVERSATIONS_UNREADCOUNT + " INTEGER NOT NULL, " +
-                    "         " + CONVERSATIONS_EXCERPT + " TEXT )");
-            db.execSQL("    CREATE INDEX IF NOT EXISTS " + CONVERSATIONS_INDEX_LASTCONTACT + " ON " + TABLE_CONVERSATIONS + " (" + CONVERSATIONS_LASTCONTACT + " DESC);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + ConversationTable.TABLE_CONVERSATIONS + " (" +
+                    "         " + ConversationTable.CONVERSATIONS_OTHERUSERID + " INTEGER PRIMARY KEY," +
+                    "         " + ConversationTable.CONVERSATIONS_LASTCONTACT + " INTEGER NOT NULL, " +
+                    "         " + ConversationTable.CONVERSATIONS_UNREADCOUNT + " INTEGER NOT NULL, " +
+                    "         " + ConversationTable.CONVERSATIONS_EXCERPT + " TEXT )");
+            db.execSQL("CREATE INDEX IF NOT EXISTS " + ConversationTable.CONVERSATIONS_INDEX_LASTCONTACT + " ON " + ConversationTable.TABLE_CONVERSATIONS + " (" + ConversationTable.CONVERSATIONS_LASTCONTACT + " DESC);");
             
             db.setTransactionSuccessful();
         } finally {
@@ -156,11 +147,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createUserNameMappingTable(SQLiteDatabase db){
         db.beginTransaction();
         try{
-            db.execSQL("    CREATE TABLE IF NOT EXISTS " + DatabaseConstants.TABLE_USERMAPPING + " (" +
-                    "        " + DatabaseConstants.USERMAPPING_USERID + " INTEGER PRIMARY KEY, " +
-                    "        " + DatabaseConstants.USERMAPPING_USERNAME + " TEXT, " +
-                    "        " + DatabaseConstants.USERMAPPING_PROFILEPICTURE_URL + " TEXT, " +
-                    "        " + DatabaseConstants.USERMAPPING_INSERTED + " INTEGER NOT NULL )");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + UserMappingTable.TABLE_USERMAPPING + " (" +
+                    "        " + UserMappingTable.USERMAPPING_USERID + " INTEGER PRIMARY KEY, " +
+                    "        " + UserMappingTable.USERMAPPING_USERNAME + " TEXT, " +
+                    "        " + UserMappingTable.USERMAPPING_PROFILEPICTURE_URL + " TEXT, " +
+                    "        " + UserMappingTable.USERMAPPING_INSERTED + " INTEGER NOT NULL )");
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -176,44 +167,19 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createBundleStoreTable(SQLiteDatabase db){
         db.beginTransaction();
         try{
-            db.execSQL("    CREATE TABLE IF NOT EXISTS "+DatabaseConstants.TABLE_BUNDLESTORE +
+            db.execSQL("    CREATE TABLE IF NOT EXISTS "+BundleStoreTable.TABLE_BUNDLESTORE +
                     " ( " +
-                    "       " + DatabaseConstants.BUNDLESTORE_OWNER + " TEXT, " +
-                    "       " + DatabaseConstants.BUNDLESTORE_KEY + " TEXT, " +
-                    "       " + DatabaseConstants.BUNDLESTORE_TYPE + " TEXT NOT NULL, " +
-                    "       " + DatabaseConstants.BUNDLESTORE_CVALUE + " TEXT, " +
-                    "       " + DatabaseConstants.BUNDLESTORE_NVALUE + " INTEGER, " +
-                    "       " + DatabaseConstants.BUNDLESTORE_FVALUE + " REAL " +
+                    "       " + BundleStoreTable.BUNDLESTORE_OWNER + " TEXT, " +
+                    "       " + BundleStoreTable.BUNDLESTORE_KEY + " TEXT, " +
+                    "       " + BundleStoreTable.BUNDLESTORE_TYPE + " TEXT NOT NULL, " +
+                    "       " + BundleStoreTable.BUNDLESTORE_CVALUE + " TEXT, " +
+                    "       " + BundleStoreTable.BUNDLESTORE_NVALUE + " INTEGER, " +
+                    "       " + BundleStoreTable.BUNDLESTORE_FVALUE + " REAL " +
                     " " +
                     ", CONSTRAINT PK_BUNDLESTORE PRIMARY KEY ("+
-                            DatabaseConstants.BUNDLESTORE_OWNER +", " +
-                            DatabaseConstants.BUNDLESTORE_KEY+") " +
+                        BundleStoreTable.BUNDLESTORE_OWNER +", " +
+                        BundleStoreTable.BUNDLESTORE_KEY+") " +
                     ")"
-            );
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
-    }
-
-    /**
-     * Creates the bundle store table
-     * @param db
-     * @since  Database version 4
-     */
-    private void createPendingMessageTable(SQLiteDatabase db){
-        db.beginTransaction();
-        try{
-            db.execSQL("    CREATE TABLE IF NOT EXISTS "+DatabaseConstants.TABLE_PENDING_MESSAGES +
-                            " ( " +
-                            "       " + DatabaseConstants.PENDING_MESSAGES_ID + " INTEGER PRIMARY KEY, " +
-                            "       " + DatabaseConstants.PENDING_MESSAGES_TOUSERID + " INTEGER NOT NULL, " +
-                            "       " + DatabaseConstants.PENDING_MESSAGES_STATUS + " INTEGER NOT NULL, " +
-                            "       " + DatabaseConstants.PENDING_ATTEMPT_COUNT + " INTEGER NOT NULL, " +
-                            "       " + DatabaseConstants.PENDING_MESSAGES_NEXTATTEMPT + " INTEGER NOT NULL," +
-                            "       " + DatabaseConstants.PENDING_MESSAGES_TIMESENT + " INTEGER NOT NULL, " +
-                            "       " + DatabaseConstants.PENDING_MESSAGES_TEXT + " TEXT " +
-                            ")"
             );
             db.setTransactionSuccessful();
         } finally {

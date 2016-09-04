@@ -1,6 +1,6 @@
 package ch.defiant.purplesky.dao.internal;
 
-import ch.defiant.purplesky.dao.IPendingMessageDao;
+import ch.defiant.purplesky.dao.IMessageDao;
 import dagger.Module;
 import dagger.Provides;
 
@@ -11,7 +11,7 @@ import dagger.Provides;
 public class DaoModule {
 
     @Provides
-    public IPendingMessageDao providePendingMessageDao(){
-        return new PendingMessageDao();
+    public IMessageDao providePendingMessageDao(){
+        return new MessageDao();
     }
 }

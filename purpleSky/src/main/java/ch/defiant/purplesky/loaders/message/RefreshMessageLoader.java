@@ -42,18 +42,18 @@ public class RefreshMessageLoader extends AbstractMessageLoader {
 
         while (loadMore) {
             loadMore = false;
-            Holder<List<PrivateMessage>> res = messageService.getNewMessagesFromUser(m_userId, m_sinceMsgId);
+            Holder<List<IPrivateMessage>> res = messageService.getNewMessagesFromUser(m_userId, m_sinceMsgId);
             if (res.getException() != null) {
                 return new Holder<>(res.getException());
             }
 
-            List<PrivateMessage> list = res.getContainedObject();
+            List<IPrivateMessage> list = res.getContainedObject();
             if (list != null) {
                 overallList.addAll(list);
             }
             if (list != null && list.size() == messageService.BATCH) {
                 // Repeat. Last one is newest - set it
-                m_sinceMsgId = list.get(messageService.BATCH - 1).getMessageHead().getMessageId();
+                m_sinceMsgId = list.get(messageService.BATCH - 1).getMessageId();
                 loadMore = true;
             }
         }

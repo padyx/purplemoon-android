@@ -21,6 +21,7 @@ Thanks to the authors of all of them!
 * Apache Commons IO (http://commons.apache.org/proper/commons-io/)
 * RoundedImageView (https://github.com/vinc3m1/RoundedImageView)
 * Endless Adapter and Adapter Wrapper (forked on: https://github.com/padyx/cwac-endless)
+* GreenRobot Eventbus (https://github.com/greenrobot/EventBus)
 
 ### [MIT Licence](https://opensource.org/licenses/MIT)
 

@@ -37,7 +37,7 @@ public class OlderMessageDBLoader extends AbstractMessageLoader {
 
     @Override
     public Holder<MessageResult> loadInBackground() {
-        List<PrivateMessage> msgs = messageService.getPreviousCachedMessagesWithUser(m_userId, m_upToMessageId);
+        List<IPrivateMessage> msgs = messageService.getPreviousCachedMessagesWithUser(m_userId, m_upToMessageId);
         List<IPrivateMessage> messages = new ArrayList<IPrivateMessage>(msgs);
         return Holder.newInstance(new MessageResult().setUnreadMessages(messages));
     }

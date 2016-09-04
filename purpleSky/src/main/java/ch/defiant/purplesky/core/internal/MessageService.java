@@ -14,24 +14,30 @@ import java.util.List;
 
 import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.MinimalUser;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.beans.util.UserMessageHistoryBeanLastContactComparator;
-import ch.defiant.purplesky.constants.DatabaseConstants;
+
 import ch.defiant.purplesky.core.AdapterOptions;
 import ch.defiant.purplesky.core.DBHelper;
 import ch.defiant.purplesky.core.IMessageService;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.enums.MessageRetrievalRestrictionType;
+import ch.defiant.purplesky.enums.MessageStatus;
 import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.CollectionUtil;
 import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.NVLUtility;
+
+import static ch.defiant.purplesky.constants.DatabaseConstants.ConversationTable;
+import static ch.defiant.purplesky.constants.DatabaseConstants.MessageTable;
+import static ch.defiant.purplesky.constants.DatabaseConstants.UserMappingTable;
 
 // TODO Rename
 class MessageService implements IMessageService {
@@ -49,12 +55,12 @@ class MessageService implements IMessageService {
 
     private final String TAG = MessageService.class.getSimpleName();
 
-    private final String FROM_TO_STRING = "( " + DatabaseConstants.MESSAGES_FROMUSERID
-            + " = ? OR " + DatabaseConstants.MESSAGES_TOUSERID + " = ? )";
+    private final String FROM_TO_STRING = "( " + MessageTable.MESSAGES_FROMUSERID
+            + " = ? OR " + MessageTable.MESSAGES_TOUSERID + " = ? )";
 
     private final String UPDATE_LAST_CONTACT = 
-            " ? = " + DatabaseConstants.CONVERSATIONS_OTHERUSERID + 
-            " AND " + DatabaseConstants.CONVERSATIONS_LASTCONTACT + " <= ?";
+            " ? = " + ConversationTable.CONVERSATIONS_OTHERUSERID +
+            " AND " + ConversationTable.CONVERSATIONS_LASTCONTACT + " <= ?";
 
     private final int MAX_CACHED_CONVERSATIONS = 100;
 
@@ -69,13 +75,13 @@ class MessageService implements IMessageService {
      * @return
      */
     @Override
-    public Holder<List<PrivateMessage>> getPreviousMessagesOnline(String profileId, long messageId) {
+    public Holder<List<IPrivateMessage>> getPreviousMessagesOnline(String profileId, long messageId) {
         AdapterOptions opts = new AdapterOptions();
         opts.setNumber(BATCH_MOREMESSAGES);
         opts.setOrder(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_ORDER_NEWESTFIRST);
         opts.setUptoId(messageId);
         try {
-            List<PrivateMessage> list = apiAdapter.getRecentMessagesByUser(profileId, opts);
+            List<IPrivateMessage> list = apiAdapter.getRecentMessagesByUser(profileId, opts);
             if (list != null && !list.isEmpty()) {
                 insertMessages(list);
             }
@@ -92,7 +98,7 @@ class MessageService implements IMessageService {
      * @return messages
      */
     @Override
-    public List<PrivateMessage> getNewestCachedMessagesWithUser(String profileId){
+    public List<IPrivateMessage> getNewestCachedMessagesWithUser(String profileId){
         return getCachedMessagesWithUser(profileId, null);
     }
 
@@ -106,7 +112,7 @@ class MessageService implements IMessageService {
      *            Message id being the upper bound of the messages to fetch.
      */
     @Override
-    public List<PrivateMessage> getPreviousCachedMessagesWithUser(String profileId, long messageId) {
+    public List<IPrivateMessage> getPreviousCachedMessagesWithUser(String profileId, long messageId) {
         return getCachedMessagesWithUser(profileId, messageId);
     }
 
@@ -114,15 +120,13 @@ class MessageService implements IMessageService {
      * Get all messages that came after the message having the <code>lastMessageId</code>. This will result in an online call in any case. If
      * <code>lastMessageId</code> is null, then the most recent messages will be returned. Otherwise the messages that will be returned are those that
      * directly follow the specified id.
-     * 
-     * @param profileId
+     *  @param profileId
      *            The profile id of the other user
      * @param lastMessageId
-     *            Message id being the lower bound of the messages to fetch.
      */
     @Override
-    public Holder<List<PrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId) {
-        final List<PrivateMessage> res = new ArrayList<>();
+    public Holder<List<IPrivateMessage>> getNewMessagesFromUser(String profileId, Long lastMessageId) {
+        final List<IPrivateMessage> res = new ArrayList<>();
 
         boolean hasPossiblyMore = lastMessageId != null;
 
@@ -139,14 +143,14 @@ class MessageService implements IMessageService {
             }
 
             try {
-                List<PrivateMessage> list = apiAdapter.getRecentMessagesByUser(profileId, opts);
+                List<IPrivateMessage> list = apiAdapter.getRecentMessagesByUser(profileId, opts);
                 res.addAll(list);
                 if (list.isEmpty()) {
                     hasPossiblyMore = false;
                 } else {
                     if (lastMessageId != null) { // Only if we had sth before! Not for initial
                         // Last one newest!
-                        lastMessageId = list.get(list.size() - 1).getMessageHead().getMessageId();
+                        lastMessageId = list.get(list.size() - 1).getMessageId();
                     }
                 }
             } catch (Exception e) {
@@ -169,7 +173,7 @@ class MessageService implements IMessageService {
     }
 
     @Override
-    public void insertMessage(PrivateMessage m) {
+    public void insertMessage(IPrivateMessage m) {
         insertMessages(Collections.singletonList(m));
     }
 
@@ -178,23 +182,24 @@ class MessageService implements IMessageService {
      * 
      * @param list
      */
+
     @Override
-    public void insertMessages(Collection<PrivateMessage> list) {
+    public void insertMessages(Collection<IPrivateMessage> list) {
         if (list.isEmpty()) {
             return;
         }
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getWritableDatabase();
         try {
             db.beginTransaction();
-            for (PrivateMessage m : list) {
+            for (IPrivateMessage m : list) {
                 ContentValues cVal = new ContentValues();
-                cVal.put(DatabaseConstants.MESSAGES_MESSAGEID, Long.valueOf(m.getMessageHead().getMessageId()));
-                cVal.put(DatabaseConstants.MESSAGES_FROMUSERID, Long.valueOf(m.getMessageHead().getAuthorProfileId()));
-                cVal.put(DatabaseConstants.MESSAGES_TOUSERID, Long.valueOf(m.getMessageHead().getRecipientProfileId()));
-                cVal.put(DatabaseConstants.MESSAGES_TIMESENT, m.getMessageHead().getTimeSent().getTime());
-                cVal.put(DatabaseConstants.MESSAGES_PENDING, false);
-                cVal.put(DatabaseConstants.MESSAGES_TEXT, m.getMessageText());
-                db.insert(DatabaseConstants.TABLE_MESSAGES, null, cVal);
+                cVal.put(MessageTable.MESSAGES_MESSAGEID, m.getMessageId());
+                cVal.put(MessageTable.MESSAGES_FROMUSERID, m.getSenderId());
+                cVal.put(MessageTable.MESSAGES_TOUSERID, m.getRecipientId());
+                cVal.put(MessageTable.MESSAGES_TIMESENT, m.getTimeSent().getTime());
+                cVal.put(MessageTable.MESSAGES_STATUS, m.getStatus().getId());
+                cVal.put(MessageTable.MESSAGES_TEXT, m.getMessageText());
+                db.insert(MessageTable.TABLE_MESSAGES, null, cVal);
             }
             db.setTransactionSuccessful();
         } finally {
@@ -217,15 +222,15 @@ class MessageService implements IMessageService {
         try {
             db.beginTransaction();
             Cursor query = db.query(false,
-                    DatabaseConstants.TABLE_MESSAGES,
+            MessageTable.TABLE_MESSAGES,
                     new String[] {
-                    DatabaseConstants.MESSAGES_TIMESENT
+                            MessageTable.MESSAGES_TIMESENT
             },
-            DatabaseConstants.MESSAGES_FROMUSERID + " = ? ",
+            MessageTable.MESSAGES_FROMUSERID + " = ? ",
             new String[] { profileId },
             null,
             null,
-            DatabaseConstants.MESSAGES_MESSAGEID + " DESC ",
+            MessageTable.MESSAGES_MESSAGEID + " DESC ",
                     "1");
 
             boolean hasData = query.moveToFirst();
@@ -261,15 +266,15 @@ class MessageService implements IMessageService {
 
         try {
             Cursor query = db.query(false,
-                    DatabaseConstants.TABLE_MESSAGES,
+                    MessageTable.TABLE_MESSAGES,
                     new String[] {
-                    DatabaseConstants.MESSAGES_MESSAGEID
+                    MessageTable.MESSAGES_MESSAGEID
             },
             FROM_TO_STRING,
             new String[] { profileId, profileId },
             null,
             null,
-            DatabaseConstants.MESSAGES_MESSAGEID + " DESC ",
+            MessageTable.MESSAGES_MESSAGEID + " DESC ",
                     "1");
 
             boolean hasData = query.moveToFirst();
@@ -297,41 +302,41 @@ class MessageService implements IMessageService {
 
         try{
             for (UserMessageHistoryBean bean : conversations) {
-                    String profileId = NVLUtility.nvl(bean.getProfileId(), bean.getUserBean().getUserId());
+                String profileId = NVLUtility.nvl(bean.getProfileId(), bean.getUserBean().getUserId());
 
-                    ContentValues values = new ContentValues();
-                    long timeMillis = bean.getLastContact().getTime();
-                    values.put(DatabaseConstants.CONVERSATIONS_LASTCONTACT, timeMillis);
-                    values.put(DatabaseConstants.CONVERSATIONS_EXCERPT, bean.getLastMessageExcerpt());
-                    values.put(DatabaseConstants.CONVERSATIONS_UNREADCOUNT, bean.getUnopenedMessageCount());
-                    values.put(DatabaseConstants.CONVERSATIONS_OTHERUSERID, profileId);
+                ContentValues values = new ContentValues();
+                long timeMillis = bean.getLastContact().getTime();
+                values.put(ConversationTable.CONVERSATIONS_LASTCONTACT, timeMillis);
+                values.put(ConversationTable.CONVERSATIONS_EXCERPT, bean.getLastMessageExcerpt());
+                values.put(ConversationTable.CONVERSATIONS_UNREADCOUNT, bean.getUnopenedMessageCount());
+                values.put(ConversationTable.CONVERSATIONS_OTHERUSERID, profileId);
 
-                    // Check if insert or update
-                    Cursor cursor = db.query(DatabaseConstants.TABLE_CONVERSATIONS,
-                            new String[]{DatabaseConstants.CONVERSATIONS_OTHERUSERID},
-                            DatabaseConstants.CONVERSATIONS_OTHERUSERID + "= ?" ,
-                            new String[]{profileId}, null, null, null, "1");
-                    boolean exists = cursor.moveToFirst();
-                    cursor.close();
+                // Check if insert or update
+                Cursor cursor = db.query(ConversationTable.TABLE_CONVERSATIONS,
+                        new String[]{ConversationTable.CONVERSATIONS_OTHERUSERID},
+                        ConversationTable.CONVERSATIONS_OTHERUSERID + "= ?" ,
+                        new String[]{String.valueOf(profileId)}, null, null, null, "1");
+                boolean exists = cursor.moveToFirst();
+                cursor.close();
 
-                    try{
-                        db.beginTransaction();
-                        if(exists){
-                            db.update(DatabaseConstants.TABLE_CONVERSATIONS, 
-                                    values, UPDATE_LAST_CONTACT, 
-                                    new String[]{
-                                        profileId, 
-                                        String.valueOf(timeMillis)
-                                    }
-                            );
-                        } else {
-                            db.insert(DatabaseConstants.TABLE_CONVERSATIONS, null, values);
-                        }
-
-                        db.setTransactionSuccessful();
-                    } finally {
-                        db.endTransaction();
+                try{
+                    db.beginTransaction();
+                    if(exists){
+                        db.update(ConversationTable.TABLE_CONVERSATIONS,
+                                values, UPDATE_LAST_CONTACT,
+                                new String[]{
+                                    String.valueOf(profileId),
+                                    String.valueOf(timeMillis)
+                                }
+                        );
+                    } else {
+                        db.insert(ConversationTable.TABLE_CONVERSATIONS, null, values);
                     }
+
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
             }
         } finally {
             db.close();
@@ -354,13 +359,13 @@ class MessageService implements IMessageService {
             db.beginTransaction();
             for (MinimalUser e : users) {
                 ContentValues values = new ContentValues();
-                values.put(DatabaseConstants.USERMAPPING_USERID, e.getUserId());
-                values.put(DatabaseConstants.USERMAPPING_USERNAME, e.getUsername());
+                values.put(UserMappingTable.USERMAPPING_USERID, e.getUserId());
+                values.put(UserMappingTable.USERMAPPING_USERNAME, e.getUsername());
                 if(e.getProfilePictureURLDirectory() != null){
-                    values.put(DatabaseConstants.USERMAPPING_PROFILEPICTURE_URL, e.getProfilePictureURLDirectory().toString());
+                    values.put(UserMappingTable.USERMAPPING_PROFILEPICTURE_URL, e.getProfilePictureURLDirectory().toString());
                 }
-                values.put(DatabaseConstants.USERMAPPING_INSERTED, new Date().getTime());
-                db.insertWithOnConflict(DatabaseConstants.TABLE_USERMAPPING, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                values.put(UserMappingTable.USERMAPPING_INSERTED, new Date().getTime());
+                db.insertWithOnConflict(UserMappingTable.TABLE_USERMAPPING, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
         } finally {
@@ -374,8 +379,8 @@ class MessageService implements IMessageService {
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor cursor = null;
         try{
-            cursor = db.query(DatabaseConstants.TABLE_USERMAPPING, new String[] { DatabaseConstants.USERMAPPING_USERNAME },
-                    "? = " + DatabaseConstants.USERMAPPING_USERID, new String[] { userId }, null, null, null);
+            cursor = db.query(UserMappingTable.TABLE_USERMAPPING, new String[] { UserMappingTable.USERMAPPING_USERNAME },
+                    "? = " + UserMappingTable.USERMAPPING_USERID, new String[] { userId }, null, null, null);
             if(cursor.isAfterLast()){
                 return null;
             } else {
@@ -400,8 +405,8 @@ class MessageService implements IMessageService {
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor cursor = null;
         try{
-            cursor = db.query(DatabaseConstants.TABLE_USERMAPPING, new String[] { DatabaseConstants.USERMAPPING_PROFILEPICTURE_URL },
-                    "? = " + DatabaseConstants.USERMAPPING_USERID, new String[] { userId }, null, null, null);
+            cursor = db.query(UserMappingTable.TABLE_USERMAPPING, new String[] { UserMappingTable.USERMAPPING_PROFILEPICTURE_URL },
+                    "? = " + UserMappingTable.USERMAPPING_USERID, new String[] { userId }, null, null, null);
             if(cursor.isAfterLast()){
                 return null;
             } else {
@@ -437,8 +442,8 @@ class MessageService implements IMessageService {
                 } else {
                     userId = b.getProfileId();
                 }
-                cursor = db.query(DatabaseConstants.TABLE_USERMAPPING, new String[] { DatabaseConstants.USERMAPPING_PROFILEPICTURE_URL },
-                        "? = " + DatabaseConstants.USERMAPPING_USERID, new String[] { userId }, null, null, null);
+                cursor = db.query(UserMappingTable.TABLE_USERMAPPING, new String[] { UserMappingTable.USERMAPPING_PROFILEPICTURE_URL },
+                        "? = " + UserMappingTable.USERMAPPING_USERID, new String[] { String.valueOf(userId) }, null, null, null);
                 if(!cursor.isAfterLast()){
                     cursor.moveToFirst();
                     b.setCachedProfilePictureUrl(cursor.getString(0));
@@ -466,8 +471,8 @@ class MessageService implements IMessageService {
             // USER MAPPINGS
             // Delete old user id mappings ones (>3 months)
             int deleted = db.delete(
-                    DatabaseConstants.TABLE_USERMAPPING,
-                    DatabaseConstants.USERMAPPING_INSERTED + " < "+ (timeMillis - THREE_MONTHS),
+                    UserMappingTable.TABLE_USERMAPPING,
+                    UserMappingTable.USERMAPPING_INSERTED + " < "+ (timeMillis - THREE_MONTHS),
                     new String[]{});
             if(deleted > 0){
                 Log.d(TAG, "User mapping: Deleted "+deleted+" records");
@@ -479,8 +484,8 @@ class MessageService implements IMessageService {
             // CONVERSATIONS
             // Delete those older than a year
             deleted = db.delete(
-                    DatabaseConstants.TABLE_CONVERSATIONS,
-                    DatabaseConstants.CONVERSATIONS_LASTCONTACT + " < "+ (timeMillis - YEAR),
+                    ConversationTable.TABLE_CONVERSATIONS,
+                    ConversationTable.CONVERSATIONS_LASTCONTACT + " < "+ (timeMillis - YEAR),
                     new String[]{});
             if(deleted > 0){
                 Log.d(TAG, "Conversation cache: Deleted "+deleted+" records");
@@ -489,8 +494,8 @@ class MessageService implements IMessageService {
             // MESSAGES
             // Delete those older than a year
             deleted = db.delete(
-                    DatabaseConstants.TABLE_MESSAGES,
-                    DatabaseConstants.MESSAGES_TIMESENT + " < "+ (timeMillis - YEAR),
+                    MessageTable.TABLE_MESSAGES,
+                    MessageTable.MESSAGES_TIMESENT + " < "+ (timeMillis - YEAR),
                     new String[]{});
             if(deleted > 0){
                 Log.d(TAG, "Message cache: Deleted "+deleted+" records");
@@ -513,15 +518,15 @@ class MessageService implements IMessageService {
         try{
             Cursor cursor = db.rawQuery(
                     " SELECT " + 
-                            " c."+ DatabaseConstants.CONVERSATIONS_OTHERUSERID + ", " +
-                            " m."+ DatabaseConstants.USERMAPPING_USERNAME + ", "+
-                            " c."+ DatabaseConstants.CONVERSATIONS_LASTCONTACT + ", " +
-                            " c."+ DatabaseConstants.CONVERSATIONS_EXCERPT + ", " +
-                            " c."+ DatabaseConstants.CONVERSATIONS_UNREADCOUNT + " " +
-                            " FROM " + DatabaseConstants.TABLE_CONVERSATIONS + " c " +
-                            " LEFT OUTER JOIN " + DatabaseConstants.TABLE_USERMAPPING + " m " +
-                            " ON c." + DatabaseConstants.CONVERSATIONS_OTHERUSERID + " = m."+ DatabaseConstants.USERMAPPING_USERID + 
-                            " ORDER BY c." + DatabaseConstants.CONVERSATIONS_LASTCONTACT + " DESC " +
+                            " c."+ ConversationTable.CONVERSATIONS_OTHERUSERID + ", " +
+                            " m."+ UserMappingTable.USERMAPPING_USERNAME + ", "+
+                            " c."+ ConversationTable.CONVERSATIONS_LASTCONTACT + ", " +
+                            " c."+ ConversationTable.CONVERSATIONS_EXCERPT + ", " +
+                            " c."+ ConversationTable.CONVERSATIONS_UNREADCOUNT + " " +
+                            " FROM " + ConversationTable.TABLE_CONVERSATIONS + " c " +
+                            " LEFT OUTER JOIN " + UserMappingTable.TABLE_USERMAPPING + " m " +
+                            " ON c." + ConversationTable.CONVERSATIONS_OTHERUSERID + " = m."+ UserMappingTable.USERMAPPING_USERID +
+                            " ORDER BY c." + ConversationTable.CONVERSATIONS_LASTCONTACT + " DESC " +
                             " LIMIT ?"
                             , new String[]{String.valueOf(MAX_CACHED_CONVERSATIONS)});
 
@@ -545,11 +550,11 @@ class MessageService implements IMessageService {
     public Date getNewestConversationTimestamp(){
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         try{
-            Cursor cursor = db.query(DatabaseConstants.TABLE_CONVERSATIONS, 
-                    new String[]{DatabaseConstants.CONVERSATIONS_LASTCONTACT},
+            Cursor cursor = db.query(ConversationTable.TABLE_CONVERSATIONS,
+                    new String[]{ConversationTable.CONVERSATIONS_LASTCONTACT},
                     null, 
                     new String[]{},
-                    null, null, DatabaseConstants.CONVERSATIONS_LASTCONTACT + " DESC", "1");
+                    null, null, ConversationTable.CONVERSATIONS_LASTCONTACT + " DESC", "1");
             if(!cursor.isAfterLast()){
                 cursor.moveToNext();
                 Date d = new Date(cursor.getLong(0));
@@ -620,11 +625,11 @@ class MessageService implements IMessageService {
      * @param upToMessageId Restrict to messages with a smaller id than this parameter
      * @return List of messages
      */
-    private List<PrivateMessage> getCachedMessagesWithUser(String profileId, Long upToMessageId) {
+    private List<IPrivateMessage> getCachedMessagesWithUser(String profileId, Long upToMessageId) {
         StringBuilder where = new StringBuilder();
         where.append(FROM_TO_STRING);
         where.append(" AND ");
-        where.append(DatabaseConstants.MESSAGES_MESSAGEID);
+        where.append(MessageTable.MESSAGES_MESSAGEID);
         where.append(" < ? ");
 
         List<String> selectArgs = new ArrayList<>();
@@ -634,26 +639,26 @@ class MessageService implements IMessageService {
 
         SQLiteDatabase db = DBHelper.fromContext(PurpleSkyApplication.get()).getReadableDatabase();
         Cursor curs = db.query(false,
-                DatabaseConstants.TABLE_MESSAGES,
+                MessageTable.TABLE_MESSAGES,
                 new String[] {
-                DatabaseConstants.MESSAGES_MESSAGEID,
-                DatabaseConstants.MESSAGES_FROMUSERID,
-                DatabaseConstants.MESSAGES_TOUSERID,
-                DatabaseConstants.MESSAGES_TIMESENT,
-                DatabaseConstants.MESSAGES_TEXT,
-                DatabaseConstants.MESSAGES_PENDING },
+                    MessageTable.MESSAGES_MESSAGEID,
+                    MessageTable.MESSAGES_FROMUSERID,
+                    MessageTable.MESSAGES_TOUSERID,
+                    MessageTable.MESSAGES_STATUS,
+                    MessageTable.MESSAGES_TIMESENT,
+                    MessageTable.MESSAGES_TEXT },
                 where.toString(),
                 selectArgs.toArray(new String[selectArgs.size()]),
                 null,
                 null,
-                DatabaseConstants.MESSAGES_MESSAGEID + " DESC ",
+                MessageTable.MESSAGES_MESSAGEID + " DESC ",
                 String.valueOf(BATCH));
         try {
             curs.moveToFirst();
             if (curs.isAfterLast()) {
                 return  Collections.emptyList();
             } else {
-                List<PrivateMessage> messages = translateCursorToMessages(curs);
+                List<IPrivateMessage> messages = translateCursorToMessages(curs);
                 Collections.reverse(messages);
                 return messages;
             }
@@ -665,25 +670,25 @@ class MessageService implements IMessageService {
         }
     }
 
-    private List<PrivateMessage> translateCursorToMessages(Cursor curs) {
+    private List<IPrivateMessage> translateCursorToMessages(Cursor curs) {
         if (curs == null) {
             return Collections.emptyList();
         }
 
         final String myUserId = PersistantModel.getInstance().getUserProfileId();
+        // FIXME Add assertion (not null)
 
-        ArrayList<PrivateMessage> list = new ArrayList<>();
+        List<IPrivateMessage> list = new ArrayList<>();
         while (!curs.isAfterLast()) {
             PrivateMessage message = new PrivateMessage();
-            PrivateMessageHead head = new PrivateMessageHead();
-            head.setMessageId(curs.getInt(curs.getColumnIndexOrThrow(DatabaseConstants.MESSAGES_MESSAGEID)));
-            head.setRecipientProfileId(String.valueOf(curs.getInt(curs.getColumnIndexOrThrow(DatabaseConstants.MESSAGES_TOUSERID))));
-            head.setAuthorProfileId(String.valueOf(curs.getInt(curs.getColumnIndexOrThrow(DatabaseConstants.MESSAGES_FROMUSERID))));
-            head.setTimeSent(new Date(curs.getLong(curs.getColumnIndexOrThrow(DatabaseConstants.MESSAGES_TIMESENT))));
-            head.setMessageType(myUserId.equals(head.getAuthorProfileId()) ? MessageType.SENT
-                    : MessageType.RECEIVED);
-            message.setMessageHead(head);
-            message.setMessageText(curs.getString(curs.getColumnIndexOrThrow(DatabaseConstants.MESSAGES_TEXT)));
+            PrivateMessageHead head = message.getMessageHead();
+            head.setMessageId(curs.getInt(curs.getColumnIndexOrThrow(MessageTable.MESSAGES_MESSAGEID)));
+            head.setRecipientProfileId(curs.getString(curs.getColumnIndexOrThrow(MessageTable.MESSAGES_TOUSERID)));
+            head.setAuthorProfileId(curs.getString(curs.getColumnIndexOrThrow(MessageTable.MESSAGES_FROMUSERID)));
+            head.setTimeSent(new Date(curs.getLong(curs.getColumnIndexOrThrow(MessageTable.MESSAGES_TIMESENT))));
+            head.setMessageType(myUserId.equals(head.getAuthorProfileId()) ? MessageType.SENT : MessageType.RECEIVED);
+            message.setStatus(MessageStatus.getById(curs.getInt(curs.getColumnIndexOrThrow(MessageTable.MESSAGES_STATUS))));
+            message.setMessageText(curs.getString(curs.getColumnIndexOrThrow(MessageTable.MESSAGES_TEXT)));
 
             list.add(message);
 

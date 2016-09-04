@@ -16,8 +16,6 @@ public class PrivateMessageHead implements Serializable {
     private Date m_timeSent;
     private String m_recipientProfileId;
     private long m_messageId;
-    private String m_replyToMessageId;
-    private boolean m_unopened;
 
     public PrivateMessageHead() {
     };
@@ -54,34 +52,12 @@ public class PrivateMessageHead implements Serializable {
         return m_messageId;
     }
 
-    /**
-     * If this message should be used to reply to a message, its id should be put here
-     * 
-     * @param replyToMessageId
-     *            Id of the message to reply to
-     */
-    public void setReplyToMessageId(String replyToMessageId) {
-        m_replyToMessageId = replyToMessageId;
-    }
-
-    public String getReplyToMessageId() {
-        return m_replyToMessageId;
-    }
-
     public MessageType getMessageType() {
         return m_messageType;
     }
 
     public void setMessageType(MessageType messageType) {
         m_messageType = messageType;
-    }
-
-    public boolean isUnopened() {
-        return m_unopened;
-    }
-
-    public void setUnopened(boolean unopened) {
-        m_unopened = unopened;
     }
 
 }

@@ -3,7 +3,7 @@ package ch.defiant.purplesky.api.conversation;
 import java.io.IOException;
 import java.util.List;
 
-import ch.defiant.purplesky.beans.PendingMessage;
+import ch.defiant.purplesky.beans.IPrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.UserMessageHistoryBean;
 import ch.defiant.purplesky.core.AdapterOptions;
@@ -30,7 +30,7 @@ public interface IConversationAdapter {
      * @throws ch.defiant.purplesky.exceptions.WrongCredentialsException
      * @throws ch.defiant.purplesky.exceptions.PurpleSkyException
      */
-    public MessageResult sendMessage(PendingMessage message, SendOptions opts) throws IOException,
+    public MessageResult sendMessage(IPrivateMessage message, SendOptions opts) throws IOException,
             PurpleSkyException;
 
     /**
@@ -73,7 +73,7 @@ public interface IConversationAdapter {
      * @throws IOException
      * @throws PurpleSkyException
      */
-    public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options)
+    public List<IPrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options)
             throws IOException, PurpleSkyException;
 
 }

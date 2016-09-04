@@ -1,5 +1,8 @@
 package ch.defiant.purplesky.adapters.message;
 
+import android.content.Context;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +14,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import com.google.common.eventbus.EventBus;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
-import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.beans.IPrivateMessage;
-import ch.defiant.purplesky.beans.PendingMessage;
 import ch.defiant.purplesky.beans.PrivateMessage;
 import ch.defiant.purplesky.beans.PrivateMessageHead;
+import ch.defiant.purplesky.enums.MessageStatus;
+import ch.defiant.purplesky.enums.MessageType;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
+import ch.defiant.purplesky.fragments.conversation.ConversationModelFragment;
 
 public class MessageAdapter extends BaseAdapter {
+
+    @NonNull
+    private final ConversationModelFragment m_model;
+    @NonNull
+    private final Context m_context;
+
+    private ConversationFragment m_conversationFragment;
 
     private static class ViewHolder {
         TextView messageLbl;
@@ -35,16 +48,16 @@ public class MessageAdapter extends BaseAdapter {
         View rightSpacer;
     }
 
-    private final ConversationFragment m_conversationFragment;
-
-    private LinkedList<IPrivateMessage> m_data = new LinkedList<>();
     private boolean m_showLoadMore;
 
-    /**
-     * @param conversationFragment
-     */
-    public MessageAdapter(ConversationFragment conversationFragment) {
-        m_conversationFragment = conversationFragment;
+    public MessageAdapter(@NonNull Context context,  @NonNull ConversationModelFragment modelFragment) {
+        m_context = context;
+        m_model = modelFragment;
+        org.greenrobot.eventbus.EventBus.getDefault().register(this);
+    }
+
+    public void setConversationFragment(ConversationFragment fragment){
+        m_conversationFragment = fragment;
     }
 
     @Override
@@ -62,13 +75,14 @@ public class MessageAdapter extends BaseAdapter {
     private View createButtonView(View convertView, ViewGroup parent) {
         View buttonView;
         if (convertView == null) {
-            LayoutInflater vi = LayoutInflater.from(m_conversationFragment.getActivity());
+            LayoutInflater vi = LayoutInflater.from(m_context);
             buttonView = vi.inflate(R.layout.conversation_button_loadmore, parent, false);
             Button b = (Button) buttonView.findViewById(R.id.conversation_button_loadmore_button);
             b.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View clickedView) {
                     clickedView.setEnabled(false);
+                    // FIXME pbn Use event instead?
                     m_conversationFragment.startLoadMoreOldWithDB();
                 }
             });
@@ -83,19 +97,12 @@ public class MessageAdapter extends BaseAdapter {
 
     private View createMessageView(View convertView, IPrivateMessage m, ViewGroup parent) {
         View v;
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
-            LayoutInflater vi = LayoutInflater.from(m_conversationFragment.getActivity());
+            LayoutInflater vi = LayoutInflater.from(m_context);
             v = vi.inflate(R.layout.conversation_item, parent, false);
 
-            holder = new ViewHolder();
-
-            holder.messageLbl = (TextView) v.findViewById(R.id.conversation_item_messageTxtLbl);
-            holder.dateTimeLbl = (TextView) v.findViewById(R.id.conversation_item_dateTimeLbl);
-            holder.stateIndicator = (ImageView) v.findViewById(R.id.conversation_item_state);
-            holder.leftSpacer = v.findViewById(R.id.conversation_item_leftspacer);
-            holder.rightSpacer = v.findViewById(R.id.conversation_item_rightSpacer);
-            holder.outerLinearLayout = (LinearLayout) v.findViewById(R.id.conversation_item_outerLinearLayout);
+            holder = createMessageViewHolder(v);
 
             v.setTag(holder);
         } else {
@@ -107,8 +114,6 @@ public class MessageAdapter extends BaseAdapter {
             // Wipe fields
             holder.messageLbl.setText("");
             holder.dateTimeLbl.setText("");
-
-            holder.stateIndicator.setVisibility(m instanceof PendingMessage ? View.VISIBLE : View.GONE);
 
             holder.leftSpacer.setVisibility(View.GONE);
             holder.rightSpacer.setVisibility(View.GONE);
@@ -122,64 +127,53 @@ public class MessageAdapter extends BaseAdapter {
                 holder.messageLbl.setText(m.getMessageText());
             }
 
-            if(m instanceof PrivateMessage){
-                PrivateMessageHead head = ((PrivateMessage)m).getMessageHead();
-                if (head.getMessageType() != null) {
-                    switch (head.getMessageType()) {
-                        case RECEIVED: {
-                            // Put on
-                            holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_left);
-                            holder.rightSpacer.setVisibility(View.VISIBLE);
-                            break;
+            if (m.getMessageType() != null) {
+                switch (m.getMessageType()) {
+                    case RECEIVED: {
+                        holder.stateIndicator.setVisibility(View.GONE);
+                        holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_left);
+                        holder.rightSpacer.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                    case SENT: {
+                        MessageStatus messageStatus = m.getStatus();
+                        @DrawableRes
+                        int image = R.drawable.ic_file_upload_black_24dp;
+                        if (MessageStatus.NEW == messageStatus){
+                            image = R.drawable.ic_file_upload_black_24dp;
+                        } else if (MessageStatus.SENT == messageStatus){
+                            image = R.drawable.ic_check_black_24dp;
+                        } else if (MessageStatus.RETRY_NEEDED == messageStatus){
+                            image = R.drawable.ic_clock_black_24dp;
+                        } else if(MessageStatus.FAILED == messageStatus){
+                            image = R.drawable.ic_error_outline_black_24px;
                         }
-                        case SENT: {
-                            holder.leftSpacer.setVisibility(View.VISIBLE);
-                            holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_right);
-                            break;
-                        }
+
+                        holder.stateIndicator.setImageResource(image);
+                        holder.stateIndicator.setVisibility(View.VISIBLE);
+                        holder.leftSpacer.setVisibility(View.VISIBLE);
+                        holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_right);
+                        break;
                     }
                 }
-            } else if (m instanceof PendingMessage){
-                PendingMessage message = (PendingMessage) m;
-
-                holder.leftSpacer.setVisibility(View.VISIBLE);
-                holder.outerLinearLayout.setBackgroundResource(R.drawable.messagerectangle_right);
             }
+
         }
         return v;
     }
 
+    @NonNull
+    private ViewHolder createMessageViewHolder(View v) {
+        ViewHolder holder;
+        holder = new ViewHolder();
 
-    /**
-     * Adds the item at the specified position.
-     *
-     * @param index
-     *            At which index the item shall be inserted.
-     * @param m
-     *            Item to add
-     */
-    public synchronized void add(int index, IPrivateMessage m) {
-        m_data.add(index, m);
-    }
-
-    public synchronized void add(IPrivateMessage m) {
-        m_data.add(m);
-    }
-
-    public synchronized void addAll(Collection<IPrivateMessage> m){
-        m_data.addAll(m);
-    }
-    public synchronized void prepend(List<IPrivateMessage> c){
-        for(int i=c.size(); i >= 0; i--){
-            m_data.add(0, c.get(i));
-        }
-    }
-
-    /**
-     * Removes all data from the adapter.
-     */
-    public synchronized void clear() {
-        m_data.clear();
+        holder.messageLbl = (TextView) v.findViewById(R.id.conversation_item_messageTxtLbl);
+        holder.dateTimeLbl = (TextView) v.findViewById(R.id.conversation_item_dateTimeLbl);
+        holder.stateIndicator = (ImageView) v.findViewById(R.id.conversation_item_state);
+        holder.leftSpacer = v.findViewById(R.id.conversation_item_leftspacer);
+        holder.rightSpacer = v.findViewById(R.id.conversation_item_rightSpacer);
+        holder.outerLinearLayout = (LinearLayout) v.findViewById(R.id.conversation_item_outerLinearLayout);
+        return holder;
     }
 
     @Override
@@ -225,13 +219,16 @@ public class MessageAdapter extends BaseAdapter {
         m_showLoadMore = showLoadMore;
     }
 
-    public LinkedList<IPrivateMessage> getData() {
-        return m_data;
+    public List<IPrivateMessage> getData() {
+        return m_model.getData();
     }
 
-    public void setData(LinkedList<IPrivateMessage> data) {
-        m_data = data;
-        notifyDataSetChanged();
+    public void setData(List<IPrivateMessage> data) {
+        m_model.setData(data);
     }
 
+    @Subscribe
+    public void onEvent(Object arg){
+
+    }
 }

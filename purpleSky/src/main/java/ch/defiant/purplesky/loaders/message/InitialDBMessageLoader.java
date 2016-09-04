@@ -27,7 +27,7 @@ public class InitialDBMessageLoader extends AbstractMessageLoader {
 
     @Override
     public Holder<MessageResult> loadInBackground() {
-        List<PrivateMessage> list = messageService.getNewestCachedMessagesWithUser(m_userId);
+        List<IPrivateMessage> list = messageService.getNewestCachedMessagesWithUser(m_userId);
         List<IPrivateMessage> messages = new ArrayList<IPrivateMessage>(list);
         return Holder.newInstance(new MessageResult().setUnreadMessages(messages));
     }
