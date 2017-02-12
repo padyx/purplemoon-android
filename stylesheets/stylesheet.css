@@ -333,6 +333,12 @@ Full-Width Styles
   right: 0;
 }
 
+.navitem {
+  font-size:20px;
+  overflow: hidden;
+  margin-right: 1em;
+}
+
 .language {
   font-size:14px;
   display: block;
