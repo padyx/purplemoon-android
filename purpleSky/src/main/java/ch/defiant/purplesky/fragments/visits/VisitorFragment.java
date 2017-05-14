@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.commonsware.cwac.endless.EndlessAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -63,7 +62,7 @@ public class VisitorFragment extends BaseListFragment {
      * profiles. <code>false</code> (default) will show the other users' visits to the application users profile.
      */
     public static String ARGUMENT_BOOLEAN_SHOWMYVISITS = "showMyVisits";
-
+/*
     private VisitorListAdapter m_adapter;
     private boolean isShowOwnVisits;
 
@@ -272,5 +271,5 @@ public class VisitorFragment extends BaseListFragment {
             }
         }
     }
-
+*/
 }

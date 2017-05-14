@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
 
     compileSdkVersion 22
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         // Format according: http://developer.android.com/google/play/publishing/multiple-apks.html
@@ -57,11 +57,12 @@ repositories {
 
 dependencies {
 
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-annotations:22.2.0'
-    compile 'com.android.support:gridlayout-v7:22.2.0'
-    compile 'com.android.support:support-v13:22.2.0'
+    compile 'com.android.support:design:22.2.+'
+    compile 'com.android.support:appcompat-v7:22.2.+'
+    compile 'com.android.support:support-annotations:22.2.+'
+    compile 'com.android.support:gridlayout-v7:22.2.+'
+    compile 'com.android.support:support-v13:22.2.+'
+    compile 'com.android.support:recyclerview-v7:22.2.+'
 
     // Google play services, selectively included
     // See https://developers.google.com/android/guides/setup#split
@@ -72,7 +73,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'commons-io:commons-io:2.4'
 
-    compile 'com.commonsware.cwac:endless:1.2.3'
     // Apache licence
     compile 'com.makeramen:roundedimageview:2.1.0'
 

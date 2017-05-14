@@ -14,7 +14,6 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.commonsware.cwac.endless.EndlessAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -44,11 +43,12 @@ public class PostitFragment extends BaseListFragment {
 
     public static final String ARGUMENT_BOOLEAN_SHOW_GIVEN = "given";
     private static final String DATA = "data";
-
+/*
     private PostitAdapter m_adapter;
     private boolean isShowGiven;
 
     private PostitEndlessAdapter m_endlessAdapter;
+
 
 
     @Inject
@@ -230,5 +230,5 @@ public class PostitFragment extends BaseListFragment {
             }
         }
     }
-
+*/
 }

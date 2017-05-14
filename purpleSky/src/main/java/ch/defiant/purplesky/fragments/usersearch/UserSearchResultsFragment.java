@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.commonsware.cwac.endless.EndlessAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import ch.defiant.purplesky.fragments.BaseFragment;
 import ch.defiant.purplesky.listeners.OpenUserProfileListener;
 
 public class UserSearchResultsFragment extends BaseFragment {
-
+/*
     public static final String EXTRA_SEARCHOBJ = "searchobj";
     public static final String EXTRA_SEARCHNAME = "searchname";
     public static final String TAG = UserSearchResultsFragment.class.getSimpleName();
@@ -149,4 +148,5 @@ public class UserSearchResultsFragment extends BaseFragment {
             }
         }
     }
+    */
 }

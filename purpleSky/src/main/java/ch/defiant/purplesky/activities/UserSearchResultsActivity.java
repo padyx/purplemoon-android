@@ -37,12 +37,14 @@ public class UserSearchResultsActivity extends BaseFragmentActivity {
             m_options = (UserSearchOptions) getIntent().getSerializableExtra(EXTRA_SEARCHOBJ);
             m_usernameSearch = getIntent().getStringExtra(EXTRA_SEARCHNAME);
         }
+        /*
         UserSearchResultsFragment f = (UserSearchResultsFragment) getFragmentManager().findFragmentById(R.id.fragment);
         if(m_usernameSearch != null) {
             f.startUsernameSearch(m_usernameSearch);
         } else {
             f.startSearch(m_options);
         }
+        */
     }
 
     private boolean hasOptions(){
