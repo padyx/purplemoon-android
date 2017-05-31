@@ -1,7 +1,6 @@
 package ch.defiant.purplesky.api.report.internal;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,10 +32,10 @@ class ReportAdapter implements IReportAdapter {
         sb.append(ReportAPIConstants.REPORT_URL);
         sb.append(profileId);
 
-        BasicNameValuePair param1 = new BasicNameValuePair(ReportAPIConstants.REPORT_REASON_PARAM, new ReportReasonTranslator().translate(reason));
-        BasicNameValuePair param2 = new BasicNameValuePair(ReportAPIConstants.REPORT_DESCRIPTION_PARAM, description);
+        Pair<String,String> param1 = new Pair<>(ReportAPIConstants.REPORT_REASON_PARAM, new ReportReasonTranslator().translate(reason));
+        Pair<String,String> param2 = new Pair<>(ReportAPIConstants.REPORT_DESCRIPTION_PARAM, description);
 
-        List<NameValuePair> args = Arrays.<NameValuePair>asList(param1, param2);
+        List<Pair<String,String>> args = Arrays.asList(param1, param2);
 
         HTTPURLResponseHolder response = APINetworkUtility.postForResponseHolderNoThrow(new URL(sb.toString()), args, null);
         if (response.isSuccessful()) {

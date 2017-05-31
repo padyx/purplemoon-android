@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.api.promotions.internal;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.util.Pair;
+
 import org.json.JSONArray;
 
 import java.io.IOException;
@@ -55,9 +55,9 @@ public class PromotionAdapter implements IPromotionAdapter {
     @Override
     public EventRegistrationResult register(int eventId, Event.RegistrationVisibility visibility) throws IOException, PurpleSkyException {
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PromotionAPIConstants.REGISTER_URL + eventId);
-        ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PromotionAPIConstants.Event.REGISTRATION_VISIBILITY_ARG, PromotionJSONTranslator.translate(visibility)));
-        ApiResponse<String> response = APINetworkUtility.postForString(url, body, Collections.<NameValuePair>emptyList());
+        ArrayList<Pair<String,String>> body = new ArrayList<>();
+        body.add(new Pair<>(PromotionAPIConstants.Event.REGISTRATION_VISIBILITY_ARG, PromotionJSONTranslator.translate(visibility)));
+        ApiResponse<String> response = APINetworkUtility.postForString(url, body, Collections.<Pair<String,String>>emptyList());
 
         if (response.isError()) {
             String error = response.getError();
@@ -83,7 +83,7 @@ public class PromotionAdapter implements IPromotionAdapter {
     public EventRegistrationResult unregister(int eventId) throws IOException, PurpleSkyException {
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PromotionAPIConstants.UNREGISTER_URL + eventId);
         ApiResponse<String> response = APINetworkUtility.postForString(url,
-                Collections.<NameValuePair>emptyList(), Collections.<NameValuePair>emptyList());
+                Collections.<Pair<String,String>>emptyList(), Collections.<Pair<String,String>>emptyList());
 
         if (response.isError()) {
             String error = response.getError();

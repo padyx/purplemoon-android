@@ -8,9 +8,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -376,23 +373,23 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             throw new IllegalArgumentException("No options provided");
         }
 
-        ArrayList<MinimalUser> list = new ArrayList<MinimalUser>();
+        ArrayList<MinimalUser> list = new ArrayList<>();
 
         StringBuilder builder = new StringBuilder();
         builder.append(PurplemoonAPIConstantsV1.BASE_URL);
         builder.append(PurplemoonAPIConstantsV1.USER_SEARCH_BYNAME);
 
         // Must manually encode space by "%20" (encoder encodes as a plus sign)
-        builder.append(URLEncoder.encode(text, HTTP.UTF_8).replace("+", "%20"));
+        builder.append(URLEncoder.encode(text, "UTF_8").replace("+", "%20"));
 
         // NICE Maybe make type switchable?
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_PREVIEW_WITHSTATUS));
+        ArrayList<Pair<String, String>> params = new ArrayList<>();
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_PREVIEW_WITHSTATUS));
 
         Integer resultsNum = NVLUtility.nvl(options.getNumber(), 20);
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.RESULTSNUMBER_PARAM, String.valueOf(resultsNum)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(resultsNum)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.RESULTSNUMBER_PARAM, String.valueOf(resultsNum)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(resultsNum)));
 
         builder.append(HTTPURLUtility.createGetQueryString(params));
 
@@ -420,18 +417,18 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             return false;
         }
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MY_ONLINESTATUS_STATUS_PARAM, APIUtility.translateOnlineStatus(status)));
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.MY_ONLINESTATUS_STATUS_PARAM, APIUtility.translateOnlineStatus(status)));
 
         if (StringUtility.isNotNullOrEmpty(custom)) {
             // Make sure to truncate
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MY_ONLINESTATUS_CUSTOMTEXT_PARAM, StringUtility.truncate(custom,
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.MY_ONLINESTATUS_CUSTOMTEXT_PARAM, StringUtility.truncate(custom,
                     PurplemoonAPIConstantsV1.MY_ONLINESTATUS_CUSTOM_MAXLENGTH)));
         }
 
         HTTPURLResponseHolder result;
         result = performPOSTRequestForResponseHolder(new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.MY_ONLINESTATUS_URL),
-                params, Collections.<NameValuePair> emptyList());
+                params, Collections.<Pair<String,String>> emptyList());
 
         switch (result.getResponseCode()) {
             case HttpURLConnection.HTTP_OK: {
@@ -538,32 +535,32 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
         final int number = NVLUtility.nvl(options.getNumber(), 100);
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
         if (options.getUserClass() == null || options.getUserClass() == MinimalUser.class) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL_WITHSTATUS));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL_WITHSTATUS));
         } else if (options.getUserClass() == PreviewUser.class) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_PREVIEW_WITHSTATUS));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_PREVIEW_WITHSTATUS));
         }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.RESULTSNUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.RESULTSNUMBER_PARAM, String.valueOf(number)));
         if (options.getSearchType() != null) {
             // FIXME PBN Search type
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_TYPE_PARAM, PurplemoonAPIConstantsV1.USERSEARCH_TYPE_FRIENDS));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USERSEARCH_TYPE_PARAM, PurplemoonAPIConstantsV1.USERSEARCH_TYPE_FRIENDS));
         }
         // Add location
         if (options.getLocation() != null) {
             ch.defiant.purplesky.beans.util.Pair<Double, Double> location = options.getLocation();
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_CURRPOS_LATITUDE_PARAM, String.valueOf(location.getFirst())));
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_CURRPOS_LONGITUDE_PARAM, String.valueOf(location.getSecond())));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USERSEARCH_CURRPOS_LATITUDE_PARAM, String.valueOf(location.getFirst())));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USERSEARCH_CURRPOS_LONGITUDE_PARAM, String.valueOf(location.getSecond())));
         }
 
         // Search order
         if (options.getSearchOrder() != null) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_ORDER_PARAM, options.getSearchOrder().getApiValue()));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USERSEARCH_ORDER_PARAM, options.getSearchOrder().getApiValue()));
         }
 
         JSONObject jsonObj = APIUtility.getJSONUserSearchObject(options);
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USERSEARCH_CRITERIA_JSON_PARAM, jsonObj.toString()));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USERSEARCH_CRITERIA_JSON_PARAM, jsonObj.toString()));
 
 
         StringBuilder sb = new StringBuilder();
@@ -576,7 +573,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             return Collections.emptyList();
         }
 
-        ArrayList<MinimalUser> result = new ArrayList<MinimalUser>();
+        ArrayList<MinimalUser> result = new ArrayList<>();
         for (int i = 0, size = array.length(); i < size; i++) {
             PreviewUser translated = UserJSONTranslator.translateToUser(array.optJSONObject(i), PreviewUser.class);
             if (translated == null) {
@@ -605,10 +602,10 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     @Override
     public boolean registerPush(String gcmRegId) throws IOException, PurpleSkyException {
         URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_URL);
-        ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
-        list.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_ARG,
+        ArrayList<Pair<String,String>> list = new ArrayList<>();
+        list.add(new Pair<>(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_ARG,
                 PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_REGISTER));
-        list.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_DEVICETOKEN, gcmRegId));
+        list.add(new Pair<>(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_DEVICETOKEN, gcmRegId));
 
         HTTPURLResponseHolder resp = performPOSTRequestForResponseHolder(u, list, null);
         if (resp.getOutput() != null) {
@@ -638,10 +635,10 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
 
         URL u = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_URL);
-        ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
-        list.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_ARG,
+        ArrayList<Pair<String,String>> list = new ArrayList<>();
+        list.add(new Pair<>(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_ARG,
                 PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_UNREGISTER));
-        list.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_DEVICETOKEN, gcmRegId));
+        list.add(new Pair<>(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_DEVICETOKEN, gcmRegId));
 
         HTTPURLResponseHolder resp = performPOSTRequestForResponseHolder(u, list, null);
         if (resp.getOutput() != null) {
@@ -688,13 +685,13 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     public void setOwnLocation(PurplemoonLocation location) throws IOException, PurpleSkyException {
         String url = PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.LOCATIONS_URL;
 
-        List<NameValuePair> postData = new ArrayList<NameValuePair>();
-        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_TYPE, APIUtility.translateLocationType(location.getLocationType())));
-        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_COUNTRYCODE, location.getCountryCode()));
-        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_NAME, location.getLocationName()));
-        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_ADDRESS, location.getStreetAddress()));
-        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_LATITUDE, String.valueOf(location.getLatitude())));
-        postData.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE, String.valueOf(location.getLongitude())));
+        List<Pair<String,String>> postData = new ArrayList<>();
+        postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_TYPE, APIUtility.translateLocationType(location.getLocationType())));
+        postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_COUNTRYCODE, location.getCountryCode()));
+        postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_NAME, location.getLocationName()));
+        postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_ADDRESS, location.getStreetAddress()));
+        postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_LATITUDE, String.valueOf(location.getLatitude())));
+        postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE, String.valueOf(location.getLongitude())));
 
        performPOSTRequestForResponseHolder(new URL(url), postData, null);
     }
@@ -795,13 +792,13 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     }
 
     // TODO Move to network utility
-    private HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
+    private HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<Pair<String,String>> postBody, List<Pair<String,String>> headrs)
             throws IOException, PurpleSkyException {
         Request.Builder builder = new Request.Builder();
         builder.url(resource);
         if(headrs != null){
-            for(NameValuePair pair : headrs){
-                builder.addHeader(pair.getName(), pair.getValue());
+            for(Pair<String,String> pair : headrs){
+                builder.addHeader(pair.first, pair.second);
             }
         }
 
@@ -810,8 +807,8 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         FormEncodingBuilder formBuilder = new FormEncodingBuilder();
         if(postBody != null){
-            for(NameValuePair pair : postBody){
-                formBuilder.add(pair.getName(), pair.getValue());
+            for(Pair<String,String> pair : postBody){
+                formBuilder.add(pair.first, pair.second);
             }
         }
         builder.post(formBuilder.build());

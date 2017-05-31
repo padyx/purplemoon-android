@@ -1,8 +1,8 @@
 package ch.defiant.purplesky.beans;
 
 import android.net.Uri;
+import android.util.Pair;
 
-import org.apache.http.NameValuePair;
 
 import java.net.URL;
 import java.util.Collection;
@@ -29,8 +29,8 @@ public class UploadBean implements ContentUriRequestBody.ProgressListener {
     private final Uri m_fileUri;
     private final String m_formName;
     private final URL m_url;
-    private final Collection<NameValuePair> m_formParams;
-    private final Collection<NameValuePair> m_headerParams;
+    private final Collection<Pair<String,String>> m_formParams;
+    private final Collection<Pair<String,String>> m_headerParams;
     private State m_state = State.PENDING;
     private String m_error;
 
@@ -48,7 +48,7 @@ public class UploadBean implements ContentUriRequestBody.ProgressListener {
      * @param headers
      *            Additional headers to pass to the server.
      */
-    public UploadBean(URL url, Uri fileUri, String fileFormName, Collection<NameValuePair> additionalData, Collection<NameValuePair> headers) {
+    public UploadBean(URL url, Uri fileUri, String fileFormName, Collection<Pair<String,String>> additionalData, Collection<Pair<String,String>> headers) {
         m_url = url;
         m_formParams = additionalData;
         m_headerParams = headers;
@@ -56,7 +56,7 @@ public class UploadBean implements ContentUriRequestBody.ProgressListener {
         m_formName = fileFormName;
     }
 
-    public Collection<NameValuePair> getHeaderParams() {
+    public Collection<Pair<String,String>> getHeaderParams() {
         return m_headerParams;
     }
 
@@ -96,7 +96,7 @@ public class UploadBean implements ContentUriRequestBody.ProgressListener {
         return m_formName;
     }
 
-    public Collection<NameValuePair> getFormParams() {
+    public Collection<Pair<String,String>> getFormParams() {
         return m_formParams;
     }
 

@@ -1,9 +1,8 @@
 package ch.defiant.purplesky.api.photovotes.internal;
 
 import android.util.Log;
+import android.util.Pair;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,9 +52,9 @@ class PhotoVoteAPIAdapter implements IPhotoVoteAdapter{
             JSONObject res = APINetworkUtility.performGETRequestForJSONObject(u);
             return PhotoVoteJSONTranslator.translateToPhotoVoteBean(res, MinimalUser.class);
         } else {
-            ArrayList<NameValuePair> body = new ArrayList<NameValuePair>();
-            body.add(new BasicNameValuePair(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VOTEID, String.valueOf(bean.getVoteId())));
-            body.add(new BasicNameValuePair(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VERDICT, PhotoVoteAPIUtility.translatePhotoVoteVerdict(bean.getVerdict())));
+            ArrayList<Pair<String,String>> body = new ArrayList<>();
+            body.add(new Pair<>(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VOTEID, String.valueOf(bean.getVoteId())));
+            body.add(new Pair<>(PhotoVoteAPIConstants.JSON_PHOTOVOTE_VERDICT, PhotoVoteAPIUtility.translatePhotoVoteVerdict(bean.getVerdict())));
             HTTPURLResponseHolder resp = APINetworkUtility.performPOSTRequestForResponseHolder(u, body, null);
             try {
                 return PhotoVoteJSONTranslator.translateToPhotoVoteBean(new JSONObject(resp.getOutput()), MinimalUser.class);
@@ -88,25 +87,25 @@ class PhotoVoteAPIAdapter implements IPhotoVoteAdapter{
         }
         int number = 20;
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
 
         if (opts != null) {
             if (opts.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(opts.getStart())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(opts.getStart())));
             }
             if (opts.getNumber() != null) {
                 number = opts.getNumber();
             }
             if (opts.getSinceTimestamp() != null) {
                 long s = DateUtility.getUnixTime(opts.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
+                Pair<String,String> time = new Pair<>(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
                 params.add(time);
             }
         }
         // Total count same as user object count
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
 
         sb.append(HTTPURLUtility.createGetQueryString(params));
 

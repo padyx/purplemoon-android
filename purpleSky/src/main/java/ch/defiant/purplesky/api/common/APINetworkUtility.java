@@ -1,6 +1,7 @@
 package ch.defiant.purplesky.api.common;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
@@ -9,7 +10,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +37,13 @@ public class APINetworkUtility {
 
     public static final String TAG = APINetworkUtility.class.getSimpleName();
 
-    public static HTTPURLResponseHolder postForResponseHolderNoThrow(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
+    public static HTTPURLResponseHolder postForResponseHolderNoThrow(URL resource, List<Pair<String,String>> postBody, List<Pair<String,String>> headrs)
             throws IOException, PurpleSkyException {
         Request.Builder builder = new Request.Builder();
         builder.url(resource);
         if(headrs != null){
-            for(NameValuePair pair : headrs){
-                builder.addHeader(pair.getName(), pair.getValue());
+            for(Pair<String,String> pair : headrs){
+                builder.addHeader(pair.first, pair.second);
             }
         }
 
@@ -52,8 +52,8 @@ public class APINetworkUtility {
 
         FormEncodingBuilder formBuilder = new FormEncodingBuilder();
         if(postBody != null){
-            for(NameValuePair pair : postBody){
-                formBuilder.add(pair.getName(), pair.getValue());
+            for(Pair<String,String> pair : postBody){
+                formBuilder.add(pair.first, pair.second);
             }
         }
         builder.post(formBuilder.build());
@@ -71,14 +71,14 @@ public class APINetworkUtility {
         return holder;
     }
 
-    public static ApiResponse<String> postForString(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
+    public static ApiResponse<String> postForString(URL resource, List<Pair<String,String>> postBody, List<Pair<String,String>> headrs)
             throws IOException, PurpleSkyException {
 
         Request.Builder builder = new Request.Builder();
         builder.url(resource);
         if(headrs != null){
-            for(NameValuePair pair : headrs){
-                builder.addHeader(pair.getName(), pair.getValue());
+            for(Pair<String,String> pair : headrs){
+                builder.addHeader(pair.first, pair.second);
             }
         }
 
@@ -87,8 +87,8 @@ public class APINetworkUtility {
 
         if(postBody != null && !postBody.isEmpty()) {
             FormEncodingBuilder formBuilder = new FormEncodingBuilder();
-            for (NameValuePair pair : postBody) {
-                formBuilder.add(pair.getName(), pair.getValue());
+            for (Pair<String,String> pair : postBody) {
+                formBuilder.add(pair.first, pair.second);
             }
             builder.post(formBuilder.build());
         } else {
@@ -101,7 +101,7 @@ public class APINetworkUtility {
     }
 
     public static ApiResponse<JSONObject> postForJSONObject(
-            URL resource, List<NameValuePair> postBody, List<NameValuePair> headers)
+            URL resource, List<Pair<String,String>> postBody, List<Pair<String,String>> headers)
             throws IOException, PurpleSkyException {
 
         ApiResponse<String> response = postForString(resource, postBody, headers);
@@ -236,13 +236,13 @@ public class APINetworkUtility {
         }
     }
 
-    public static HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<NameValuePair> postBody, List<NameValuePair> headrs)
+    public static HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<Pair<String,String>> postBody, List<Pair<String,String>> headrs)
             throws IOException, PurpleSkyException {
         Request.Builder builder = new Request.Builder();
         builder.url(resource);
         if(headrs != null){
-            for(NameValuePair pair : headrs){
-                builder.addHeader(pair.getName(), pair.getValue());
+            for(Pair<String,String> pair : headrs){
+                builder.addHeader(pair.first, pair.second);
             }
         }
 
@@ -251,8 +251,8 @@ public class APINetworkUtility {
 
         if(postBody != null && !postBody.isEmpty()) {
             FormEncodingBuilder formBuilder = new FormEncodingBuilder();
-            for (NameValuePair pair : postBody) {
-                formBuilder.add(pair.getName(), pair.getValue());
+            for (Pair<String,String> pair : postBody) {
+                formBuilder.add(pair.first, pair.second);
             }
             builder.post(formBuilder.build());
         } else {

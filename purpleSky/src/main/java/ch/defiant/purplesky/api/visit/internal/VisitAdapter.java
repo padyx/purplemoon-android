@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.api.visit.internal;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.util.Pair;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -36,24 +36,24 @@ class VisitAdapter implements IVisitAdapter {
     public List<VisitsReceivedBean> getReceivedVists(AdapterOptions options, Date overrideLastDateCheck) throws IOException, PurpleSkyException {
         StringBuilder builder = new StringBuilder();
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
         int number = 20;
         if (options != null) {
             if (options.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
             }
             if (options.getNumber() != null) {
                 number = options.getNumber();
             }
             if (options.getSinceTimestamp() != null) {
                 long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
+                Pair<String,String> time = new Pair<>(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
                 params.add(time);
             }
         }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
 
         builder.append(HTTPURLUtility.createGetQueryString(params));
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + VisitAPIConstants.VISITORS_URL + builder.toString());
@@ -91,24 +91,24 @@ class VisitAdapter implements IVisitAdapter {
     public List<VisitsMadeBean> getOwnVists(AdapterOptions options) throws IOException, PurpleSkyException {
         StringBuilder builder = new StringBuilder();
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
         int number = 20;
         if (options != null) {
             if (options.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
             }
             if (options.getNumber() != null) {
                 number = options.getNumber();
             }
             if (options.getSinceTimestamp() != null) {
                 long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
+                Pair<String,String> time = new Pair<>(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
                 params.add(time);
             }
         }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
 
         builder.append(HTTPURLUtility.createGetQueryString(params));
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + VisitAPIConstants.VISITS_MADE_URL + builder.toString());

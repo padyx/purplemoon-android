@@ -1,9 +1,7 @@
 package ch.defiant.purplesky.util;
 
 import android.util.Log;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.protocol.HTTP;
+import android.util.Pair;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -17,17 +15,17 @@ public class HTTPURLUtility {
     private static final String AMPERSAND = "&";
     private static final String TAG = HTTPURLUtility.class.getSimpleName();
 
-    public static String createGetQueryString(Collection<NameValuePair> pairs) {
+    public static String createGetQueryString(Collection<Pair<String, String>> pairs) {
         if (pairs == null)
             return "";
 
         StringBuilder builder = new StringBuilder();
         builder.append("?");
 
-        Iterator<NameValuePair> iterator = pairs.iterator();
+        Iterator<Pair<String,String>> iterator = pairs.iterator();
         while (iterator.hasNext()) {
-            NameValuePair p = iterator.next();
-            if (p.getName() == null) {
+            Pair<String,String> p = iterator.next();
+            if (p.first == null) {
                 if (BuildConfig.DEBUG) {
                     Log.w(TAG, "Missing name value for parameter string. Skipping.");
                     if (!iterator.hasNext()) {
@@ -39,10 +37,10 @@ public class HTTPURLUtility {
                 }
             }
 
-            builder.append(p.getName());
+            builder.append(p.first);
             builder.append(EQUALS);
             try {
-                builder.append(URLEncoder.encode(p.getValue(), HTTP.UTF_8));
+                builder.append(URLEncoder.encode(p.second, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "Query string could not be created. Unsupported encoding.");
             }

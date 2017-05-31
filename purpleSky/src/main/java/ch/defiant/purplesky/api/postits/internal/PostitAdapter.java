@@ -3,8 +3,6 @@ package ch.defiant.purplesky.api.postits.internal;
 import android.util.Log;
 import android.util.Pair;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,25 +52,25 @@ class PostitAdapter implements IPostitAdapter {
     private List<PostIt> getPostits(AdapterOptions options, ArrayList<PostIt> list, StringBuilder urlBuilder) throws IOException, PurpleSkyException {
         int number = 20;
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
 
         if (options != null) {
             if (options.getStart() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(options.getStart())));
             }
             if (options.getNumber() != null) {
                 number = options.getNumber();
             }
             if (options.getSinceTimestamp() != null) {
                 long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
+                Pair<String,String> time = new Pair<>(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
                 params.add(time);
             }
         }
         // Total count same as user object count
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(number)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(number)));
 
         urlBuilder.append(HTTPURLUtility.createGetQueryString(params));
 
@@ -177,13 +175,13 @@ class PostitAdapter implements IPostitAdapter {
 
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PostitAPIConstants.POSTIT_CREATE_URL);
 
-        List<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PostitAPIConstants.POSTIT_CREATE_POSTIT_PROFILEID, profileId));
+        List<Pair<String,String>> body = new ArrayList<Pair<String,String>>();
+        body.add(new Pair<>(PostitAPIConstants.POSTIT_CREATE_POSTIT_PROFILEID, profileId));
 
         if (postitValue != null) {
-            body.add(new BasicNameValuePair(PostitAPIConstants.POSTIT_CREATE_POSTIT_VALUE, String.valueOf(postitValue)));
+            body.add(new Pair<>(PostitAPIConstants.POSTIT_CREATE_POSTIT_VALUE, String.valueOf(postitValue)));
         } else {
-            body.add(new BasicNameValuePair(PostitAPIConstants.POSTIT_CREATE_POSTIT_CUSTOMTEXT, postitCustomText));
+            body.add(new Pair<>(PostitAPIConstants.POSTIT_CREATE_POSTIT_CUSTOMTEXT, postitCustomText));
         }
 
         HTTPURLResponseHolder result = APINetworkUtility.postForResponseHolderNoThrow(url, body, null);

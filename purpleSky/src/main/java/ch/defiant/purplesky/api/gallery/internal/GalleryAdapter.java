@@ -1,7 +1,7 @@
 package ch.defiant.purplesky.api.gallery.internal;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.util.Pair;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -90,7 +90,7 @@ class GalleryAdapter implements IGalleryAdapter {
     @Override
     public EnterPasswordResponse enterPassword(String profileId, String folderId, String password) throws IOException, PurpleSkyException {
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + GalleryAPIConstants.ENTERPASSWORD_URL + profileId + "/" + folderId);
-        List<NameValuePair> body = Collections.<NameValuePair>singletonList(new BasicNameValuePair(GalleryAPIConstants.ENTERPASSWORD_PASSWORD_PARAM, password));
+        List<Pair<String,String>> body = Collections.singletonList(new Pair<>(GalleryAPIConstants.ENTERPASSWORD_PASSWORD_PARAM, password));
         HTTPURLResponseHolder response = APINetworkUtility.postForResponseHolderNoThrow(url, body, null);
 
         if(response.isSuccessful()){

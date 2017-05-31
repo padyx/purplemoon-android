@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -201,12 +200,12 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
                 options.inJustDecodeBounds = false;
                 options.inSampleSize = ImageUtility.calculateInsampleSize(options, height, width);
                 stream = getActivity().getContentResolver().openInputStream(m_imageURI);
-                return new Holder<Bitmap>(BitmapFactory.decodeStream(stream, null, options));
+                return new Holder<>(BitmapFactory.decodeStream(stream, null, options));
             } catch (FileNotFoundException e) {
-                return new Holder<Bitmap>(e);
+                return new Holder<>(e);
             } catch (IOException e) {
                 Log.w(TAG, "Could not close stream after reading");
-                return new Holder<Bitmap>(e);
+                return new Holder<>(e);
             } finally {
                 if (stream != null) {
                     try {
@@ -266,12 +265,12 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
                 return;
             }
 
-            final ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.AUTH_HEADER_NAME, PurplemoonAPIConstantsV1.AUTH_HEADER_VALUEPREFIX
+            final ArrayList<Pair<String,String>> params = new ArrayList<>();
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.AUTH_HEADER_NAME, PurplemoonAPIConstantsV1.AUTH_HEADER_VALUEPREFIX
                     + accessToken));
-            final ArrayList<NameValuePair> list = new ArrayList<NameValuePair>();
-            list.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.PICTURE_POST_FOLDER, folder.getFolderId()));
-            list.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.PICTURE_POST_DESCRIPTION, desc));
+            final ArrayList<Pair<String,String>> list = new ArrayList<>();
+            list.add(new Pair<>(PurplemoonAPIConstantsV1.PICTURE_POST_FOLDER, folder.getFolderId()));
+            list.add(new Pair<>(PurplemoonAPIConstantsV1.PICTURE_POST_DESCRIPTION, desc));
 
             UploadBean b = new UploadBean(u, m_imageURI, PurplemoonAPIConstantsV1.PICTURE_POST_PICTURE, list, params);
             if (m_onDismissListener != null) {

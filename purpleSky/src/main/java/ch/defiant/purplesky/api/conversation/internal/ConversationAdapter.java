@@ -1,9 +1,9 @@
 package ch.defiant.purplesky.api.conversation.internal;
 
 import android.util.Log;
+import android.util.Pair;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,15 +75,15 @@ class ConversationAdapter implements IConversationAdapter {
         sb.append(userid);
         URL url = new URL(sb.toString());
 
-        List<NameValuePair> body = new ArrayList<NameValuePair>();
-        body.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.JSON_MESSAGE_TEXT, message.getMessageText()));
+        List<Pair<String,String>> body = new ArrayList<Pair<String,String>>();
+        body.add(new Pair<>(PurplemoonAPIConstantsV1.JSON_MESSAGE_TEXT, message.getMessageText()));
         body.add(
-                new BasicNameValuePair(
+                new Pair<>(
                         PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_PARAM,
                         APIUtility.translateUnreadHandling(opts.getUnreadHandling())));
         if (opts.getUnreadHandling() == SendOptions.UnreadHandling.ABORT && opts.getLatestRead() != null) {
             body.add(
-                    new BasicNameValuePair(
+                    new Pair<>(
                             PurplemoonAPIConstantsV1.MESSAGE_SEND_UNREAD_HANDLING_TIMESTAMPSINCE,
                             String.valueOf(DateUtility.getUnixTime(opts.getLatestRead()))
                     )
@@ -121,23 +121,23 @@ class ConversationAdapter implements IConversationAdapter {
         urlBuilder.append(PurplemoonAPIConstantsV1.BASE_URL);
         urlBuilder.append(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_URL);
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
         if (startAt != null && startAt >= 0) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(startAt)));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(startAt)));
         }
         if (resultCount != null && resultCount >= 0) {
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(resultCount)));
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(resultCount)));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(resultCount)));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(resultCount)));
         } else {
             // TODO Remove the bean retrieval when beans are cached
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(15)));
-            params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(15)));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(15)));
+            params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_NUMBER_PARAM, String.valueOf(15)));
         }
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, "true"));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, String.valueOf(100)));
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, "true"));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_INCLUDEEXCERPT, String.valueOf(100)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.USEROBJ_TYPE_PARAM, PurplemoonAPIConstantsV1.USEROBJ_TYPE_MINIMAL));
 
-        params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, APIUtility.translateMessageRetrievalRestrictionType(restrict)));
+        params.add(new Pair<>(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, APIUtility.translateMessageRetrievalRestrictionType(restrict)));
         // End of parameters
         urlBuilder.append(HTTPURLUtility.createGetQueryString(params));
 
@@ -239,30 +239,30 @@ class ConversationAdapter implements IConversationAdapter {
         sb.append(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_URL);
         sb.append(profileId);
 
-        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
 
         if (options != null) {
             if (options.getNumber() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(options.getNumber())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.NUMBER_PARAM, String.valueOf(options.getNumber())));
             }
             if (options.getSinceTimestamp() != null) {
                 long s = DateUtility.getUnixTime(options.getSinceTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
+                Pair<String,String> time = new Pair<>(PurplemoonAPIConstantsV1.SINCE_TIMESTAMP_PARAM, String.valueOf(s));
                 params.add(time);
             }
             if (options.getUptoTimestamp() != null) {
                 long u = DateUtility.getUnixTime(options.getUptoTimestamp());
-                BasicNameValuePair time = new BasicNameValuePair(PurplemoonAPIConstantsV1.UPTO_TIMESTAMP_PARAM, String.valueOf(u));
+                Pair<String,String> time = new Pair<>(PurplemoonAPIConstantsV1.UPTO_TIMESTAMP_PARAM, String.valueOf(u));
                 params.add(time);
             }
             if (options.getSinceId() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_SINCE_MESSAGEID, String.valueOf(options.getSinceId())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_SINCE_MESSAGEID, String.valueOf(options.getSinceId())));
             }
             if (options.getUptoId() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_UPTO_MESSAGEID, String.valueOf(options.getUptoId())));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_UPTO_MESSAGEID, String.valueOf(options.getUptoId())));
             }
             if (options.getOrder() != null) {
-                params.add(new BasicNameValuePair(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, options.getOrder()));
+                params.add(new Pair<>(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_ORDER_PARAM, options.getOrder()));
             }
         }
         sb.append(HTTPURLUtility.createGetQueryString(params));

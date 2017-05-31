@@ -6,6 +6,7 @@ import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.Pair;
 
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -14,8 +15,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-
-import org.apache.http.NameValuePair;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -164,10 +163,10 @@ public class UploadService extends Service {
     private Request.Builder createRequestBuilder(UploadBean b) {
         Request.Builder builder = new Request.Builder();
 
-        Collection<NameValuePair> headers = b.getHeaderParams();
+        Collection<Pair<String,String>> headers = b.getHeaderParams();
         if(headers != null) {
-            for(NameValuePair header : headers){
-                builder.header(header.getName(), header.getValue());
+            for(Pair<String,String> header : headers){
+                builder.header(header.first, header.second);
             }
         }
         return builder;
@@ -176,12 +175,12 @@ public class UploadService extends Service {
     private MultipartBuilder createMultipartBuilder(UploadBean b, Uri fileUri, String mimeType) {
         MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
         // Additional params
-        Collection<NameValuePair> additionalParams = b.getFormParams();
+        Collection<Pair<String,String>> additionalParams = b.getFormParams();
         if(additionalParams != null) {
-            for (NameValuePair pair : additionalParams) {
+            for (Pair<String,String> pair : additionalParams) {
                 multipartBuilder.addPart(
-                        Headers.of("Content-Disposition", "form-data; name=\"" + pair.getName() + "\""),
-                        RequestBody.create(null, pair.getValue()));
+                        Headers.of("Content-Disposition", "form-data; name=\"" + pair.first + "\""),
+                        RequestBody.create(null, pair.second));
             }
         }
 
