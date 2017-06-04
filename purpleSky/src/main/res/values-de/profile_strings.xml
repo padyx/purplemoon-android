@@ -158,7 +158,7 @@
 	<string name="profile_which_chats">Chats</string>
 	<!-- User defined string (value). No translation -->
 
-	<string name="profile_chat_frequency">Häuigkeit</string>
+	<string name="profile_chat_frequency">Häufigkeit</string>
 	<string name="profile_chat_frequency_never">Nie</string>
 	<string name="profile_chat_frequency_seldom">Selten</string>
 	<string name="profile_chat_frequency_nowandthen">Ab und zu</string>
