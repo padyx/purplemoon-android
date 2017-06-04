@@ -50,7 +50,7 @@ public class UserService {
     public Map<String, MinimalUser> getMinimalUsers(List<String> profileIds, boolean withOnlineStatus)
             throws IOException, PurpleSkyException {
         HashMap<String, MinimalUser> map = new HashMap<String, MinimalUser>();
-        if (profileIds == null) {
+        if (profileIds == null || profileIds.isEmpty()) {
             return map;
         }
 
