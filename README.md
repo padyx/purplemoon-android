@@ -20,6 +20,7 @@ Thanks to the authors of all of them!
 * Square Dagger, dependency injection (http://square.github.io/dagger/)
 * Apache Commons IO (http://commons.apache.org/proper/commons-io/)
 * RoundedImageView (https://github.com/vinc3m1/RoundedImageView)
+* Endless Adapter and Adapter Wrapper (forked on: https://github.com/padyx/cwac-endless)
 
 ### [MIT Licence](https://opensource.org/licenses/MIT)
 
