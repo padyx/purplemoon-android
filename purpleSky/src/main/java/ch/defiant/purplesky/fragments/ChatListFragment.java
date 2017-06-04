@@ -241,6 +241,7 @@ public class ChatListFragment extends BaseFragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.list_plain, container, false);
         m_listView = (ListView) v.findViewById(R.id.list);
+        m_listView.setDividerHeight(0);
         m_listView.setOnItemClickListener(new MessageListItemClickListener());
         if (savedInstanceState != null && savedInstanceState.containsKey(SAVESTATE_MESSAGEARRAY)) {
             @SuppressWarnings("unchecked")

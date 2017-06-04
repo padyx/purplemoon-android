@@ -76,7 +76,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:name="ch.defiant.purplesky.fragments.ChatListFragment"
-            tools:layout="@layout/list_plain" />
+            tools:layout="@layout/list_plain"
+            tools:listitem="@layout/messagebyuserlist_item" />
     </LinearLayout>
 
     <!-- Nav drawer -->
