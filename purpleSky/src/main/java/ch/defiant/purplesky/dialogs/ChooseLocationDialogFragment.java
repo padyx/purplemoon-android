@@ -6,18 +6,17 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,52 +29,58 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
 
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.adapters.ErrorAdapter;
 import ch.defiant.purplesky.listeners.IResultDeliveryReceiver;
 import ch.defiant.purplesky.loaders.SimpleAsyncLoader;
 
-public class ChooseLocationDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<List<Address>>, Callback {
+public class ChooseLocationDialogFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<List<Address>>,
+        Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        com.google.android.gms.location.LocationListener {
+
+    private static final String TAG = ChooseLocationDialogFragment.class.getSimpleName();
 
     private static final String SEARCHTXT = "searchText";
 
-    private AtomicReference<LocationListener> m_listener = new AtomicReference<LocationListener>();
-    private LocationManager m_locationManager;
     private Location m_location;
     private boolean m_locationFailed;
     private static final float ACCURACY_LIMIT = 2001.0f;
     private static final int MAX_UPDATES = 5;
     private IResultDeliveryReceiver<Location> m_resultReceiver;
 
+    private int locationCount = 0;
+
     /**
      * Message handler for this one
      */
     private Handler m_handler;
+    private GoogleApiClient locationClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        m_locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
         m_handler = new Handler(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocationListener listener = m_listener.get();
-        if (listener != null) {
-            m_locationManager.removeUpdates(listener);
-        }
+        endLocationUpdates();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         if (m_location == null && !m_locationFailed) {
             initiateLocation();
         }
@@ -127,61 +132,20 @@ public class ChooseLocationDialogFragment extends DialogFragment implements Load
     }
 
     private void initiateLocation() {
-        // Retrieve a list of location providers that have fine accuracy, no monetary cost, etc
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setCostAllowed(false);
-        criteria.setAltitudeRequired(false);
-        criteria.setSpeedRequired(false);
-
-        String providerName = m_locationManager.getBestProvider(criteria, true);
-        LocationProvider provider = null;
-        // If no suitable provider is found, null is returned.
-        if (providerName != null && m_locationManager.isProviderEnabled(providerName)) {
-            provider = m_locationManager.getProvider(providerName);
+        if (locationClient == null) {
+            locationClient = new GoogleApiClient.Builder(getActivity())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
         }
+        locationClient.connect();
+    }
 
-        if (provider == null) {
-            Toast.makeText(getActivity(), R.string.NoLocationDevices, Toast.LENGTH_LONG).show();
-            locationFailed(R.string.ErrorUnsupportedDeviceGeneric);
-            return;
+    private void endLocationUpdates() {
+        if (locationClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(locationClient, this);
         }
-
-        LocationListener listener = new LocationListener() {
-
-            private int locationCount = 0;
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-
-            @Override
-            public void onLocationChanged(Location location) {
-                locationCount++;
-                if (location.getAccuracy() < ACCURACY_LIMIT) {
-                    m_locationManager.removeUpdates(this);
-                    m_listener.compareAndSet(this, null);
-                    locationObtained(location);
-                } else if (locationCount == MAX_UPDATES) {
-                    // We have not enough accuracy
-                    m_locationManager.removeUpdates(this);
-                    m_listener.compareAndSet(this, null);
-                    locationFailed(R.string.LocationTimeout);
-                }
-            }
-
-        };
-        m_listener.set(listener);
-        m_locationManager.requestLocationUpdates(providerName, 5000, 250, listener);
-
     }
 
     private void locationFailed(int errorResource) {
@@ -246,6 +210,46 @@ public class ChooseLocationDialogFragment extends DialogFragment implements Load
 
     @Override
     public void onLoaderReset(Loader<List<Address>> arg0) {
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        LocationRequest locationRequest = LocationRequest.create();
+        // Use low power accuracy
+        locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        // Set the update interval to 0.5 seconds
+        locationRequest.setInterval(500);
+        // Set the fastest update interval to 0.25 second
+        locationRequest.setFastestInterval(250);
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(locationClient, locationRequest, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.d(TAG, "Location api connection suspended with cause " + cause);
+        Toast.makeText(getActivity(), R.string.LocationNotFound, Toast.LENGTH_LONG).show();
+        locationFailed(R.string.ErrorUnsupportedDeviceGeneric);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "Location request failed with reason " + connectionResult);
+        Toast.makeText(getActivity(), R.string.NoLocationDevices, Toast.LENGTH_LONG).show();
+        locationFailed(R.string.ErrorUnsupportedDeviceGeneric);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        locationCount++;
+        if (location.getAccuracy() < ACCURACY_LIMIT) {
+            endLocationUpdates();
+            locationObtained(location);
+        } else if (locationCount == MAX_UPDATES) {
+            // We have not enough accuracy
+            endLocationUpdates();
+            locationFailed(R.string.LocationTimeout);
+        }
     }
 
     private final class LocationTextWatcher implements TextWatcher {
