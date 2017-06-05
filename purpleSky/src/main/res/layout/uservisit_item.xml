@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" 
+    android:layout_height="wrap_content"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    >
+    android:paddingRight="8dp">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/uservisit_item_userImgV"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        app:riv_corner_radius="30dip"
+        app:riv_border_width="0dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/Accessibility_UserProfilePicture"
-        android:src="@drawable/icon" />
+        android:src="@drawable/picture_placeholder" />
 
     <TextView
         android:id="@+id/uservisit_item_userLbl"
