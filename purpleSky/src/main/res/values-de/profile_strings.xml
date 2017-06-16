@@ -39,7 +39,7 @@
 	<string name="profile_facial_hair">Gesichtsbehaarung</string>
 	<string name="profile_facial_hair_none">Keine</string>
 	<string name="profile_facial_hair_shaved">Rasiert</string>
-	<string name="profile_facial_hair_threeday">Dreitagbart</string>
+    <string name="profile_facial_hair_threeday">Dreitagebart</string>
 	<string name="profile_facial_hair_mustache">Schnurrbart</string>
 	<string name="profile_facial_hair_petitgoatee">Kleiner Kinnbart</string>
 	<string name="profile_facial_hair_goatee">Kinnbart</string>

@@ -104,7 +104,7 @@
     <string name="ErrorCouldNotFindUser">Ups - der Benutzer konnte nicht gefunden werden!</string>
     <string name="WaitSendMessage">Nachricht wird gesendet - bitte warten…</string>
     <string name="MustEnterTextMessage">Du musst einen Text für die Nachricht eingeben (Leerzeichen reichen nicht).</string>
-    <string name="LocationTimeout">Konnte deinen Standort nicht rechtzeitig festtellen. Versuch es später erneut.</string>
+    <string name="LocationTimeout">Konnte deinen Standort nicht rechtzeitig feststellen. Versuch es später erneut.</string>
     <string name="NoLocationDevices">Dein Gerät unterstützt die Lokalisierung nicht oder diese ist abgeschaltet.</string>
     <string name="ObtainingLocation">Ermittle deinen Standort…</string>
     <string name="VerifiedUser">Verifizierter Benutzer</string>
@@ -149,7 +149,7 @@
 	<string name="CreatingPostit">Erstelle Post-It</string>
 	<string name="Error_NoPowerUserGeneric">Für diese Aktion musst du bei Purplemoon/Purplestar needs ein Poweruser sein. Du kannst dies auf der Purplemoon/Purplestar Webseite abonnieren.</string>
 	<string name="Error_NoPowerUserTitle">Du bist kein Poweruser.</string>
-	<string name="ErrorActionYouAreBlocking">Diese Aktion ist nicht möglich, weil du diesen Benutzer blockierst. Du kannst die Blockierung auf der Purplemoon/Purplestar Webseite wiederaufheben.</string>
+    <string name="ErrorActionYouAreBlocking">Diese Aktion ist nicht möglich, weil du diesen Benutzer blockierst. Du kannst die Blockierung auf der Purplemoon/Purplestar Webseite wieder aufheben.</string>
 	<string name="ErrorActionBeingBlocked">Diese Aktion ist nicht möglich, weil der andere Nutzer dich blockiert.</string>
 	<string name="ErrorGeneric">Ein unbekannter Fehler ist aufgetreten. Wir entschuldigen uns für die Unannehmlichkeiten.</string>
 	<string name="ErrorGenericNoText">Ein Fehler ist aufgetreten: Du hast keinen Text in den nötigen Feldern eingetragen.</string>
@@ -160,7 +160,7 @@
 	<string name="ErrorPoweruserCustomPostits">Nur Poweruser können benutzerdefinierte Post-its geben. Du kannst dies auf der Purplemoon/Purplestar Webseite abonnieren.</string>
 	<string name="SearchUser_ShortHome">Benutzersuche</string>
 	<string name="PushNotifications">Push-Benachrichtigung</string>
-	<string name="ErrorPushNotificationsUnavailableExpl">Dein Gerät unterstützt keine Push-Benachrichtigung.\nDir fehlen entweder Google Play Services, Google Play Store oder du hast kein Googe-Konto verknüpft. Du kannst stattdessen regelmässige Aktualisierungen in den Einstellungen einschalten.</string>
+    <string name="ErrorPushNotificationsUnavailableExpl">Dein Gerät unterstützt keine Push-Benachrichtigung.\nDir fehlen entweder Google Play Services, Google Play Store oder du hast kein Google-Konto verknüpft. Du kannst stattdessen regelmässige Aktualisierungen in den Einstellungen einschalten.</string>
 	<string name="PhotoVote_Xmore">%1$d weitere</string>
 	<string name="preference_poweruserStatus">Poweruser Status</string>
 	<string name="preference_poweruserNotActivated">Du bist kein Poweruser.</string>
