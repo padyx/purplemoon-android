@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Accessibility_UserProfilePicture">Photo de profil d\'utilisateur</string>
+    <string name="Accessibility_PictureForUpload">Le photo choisi pour télécharger</string>
+    <string name="Accessibility_WarningIcon">Attention</string>
+    <string name="Accessibility_NavigationOpen">Ouvir navigation</string>
+    <string name="Accessibility_NavigationClose">Fermer navigation</string>
+    <string name="Accessibility_OwnProfilePicture">Ton tableau de profil</string>
+    <string name="AccessibilityPoweruserFeature">C\'est une fonction pour Poweruser</string>
+    <string name="AccessibilityUnreadMessageOtherUser">Ce message n\'a pas été lu par l\'autre utilisateur.</string>
+    <string name="Accessibiliy_IndicatorNewMessage">Ce message est nouveau.</string>
+
+</resources>

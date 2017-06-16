@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="radarsearch_options_attractions_strings">
+        <item>Homme gay</item>
+        <item>Homme bisexuel</item>
+        <item>Homme hétérosexuel</item>
+        <item>Femme lesbienne</item>
+        <item>Femme bisexuelle</item>
+        <item>Femme hétérosexuel</item>
+    </string-array>
+
+    <string-array name="usersearch_opts_str_online">
+        <item>Maintenant</item>
+        <item>Dernière heure</item>
+        <item>Dernières 24 heures</item>
+        <item>Dernières 7 jours</item>
+        <item>Dernières 30 jours</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_vegetarian">
+        <item>Oui</item>
+        <item>Non</item>
+        <item>Végétalien</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_kids_have">
+        <item>Non</item>
+        <item>Oui, un</item>
+        <item>Oui, plusieurs</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_kids_want">
+        <item>Non</item>
+        <item>Pas sûr</item>
+        <item>Oui</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_gendersexuality">
+        <item>Homme gay</item>
+        <item>Homme bisexuel</item>
+        <item>Homme hétérosexuel</item>
+        <item>Femme lesbienne</item>
+        <item>Femme bisexuelle</item>
+        <item>Femme hétérosexuel</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_partnerstatus">
+        <item>Single</item>
+        <item>En relation</item>
+        <item>Engagé</item>
+        <item>Marié</item>
+        <item>Relation ouverte</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_smoker">
+        <item>Nur Joints</item>
+        <item>Sehr viel</item>
+        <item>Viel</item>
+        <item>Mässig</item>
+        <item>Nur an Wochenenden</item>
+        <item>Fast nie</item>
+        <item>Nie</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_physique">
+        <item>Schlank</item>
+        <item>Normal</item>
+        <item>Athletisch</item>
+        <item>Bodybuilder</item>
+        <item>Stämmig</item>
+        <item>Kleiner Bauch</item>
+        <item>Mollig</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_hair_color">
+        <item>Hellbraun</item>
+        <item>Dunkelbraun</item>
+        <item>Braun</item>
+        <item>Hellblond</item>
+        <item>Dunkelblond</item>
+        <item>Blond</item>
+        <item>Schwarz</item>
+        <item>Rot</item>
+        <item>Hellrot</item>
+        <item>Dunkelgrau</item>
+        <item>Rot gefärbt</item>
+        <item>Schwarz gefärbt</item>
+        <item>Blau gefärbt</item>
+        <item>Grün gefärbt</item>
+        <item>Blond gefärbt</item>
+        <item>Violett gefärbt</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_hair_length">
+        <item>Glatze</item>
+        <item>Kurz</item>
+        <item>Mittel</item>
+        <item>Lang</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_facial_hair">
+        <item>Ohne</item>
+        <item>Rasiert</item>
+        <item>3-Tage-Bart</item>
+        <item>Schurrbart</item>
+        <item>Kleiner Kinnbart</item>
+        <item>Kinnbart</item>
+        <item>Koteletten</item>
+        <item>Vollbart</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_religion">
+        <item>Agnostisch</item>
+        <item>Atheist</item>
+        <item>Römisch-Katholisch</item>
+        <item>Christ-Katholisch</item>
+        <item>Evangelisch-Reformiert</item>
+        <item>Protestantisch</item>
+        <item>Russisch-Orthodox</item>
+        <item>Griechisch-Orthodox</item>
+        <item>Jüdisch-Orthodox</item>
+        <item>Orthodox</item>
+        <item>Christlich</item>
+        <item>Freikirchlich</item>
+        <item>Naturreligion</item>
+        <item>Hindu</item>
+        <item>Sunnititisch</item>
+        <item>Shiitisch</item>
+        <item>Jüdisch</item>
+        <item>Buddhistisch</item>
+        <item>Shinto</item>
+        <item>Spritituell</item>
+        <item>Andere Religion</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_politics">
+        <item>Kein Interesse</item>
+        <item>Rechts</item>
+        <item>Mitte-rechts</item>
+        <item>Mitte</item>
+        <item>Mitte-links</item>
+        <item>Links</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_eye_color">
+        <item>Hellbraun</item>
+        <item>Dunkelbraun</item>
+        <item>Braun</item>
+        <item>Hellblau</item>
+        <item>Dunkelblau</item>
+        <item>Blau</item>
+        <item>Schwarz</item>
+        <item>Grün</item>
+        <item>Blau-grau</item>
+        <item>Blau-grün</item>
+        <item>Grün-braun</item>
+        <item>Grün-grau</item>
+        <item>Grau</item>
+    </string-array>
+    <string-array name="usersearch_opts_str_drinker">
+        <item>Nie</item>
+        <item>Selten</item>
+        <item>Manchmal</item>
+        <item>Regelmässig</item>
+        <item>Oft</item>
+        <item>Nur Wein</item>
+    </string-array>
+
+</resources>
