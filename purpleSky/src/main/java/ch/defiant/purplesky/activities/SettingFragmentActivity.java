@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.Date;
@@ -18,7 +17,6 @@ import javax.inject.Inject;
 import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.activities.common.BaseFragmentActivity;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
-import ch.defiant.purplesky.broadcast.BroadcastTypes;
 import ch.defiant.purplesky.constants.PreferenceConstants;
 import ch.defiant.purplesky.core.PersistantModel;
 import ch.defiant.purplesky.core.PreferenceUtility;
@@ -92,8 +90,6 @@ public class SettingFragmentActivity extends BaseFragmentActivity {
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        removeAllDataAndLogout();
-
                         startActivity(new Intent(SettingFragmentActivity.this, AboutActivity.class));
                         return true;
                     }

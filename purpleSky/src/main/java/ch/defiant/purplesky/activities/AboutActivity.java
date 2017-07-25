@@ -22,7 +22,7 @@ public class AboutActivity extends BaseFragmentActivity {
 
     @Override
     public int getSelfNavigationIndex() {
-        return -1;
+        return NAVIGATION_INDEX_INVALID;
     }
 
     @Override
