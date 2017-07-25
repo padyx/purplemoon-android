@@ -706,7 +706,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             PushStatus status = new PushStatus();
             status.setEnabled(object.optBoolean(PurplemoonAPIConstantsV1.JSON_PUSH_ACTIVE, false));
             status.setDeviceToken(object.optString(PurplemoonAPIConstantsV1.JSON_PUSH_DEVICETOKEN, ""));
-            status.setLastPush(DateUtility.parseJSONDate(object.optString(PurplemoonAPIConstantsV1.JSON_PUSH_TYPE)));
+            status.setLastPush(DateUtility.parseJSONDate(object.optString(PurplemoonAPIConstantsV1.JSON_PUSH_LASTPUSH_TIMESTAMP)));
 
             return status;
         } else {
