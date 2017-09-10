@@ -188,7 +188,7 @@ class MessageService implements IMessageService {
             db.beginTransaction();
             for (PrivateMessage m : list) {
                 ContentValues cVal = new ContentValues();
-                cVal.put(DatabaseConstants.MESSAGES_MESSAGEID, Long.valueOf(m.getMessageHead().getMessageId()));
+                cVal.put(DatabaseConstants.MESSAGES_MESSAGEID, m.getMessageHead().getMessageId());
                 cVal.put(DatabaseConstants.MESSAGES_FROMUSERID, Long.valueOf(m.getMessageHead().getAuthorProfileId()));
                 cVal.put(DatabaseConstants.MESSAGES_TOUSERID, Long.valueOf(m.getMessageHead().getRecipientProfileId()));
                 cVal.put(DatabaseConstants.MESSAGES_TIMESENT, m.getMessageHead().getTimeSent().getTime());
