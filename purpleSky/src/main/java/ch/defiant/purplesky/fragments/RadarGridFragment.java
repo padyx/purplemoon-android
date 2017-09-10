@@ -1,6 +1,5 @@
 package ch.defiant.purplesky.fragments;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -371,8 +370,11 @@ public class RadarGridFragment extends BaseFragment implements
             sherlockActivity.setProgressBarIndeterminateVisibility(false);
         }
         adapter.clear();
-        for (MinimalUser user : data.getContainedObject()) {
-            adapter.add(user);
+        final List<MinimalUser> resultList = data.getContainedObject();
+        if (resultList != null) {
+            for (MinimalUser user : resultList) {
+                adapter.add(user);
+            }
         }
         adapter.notifyDataSetChanged();
 
