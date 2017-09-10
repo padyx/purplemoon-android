@@ -134,13 +134,14 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
                 Toolbar toolbar = fragmentActivity.getActionbarToolbar();
                 if(toolbar != null) {
                     if (result != null) {
-                        fragmentActivity.getActionbarToolbar().setLogo(result);
+                        toolbar.setLogo(result);
                     } else {
-                        fragmentActivity.getActionbarToolbar().setLogo(R.drawable.ic_launcher);
+                        toolbar.setLogo(R.drawable.ic_launcher);
                     }
                 }
+                // Guard with activity null check: throws IllegalArgumentException if detached.
+                getLoaderManager().destroyLoader(R.id.loader_message_profileImage);
             }
-            getLoaderManager().destroyLoader(R.id.loader_message_profileImage);
         }
 
         @Override
