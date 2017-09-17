@@ -263,10 +263,11 @@ public class APINetworkUtility {
         HTTPURLResponseHolder holder = new HTTPURLResponseHolder();
         holder.setResponseCode(response.code());
         holder.setSuccessful(response.isSuccessful());
+        String responseBody = response.body().string();
         if(response.isSuccessful()){
-            holder.setOutput(response.body().string());
+            holder.setOutput(responseBody);
         } else {
-            holder.setError(response.body().string());
+            holder.setError(responseBody);
             ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), holder.getError(), resource.toString());
         }
 
