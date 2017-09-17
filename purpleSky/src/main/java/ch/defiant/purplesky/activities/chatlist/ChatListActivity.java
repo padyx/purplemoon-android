@@ -71,8 +71,6 @@ public class ChatListActivity extends BaseFragmentActivity
             getActionBar().setIcon(R.drawable.ic_launcher);
         }
 
-        startPromotionLoading();
-
         UpgradeHandler upgradeHandler = new UpgradeHandler(m_apiAdapter);
         if(upgradeHandler.needsUpgrade(this)){
             UpgradeTask task = new UpgradeTask(this, m_apiAdapter);
@@ -95,7 +93,11 @@ public class ChatListActivity extends BaseFragmentActivity
                     preferences.edit().putLong(PreferenceConstants.lastPushRegistrationAttempt, currentTime).apply();
                 }
             }
+            // Don't check for promos when upgrading.
+            startPromotionLoading();
         }
+
+
     }
 
     private boolean isPushSelfHealAttemptNeeded(long lastAttempt, long currentTime) {
