@@ -145,7 +145,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
     @Override
     public Map<String, MinimalUser> getMinimalUserData(List<String> userids, boolean withOnlineStatus) throws IOException, PurpleSkyException {
-        HashMap<String, MinimalUser> result = new HashMap<String, MinimalUser>();
+        HashMap<String, MinimalUser> result = new HashMap<>();
         if (userids == null)
             return result;
 
@@ -198,7 +198,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
     @Override
     public Map<String, PreviewUser> getPreviewUserData(List<String> userids, boolean withOnlineStatus) throws IOException, PurpleSkyException {
-        HashMap<String, PreviewUser> result = new HashMap<String, PreviewUser>();
+        HashMap<String, PreviewUser> result = new HashMap<>();
         if (userids == null)
             return result;
 
@@ -301,7 +301,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         if (response != null) {
             final int size = response.length();
-            HashMap<String, Integer> idToPosMap = new HashMap<String, Integer>();
+            Map<String, Integer> idToPosMap = new HashMap<>();
             for (int i = 0; i < size; i++) {
                 // Translate to beans
                 JSONObject jsonObject = response.optJSONObject(i);
@@ -318,7 +318,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                 result.add(bean);
             }
             Map<String, MinimalUser> minimalUser = PurpleSkyApplication.get().getUserService()
-                    .getMinimalUsers(new ArrayList<String>(idToPosMap.keySet()), false);
+                    .getMinimalUsers(new ArrayList<>(idToPosMap.keySet()), false);
             for (Entry<String, MinimalUser> entry : minimalUser.entrySet()) {
                 if (idToPosMap.get(entry.getKey()) != null) {
                     OnlineBean onlineBean = result.get(idToPosMap.get(entry.getKey()));
@@ -448,7 +448,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
     @Override
     public Pair<OnlineStatus, String> getOwnOnlineStatus() throws IOException, PurpleSkyException {
-        Pair<OnlineStatus, String> result = new Pair<OnlineStatus, String>(OnlineStatus.UNKNOWN, null);
+        Pair<OnlineStatus, String> result = new Pair<>(OnlineStatus.UNKNOWN, null);
 
         JSONObject object = performGETRequestForJSONObject(new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.MY_ONLINESTATUS_URL));
         if (object == null) {
@@ -460,7 +460,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         if (predefined != null) {
             OnlineStatus status = APIUtility.toOnlineStatus(predefined);
-            return new Pair<OnlineStatus, String>(status, customText);
+            return new Pair<>(status, customText);
         } else {
             // Unknown case...
             if (BuildConfig.DEBUG) {
@@ -473,7 +473,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     @Override
     public Map<String, Pair<OnlineStatus, String>> getOnlineStatus(List<String> profileIds) throws IOException, PurpleSkyException {
         if (profileIds == null) {
-            return new HashMap<String, Pair<OnlineStatus, String>>();
+            return new HashMap<>();
         }
 
         StringBuilder url = new StringBuilder();
@@ -493,10 +493,10 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
         JSONArray res = performGETRequestForJSONArray(new URL(url.toString()));
         if (res == null) {
-            return new HashMap<String, Pair<OnlineStatus, String>>();
+            return new HashMap<>();
         }
 
-        HashMap<String, Pair<OnlineStatus, String>> map = new HashMap<String, Pair<OnlineStatus, String>>();
+        HashMap<String, Pair<OnlineStatus, String>> map = new HashMap<>();
         final int arraySize = res.length();
         for (int i = 0; i < arraySize; i++) {
             JSONObject object = res.optJSONObject(i);
@@ -514,7 +514,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
 
             OnlineStatus status = APIUtility.toOnlineStatus(predefined);
             if (predefined != null) {
-                map.put(profileId, new Pair<OnlineStatus, String>(status, customText));
+                map.put(profileId, new Pair<>(status, customText));
             } else {
                 map.put(profileId, new Pair<OnlineStatus, String>(status, null));
             }
@@ -658,9 +658,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                 return false;
             }
 
-            boolean wasUnregisterSuccessful = !object.optBoolean(PurplemoonAPIConstantsV1.JSON_PUSH_ACTIVE, true);
-
-            return wasUnregisterSuccessful;
+            return !object.optBoolean(PurplemoonAPIConstantsV1.JSON_PUSH_ACTIVE, true);
         } else {
             return false;
         }
@@ -675,7 +673,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             Log.w(TAG, "No locations returned from API");
             return Collections.emptyList();
         }
-        List<PurplemoonLocation> result = new ArrayList<PurplemoonLocation>();
+        List<PurplemoonLocation> result = new ArrayList<>();
         int size = array.length();
         for (int i = 0; i < size; i++) {
             result.add(JSONTranslator.toPurplemoonLocation(array.optJSONObject(i)));
