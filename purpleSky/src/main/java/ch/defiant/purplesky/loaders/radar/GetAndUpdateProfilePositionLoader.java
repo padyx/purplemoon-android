@@ -42,11 +42,11 @@ public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address
 
     @Override
     public Address loadInBackground() {
+        Address address = null;
         try {
             PurplemoonLocation location;
             Collection<PurplemoonLocation> locations = apiAdapter.getOwnLocations();
             location = getCurrentLocation(locations);
-            Address address = null;
             if(newLocation != null) {
                 address = getAddressFromLocation(getContext(), newLocation);
                 if (location != null) {
@@ -60,13 +60,12 @@ public class GetAndUpdateProfilePositionLoader extends SimpleAsyncLoader<Address
                     updateLocation(newLocation, address, locations);
                 }
             }
-            return address;
             // TODO Handle errors
-        } catch (IOException e) {
-            return null;
-        } catch (PurpleSkyException e) {
-            return null;
+        } catch (IOException | PurpleSkyException e) {
+            Log.e(TAG, "Excepion during profile update", e);
         }
+
+        return address;
     }
 
     private static Address getAddressFromLocation(Context c, Location newLocation) throws IOException {
