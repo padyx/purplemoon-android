@@ -268,7 +268,7 @@ public class APINetworkUtility {
             holder.setOutput(responseBody);
         } else {
             holder.setError(responseBody);
-            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), holder.getError(), resource.toString());
+            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), responseBody, resource.toString());
         }
 
         return holder;

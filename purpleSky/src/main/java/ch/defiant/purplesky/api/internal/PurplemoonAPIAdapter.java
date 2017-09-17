@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
+import ch.defiant.purplesky.api.common.APINetworkUtility;
 import ch.defiant.purplesky.api.users.UserJSONTranslator;
 import ch.defiant.purplesky.beans.AlertBean;
 import ch.defiant.purplesky.beans.DetailedUser;
@@ -427,8 +428,10 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
 
         HTTPURLResponseHolder result;
-        result = performPOSTRequestForResponseHolder(new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.MY_ONLINESTATUS_URL),
-                params, Collections.<Pair<String,String>> emptyList());
+        result = APINetworkUtility.performPOSTRequestForResponseHolder(
+                new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.MY_ONLINESTATUS_URL),
+                params,
+                Collections.<Pair<String,String>> emptyList());
 
         switch (result.getResponseCode()) {
             case HttpURLConnection.HTTP_OK: {
@@ -607,7 +610,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                 PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_REGISTER));
         list.add(new Pair<>(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_DEVICETOKEN, gcmRegId));
 
-        HTTPURLResponseHolder resp = performPOSTRequestForResponseHolder(u, list, null);
+        HTTPURLResponseHolder resp = APINetworkUtility.performPOSTRequestForResponseHolder(u, list, null);
         if (resp.getOutput() != null) {
             JSONObject object = null;
             try {
@@ -640,7 +643,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
                 PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_ACTION_UNREGISTER));
         list.add(new Pair<>(PurplemoonAPIConstantsV1.PUSH_NOTIFICATION_DEVICETOKEN, gcmRegId));
 
-        HTTPURLResponseHolder resp = performPOSTRequestForResponseHolder(u, list, null);
+        HTTPURLResponseHolder resp = APINetworkUtility.performPOSTRequestForResponseHolder(u, list, null);
         if (resp.getOutput() != null) {
             JSONObject object = null;
             try {
@@ -693,7 +696,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_LATITUDE, String.valueOf(location.getLatitude())));
         postData.add(new Pair<>(PurplemoonAPIConstantsV1.LOCATIONS_LONGITUE, String.valueOf(location.getLongitude())));
 
-       performPOSTRequestForResponseHolder(new URL(url), postData, null);
+        APINetworkUtility.performPOSTRequestForResponseHolder(new URL(url), postData, null);
     }
 
     @Override
@@ -794,44 +797,5 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
         }
         builder.addHeader("Accept-Language", language);
     }
-
-    // TODO Move to network utility
-    private HTTPURLResponseHolder performPOSTRequestForResponseHolder(URL resource, List<Pair<String,String>> postBody, List<Pair<String,String>> headrs)
-            throws IOException, PurpleSkyException {
-        Request.Builder builder = new Request.Builder();
-        builder.url(resource);
-        if(headrs != null){
-            for(Pair<String,String> pair : headrs){
-                builder.addHeader(pair.first, pair.second);
-            }
-        }
-
-        addLanguageHeader(builder);
-        addAuthenticationHeader(builder, resource);
-
-        FormEncodingBuilder formBuilder = new FormEncodingBuilder();
-        if(postBody != null){
-            for(Pair<String,String> pair : postBody){
-                formBuilder.add(pair.first, pair.second);
-            }
-        }
-        builder.post(formBuilder.build());
-        Response response = new OkHttpClient().newCall(builder.build()).execute();
-
-        HTTPURLResponseHolder holder = new HTTPURLResponseHolder();
-        holder.setResponseCode(response.code());
-        holder.setSuccessful(response.isSuccessful());
-        String responseBody = response.body().string();
-        if(response.isSuccessful()){
-            holder.setOutput(responseBody);
-        } else {
-            holder.setError(responseBody);
-            ErrorTranslator.translateHttpError(PurpleSkyApplication.get(), response.code(), responseBody, resource.toString());
-        }
-
-        return holder;
-    }
-
-
 
 }
