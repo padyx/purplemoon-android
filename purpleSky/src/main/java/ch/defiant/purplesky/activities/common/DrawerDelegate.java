@@ -248,11 +248,16 @@ class DrawerDelegate implements LoaderManager.LoaderCallbacks<Object>{
         profileImg.setOnClickListener(new OwnProfileListener());
         TextView usernameLbl = (TextView) m_activity.findViewById(R.id.drawer_layout_usernameLbl);
 
-        PersistantModel model = PersistantModel.getInstance();
-        String url = model.getCachedOwnProfilePictureURLDirectory();
+        final PersistantModel model = PersistantModel.getInstance();
+        final String url = model.getCachedOwnProfilePictureURLDirectory();
+
+
+        // Needed for breaking the loop
+        if (!model.isOwnPropertiesCacheCurrent()){
+            startOwnUserbeanLoad();
+        }
         if (url == null) {
             Picasso.with(m_activity).load(R.drawable.social_person).fit().into(profileImg);
-            startOwnUserbeanLoad();
         } else {
             UserPreviewPictureSize size = UserPreviewPictureSize.getPictureForPx(imgSize);
             Picasso.with(m_activity).load(url + size.getAPIValue()).error(R.drawable.social_person)

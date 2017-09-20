@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -113,17 +112,21 @@ public class PersistantModel {
     private static final long EXPIRY_OWN_PROPERTIES = 1000 * 60 * 60 * 24; // A day
 
     /**
-     * Retrieve cached profile picture of user
+     * Retrieve cached profile picture of user.
+     * Check for freshness using {@link #isOwnPropertiesCacheCurrent()}
      *
-     * @return The cached url or <tt>null</tt> if it expired or is not found
+     * @return The cached url or <tt>null</tt> if not found.
      */
     public String getCachedOwnProfilePictureURLDirectory() {
-        String url = m_preferences.getString(PreferenceConstants.cachedOwnUserProfilePictureUrl, null);
-        long expiry = m_preferences.getLong(PreferenceConstants.cachedOwnUserPropertyExpiry, 0);
-        if (url == null || (System.currentTimeMillis() - expiry < EXPIRY_OWN_PROPERTIES)) {
-            return url;
+        return m_preferences.getString(PreferenceConstants.cachedOwnUserProfilePictureUrl, null);
+    }
+
+    public boolean isOwnPropertiesCacheCurrent() {
+        long lastUpdate = m_preferences.getLong(PreferenceConstants.cachedOwnUserPropertyLastUpdate, 0);
+        if(lastUpdate == 0){
+            return false;
         }
-        return null;
+        return System.currentTimeMillis() - lastUpdate < EXPIRY_OWN_PROPERTIES;
     }
 
     public void setOwnUserProperties(String username, URL profilePictureDirectory){
@@ -132,16 +135,11 @@ public class PersistantModel {
         String pictureUrl = profilePictureDirectory != null ? profilePictureDirectory.toString() : null;
         edit.putString(PreferenceConstants.cachedOwnUserProfilePictureUrl, pictureUrl );
 
-        edit.putLong(PreferenceConstants.cachedOwnUserPropertyExpiry, System.currentTimeMillis());
+        edit.putLong(PreferenceConstants.cachedOwnUserPropertyLastUpdate, System.currentTimeMillis());
         edit.apply();
     }
 
     public String getOwnUsername(){
-        String username =  m_preferences.getString(PreferenceConstants.cachedOwnUsername, null);
-        long expiry = m_preferences.getLong(PreferenceConstants.cachedOwnUserPropertyExpiry, 0);
-        if (username == null || (System.currentTimeMillis() - expiry < EXPIRY_OWN_PROPERTIES)) {
-            return username;
-        }
-        return null;
+        return  m_preferences.getString(PreferenceConstants.cachedOwnUsername, null);
     }
 }
