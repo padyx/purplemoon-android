@@ -1,8 +1,13 @@
 package ch.defiant.purplesky.beans;
 
+import java.io.Serializable;
+
 import ch.defiant.purplesky.enums.OnlineStatus;
 
-public class UpdateBean {
+public class UpdateBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private Integer favoritesCount;
     private Integer messagesCount;
     private Integer postItCount;

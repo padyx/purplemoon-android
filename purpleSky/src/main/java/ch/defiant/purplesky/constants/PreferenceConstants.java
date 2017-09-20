@@ -71,4 +71,9 @@ public class PreferenceConstants {
     public static final String promotionEnabled = promotionBase + "enabled";
     public static final String promotionLastShown = promotionBase + "lastShown";
 
+    /*
+     * Last refresh
+     */
+    public static final String drawerCountsLastRefresh = BASE + "drawerCountsLastRefresh";
+
 }
