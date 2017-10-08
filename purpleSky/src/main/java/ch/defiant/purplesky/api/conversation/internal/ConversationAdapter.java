@@ -75,7 +75,7 @@ class ConversationAdapter implements IConversationAdapter {
         sb.append(userid);
         URL url = new URL(sb.toString());
 
-        List<Pair<String,String>> body = new ArrayList<Pair<String,String>>();
+        List<Pair<String,String>> body = new ArrayList<>();
         body.add(new Pair<>(PurplemoonAPIConstantsV1.JSON_MESSAGE_TEXT, message.getMessageText()));
         body.add(
                 new Pair<>(
@@ -115,13 +115,13 @@ class ConversationAdapter implements IConversationAdapter {
             restrict = MessageRetrievalRestrictionType.LAST_CONTACT;
         }
 
-        ArrayList<UserMessageHistoryBean> resultList = new ArrayList<UserMessageHistoryBean>();
+        List<UserMessageHistoryBean> resultList = new ArrayList<>();
 
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(PurplemoonAPIConstantsV1.BASE_URL);
         urlBuilder.append(PurplemoonAPIConstantsV1.MESSAGE_CHATLIST_URL);
 
-        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
+        List<Pair<String,String>> params = new ArrayList<>();
         if (startAt != null && startAt >= 0) {
             params.add(new Pair<>(PurplemoonAPIConstantsV1.START_PARAM, String.valueOf(startAt)));
         }
@@ -230,7 +230,7 @@ class ConversationAdapter implements IConversationAdapter {
     @Override
     public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options) throws IOException, PurpleSkyException {
 
-        ArrayList<PrivateMessage> list = new ArrayList<PrivateMessage>();
+        List<PrivateMessage> list = new ArrayList<>();
         if (profileId == null)
             return list;
 
@@ -239,7 +239,7 @@ class ConversationAdapter implements IConversationAdapter {
         sb.append(PurplemoonAPIConstantsV1.MESSAGE_CHATSHOW_URL);
         sb.append(profileId);
 
-        ArrayList<Pair<String,String>> params = new ArrayList<>();
+        List<Pair<String,String>> params = new ArrayList<>();
 
         if (options != null) {
             if (options.getNumber() != null) {

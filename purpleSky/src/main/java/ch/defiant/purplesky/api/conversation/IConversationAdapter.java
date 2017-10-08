@@ -29,7 +29,7 @@ public interface IConversationAdapter {
      * @throws ch.defiant.purplesky.exceptions.WrongCredentialsException
      * @throws ch.defiant.purplesky.exceptions.PurpleSkyException
      */
-    public MessageResult sendMessage(PrivateMessage message, SendOptions opts) throws IOException,
+    MessageResult sendMessage(PrivateMessage message, SendOptions opts) throws IOException,
             PurpleSkyException;
 
     /**
@@ -45,7 +45,7 @@ public interface IConversationAdapter {
      * @throws IOException
      * @throws PurpleSkyException
      */
-    public List<UserMessageHistoryBean> getRecentContacts(Integer resultCount, Integer startAt,
+    List<UserMessageHistoryBean> getRecentContacts(Integer resultCount, Integer startAt,
                                                           MessageRetrievalRestrictionType restrict) throws IOException, PurpleSkyException;
 
     /**
@@ -55,10 +55,10 @@ public interface IConversationAdapter {
      * @throws IOException
      * @throws PurpleSkyException
      */
-    public UserMessageHistoryBean getConversationStatus(String profileId) throws IOException,
+    UserMessageHistoryBean getConversationStatus(String profileId) throws IOException,
             PurpleSkyException;
 
-    public int getUnopenedMessagesCount() throws IOException, PurpleSkyException;
+    int getUnopenedMessagesCount() throws IOException, PurpleSkyException;
 
     /**
      * Retrieves the messages between the application user and another user.
@@ -72,7 +72,7 @@ public interface IConversationAdapter {
      * @throws IOException
      * @throws PurpleSkyException
      */
-    public List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options)
+    List<PrivateMessage> getRecentMessagesByUser(String profileId, AdapterOptions options)
             throws IOException, PurpleSkyException;
 
 }
