@@ -96,7 +96,7 @@ public class UserSearchResultsFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         final int size = m_adapter.getCount();
-        ArrayList<MinimalUser> storedData = new ArrayList<MinimalUser>();
+        ArrayList<MinimalUser> storedData = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             storedData.add(m_adapter.getItem(i));
         }

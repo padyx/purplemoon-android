@@ -24,7 +24,7 @@ class GalleryJSONTranslator {
     public static final String TAG = GalleryJSONTranslator.class.getSimpleName();
 
     public static List<PictureFolder> translateToPictureFolders(JSONObject obj) {
-        ArrayList<PictureFolder> list = new ArrayList<PictureFolder>();
+        ArrayList<PictureFolder> list = new ArrayList<>();
         if (obj == null)
             return list;
 
@@ -72,7 +72,7 @@ class GalleryJSONTranslator {
     }
 
     public static ArrayList<PictureFolder> translateToPictureFolders(String profileId, JSONArray folders) {
-        ArrayList<PictureFolder> list = new ArrayList<PictureFolder>();
+        ArrayList<PictureFolder> list = new ArrayList<>();
         for (int i = 0, size = folders.length(); i < size; i++) {
             JSONObject jsonFolder = folders.optJSONObject(i);
             if (jsonFolder == null)

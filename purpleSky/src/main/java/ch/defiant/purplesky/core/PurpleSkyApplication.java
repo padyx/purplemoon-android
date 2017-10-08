@@ -20,7 +20,7 @@ public class PurpleSkyApplication extends android.app.Application {
 
     private UserService m_userservice;
     private HashMap<NavigationDrawerEventType, Integer> m_notificationCounts;
-    private WeakReference<UpdateListener> m_listener = new WeakReference<PurpleSkyApplication.UpdateListener>(null);
+    private WeakReference<UpdateListener> m_listener = new WeakReference<>(null);
     private PersistantModel m_model;
     ObjectGraph objectGraph;
 
@@ -63,14 +63,14 @@ public class PurpleSkyApplication extends android.app.Application {
      */
     public synchronized Integer getEventCount(NavigationDrawerEventType type) {
         if (m_notificationCounts == null) {
-            m_notificationCounts = new HashMap<NavigationDrawerEventType, Integer>();
+            m_notificationCounts = new HashMap<>();
         }
         return m_notificationCounts.get(type);
     }
 
     public synchronized void setEventCount(NavigationDrawerEventType type, int count) {
         if (m_notificationCounts == null) {
-            m_notificationCounts = new HashMap<NavigationDrawerEventType, Integer>();
+            m_notificationCounts = new HashMap<>();
         }
         m_notificationCounts.put(type, count);
         UpdateListener l = m_listener.get();
@@ -97,7 +97,7 @@ public class PurpleSkyApplication extends android.app.Application {
     }
 
     public void setListener(UpdateListener l) {
-        m_listener = new WeakReference<PurpleSkyApplication.UpdateListener>(l);
+        m_listener = new WeakReference<>(l);
     }
 
     public FragmentTransfer getFragmentTransferInstance() {

@@ -118,7 +118,7 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
         Spinner spinner = (Spinner) inflatedView.findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
 
         List<PictureFolder> list = Collections.<PictureFolder> singletonList(new NullPictureFolder(getString(R.string.Loading_)));
-        m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getActivity(), android.R.layout.simple_spinner_dropdown_item, list);
+        m_spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, list);
         spinner.setAdapter(m_spinnerAdapter);
 
         return inflatedView;
@@ -138,10 +138,10 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
                 try {
                     folders = galleryAdapter.getMyPictureFolders();
                 } catch (Exception e) {
-                    return new Holder<List<PictureFolder>>(e);
+                    return new Holder<>(e);
                 }
 
-                return new Holder<List<PictureFolder>>(folders);
+                return new Holder<>(folders);
             }
         };
     }
@@ -149,12 +149,12 @@ public class UploadPhotoDialogFragment extends BaseDialogFragment implements Loa
     @Override
     public void onLoadFinished(Loader<Holder<List<PictureFolder>>> loader, Holder<List<PictureFolder>> result) {
         if (result != null && result.getContainedObject() != null) {
-            ArrayList<PictureFolder> all = new ArrayList<PictureFolder>();
+            ArrayList<PictureFolder> all = new ArrayList<>();
             all.add(new NullPictureFolder(getString(R.string.PleaseChoose)));
             all.addAll(result.getContainedObject());
             if(getView() != null) {
                 Spinner spinner = (Spinner) getView().findViewById(R.id.uploadphoto_dialog_fragment_folderSpinner);
-                m_spinnerAdapter = new ArrayAdapter<PictureFolder>(getActivity(), android.R.layout.simple_spinner_dropdown_item, all);
+                m_spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, all);
                 spinner.setAdapter(m_spinnerAdapter);
             }
         } else {

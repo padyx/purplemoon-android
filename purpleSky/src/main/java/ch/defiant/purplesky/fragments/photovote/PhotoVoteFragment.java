@@ -146,9 +146,9 @@ public class PhotoVoteFragment extends BaseFragment implements LoaderManager.Loa
                     } else {
                         vote.setVotesRemaining(m_remaining - 1); // Cached version
                     }
-                    return new Holder<PhotoVoteBean>(vote);
+                    return new Holder<>(vote);
                 } catch (Exception e) {
-                    return new Holder<PhotoVoteBean>(e);
+                    return new Holder<>(e);
                 }
             }
         };

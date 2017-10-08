@@ -10,10 +10,10 @@ public class Holder<T> {
     private final Exception m_exception;
 
     public static <Q> Holder<Q> newInstance(Q value){
-        return new Holder<Q>(value);
+        return new Holder<>(value);
     }
     public static <Q> Holder<Q> of(Q value){
-        return new Holder<Q>(value);
+        return new Holder<>(value);
     }
     
     public Holder(T obj) {

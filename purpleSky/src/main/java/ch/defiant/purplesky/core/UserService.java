@@ -43,18 +43,18 @@ public class UserService {
      */
     protected UserService() {
         // Private constructor
-        m_cache = new LruCache<String, MinimalUser>(500);
+        m_cache = new LruCache<>(500);
         PurpleSkyApplication.get().inject(this);
     }
 
     public Map<String, MinimalUser> getMinimalUsers(List<String> profileIds, boolean withOnlineStatus)
             throws IOException, PurpleSkyException {
-        HashMap<String, MinimalUser> map = new HashMap<String, MinimalUser>();
+        HashMap<String, MinimalUser> map = new HashMap<>();
         if (profileIds == null || profileIds.isEmpty()) {
             return map;
         }
 
-        List<String> uncached = new ArrayList<String>();
+        List<String> uncached = new ArrayList<>();
         for (String id : profileIds) {
             if (StringUtility.isNullOrEmpty(id)) {
                 continue;
@@ -71,7 +71,7 @@ public class UserService {
 
         if (withOnlineStatus) {
             // Add online status to all of them
-            Map<String, Pair<OnlineStatus, String>> stati = apiAdapter.getOnlineStatus(new ArrayList<String>(map.keySet()));
+            Map<String, Pair<OnlineStatus, String>> stati = apiAdapter.getOnlineStatus(new ArrayList<>(map.keySet()));
             for (String id : stati.keySet()) {
                 Pair<OnlineStatus, String> stats = stati.get(id);
                 if (stats == null) {
@@ -105,17 +105,16 @@ public class UserService {
         if (cachedVersion != null)
             return cachedVersion;
 
-        MinimalUser minimalRetrieved = getMinimalUserForceUpdate(profileId, withOnlineStat);
-        return minimalRetrieved;
+        return getMinimalUserForceUpdate(profileId, withOnlineStat);
     }
 
     public Map<String, PreviewUser> getPreviewUsers(List<String> profileIds, boolean withOnlineStatus) throws IOException, PurpleSkyException {
-        HashMap<String, PreviewUser> map = new HashMap<String, PreviewUser>();
+        Map<String, PreviewUser> map = new HashMap<>();
         if (profileIds == null) {
             return map;
         }
 
-        List<String> uncached = new ArrayList<String>();
+        List<String> uncached = new ArrayList<>();
 
         for (String id : profileIds) {
             if (StringUtility.isNullOrEmpty(id))
@@ -132,7 +131,7 @@ public class UserService {
 
         if (withOnlineStatus) {
             // Add online status to all of them
-            Map<String, Pair<OnlineStatus, String>> stati = apiAdapter.getOnlineStatus(new ArrayList<String>(map.keySet()));
+            Map<String, Pair<OnlineStatus, String>> stati = apiAdapter.getOnlineStatus(new ArrayList<>(map.keySet()));
             for (String id : stati.keySet()) {
                 Pair<OnlineStatus, String> stats = stati.get(id);
                 if (stats == null) {
@@ -165,8 +164,7 @@ public class UserService {
         if (cachedVersion != null)
             return cachedVersion;
 
-        PreviewUser fullRetrieved = getPreviewUserForceUpdate(profileId, withOnlineStatus);
-        return fullRetrieved;
+        return getPreviewUserForceUpdate(profileId, withOnlineStatus);
     }
 
     /**
@@ -186,8 +184,7 @@ public class UserService {
         if (cachedVersion != null)
             return cachedVersion;
 
-        DetailedUser fullRetrieved = getDetailedUserForceUpdate(profileId);
-        return fullRetrieved;
+        return getDetailedUserForceUpdate(profileId);
     }
 
     private Map<String, MinimalUser> getMinimalUserForceUpdate(List<String> profileIds, boolean withOnlineStatus) throws IOException,

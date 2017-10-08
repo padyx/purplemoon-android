@@ -51,7 +51,7 @@ public class GCMChatNotificationTranslator {
         // TODO Set time!
         int unreadConversations = StringUtility.permissiveInt(extras.getString(PurplemoonAPIConstantsV1.GCM_EXTRA_CHATS_UNREAD), 0);
 
-        Map<String, MinimalUser> map = new HashMap<String, MinimalUser>();
+        Map<String, MinimalUser> map = new HashMap<>();
         JSONArray users = new JSONArray();
         JSONArray chats = new JSONArray();
 
@@ -153,7 +153,7 @@ public class GCMChatNotificationTranslator {
     }
 
     private static List<Conversation> translateToConversations(JSONArray chats) {
-        ArrayList<Conversation> list = new ArrayList<Conversation>();
+        ArrayList<Conversation> list = new ArrayList<>();
         for (int i = 0; i < chats.length(); i++) {
             Conversation c = new Conversation();
             JSONObject obj = chats.optJSONObject(i);

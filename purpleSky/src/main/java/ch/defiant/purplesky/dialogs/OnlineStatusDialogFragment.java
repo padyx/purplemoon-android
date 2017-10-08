@@ -83,7 +83,7 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
             // Prepare the data.
             OnlineStatus stat = getOnlineStatus((String) spinner.getSelectedItem());
 
-            new SubmitTask().execute(new Pair<OnlineStatus, String>(stat, editText.getText().toString()));
+            new SubmitTask().execute(new Pair<>(stat, editText.getText().toString()));
         }
 
         private OnlineStatus getOnlineStatus(String selectedItem) {
@@ -114,13 +114,13 @@ public class OnlineStatusDialogFragment extends BaseDialogFragment {
                 if (BuildConfig.DEBUG) {
                     Log.e(TAG, "Got null/length zero data for setting online status!");
                 }
-                return new Holder<Boolean>(false);
+                return new Holder<>(false);
             }
             try {
                 boolean setOnlineStatus = apiAdapter.setOnlineStatus(params[0].first, params[0].second);
-                return new Holder<Boolean>(setOnlineStatus);
+                return new Holder<>(setOnlineStatus);
             } catch (Exception e) {
-                return new Holder<Boolean>(e);
+                return new Holder<>(e);
             }
         }
 

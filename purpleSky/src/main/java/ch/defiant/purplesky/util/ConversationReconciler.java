@@ -23,7 +23,7 @@ public class ConversationReconciler {
      * @return Merged list. In no particular order.
      */
     public static List<UserMessageHistoryBean> reconcile(Collection<UserMessageHistoryBean> cached, Collection<UserMessageHistoryBean> online){
-        Map<String, UserMessageHistoryBean> map = new HashMap<String, UserMessageHistoryBean>();
+        Map<String, UserMessageHistoryBean> map = new HashMap<>();
         
         if(cached != null && !cached.isEmpty()){
             for (UserMessageHistoryBean b : cached) {
@@ -46,7 +46,7 @@ public class ConversationReconciler {
         }
 
         
-        return new ArrayList<UserMessageHistoryBean>(map.values());
+        return new ArrayList<>(map.values());
     }
 
     

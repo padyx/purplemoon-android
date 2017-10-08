@@ -165,13 +165,13 @@ public class MinMaxDialogFragment extends ResultDialogFragment<Pair<Integer, Int
             }
         }
 
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
 
         for (int i = min; i != max; i += granularity) {
             list.add(i);
         }
 
-        m_spinnerAdapter = new ArrayAdapter<Integer>(getActivity(), R.layout.textview_centered, R.id.textView1, list);
+        m_spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.textview_centered, R.id.textView1, list);
         m_minSpinner.setAdapter(m_spinnerAdapter);
         m_maxSpinner.setAdapter(m_spinnerAdapter);
 
@@ -226,7 +226,7 @@ public class MinMaxDialogFragment extends ResultDialogFragment<Pair<Integer, Int
                 second = tmp;
             }
 
-            result = new Pair<Integer, Integer>(first, second);
+            result = new Pair<>(first, second);
             deliverResult(result);
         }
 

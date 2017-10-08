@@ -36,27 +36,27 @@ import ch.defiant.purplesky.util.NVLUtility;
 // TODO Rename
 class MessageService implements IMessageService {
 
+    private static final String TAG = MessageService.class.getSimpleName();
+
+    private static final int MAX_CACHED_CONVERSATIONS = 100;
+    private static final int BATCH_MOREMESSAGES = 100;
+    private static final long THREE_MONTHS = 3*30*24*60*60*1000L; // The "L" here is important, otherwise hello integer overflow!
+    private static final long YEAR = 12*30*24*60*60*1000L;
+
+    private static final String FROM_TO_STRING = "( " + DatabaseConstants.MESSAGES_FROMUSERID
+            + " = ? OR " + DatabaseConstants.MESSAGES_TOUSERID + " = ? )";
+
+    private static final String UPDATE_LAST_CONTACT =
+            " ? = " + DatabaseConstants.CONVERSATIONS_OTHERUSERID + 
+            " AND " + DatabaseConstants.CONVERSATIONS_LASTCONTACT + " <= ?";
+
+
     private final IConversationAdapter apiAdapter;
 
     public MessageService(IConversationAdapter apiAdapter){
         this.apiAdapter = apiAdapter;
     }
 
-    private final int BATCH_MOREMESSAGES = 100;
-
-    private final long THREE_MONTHS = 3*30*24*60*60*1000L; // The "L" here is important, otherwise hello integer overflow!
-    private final long YEAR = 12*30*24*60*60*1000L;
-
-    private final String TAG = MessageService.class.getSimpleName();
-
-    private final String FROM_TO_STRING = "( " + DatabaseConstants.MESSAGES_FROMUSERID
-            + " = ? OR " + DatabaseConstants.MESSAGES_TOUSERID + " = ? )";
-
-    private final String UPDATE_LAST_CONTACT = 
-            " ? = " + DatabaseConstants.CONVERSATIONS_OTHERUSERID + 
-            " AND " + DatabaseConstants.CONVERSATIONS_LASTCONTACT + " <= ?";
-
-    private final int MAX_CACHED_CONVERSATIONS = 100;
 
     /**
      * Returns up tp {@link #BATCH} messages that directly preceeded the messages indicated by <code>messageId</code>. This function issues an online

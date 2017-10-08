@@ -45,9 +45,9 @@ public class RadarResultLoader extends SimpleAsyncLoader<Holder<List<MinimalUser
                 options.setLastOnline(UserSearchOptions.LastOnline.PAST_DAY);
                 result = apiAdapter.searchUser(options);
             }
-            return new Holder<List<MinimalUser>>(result);
+            return new Holder<>(result);
         } catch (Exception e) {
-            return new Holder<List<MinimalUser>>(e);
+            return new Holder<>(e);
         }
     }
 }

@@ -68,7 +68,7 @@ class ConversationJSONTranslator {
             return res;
         }
 
-        ArrayList<PrivateMessage> unread = new ArrayList<PrivateMessage>();
+        ArrayList<PrivateMessage> unread = new ArrayList<>();
         JSONArray array = obj.optJSONArray(PurplemoonAPIConstantsV1.JSON_MESSAGE_SEND_UNREAD_MSGS);
         if (array != null) {
             // Oops unsaid!

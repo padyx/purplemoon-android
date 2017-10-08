@@ -197,14 +197,14 @@ public class UserSearchOptions implements Serializable {
         options.setMaxAge(BundleUtil.getIntWithNull(bundle, PREFIX + "maxAge"));
         options.setCountryId(BundleUtil.getStringWithNull(bundle, PREFIX + "country"));
         if(bundle.containsKey(PREFIX+"locationN") && bundle.containsKey(PREFIX+"locationE")){
-            options.setLocation(new Pair<Double, Double>(bundle.getDouble(PREFIX+"locationN"), bundle.getDouble(PREFIX+"locationE")));
+            options.setLocation(new Pair<>(bundle.getDouble(PREFIX + "locationN"), bundle.getDouble(PREFIX + "locationE")));
         }
         options.setNumber(BundleUtil.getIntWithNull(bundle, PREFIX+"number"));
         options.setMaxDistance(BundleUtil.getIntWithNull(bundle, PREFIX+"maxDistance"));
 
         String attractions = BundleUtil.getStringWithNull(bundle, PREFIX+"attractions");
         if(attractions != null){
-            List<Pair<Gender, Sexuality>> pairs = new ArrayList<Pair<Gender, Sexuality>>();
+            List<Pair<Gender, Sexuality>> pairs = new ArrayList<>();
             String[] attr = attractions.split(";");
             for (String a : attr){
                 if(StringUtility.hasText(a)){
@@ -217,7 +217,7 @@ public class UserSearchOptions implements Serializable {
                     Gender gender = EnumUtility.fromName(pair[0], Gender.class);
                     Sexuality sexuality = EnumUtility.fromName(pair[1], Sexuality.class);
                     if(gender != null && sexuality != null){
-                        pairs.add(new Pair<Gender, Sexuality>(gender, sexuality));
+                        pairs.add(new Pair<>(gender, sexuality));
                     }
                 }
             }

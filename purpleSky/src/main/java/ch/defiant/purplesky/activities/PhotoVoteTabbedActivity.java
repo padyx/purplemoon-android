@@ -51,7 +51,7 @@ public class PhotoVoteTabbedActivity extends AbstractTabbedActivity {
             R.string.Received
     };
 
-    private WeakReference<PhotoVoteListFragment> m_givenFragment = new WeakReference<PhotoVoteListFragment>(null);
+    private WeakReference<PhotoVoteListFragment> m_givenFragment = new WeakReference<>(null);
 
     public boolean checkAndResetGivenPhotoVote(){
         return m_broadcastReceiver == null || m_broadcastReceiver.getAndReset();
@@ -81,7 +81,7 @@ public class PhotoVoteTabbedActivity extends AbstractTabbedActivity {
             Bundle args = new Bundle();
             args.putBoolean(PhotoVoteListFragment.EXTRA_BOOL_SHOWGIVEN,true);
             fragment.setArguments(args);
-            m_givenFragment = new WeakReference<PhotoVoteListFragment>(fragment);
+            m_givenFragment = new WeakReference<>(fragment);
             return fragment;
         } else {
             return new PhotoVoteListFragment();

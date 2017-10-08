@@ -107,32 +107,32 @@ public class APINetworkUtility {
         ApiResponse<String> response = postForString(resource, postBody, headers);
         try{
             if(response.isError()) {
-                return new ApiResponse<JSONObject>(response.getResponseCode(), response.getError(), response.getErrorDescription());
+                return new ApiResponse<>(response.getResponseCode(), response.getError(), response.getErrorDescription());
             } else {
                 JSONObject object = new JSONObject(response.getResult());
-                return new ApiResponse<JSONObject>(response.getResponseCode(), object);
+                return new ApiResponse<>(response.getResponseCode(), object);
             }
         } catch(JSONException e){
             // Could not translate...
-            return new ApiResponse<JSONObject>(response.getResponseCode(), new JSONObject());
+            return new ApiResponse<>(response.getResponseCode(), new JSONObject());
         }
     }
 
     private static ApiResponse<String> createStringApiResponse(URL resource, Response response) throws IOException, PurpleSkyException {
         int responseCode = response.code();
         if(response.isSuccessful()){
-            return new ApiResponse<String>(responseCode, response.body().string());
+            return new ApiResponse<>(responseCode, response.body().string());
         } else {
             String body = response.body().string();
             ErrorTranslator.throwIfGenericException(PurpleSkyApplication.get(), responseCode, body, resource.toString());
             try{
                 JSONObject obj = new JSONObject(body);
-                return new ApiResponse<String>(
+                return new ApiResponse<>(
                         responseCode,
                         obj.optString(PurplemoonAPIConstantsV1.Errors.JSON_ERROR_TYPE),
                         obj.optString(PurplemoonAPIConstantsV1.Errors.JSON_ERROR_DESCRIPTION));
             } catch (JSONException e){
-                return new ApiResponse<String>(responseCode, "", "");
+                return new ApiResponse<>(responseCode, "", "");
             }
         }
     }
@@ -210,14 +210,14 @@ public class APINetworkUtility {
         ApiResponse<String> response = getString(resource);
         try{
             if(response.isError()) {
-                return new ApiResponse<JSONArray>(response.getResponseCode(), response.getError(), response.getErrorDescription());
+                return new ApiResponse<>(response.getResponseCode(), response.getError(), response.getErrorDescription());
             } else {
                 JSONArray array = new JSONArray(response.getResult());
-                return new ApiResponse<JSONArray>(response.getResponseCode(), array);
+                return new ApiResponse<>(response.getResponseCode(), array);
             }
         } catch(JSONException e){
             // Could not translate...
-            return new ApiResponse<JSONArray>(response.getResponseCode(), new JSONArray());
+            return new ApiResponse<>(response.getResponseCode(), new JSONArray());
         }
     }
 
@@ -225,14 +225,14 @@ public class APINetworkUtility {
         ApiResponse<String> response = getString(resource);
         try{
             if(response.isError()) {
-                return new ApiResponse<JSONObject>(response.getResponseCode(), response.getError(), response.getErrorDescription());
+                return new ApiResponse<>(response.getResponseCode(), response.getError(), response.getErrorDescription());
             } else {
                 JSONObject array = new JSONObject(response.getResult());
-                return new ApiResponse<JSONObject>(response.getResponseCode(), array);
+                return new ApiResponse<>(response.getResponseCode(), array);
             }
         } catch(JSONException e){
             // Could not translate...
-            return new ApiResponse<JSONObject>(response.getResponseCode(), new JSONObject());
+            return new ApiResponse<>(response.getResponseCode(), new JSONObject());
         }
     }
 

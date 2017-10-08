@@ -239,9 +239,9 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
         protected Holder<Boolean> doInBackground(Object... params) {
             try {
                 boolean success = postitAdapter.createPostit(m_id, m_value, m_customText);
-                return new Holder<Boolean>(success);
+                return new Holder<>(success);
             } catch (Exception e) {
-                return new Holder<Boolean>(e);
+                return new Holder<>(e);
             }
         }
 
@@ -291,13 +291,13 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
             public Holder<List<Pair<Integer, String>>> loadInBackground() {
                 try {
                     List<Pair<Integer, String>> list = postitAdapter.getPostitOptions(m_profileId);
-                    return new Holder<List<Pair<Integer, String>>>(list);
+                    return new Holder<>(list);
                 } catch (IOException e) {
-                    return new Holder<List<Pair<Integer, String>>>(e);
+                    return new Holder<>(e);
                 } catch (WrongCredentialsException e) {
-                    return new Holder<List<Pair<Integer, String>>>(e);
+                    return new Holder<>(e);
                 } catch (PurpleSkyException e) {
-                    return new Holder<List<Pair<Integer, String>>>(e);
+                    return new Holder<>(e);
                 }
             }
         };
@@ -324,7 +324,7 @@ public class CreatePostitDialogFragment extends BaseDialogFragment implements Lo
                 }
                 spinner.setAdapter(new PostitAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, android.R.id.text1, invalid));
             } else {
-                ArrayList<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
+                ArrayList<Pair<Integer, String>> list = new ArrayList<>();
 
                 if (result.getContainedObject() != null) {
                     list.addAll(result.getContainedObject());

@@ -30,7 +30,7 @@ public class SecureConstants {
         return values.get().get(key);
     }
 
-    private static AtomicReference<Map<String, String>> values = new AtomicReference<Map<String, String>>();
+    private static AtomicReference<Map<String, String>> values = new AtomicReference<>();
 
     private static void ensureInitialized(){
         if(values.get() == null){
@@ -40,7 +40,7 @@ public class SecureConstants {
 
     private static synchronized void initialize(){
         if(values.get() == null){
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             Properties properties = new Properties();
             InputStream stream = null;
             try {

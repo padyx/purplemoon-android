@@ -35,7 +35,7 @@ public class PurplemoonLocation {
             countryCode = address.getCountryCode();
 
             // Exact street location
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             for(int i=0; i<address.getMaxAddressLineIndex(); i++){
                 list.add(address.getAddressLine(i));
             }

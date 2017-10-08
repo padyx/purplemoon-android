@@ -41,7 +41,7 @@ public class UserJSONTranslator {
 
     public static <T extends MinimalUser> Map<String, T> translateToUsers(JSONArray array, Class<T> clazz) {
         // Translate users
-        HashMap<String, T> userMap = new HashMap<String, T>();
+        HashMap<String, T> userMap = new HashMap<>();
         if (array == null) {
             return userMap;
         }

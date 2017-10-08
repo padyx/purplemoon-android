@@ -45,7 +45,7 @@ public class EnterPasswordLoader extends SimpleAsyncLoader<Holder<EnterPasswordR
                 return Holder.of(new EnterPasswordResponseComposite(response, null));
             }
         } catch (Exception e) {
-            return new Holder<EnterPasswordResponseComposite>(e);
+            return new Holder<>(e);
         }
     }
 

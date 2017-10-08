@@ -45,7 +45,7 @@ class VisitJSONTranslator {
             return Collections.emptyList();
         }
 
-        ArrayList<VisitsReceivedBean> list = new ArrayList<VisitsReceivedBean>();
+        ArrayList<VisitsReceivedBean> list = new ArrayList<>();
         for (int i = 0, size = visitors.length(); i < size; i++) {
             VisitsReceivedBean bean = translateToVisitReceivedBean(visitors.optJSONObject(i), lastcheck);
             if (bean != null) {
@@ -76,7 +76,7 @@ class VisitJSONTranslator {
         VisitsReceivedBean bean = new VisitsReceivedBean();
         bean.setProfileId(profileId);
 
-        TreeMap<Date, Boolean> visits = new TreeMap<Date, Boolean>();
+        TreeMap<Date, Boolean> visits = new TreeMap<>();
         bean.setVisits(visits);
 
         for (int i = 0, size = visitTimes.length(); i < size; i++) {
@@ -102,7 +102,7 @@ class VisitJSONTranslator {
             return Collections.emptyList();
         }
 
-        ArrayList<VisitsMadeBean> list = new ArrayList<VisitsMadeBean>();
+        ArrayList<VisitsMadeBean> list = new ArrayList<>();
         for (int i = 0, size = visits.length(); i < size; i++) {
             VisitsMadeBean bean = translateToVisitMadeBean(visits.optJSONObject(i));
             if (bean != null) {
@@ -133,7 +133,7 @@ class VisitJSONTranslator {
         VisitsMadeBean bean = new VisitsMadeBean();
         bean.setProfileId(profileId);
 
-        TreeMap<Date, Boolean> visits = new TreeMap<Date, Boolean>();
+        TreeMap<Date, Boolean> visits = new TreeMap<>();
         bean.setVisits(visits);
 
         Date visitDate = DateUtility.getFromUnixTime(timestamp);

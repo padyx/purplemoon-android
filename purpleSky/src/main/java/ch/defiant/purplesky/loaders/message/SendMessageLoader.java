@@ -41,13 +41,13 @@ public class SendMessageLoader extends AbstractMessageLoader {
     @Override
     public Holder<MessageResult> loadInBackground() {
         boolean finished = false;
-        List<PrivateMessage> unreadMsgs = new ArrayList<PrivateMessage>();
+        List<PrivateMessage> unreadMsgs = new ArrayList<>();
         MessageResult sent = null;
         int maxsending = 5;
         while (!finished) {
             if (maxsending == 0) {
                 Log.w(TAG, "Emergency abort. Retried sending without exception too many times");
-                return new Holder<MessageResult>(new IllegalStateException("Emergency abort. Retried sending without exception too many times"));
+                return new Holder<>(new IllegalStateException("Emergency abort. Retried sending without exception too many times"));
             }
             Long lastReceivedTimestamp = messageService.getLatestReceivedMessageTimestamp(m_userId);
 
@@ -78,10 +78,10 @@ public class SendMessageLoader extends AbstractMessageLoader {
                     }
                 }
             } catch (Exception e) {
-                return new Holder<MessageResult>(e);
+                return new Holder<>(e);
             }
         }
-        return new Holder<MessageResult>(sent);
+        return new Holder<>(sent);
     }
 
 }

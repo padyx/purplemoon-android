@@ -528,7 +528,7 @@ public class ConversationFragment extends BaseFragment implements LoaderManager.
             .getSerializable(SAVEINSTANCE_DATA);
             // WORKAROUND: Note that Android deserializes any list as an ArrayList from a bundle.
             // See http://stackoverflow.com/questions/12300886/
-            m_adapter.setData(new LinkedList<PrivateMessage>(adapterdata));
+            m_adapter.setData(new LinkedList<>(adapterdata));
         }
         if (savedInstanceState.containsKey(SAVEINSTANCE_HASNOMORECACHED)) {
             m_hasNoMoreCached = savedInstanceState.getBoolean(SAVEINSTANCE_HASNOMORECACHED);

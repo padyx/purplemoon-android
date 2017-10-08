@@ -182,7 +182,7 @@ public class RadarGridFragment extends BaseFragment implements
 
         outState.putParcelable(STATE_ADDRESS, currentAddress);
         outState.putParcelable(STATE_LOCATION, currentLocation);
-        ArrayList<MinimalUser> data = new ArrayList<MinimalUser>();
+        ArrayList<MinimalUser> data = new ArrayList<>();
         for(int i=0; i<adapter.getCount(); i++){
             data.add(adapter.getItem(i));
         }
@@ -211,7 +211,7 @@ public class RadarGridFragment extends BaseFragment implements
 
     private void updateLocationDisplay() {
         if (currentAddress != null && getActivity() != null) {
-            List<String> parts = new ArrayList<String>();
+            List<String> parts = new ArrayList<>();
             for(int i=0; i<=currentAddress.getMaxAddressLineIndex();  i++){
                 parts.add(currentAddress.getAddressLine(i));
             }

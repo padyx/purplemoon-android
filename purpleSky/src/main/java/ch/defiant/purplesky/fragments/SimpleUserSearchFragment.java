@@ -131,22 +131,22 @@ public class SimpleUserSearchFragment extends Fragment implements UserSearchTabb
 
     private void createTargetPersonSpinner(View inflated) {
         ArrayList<SpinnerStateElement<Pair<Gender, Sexuality>>> list = new ArrayList<>();
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(null, null), getString(R.string.targetperson_any)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, null),
+        list.add(new SpinnerStateElement<>(new Pair<Gender, Sexuality>(null, null), getString(R.string.targetperson_any)));
+        list.add(new SpinnerStateElement<>(new Pair<Gender, Sexuality>(Gender.MALE, null),
                 getString(R.string.targetperson_man)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.HOMOSEXUAL),
+        list.add(new SpinnerStateElement<>(new Pair<>(Gender.MALE, Sexuality.HOMOSEXUAL),
                 getString(R.string.targetperson_gayman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.BISEXUAL),
+        list.add(new SpinnerStateElement<>(new Pair<>(Gender.MALE, Sexuality.BISEXUAL),
                 getString(R.string.targetperson_bisexualman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.MALE, Sexuality.HETEROSEXUAL),
+        list.add(new SpinnerStateElement<>(new Pair<>(Gender.MALE, Sexuality.HETEROSEXUAL),
                 getString(R.string.targetperson_heteroman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, null),
+        list.add(new SpinnerStateElement<>(new Pair<Gender, Sexuality>(Gender.FEMALE, null),
                 getString(R.string.targetperson_woman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.HOMOSEXUAL),
+        list.add(new SpinnerStateElement<>(new Pair<>(Gender.FEMALE, Sexuality.HOMOSEXUAL),
                 getString(R.string.targetperson_lesbianwoman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.BISEXUAL),
+        list.add(new SpinnerStateElement<>(new Pair<>(Gender.FEMALE, Sexuality.BISEXUAL),
                 getString(R.string.targetperson_bisexualwoman)));
-        list.add(new SpinnerStateElement<Pair<Gender, Sexuality>>(new Pair<Gender, Sexuality>(Gender.FEMALE, Sexuality.HETEROSEXUAL),
+        list.add(new SpinnerStateElement<>(new Pair<>(Gender.FEMALE, Sexuality.HETEROSEXUAL),
                 getString(R.string.targetperson_heterowoman)));
 
         ArrayAdapter<SpinnerStateElement<Pair<Gender, Sexuality>>> adapter = new ArrayAdapter<>(
@@ -206,7 +206,7 @@ public class SimpleUserSearchFragment extends Fragment implements UserSearchTabb
         if (pair == null) {
             return Collections.emptyList();
         }
-        List<Gender> genders = new ArrayList<Gender>();
+        List<Gender> genders = new ArrayList<>();
         if (pair.getFirst() == null) {
             genders.add(Gender.MALE);
             genders.add(Gender.FEMALE);
@@ -214,7 +214,7 @@ public class SimpleUserSearchFragment extends Fragment implements UserSearchTabb
             genders.add(pair.getFirst());
         }
 
-        List<Sexuality> sexualities = new ArrayList<Sexuality>();
+        List<Sexuality> sexualities = new ArrayList<>();
         if (pair.getSecond() == null) {
             sexualities.add(Sexuality.HETEROSEXUAL);
             sexualities.add(Sexuality.BISEXUAL);
@@ -223,10 +223,10 @@ public class SimpleUserSearchFragment extends Fragment implements UserSearchTabb
             sexualities.add(pair.getSecond());
         }
 
-        List<Pair<Gender, Sexuality>> res = new ArrayList<Pair<Gender, Sexuality>>();
+        List<Pair<Gender, Sexuality>> res = new ArrayList<>();
         for (Gender g : genders) {
             for (Sexuality s : sexualities) {
-                res.add(new Pair<Gender, Sexuality>(g,s));
+                res.add(new Pair<>(g, s));
             }
         }
         return res;

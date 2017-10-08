@@ -34,7 +34,7 @@ public class EmptyOnlineLoader extends AbstractMessageLoader {
     public Holder<MessageResult> loadInBackground() {
         Holder<List<PrivateMessage>> res = messageService.getNewMessagesFromUser(m_userId, null);
         if(res.getException() != null){
-            return new Holder<MessageResult>(res.getException());
+            return new Holder<>(res.getException());
         }
         return Holder.newInstance(new MessageResult().setUnreadMessages(res.getContainedObject()));
     }

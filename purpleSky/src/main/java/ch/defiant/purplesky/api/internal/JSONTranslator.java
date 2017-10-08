@@ -136,9 +136,8 @@ class JSONTranslator { // TODO Make package private
         String countryCode = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_COUNTRYCODE);
         String address = obj.optString(PurplemoonAPIConstantsV1.LOCATIONS_ADDRESS);
 
-        PurplemoonLocation location = new PurplemoonLocation(APIUtility.toLocationType(type),
+        return new PurplemoonLocation(APIUtility.toLocationType(type),
                 locationName, countryCode, address, longitude, latitude);
-        return location;
     }
 
 }

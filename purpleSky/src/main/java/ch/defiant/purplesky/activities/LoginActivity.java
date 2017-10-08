@@ -64,15 +64,15 @@ public class LoginActivity extends BaseFragmentActivity {
         protected Holder<Boolean> doInBackground(Pair<String, String>... params) {
             if (params == null || params.length == 0 || params[0] == null) {
                 Log.e(TAG, "No parameters to login with");
-                return new Holder<Boolean>(new PurpleSkyException(LoginActivity.this, R.string.UnknownErrorOccured));
+                return new Holder<>(new PurpleSkyException(LoginActivity.this, R.string.UnknownErrorOccured));
             }
     
             boolean success = false;
             try {
                 success = apiAdapter.doLogin(params[0].first, params[0].second);
-                return new Holder<Boolean>(success);
+                return new Holder<>(success);
             } catch (Exception e) {
-                return new Holder<Boolean>(e);
+                return new Holder<>(e);
             }
         }
     
@@ -332,7 +332,7 @@ public class LoginActivity extends BaseFragmentActivity {
             return;
         }
 
-        Pair<String, String> pair = new Pair<String, String>(username, password);
+        Pair<String, String> pair = new Pair<>(username, password);
         // TODO Convert into loader (?)
         new LoginTask().execute(pair);
     }

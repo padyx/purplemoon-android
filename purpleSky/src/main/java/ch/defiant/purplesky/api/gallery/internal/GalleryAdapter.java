@@ -54,7 +54,7 @@ class GalleryAdapter implements IGalleryAdapter {
 
     @Override
     public List<PictureFolder> getFoldersWithPictures(String profileId, List<String> folders) throws IOException, PurpleSkyException {
-        List<PictureFolder> list = new ArrayList<PictureFolder>();
+        List<PictureFolder> list = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);

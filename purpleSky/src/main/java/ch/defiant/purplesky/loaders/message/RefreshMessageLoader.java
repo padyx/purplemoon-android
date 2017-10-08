@@ -37,13 +37,13 @@ public class RefreshMessageLoader extends AbstractMessageLoader {
     @Override
     public Holder<MessageResult> loadInBackground() {
         boolean loadMore = true;
-        ArrayList<PrivateMessage> overallList = new ArrayList<PrivateMessage>();
+        List<PrivateMessage> overallList = new ArrayList<>();
 
         while (loadMore) {
             loadMore = false;
             Holder<List<PrivateMessage>> res = messageService.getNewMessagesFromUser(m_userId, m_sinceMsgId);
             if (res.getException() != null) {
-                return new Holder<MessageResult>(res.getException());
+                return new Holder<>(res.getException());
             }
 
             List<PrivateMessage> list = res.getContainedObject();

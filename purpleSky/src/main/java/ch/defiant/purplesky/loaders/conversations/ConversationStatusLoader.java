@@ -35,7 +35,7 @@ public class ConversationStatusLoader extends SimpleAsyncLoader<Holder<UserMessa
             return Holder.newInstance(bean);
         }
         catch(Exception e){
-            return new Holder<UserMessageHistoryBean>(e);
+            return new Holder<>(e);
         }
     }
 

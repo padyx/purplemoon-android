@@ -13,13 +13,13 @@ import ch.defiant.purplesky.core.PurpleSkyApplication;
 
 public class DateUtility {
 
-    private static String TAG = DateUtility.class.getSimpleName();
+    private static final String TAG = DateUtility.class.getSimpleName();
 
     // FIXME Is this missing a 'y'?
-    private static SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyy-MM-dd", Locale.US);
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
-    private static java.text.DateFormat DATEFORMAT_SHORT = DateFormat.getDateFormat(PurpleSkyApplication.get());
-    private static java.text.DateFormat TIMEFORMAT = DateFormat.getTimeFormat(PurpleSkyApplication.get());
+    private static final SimpleDateFormat jsonDateFormat = new SimpleDateFormat("yyy-MM-dd", Locale.US);
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
+    private static final java.text.DateFormat DATEFORMAT_SHORT = DateFormat.getDateFormat(PurpleSkyApplication.get());
+    private static final java.text.DateFormat TIMEFORMAT = DateFormat.getTimeFormat(PurpleSkyApplication.get());
 
     /**
      * Returns the time string, if the day is today. Otherwise will return the time only.

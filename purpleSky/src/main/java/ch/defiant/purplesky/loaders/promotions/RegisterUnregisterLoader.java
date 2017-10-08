@@ -40,9 +40,9 @@ public class RegisterUnregisterLoader extends SimpleAsyncLoader<Holder<EventRegi
                 return Holder.of(m_adapter.register(m_eventId, m_visibility));
             }
         } catch (IOException e) {
-            return new Holder<EventRegistrationResult>(e);
+            return new Holder<>(e);
         } catch (PurpleSkyException e) {
-            return new Holder<EventRegistrationResult>(e);
+            return new Holder<>(e);
         }
     }
 

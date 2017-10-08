@@ -288,8 +288,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             return null;
         }
 
-        String profileId = user.optString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID, null);
-        return profileId;
+        return user.optString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID, null);
     }
 
 
@@ -297,7 +296,7 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     public List<OnlineBean> getOnlineFavorites() throws IOException, PurpleSkyException {
         URL resource = new URL(PurplemoonAPIConstantsV1.BASE_URL + PurplemoonAPIConstantsV1.FAVORITES_ONLINE_URL);
         JSONArray response = performGETRequestForJSONArray(resource);
-        ArrayList<OnlineBean> result = new ArrayList<OnlineBean>();
+        ArrayList<OnlineBean> result = new ArrayList<>();
 
         if (response != null) {
             final int size = response.length();

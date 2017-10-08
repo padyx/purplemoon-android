@@ -33,7 +33,7 @@ class PromotionJSONTranslator {
             return Collections.emptyList();
         }
 
-        List<Promotion> list = new ArrayList<Promotion>();
+        List<Promotion> list = new ArrayList<>();
 
         final int size = array.length();
         for (int i = 0; i<size; i++){

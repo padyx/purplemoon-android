@@ -87,7 +87,7 @@ class PhotoVoteAPIAdapter implements IPhotoVoteAdapter{
         }
         int number = 20;
 
-        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
 
         if (opts != null) {
             if (opts.getStart() != null) {
@@ -126,7 +126,7 @@ class PhotoVoteAPIAdapter implements IPhotoVoteAdapter{
         if (votes == null) {
             return Collections.emptyList();
         }
-        ArrayList<PhotoVoteBean> list = new ArrayList<PhotoVoteBean>();
+        ArrayList<PhotoVoteBean> list = new ArrayList<>();
         for (int i = 0, size = votes.length(); i < size; i++) {
             JSONObject object = votes.optJSONObject(i);
             if (object == null) {

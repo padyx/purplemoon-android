@@ -35,9 +35,9 @@ public class ReportUserLoader extends SimpleAsyncLoader<Holder<ReportResponse>> 
         try {
             return Holder.of(reportAdapter.reportUser(userId, reason, description));
         } catch (IOException e) {
-            return new Holder<ReportResponse>(e);
+            return new Holder<>(e);
         } catch (PurpleSkyException e) {
-            return new Holder<ReportResponse>(e);
+            return new Holder<>(e);
         }
     }
 }

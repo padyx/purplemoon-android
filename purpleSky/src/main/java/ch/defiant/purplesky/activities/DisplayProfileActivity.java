@@ -178,14 +178,14 @@ public class DisplayProfileActivity extends AbstractTabbedActivity implements Lo
             public Holder<DetailedUser> loadInBackground() {
                 if (m_userId == null) {
                     Log.e(TAG, "Got no user id to load");
-                    return new Holder<DetailedUser>(new Exception("Got no user id to load"));
+                    return new Holder<>(new Exception("Got no user id to load"));
                 }
 
                 try {
                     DetailedUser user = PurpleSkyApplication.get().getUserService().getDetailedUser(m_userId);
-                    return new Holder<DetailedUser>(user);
+                    return new Holder<>(user);
                 } catch (Exception e) {
-                    return new Holder<DetailedUser>(e);
+                    return new Holder<>(e);
                 }
             }
         };

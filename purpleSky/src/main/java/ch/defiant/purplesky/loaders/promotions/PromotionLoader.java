@@ -28,7 +28,7 @@ public class PromotionLoader extends SimpleAsyncLoader<Holder<List<Promotion>>> 
         try {
             return Holder.of(m_adapter.getActivePromotions());
         } catch (Exception e) {
-            return new Holder<List<Promotion>>(e);
+            return new Holder<>(e);
         }
     }
 }

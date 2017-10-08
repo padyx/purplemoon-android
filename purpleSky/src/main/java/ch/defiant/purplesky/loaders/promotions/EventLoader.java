@@ -27,7 +27,7 @@ public class EventLoader extends SimpleAsyncLoader<Holder<Event>> {
         try {
             return Holder.of(adapter.getEvent(eventId));
         } catch (Exception e){
-            return new Holder<Event>(e);
+            return new Holder<>(e);
         }
     }
 }

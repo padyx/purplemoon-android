@@ -36,7 +36,7 @@ class VisitAdapter implements IVisitAdapter {
     public List<VisitsReceivedBean> getReceivedVists(AdapterOptions options, Date overrideLastDateCheck) throws IOException, PurpleSkyException {
         StringBuilder builder = new StringBuilder();
 
-        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
         int number = 20;
         if (options != null) {
             if (options.getStart() != null) {
@@ -91,7 +91,7 @@ class VisitAdapter implements IVisitAdapter {
     public List<VisitsMadeBean> getOwnVists(AdapterOptions options) throws IOException, PurpleSkyException {
         StringBuilder builder = new StringBuilder();
 
-        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
         int number = 20;
         if (options != null) {
             if (options.getStart() != null) {

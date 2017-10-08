@@ -87,7 +87,7 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
             toAgeSpinner.selectValue(options.getMaxAge());
 
             if (options.getAttractions() != null) {
-                ArrayList<String> attractions = new ArrayList<String>();
+                ArrayList<String> attractions = new ArrayList<>();
                 for (Pair<Gender, Sexuality> p : options.getAttractions()) {
 
                     // FIXME Reimplement
@@ -128,15 +128,15 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
         List<String> texts = Arrays.asList(getResources().getStringArray(R.array.usersearch_opts_str_gendersexuality));
 
         Bundle args = new Bundle();
-        args.putStringArrayList(ArgumentConstants.ARG_ITEMS, new ArrayList<String>(texts));
-        args.putIntegerArrayList(ArgumentConstants.ARG_SELECTION, new ArrayList<Integer>(toIndexList(options.getAttractions())));
+        args.putStringArrayList(ArgumentConstants.ARG_ITEMS, new ArrayList<>(texts));
+        args.putIntegerArrayList(ArgumentConstants.ARG_SELECTION, new ArrayList<>(toIndexList(options.getAttractions())));
         fragment.setArguments(args);
 
         fragment.show(getFragmentManager(), "sexualityGenderDialog");
     }
 
     private List<Integer> toIndexList(List<Pair<Gender, Sexuality>> attractions) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
         if(attractions == null){
             return list;
         }
@@ -177,7 +177,7 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
 
     private void updateAttractionUI() {
         List<Integer> indexes = toIndexList(options.getAttractions());
-        List<String> strings = new ArrayList<String>();
+        List<String> strings = new ArrayList<>();
         String[] values = getResources().getStringArray(R.array.radarsearch_options_attractions_strings);
         for (Integer index : indexes) {
             strings.add(values[index]);
@@ -197,7 +197,7 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
         if(selected == null){
             return Collections.emptyList();
         }
-        List<Pair<Gender, Sexuality>> list = new ArrayList<Pair<Gender, Sexuality>>();
+        List<Pair<Gender, Sexuality>> list = new ArrayList<>();
         String[] values = getResources().getStringArray(R.array.radarsearch_options_attractions_values);
         if(values == null){
             return Collections.emptyList();
@@ -210,7 +210,7 @@ public class RadarOptionsDialogFragment extends BaseDialogFragment {
                 if(split.length != 2){
                     Log.w(TAG, "");
                 } else {
-                    list.add(new Pair<Gender, Sexuality>(Gender.valueOf(split[0]), Sexuality.valueOf(split[1])));
+                    list.add(new Pair<>(Gender.valueOf(split[0]), Sexuality.valueOf(split[1])));
                 }
             }
         }

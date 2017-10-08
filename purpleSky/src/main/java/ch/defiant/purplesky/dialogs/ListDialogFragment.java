@@ -25,7 +25,7 @@ public class ListDialogFragment extends DialogFragment {
 
     private static final String STATE_SELECTED = "selected";
 
-    private Set<Integer> selectedItems = new HashSet<Integer>();
+    private Set<Integer> selectedItems = new HashSet<>();
     boolean isMultiCheckable = true; // FIXME make multicheckable
 
     @NonNull
@@ -45,7 +45,7 @@ public class ListDialogFragment extends DialogFragment {
         boolean[] checkedState;
         if(savedInstanceState != null){
             ArrayList<Integer> selected = savedInstanceState.getIntegerArrayList(STATE_SELECTED);
-            this.selectedItems = new HashSet<Integer>(selected);
+            this.selectedItems = new HashSet<>(selected);
         } else {
             this.selectedItems.addAll(checked);
         }
@@ -100,7 +100,7 @@ public class ListDialogFragment extends DialogFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putIntegerArrayList(STATE_SELECTED, new ArrayList<Integer>(selectedItems));
+        outState.putIntegerArrayList(STATE_SELECTED, new ArrayList<>(selectedItems));
     }
 
     private String getTitle() {

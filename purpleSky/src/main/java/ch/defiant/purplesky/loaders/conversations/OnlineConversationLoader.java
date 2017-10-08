@@ -21,7 +21,7 @@ public class OnlineConversationLoader extends AbstractConversationLoader {
         try {
             return Holder.newInstance(messageService.getOnlineConversations());
         } catch (Exception e) {
-            return new Holder<List<UserMessageHistoryBean>>(e);
+            return new Holder<>(e);
         }
 
     }

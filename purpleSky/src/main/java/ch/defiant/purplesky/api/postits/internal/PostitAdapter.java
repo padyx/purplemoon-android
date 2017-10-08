@@ -40,7 +40,7 @@ class PostitAdapter implements IPostitAdapter {
 
     @Override
     public List<PostIt> getReceivedPostIts(AdapterOptions options) throws IOException, PurpleSkyException {
-        ArrayList<PostIt> list = new ArrayList<PostIt>();
+        ArrayList<PostIt> list = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
@@ -52,7 +52,7 @@ class PostitAdapter implements IPostitAdapter {
     private List<PostIt> getPostits(AdapterOptions options, ArrayList<PostIt> list, StringBuilder urlBuilder) throws IOException, PurpleSkyException {
         int number = 20;
 
-        ArrayList<Pair<String,String>> params = new ArrayList<Pair<String,String>>();
+        ArrayList<Pair<String,String>> params = new ArrayList<>();
 
         if (options != null) {
             if (options.getStart() != null) {
@@ -119,7 +119,7 @@ class PostitAdapter implements IPostitAdapter {
 
     @Override
     public List<PostIt> getGivenPostIts(AdapterOptions options) throws IOException, PurpleSkyException {
-        ArrayList<PostIt> list = new ArrayList<PostIt>();
+        ArrayList<PostIt> list = new ArrayList<>();
 
         StringBuilder sb = new StringBuilder();
         sb.append(PurplemoonAPIConstantsV1.BASE_URL);
@@ -130,7 +130,7 @@ class PostitAdapter implements IPostitAdapter {
 
     @Override
     public List<Pair<Integer, String>> getPostitOptions(String profileId) throws IOException, PurpleSkyException {
-        ArrayList<Pair<Integer, String>> list = new ArrayList<Pair<Integer, String>>();
+        ArrayList<Pair<Integer, String>> list = new ArrayList<>();
         if (StringUtility.isNullOrEmpty(profileId)) {
             return list;
         }
@@ -146,7 +146,7 @@ class PostitAdapter implements IPostitAdapter {
                 }
                 int value = object.optInt(PurplemoonAPIConstantsV1.JSON_POSTIT_ID, -1);
                 String text = object.optString(PurplemoonAPIConstantsV1.JSON_POSTIT_TEXT);
-                list.add(new Pair<Integer, String>(value, text));
+                list.add(new Pair<>(value, text));
             }
         }
         return list;
@@ -175,7 +175,7 @@ class PostitAdapter implements IPostitAdapter {
 
         URL url = new URL(PurplemoonAPIConstantsV1.BASE_URL + PostitAPIConstants.POSTIT_CREATE_URL);
 
-        List<Pair<String,String>> body = new ArrayList<Pair<String,String>>();
+        List<Pair<String,String>> body = new ArrayList<>();
         body.add(new Pair<>(PostitAPIConstants.POSTIT_CREATE_POSTIT_PROFILEID, profileId));
 
         if (postitValue != null) {
