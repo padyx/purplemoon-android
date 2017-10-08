@@ -232,19 +232,6 @@ public class UserService {
         return fullUserData;
     }
 
-    public DetailedUser getOwnUserFullData() throws IOException, PurpleSkyException {
-        if (m_ownUserData != null) {
-            if (System.currentTimeMillis() - m_ownUserData.getRetrievalTime() <= m_ownUserData.getExpiryDuration()) {
-                return m_ownUserData;
-            }
-        }
-        // Load again
-        DetailedUser fullUserData = apiAdapter.getMyDetailedUserData();
-        m_ownUserData = fullUserData;
-
-        return fullUserData;
-    }
-
     /**
      * Checks if the user is a poweruser (cached only).
      * 

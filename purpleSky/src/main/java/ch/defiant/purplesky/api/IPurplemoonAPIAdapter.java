@@ -102,7 +102,7 @@ public interface IPurplemoonAPIAdapter {
      */
     public DetailedUser getDetailedUserData(String userid) throws IOException, PurpleSkyException;
 
-    public DetailedUser getMyDetailedUserData() throws IOException, PurpleSkyException;
+    public String getMyProfileId() throws IOException, PurpleSkyException;
 
     public List<OnlineBean> getOnlineFavorites() throws IOException, PurpleSkyException;
 

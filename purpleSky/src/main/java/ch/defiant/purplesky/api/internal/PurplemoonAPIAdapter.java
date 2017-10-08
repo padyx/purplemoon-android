@@ -129,12 +129,12 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             }
             model.setUserCredentials(null, token); // Store token first.
 
-            DetailedUser user = getMyDetailedUserData(); // FIXME Only the userid is needed.
-            if (user == null || StringUtility.isNullOrEmpty(user.getUserId())) {
+            String profileId = getMyProfileId();
+            if (StringUtility.isNullOrEmpty(profileId)) {
                 model.setUserCredentials(null, null);
                 return false;
             } else {
-                model.setUserCredentials(user.getUserId(), token);
+                model.setUserCredentials(profileId, token);
             }
         } catch (WrongCredentialsException e) {
             return false;
@@ -275,11 +275,10 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
     }
 
     @Override
-    public DetailedUser getMyDetailedUserData() throws IOException, PurpleSkyException {
-        // Build the comma-separated URL
+    public String getMyProfileId() throws IOException, PurpleSkyException {
         StringBuilder urlString = new StringBuilder();
         urlString.append(PurplemoonAPIConstantsV1.BASE_URL);
-        urlString.append(PurplemoonAPIConstantsV1.USER_DETAILEDDATA_ME_URL);
+        urlString.append(PurplemoonAPIConstantsV1.USER_ME);
 
         URL url = new URL(urlString.toString());
 
@@ -289,9 +288,10 @@ class PurplemoonAPIAdapter implements IPurplemoonAPIAdapter {
             return null;
         }
 
-        DetailedUser translatedUser = UserJSONTranslator.translateToUser(user, DetailedUser.class);
-        return translatedUser;
+        String profileId = user.optString(PurplemoonAPIConstantsV1.JSON_USER_PROFILE_ID, null);
+        return profileId;
     }
+
 
     @Override
     public List<OnlineBean> getOnlineFavorites() throws IOException, PurpleSkyException {

@@ -52,15 +52,13 @@ public class PurplemoonAPIConstantsV1 {
     /*
      * User related
      */
+    public static final String USER_ME = "/me";
     public static final String USER_MINIMALDATA_URL = "/users/minimal/";
     public static final String USER_MINIMALDATA_WITHSTATUS_URL = "/users/minimal_online/";
     public static final String USER_PREVIEWDATA_URL = "/users/preview/";
     public static final String USER_PREVIEWDATA_WITHSTATUS_URL = "/users/preview_online/";
     public static final String USER_DETAILEDDATA_URL = "/users/details/";
     public static final String USER_DETAILEDDATA_WITHSTATUS_URL = "/users/details_online/";
-
-    public static final String USER_BASICDATA_ME_URL = "/users/me/";
-    public static final String USER_DETAILEDDATA_ME_URL = "/me/details";
 
     /*
      * Search related
