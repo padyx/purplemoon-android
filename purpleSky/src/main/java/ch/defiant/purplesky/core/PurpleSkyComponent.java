@@ -1,7 +1,5 @@
 package ch.defiant.purplesky.core;
 
-import javax.inject.Singleton;
-
 import ch.defiant.purplesky.activities.AboutActivity;
 import ch.defiant.purplesky.activities.DisplayProfileActivity;
 import ch.defiant.purplesky.activities.EventActivity;
@@ -12,6 +10,7 @@ import ch.defiant.purplesky.activities.MultiUploadPictureActivity;
 import ch.defiant.purplesky.activities.PhotoVoteTabbedActivity;
 import ch.defiant.purplesky.activities.PictureGridViewActivity;
 import ch.defiant.purplesky.activities.PostitTabbedActivity;
+import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.activities.ReportActivity;
 import ch.defiant.purplesky.activities.SettingFragmentActivity;
 import ch.defiant.purplesky.activities.UserSearchResultsActivity;
@@ -39,7 +38,6 @@ import ch.defiant.purplesky.fragments.BaseListFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
-import ch.defiant.purplesky.activities.RadarActivity;
 import ch.defiant.purplesky.fragments.RadarGridFragment;
 import ch.defiant.purplesky.fragments.ReportUserFragment;
 import ch.defiant.purplesky.fragments.conversation.ConversationFragment;
@@ -52,32 +50,111 @@ import ch.defiant.purplesky.fragments.profile.UserStatsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UserSearchResultsFragment;
 import ch.defiant.purplesky.fragments.usersearch.UsernameSearchFragment;
 import ch.defiant.purplesky.fragments.visits.VisitorFragment;
-import dagger.Module;
+import dagger.Component;
+import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
- * Main module for injections.
  * @author Patrick Bänziger
  */
-@Module(
-    includes = {
-        APIModule.class,
-        CoreModule.class,
-        DatabaseModule.class,
-        ReportModule.class,
-        PostitModule.class,
-        GalleryModule.class,
-        PhotoVoteModule.class,
-        VisitModule.class,
-        ConversationModule.class,
-        PromotionModule.class
-    }
+
+@Component(modules =
+        {
+                PurpleSkyModule.class,
+                PurpleSkyApplicationModule.class,
+                AndroidInjectionModule.class,
+                AndroidSupportInjectionModule.class
+        }
 )
-public class PurpleSkyModule {
+public interface PurpleSkyComponent extends AndroidInjector<PurpleSkyApplication> {
 
-    private final PurpleSkyApplication app;
+    void inject(PurpleSkyApplication application);
 
-    public PurpleSkyModule(PurpleSkyApplication app) {
-        this.app = app;
-    }
+    // Activities
+    void inject(LoginActivity activity);
+
+    void inject(VisitorTabbedActivity activity);
+
+    void inject(PostitTabbedActivity activity);
+
+    void inject(UserSearchTabbedActivity activity);
+
+    void inject(PhotoVoteTabbedActivity activity);
+
+    void inject(MultiUploadPictureActivity activity);
+
+    void inject(FavoritesActivity activity);
+
+    void inject(DisplayProfileActivity activity);
+
+    void inject(ReportActivity activity);
+
+    void inject(SettingFragmentActivity activity);
+
+    void inject(UserSearchResultsActivity activity);
+
+    void inject(AboutActivity activity);
+
+    void inject(PictureGridViewActivity activity);
+
+    void inject(LightboxActivity activity);
+
+    void inject(EventActivity activity);
+
+    // Base or abstract classes
+    void inject(BaseListFragment activity);
+
+    void inject(BaseFragment activity);
+
+    void inject(ChatListActivity activity);
+
+    void inject(ConversationActivity activity);
+
+    // Services
+    void inject(UserService activity);
+
+    // Fragments
+    void inject(PostitFragment fragment);
+
+    void inject(VisitorFragment fragment);
+
+    void inject(UsernameSearchFragment fragment);
+
+    void inject(RadarGridFragment fragment);
+
+    void inject(UserStatsFragment fragment);
+
+    void inject(PictureFolderGridViewFragment fragment);
+
+    void inject(PhotoVoteFragment fragment);
+
+    void inject(PhotoVoteListFragment fragment);
+
+    void inject(ChatListFragment fragment);
+
+    void inject(FavoritesFragment fragment);
+
+    void inject(ConversationFragment fragment);
+
+    void inject(UserSearchResultsFragment fragment);
+
+    void inject(OnlineStatusDialogFragment activity);
+
+    void inject(RadarActivity activity);
+
+    void inject(RadarOptionsDialogFragment fragment);
+
+    void inject(CreatePostitDialogFragment fragment);
+
+    void inject(UploadPhotoDialogFragment fragment);
+
+    void inject(ReportUserFragment fragment);
+
+    void inject(EnterPasswordDialogFragment fragment);
+
+    void inject(MultiUploadFragment fragment);
+
+    void inject(EventFragment fragment);
 
 }

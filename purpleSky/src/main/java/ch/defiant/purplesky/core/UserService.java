@@ -27,6 +27,7 @@ import ch.defiant.purplesky.api.internal.PurplemoonAPIConstantsV1;
 import ch.defiant.purplesky.enums.OnlineStatus;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 import ch.defiant.purplesky.util.StringUtility;
+import dagger.android.AndroidInjection;
 
 public class UserService {
     private static final String TAG = UserService.class.getSimpleName();
@@ -44,7 +45,8 @@ public class UserService {
     protected UserService() {
         // Private constructor
         m_cache = new LruCache<>(500);
-        PurpleSkyApplication.get().inject(this);
+
+        DaggerPurpleSkyComponent.create().inject(this);
     }
 
     public Map<String, MinimalUser> getMinimalUsers(List<String> profileIds, boolean withOnlineStatus)

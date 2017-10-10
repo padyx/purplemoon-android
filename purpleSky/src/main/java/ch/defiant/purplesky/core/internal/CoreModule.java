@@ -15,9 +15,7 @@ import dagger.Provides;
  * @author  Patrick Bänziger
  */
 @Module (
-        complete = false,
-        library = true,
-        injects = {ChatListFragment.class}
+
 )
 public class CoreModule {
 

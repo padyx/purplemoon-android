@@ -10,11 +10,11 @@ import dagger.Provides;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-@Module (library = true)
+@Module
 public class PhotoVoteModule {
 
     @Provides
-    @Singleton
+    // @Singleton
     public IPhotoVoteAdapter providePhotoVoteAdapter(){
         return new PhotoVoteAPIAdapter();
     }

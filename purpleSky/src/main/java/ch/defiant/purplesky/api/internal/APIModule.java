@@ -9,13 +9,10 @@ import dagger.Provides;
 /**
  * @author Patrick Bänziger
  */
-@Module(
-    complete = false,
-    library = true
-)
+@Module
 public class APIModule {
 
-    @Singleton
+    //@Singleton
     @Provides
     IPurplemoonAPIAdapter provideAPI(){
         return new PurplemoonAPIAdapter();
