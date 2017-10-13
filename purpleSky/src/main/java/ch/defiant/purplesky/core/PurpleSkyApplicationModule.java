@@ -18,6 +18,7 @@ import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
 import ch.defiant.purplesky.activities.chatlist.ConversationActivity;
+import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
@@ -96,6 +97,9 @@ public abstract class PurpleSkyApplicationModule {
 
     @ContributesAndroidInjector
     abstract GallerySwipeFragment contributeGallerySwipeFragmentInjector();
+
+    @ContributesAndroidInjector
+    abstract EnterPasswordDialogFragment contributeEnterPasswordDialogFragmentInjector();
 
     /*
      * Event
