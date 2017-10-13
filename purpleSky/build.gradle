@@ -11,8 +11,8 @@ android {
         // First two digits (0 prefix not allowed - octal!) - MinSdkVersion
         // Middle five digits: Reserved
         // Last three digits: Build / Versionname
-        versionCode 1600000139
-        versionName "1.3.9"
+        versionCode 1600000141
+        versionName "1.4.1"
 
         minSdkVersion 16
         targetSdkVersion 18
@@ -22,7 +22,11 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs = ['src/main/res', 'src/main/res_ccby', 'src/main/res_lgpl', 'src/main/res_nonfree']
+            res.srcDirs = [
+                    'src/main/res',
+                    'src/main/res_ccby',
+                    'src/main/res_lgpl',
+                    'src/main/res_nonfree']
         }
     }
 
@@ -30,6 +34,9 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+
+            // Workaround: Prevent crashes of development versions from appearing in Google Play Console
+            applicationIdSuffix ".dev"
         }
 
         release {
