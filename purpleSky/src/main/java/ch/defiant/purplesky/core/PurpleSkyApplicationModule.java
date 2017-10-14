@@ -18,8 +18,10 @@ import ch.defiant.purplesky.activities.UserSearchTabbedActivity;
 import ch.defiant.purplesky.activities.VisitorTabbedActivity;
 import ch.defiant.purplesky.activities.chatlist.ChatListActivity;
 import ch.defiant.purplesky.activities.chatlist.ConversationActivity;
+import ch.defiant.purplesky.dialogs.CreatePostitDialogFragment;
 import ch.defiant.purplesky.dialogs.EnterPasswordDialogFragment;
 import ch.defiant.purplesky.dialogs.RadarOptionsDialogFragment;
+import ch.defiant.purplesky.dialogs.UploadPhotoDialogFragment;
 import ch.defiant.purplesky.fragments.ChatListFragment;
 import ch.defiant.purplesky.fragments.FavoritesFragment;
 import ch.defiant.purplesky.fragments.MultiUploadFragment;
@@ -134,6 +136,9 @@ public abstract class PurpleSkyApplicationModule {
     @ContributesAndroidInjector
     abstract MultiUploadFragment contributeMultiUploadFragmentInjector();
 
+    @ContributesAndroidInjector
+    abstract UploadPhotoDialogFragment contributeUploadPhotoDialogFragmentInjector();
+
     /*
      * PhotoVote
      */
@@ -154,6 +159,9 @@ public abstract class PurpleSkyApplicationModule {
 
     @ContributesAndroidInjector
     abstract PostitFragment contributePostitFragmentInjector();
+
+    @ContributesAndroidInjector
+    abstract CreatePostitDialogFragment contributeCreatePostitDialogFragmentInjector();
 
     /*
     * Radar
