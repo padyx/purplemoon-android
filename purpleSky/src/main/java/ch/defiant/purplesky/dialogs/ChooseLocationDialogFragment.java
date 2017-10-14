@@ -292,11 +292,11 @@ public class ChooseLocationDialogFragment extends DialogFragment implements Load
                 h = (Holder) v.getTag();
             }
 
-            if (getItem(position) != null) {
-                Address item = getItem(position);
+            final Address item = getItem(position);
+            if (item != null) {
                 final int l = item.getMaxAddressLineIndex();
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < l; i++) {
+                for (int i = 0; i <= l; i++) {
                     sb.append(item.getAddressLine(i));
                     if (i != (l - 1)) {
                         sb.append("\n");
