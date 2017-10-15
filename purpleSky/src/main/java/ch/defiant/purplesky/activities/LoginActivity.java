@@ -47,6 +47,7 @@ import ch.defiant.purplesky.util.CompareUtility;
 import ch.defiant.purplesky.util.Holder;
 import ch.defiant.purplesky.util.StringUtility;
 import ch.defiant.purplesky.util.SystemUtility;
+import dagger.android.AndroidInjection;
 
 public class LoginActivity extends BaseFragmentActivity {
 
@@ -139,7 +140,6 @@ public class LoginActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PurpleSkyApplication.get().inject(this);
 
         setContentView(R.layout.loginview);
 

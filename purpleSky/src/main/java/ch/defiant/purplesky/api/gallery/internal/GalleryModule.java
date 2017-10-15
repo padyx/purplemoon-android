@@ -10,10 +10,10 @@ import dagger.Provides;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-@Module (library = true)
+@Module
 public class GalleryModule {
 
-    @Singleton
+    // @Singleton
     @Provides
     public IGalleryAdapter provideGalleryAdapter(){
         return new GalleryAdapter();

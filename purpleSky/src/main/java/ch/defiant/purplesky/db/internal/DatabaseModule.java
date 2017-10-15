@@ -9,7 +9,7 @@ import dagger.Provides;
  * @author Patrick Bänziger
  * @since 1.0.1
  */
-@Module(library = true)
+@Module
 public class DatabaseModule {
 
     @Provides

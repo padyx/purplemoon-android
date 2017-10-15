@@ -9,11 +9,11 @@ import dagger.Provides;
 /**
  * @author Patrick Bänziger
  */
-@Module (library = true)
+@Module
 public class PromotionModule {
 
     @Provides
-    @Singleton
+//    @Singleton
     public IPromotionAdapter providePromotionAdapter(){
         return new PromotionAdapter();
     }

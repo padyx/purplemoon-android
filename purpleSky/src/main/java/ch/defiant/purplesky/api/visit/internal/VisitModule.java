@@ -9,11 +9,11 @@ import dagger.Provides;
 /**
  * @author Patrick Bänziger
  */
-@Module (library =  true)
+@Module
 public class VisitModule {
 
     @Provides
-    @Singleton
+//    @Singleton
     public IVisitAdapter provideVisitAdapter(){
         return new VisitAdapter();
     }

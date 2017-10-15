@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
+import dagger.android.AndroidInjection;
 
 /**
  *
@@ -22,8 +23,8 @@ public class BaseDialogFragment extends DialogFragment implements IAlertDialogFr
 
     @Override
     public void onAttach(Activity activity) {
+        AndroidInjection.inject(this);
         super.onAttach(activity);
-        PurpleSkyApplication.get().inject(this);
     }
 
     @Override

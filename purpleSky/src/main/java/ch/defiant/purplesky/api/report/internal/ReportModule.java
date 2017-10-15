@@ -10,11 +10,11 @@ import dagger.Provides;
  * @author Patrick Bänziger
  * @since v.1.1.0
  */
-@Module (library = true)
+@Module
 public class ReportModule {
 
     @Provides
-    @Singleton
+    // @Singleton
     IReportAdapter provideApiAdapter(){
         return ReportAdapter.INSTANCE;
     }

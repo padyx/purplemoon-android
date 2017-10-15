@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,11 +20,13 @@ import ch.defiant.purplesky.api.conversation.IConversationAdapter;
 import ch.defiant.purplesky.core.PurpleSkyApplication;
 import ch.defiant.purplesky.dialogs.IAlertDialogFragmentResponder;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
+import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 
 /**
  * @author Patrick Bänziger
  */
-public abstract class BaseFragmentActivity extends AppCompatActivity implements IAlertDialogFragmentResponder {
+public abstract class BaseFragmentActivity extends DaggerAppCompatActivity implements IAlertDialogFragmentResponder {
 
     @Inject
     protected IPurplemoonAPIAdapter apiAdapter;
@@ -78,7 +79,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity implements 
         // Call request window feature _before_
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
-        PurpleSkyApplication.get().inject(this);
+
         m_handler = new Handler();
 
         setContentView(R.layout.fragment_container_layout);

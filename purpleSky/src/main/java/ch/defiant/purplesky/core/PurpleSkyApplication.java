@@ -1,5 +1,6 @@
 package ch.defiant.purplesky.core;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.StrictMode;
@@ -9,11 +10,16 @@ import android.os.StrictMode.VmPolicy;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import ch.defiant.purplesky.BuildConfig;
 import ch.defiant.purplesky.enums.NavigationDrawerEventType;
-import dagger.ObjectGraph;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
-public class PurpleSkyApplication extends android.app.Application {
+public class PurpleSkyApplication extends DaggerApplication  {
 
     private static PurpleSkyApplication instance;
     private final FragmentTransfer fragment_transfer_instance = FragmentTransfer.INSTANCE;
@@ -22,7 +28,6 @@ public class PurpleSkyApplication extends android.app.Application {
     private HashMap<NavigationDrawerEventType, Integer> m_notificationCounts;
     private WeakReference<UpdateListener> m_listener = new WeakReference<>(null);
     private PersistantModel m_model;
-    ObjectGraph objectGraph;
 
     public PurpleSkyApplication() {
         instance = this;
@@ -30,12 +35,18 @@ public class PurpleSkyApplication extends android.app.Application {
             StrictMode.setThreadPolicy(new ThreadPolicy.Builder().detectAll().build());
             StrictMode.setVmPolicy(new VmPolicy.Builder().detectAll().build());
         }
-        initObjectGraph();
+    }
+
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerPurpleSkyComponent.builder().build();
     }
 
     public static PurpleSkyApplication get() {
         return instance;
     }
+
 
     public UserService getUserService() {
         if (m_userservice == null) {
@@ -102,15 +113,6 @@ public class PurpleSkyApplication extends android.app.Application {
 
     public FragmentTransfer getFragmentTransferInstance() {
         return fragment_transfer_instance;
-    }
-
-    public void inject(Object o) {
-        objectGraph.inject(o);
-    }
-
-    private void initObjectGraph() {
-        objectGraph = ObjectGraph.create(ch.defiant.purplesky.core.Modules.list(this));
-        objectGraph.inject(this);
     }
 
 }

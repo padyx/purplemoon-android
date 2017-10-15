@@ -8,7 +8,7 @@ import ch.defiant.purplesky.R;
 import ch.defiant.purplesky.api.IPurplemoonAPIAdapter;
 import ch.defiant.purplesky.exceptions.PurpleSkyException;
 
-public class StatusLoader extends SimpleAsyncLoader<Object> {
+public class StatusLoader extends SimpleAsyncLoader<Object> { // FIXME Remove totally
 
     private final IPurplemoonAPIAdapter apiAdapter;
 
