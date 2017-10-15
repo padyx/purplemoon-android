@@ -74,8 +74,8 @@ dependencies {
 
     // Google play services, selectively included
     // See https://developers.google.com/android/guides/setup#split
-    compile 'com.google.android.gms:play-services-gcm:10.2.6'
-    compile 'com.google.android.gms:play-services-location:10.2.6'
+    compile 'com.google.android.gms:play-services-gcm:11.4.2'
+    compile 'com.google.android.gms:play-services-location:11.4.2'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
