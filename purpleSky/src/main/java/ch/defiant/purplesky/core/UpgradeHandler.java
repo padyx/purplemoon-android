@@ -143,9 +143,9 @@ public final class UpgradeHandler {
             }
             return true;
         }catch(IOException ioe){
-            Log.i(TAG, "Registering for Google cLoud Messaging failed: IOException", ioe);
+            Log.i(TAG, "Registering for Google Cloud Messaging failed: IOException", ioe);
         } catch (PurpleSkyException e) {
-            Log.w(TAG, "Registering for Google Clous Messaging failed with unexpected error", e);
+            Log.w(TAG, "Registering for Google Cloud Messaging failed with unexpected error", e);
         }
         return false;
     }
